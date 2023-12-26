@@ -15,6 +15,7 @@ Sub Class_Globals
 	Public Root As B4XView
 	Private xui As XUI
 	Private Toast As BCToast
+	Private dUtils As DDD
 	
 	Public Dialog As B4XDialog
 	Public DialogMSGBOX As B4XDialog
@@ -59,6 +60,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Root = Root1
 	Root.LoadLayout("MainPage")
 	Toast.Initialize(Root) '--- needs to be themed  --TODO
+	dUtils.Initialize
 
 	BuildGUI
 	oClock.Initialize
@@ -77,17 +79,11 @@ Private Sub BuildGUI
 	
 	pnlMenu.SetColorAndBorder(themes.clrPanelBGround,2,themes.clrPanelBorderColor,4)
 	pnlHeader.SetColorAndBorder(themes.clrTitleBarBG,0,xui.Color_Transparent,0)
+		
 	
-	lvMenu.AddTextItem("Home","hm")
-	lvMenu.AddTextItem("Weather","wt")
-	lvMenu.AddTextItem("Calculator","ca")
-	lvMenu.AddTextItem("Conversions","cv")
 	
-	lvMenu.sv.ScrollViewInnerPanel.Color = xui.Color_Transparent
-'	l.CustomListView1.sv.Color = xui.Color_White
-'	l.CustomListView1.DefaultTextBackgroundColor = xui.Color_White
-	'lvMenu.DefaultTextColor = TextColor
-	
+	'lvMenu.Add(CreateListItem($"Item #${i}"$, 160dip, lvMenu.AsView.Height), $"Item #${i}"$)
+	BuildMenu	
 	Toast.pnl.Color = themes.clrTxtNormal
 	Toast.DefaultTextColor = themes.clrPanelBGround
 	Toast.MaxHeight = 120dip
@@ -95,6 +91,39 @@ Private Sub BuildGUI
 	lvMenu_ItemClick(-2,"hm")
 	Sleep(0)
 	
+End Sub
+
+Private Sub BuildMenu
+	
+	lvMenu.sv.ScrollViewInnerPanel.Color = xui.Color_Transparent
+	lvMenu.PressedColor = themes.clrTxtBright
+	lvMenu.DefaultTextBackgroundColor = xui.Color_White
+	lvMenu.DefaultTextColor = themes.clrTxtNormal
+
+	lvMenu.Add(CreateListItem("Home","main_menu_home.png",lvMenu.AsView.Width, 60dip),"hm")
+	lvMenu.Add(CreateListItem("Weather","main_menu_weather.png",lvMenu.AsView.Width, 60dip),"wt")
+	lvMenu.Add(CreateListItem("Calculator","main_menu_conversions.png",lvMenu.AsView.Width, 60dip),"cv")
+	lvMenu.Add(CreateListItem("Calculator","main_menu_conversions.png",lvMenu.AsView.Width, 60dip),"ca")
+	'lvMenu.Add(CreateListItem("Home","main_menu_home.png",lvMenu.AsView.Width, 60dip),"hm")
+End Sub
+
+Private Sub CreateListItem(Text As String, imgName As String, Width As Int, Height As Int) As B4XView
+	Dim p As B4XView = xui.CreatePanel("")
+	p.SetLayoutAnimated(0, 0, 0, Width, Height)
+	p.LoadLayout("menuItems")
+	'Note that we call DDD.CollectViewsData in CellItem designer script. This is required if we want to get views with dd.GetViewByName.
+	'dUtils.GetViewByName(p, "lblMenuText").Text = Text === errors out and only works on base b4xviews
+	For Each v As B4XView In p.GetAllViewsRecursive
+		If v.Tag Is lmB4XImageViewX Then
+			Dim bft  As lmB4XImageViewX  = v.Tag
+			If "itm" = bft.Tag Then 
+				bft.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(xui.LoadBitmap(File.DirAssets,imgName),themes.clrTxtNormal)
+			End If
+		Else if v.Tag = "txt" Then
+			v.Text = Text
+		End If
+	Next
+	Return p
 End Sub
 
 'You can see the list of page related events in the B4XPagesManager object. The event name is B4XPage.

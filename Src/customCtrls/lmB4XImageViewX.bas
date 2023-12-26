@@ -1,5 +1,5 @@
 ﻿B4J=true
-Group=CUSTOM_CONTROLS
+Group=CustomeControls
 ModulesStructureVersion=1
 Type=Class
 Version=8.5

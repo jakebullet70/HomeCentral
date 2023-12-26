@@ -36,7 +36,7 @@ Private Sub Update_Scrn
 	Dim fmtD As String = DateTime.DateFormat
 	Dim fmtT As String = DateTime.TimeFormat
 	DateTime.TimeFormat = "EEE h:mm a"
-	DateTime.DateFormat =""
+	DateTime.DateFormat = ""
 	guiHelpers.ResizeText(DateUtils.TicksToString(DateTime.Now), B4XPages.MainPage.lblHdrTxt2)
 	DateTime.TimeFormat = fmtT
 	DateTime.DateFormat = fmtD
