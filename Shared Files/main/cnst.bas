@@ -12,7 +12,7 @@ Version=9.5
 Sub Process_Globals
 	
 	'--- Versioning - app name
-	Public Const APP_NAME As String = "Kitchen Central"
+	Public Const APP_NAME As String = "Home Central"
 	Public Const APP_DISPLAY_VERSION As String = "0.5.0" '--- what the user see's
 	Public Const APP_FILE_VERSION As Int = 1
 	
