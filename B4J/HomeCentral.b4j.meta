@@ -67,6 +67,6 @@ ModuleClosedNodes6=
 ModuleClosedNodes7=
 ModuleClosedNodes8=
 ModuleClosedNodes9=
-NavigationStack=B4XMainPage,B4XPage_Created,73,0,guiHelpers,SetVisible,53,0,guiHelpers,SetEnableDisableColor,123,0,B4XMainPage,Class_Globals,25,5,B4XMainPage,lblMenuFooter_MouseClicked,163,0,Visual Designer,MainPage.bjl,-100,6,B4XMainPage,lvMenu_ItemClick,100,6,B4XMainPage,BuildGUI,93,5,B4XMainPage,btnHeaderMenu_Click,100,0
+NavigationStack=B4XMainPage,B4XPage_Created,73,0,guiHelpers,SetVisible,53,0,guiHelpers,SetEnableDisableColor,123,0,B4XMainPage,Class_Globals,25,5,B4XMainPage,lblMenuFooter_MouseClicked,163,0,B4XMainPage,lvMenu_ItemClick,100,6,B4XMainPage,BuildGUI,93,5,Visual Designer,MainPage.bjl,-100,6,B4XMainPage,btnHeaderMenu_Click,98,3
 SelectedBuild=0
 VisibleModules=1,17,12

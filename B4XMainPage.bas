@@ -102,9 +102,6 @@ End Sub
 Private Sub btnHeaderMenu_Click
 	pnlMenu.SetVisibleAnimated(280, Not (pnlMenu.Visible))
 	If pnlMenu.Visible Then pnlMenu.BringToFront
-	
-	Dim sf As StringFunctions
-	
 End Sub
 
 Private Sub lvMenu_ItemClick (Index As Int, Value As Object)
