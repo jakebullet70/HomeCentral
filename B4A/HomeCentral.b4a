@@ -2,28 +2,32 @@
 File1=MainPage.bal
 FileGroup1=Default Group
 Group=Default Group
-Library1=core
-Library2=b4xpages
+Library1=b4xpages
+Library2=bctoast
+Library3=core
+Library4=xui
+Library5=xui views
+Library6=designerutils
 ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~
 Module1=|relative|..\B4XMainPage
 Module2=Starter
 NumberOfFiles=1
-NumberOfLibraries=2
+NumberOfLibraries=6
 NumberOfModules=2
-Version=9.9
+Version=12.5
 @EndOfDesignText@
 #Region  Project Attributes 
-	#ApplicationLabel: B4A Example
+	#ApplicationLabel: HomeCentral
 	#VersionCode: 1
-	#VersionName: 
+	#VersionName: 3.0.0
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
-	#SupportedOrientations: portrait
+	#SupportedOrientations: landscape
 	#CanInstallToExternalStorage: False
 #End Region
 
 #Region  Activity Attributes 
-	#FullScreen: False
-	#IncludeTitle: True
+	#FullScreen: True
+	#IncludeTitle: False
 #End Region
 
 '#BridgeLogger: True

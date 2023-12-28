@@ -1,5 +1,5 @@
 ﻿B4J=true
-Group=Snapins
+Group=Pages-Snapins
 ModulesStructureVersion=1
 Type=Class
 Version=10
@@ -13,29 +13,24 @@ Version=10
 Sub Class_Globals
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
-	Private Parent As B4XView
+	Private mPnlMain As B4XView
 	
-	
-	Private oConversion As ConversionMod
-End Sub
-
-Public Sub Initialize(p As B4XView) As Object
-	Parent = p	
-	oConversion.Initialize
-	Return Me
-End Sub
-
-Public Sub Show
 	
 End Sub
 
+Public Sub Initialize(p As B4XView) 
+	mPnlMain = p
+End Sub
 
 '-------------------------------
-Public Sub Lost_Focus
-	
+Public Sub Set_focus()
+	MainMenu.SetHeader("Conversions","main_menu_conversions.png")
+	mPnlMain.SetVisibleAnimated(500,True)
 End Sub
-Public Sub Got_Focus
-	
+
+
+Public Sub Lost_focus()
+	mPnlMain.SetVisibleAnimated(500,False)
 End Sub
 
 

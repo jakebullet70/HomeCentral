@@ -12,29 +12,34 @@ Version=9.85
 'Ctrl + click to export as zip: ide://run?File=%B4X%\Zipper.jar&Args=Project.zip
 
 Sub Class_Globals
-	Public Root As B4XView
-	Private xui As XUI
-	Private Toast As BCToast
+	Public Root As B4XView, xui As XUI, Toast As BCToast
 	Private dUtils As DDD
 	
-	Public Dialog As B4XDialog
-	Public DialogMSGBOX As B4XDialog
-	
+	Public Dialog, DialogMSGBOX As B4XDialog
 	Private oClock As Clock
+	
 	Private pnlBG As B4XView
-	Private pnlCurrentPanel As B4XView
-	Private pnlCalculator,pnlHome,pnlWeather,pnlConversions As B4XView
 	
-	Private pnlMenu As B4XView, lvMenu As CustomListView
+	Private pnlCalculator,pnlHome,pnlWeather,pnlConversions,pnlPhotos As B4XView
+	Public oPageCurrent As Object = Null
+	Private oPageConversion As pageConversions,oPagePhoto As pagePhotos,oPageTimers As pageKTimers
+	Private oPageCalculator As pageCalculator,  oPageHome As pageHome, oPageWeather As pageWeather
 	
-	Private lblMenu As B4XView
-	Private lblHdrTxt1 As B4XView
-	Public lblHdrTxt2 As B4XView
 	
-	Private pnlHdrLineBreak As B4XView
+	Private pnlMenu As B4XView
+	Public lvMenu As CustomListView
+	
+	Private lblMenu As B4XView, btnHeaderMenu As B4XView
+	Public lblHdrTxt1,lblHdrTxt2 As B4XView
+	
 	Private pnlHeader As B4XView
+	Public imgHeader As lmB4XImageViewX
+	
+	Private lblSetup As B4XView
+	Private lblMenuFooter As B4XView
 	
 	
+	Private pnlTimers As B4XView
 End Sub
 
 Public Sub Initialize
@@ -51,16 +56,20 @@ Public Sub Initialize
 	Else
 		'--- this will matter when a new version of the app is released as
 		'--- settings files and others things might also need to be updated
-		CheckVersions
+		Dim vo As CheckVersions : vo.Initialize
+		vo.CheckAndUpgrade
 	End If
 End Sub
 
+
+'You can see the list of page related events in the B4XPagesManager object. The event name is B4XPage.
 'This event will be called once, before the page becomes visible.
 Private Sub B4XPage_Created (Root1 As B4XView)
+	
 	Root = Root1
 	Root.LoadLayout("MainPage")
-	Toast.Initialize(Root) '--- needs to be themed  --TODO
-	dUtils.Initialize
+	Toast.Initialize(Root) 
+	dUtils.Initialize '--- DDD desgner utils
 
 	BuildGUI
 	oClock.Initialize
@@ -69,21 +78,17 @@ End Sub
 
 Private Sub BuildGUI
 	
-	pnlCurrentPanel =  xui.CreatePanel("")
-	pnlCurrentPanel = pnlHome	
+	guiHelpers.SetVisible(Array As B4XView(pnlTimers,pnlMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
 	
-	guiHelpers.SetVisible(Array As B4XView(pnlCurrentPanel,pnlMenu,pnlWeather,pnlCalculator,pnlConversions),False)
+	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnHeaderMenu))
 	
-	pnlHdrLineBreak.SetColorAndBorder(themes.clrPanelBorderColor,0,xui.Color_Transparent,0) '--- not visible at the moment
 	pnlBG.SetColorAndBorder(themes.clrPanelBGround,0,xui.Color_Transparent,0)
 	
 	pnlMenu.SetColorAndBorder(themes.clrPanelBGround,2,themes.clrPanelBorderColor,4)
 	pnlHeader.SetColorAndBorder(themes.clrTitleBarBG,0,xui.Color_Transparent,0)
-		
 	
+	MainMenu.Build()
 	
-	'lvMenu.Add(CreateListItem($"Item #${i}"$, 160dip, lvMenu.AsView.Height), $"Item #${i}"$)
-	BuildMenu	
 	Toast.pnl.Color = themes.clrTxtNormal
 	Toast.DefaultTextColor = themes.clrPanelBGround
 	Toast.MaxHeight = 120dip
@@ -93,87 +98,72 @@ Private Sub BuildGUI
 	
 End Sub
 
-Private Sub BuildMenu
-	
-	lvMenu.sv.ScrollViewInnerPanel.Color = xui.Color_Transparent
-	lvMenu.PressedColor = themes.clrTxtBright
-	lvMenu.DefaultTextBackgroundColor = xui.Color_White
-	lvMenu.DefaultTextColor = themes.clrTxtNormal
-
-	lvMenu.Add(CreateListItem("Home","main_menu_home.png",lvMenu.AsView.Width, 60dip),"hm")
-	lvMenu.Add(CreateListItem("Weather","main_menu_weather.png",lvMenu.AsView.Width, 60dip),"wt")
-	lvMenu.Add(CreateListItem("Calculator","main_menu_conversions.png",lvMenu.AsView.Width, 60dip),"cv")
-	lvMenu.Add(CreateListItem("Calculator","main_menu_conversions.png",lvMenu.AsView.Width, 60dip),"ca")
-	'lvMenu.Add(CreateListItem("Home","main_menu_home.png",lvMenu.AsView.Width, 60dip),"hm")
-End Sub
-
-Private Sub CreateListItem(Text As String, imgName As String, Width As Int, Height As Int) As B4XView
-	Dim p As B4XView = xui.CreatePanel("")
-	p.SetLayoutAnimated(0, 0, 0, Width, Height)
-	p.LoadLayout("menuItems")
-	'Note that we call DDD.CollectViewsData in CellItem designer script. This is required if we want to get views with dd.GetViewByName.
-	'dUtils.GetViewByName(p, "lblMenuText").Text = Text === errors out and only works on base b4xviews
-	For Each v As B4XView In p.GetAllViewsRecursive
-		If v.Tag Is lmB4XImageViewX Then
-			Dim bft  As lmB4XImageViewX  = v.Tag
-			If "itm" = bft.Tag Then 
-				bft.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(xui.LoadBitmap(File.DirAssets,imgName),themes.clrTxtNormal)
-			End If
-		Else if v.Tag = "txt" Then
-			v.Text = Text
-		End If
-	Next
-	Return p
-End Sub
-
-'You can see the list of page related events in the B4XPagesManager object. The event name is B4XPage.
-
-Private Sub Button1_Click
-	Dim o As dlgAbout : o.Initialize(Dialog)
-	o.Show
-End Sub
-
-Private Sub CheckVersions
-	
-	If cnst.APP_FILE_VERSION > Main.kvs.Get(cnst.SETTINGS_CURRENT_VER) Then
-		'--- do we need to upgade settings files? new stuff?
-		'--- tell user of any new features?
-		Log("this is a new app version!!!")
-		
-		'--- now update the app version to the settings file
-		Main.kvs.Put(cnst.SETTINGS_CURRENT_VER,cnst.APP_FILE_VERSION)
-	End If
-	
-End Sub
-
-'--- show menu - or not
-Private Sub lblMenu_MouseClicked (EventData As MouseEvent)
+'--- hearder menu btn show menu - or not
+Private Sub btnHeaderMenu_Click
 	pnlMenu.SetVisibleAnimated(280, Not (pnlMenu.Visible))
 	If pnlMenu.Visible Then pnlMenu.BringToFront
+	
+	Dim sf As StringFunctions
+	
 End Sub
 
 Private Sub lvMenu_ItemClick (Index As Int, Value As Object)
-	If Index <> -2 Then lblMenu_MouseClicked(Null)
-	pnlCurrentPanel.SetVisibleAnimated(500, False)
+	
+	If Index <> -2 Then btnHeaderMenu_Click '---  toggle side menu
+
+	'--- fire the lost focus event
+	If oPageCurrent <> Null Then
+		CallSub(oPageCurrent,"Lost_Focus")
+	End If
+	
 	Select Case Value
+		
 		Case "cv" ' ---- conversions
-			guiHelpers.ResizeText("Conversions",lblHdrTxt1)
-			pnlCurrentPanel = pnlConversions
+			If oPageConversion.IsInitialized = False Then oPageConversion.Initialize(pnlConversions)
+			oPageCurrent = oPageConversion
 			
 		Case "hm" '--- home
-			guiHelpers.ResizeText("Home",lblHdrTxt1)
-			pnlCurrentPanel = pnlHome
+			If oPageHome.IsInitialized = False Then oPageHome.Initialize(pnlHome)
+			oPageCurrent = oPageHome
 			
 		Case "wt" '--- weather	
-			guiHelpers.ResizeText("Weather",lblHdrTxt1)
-			pnlCurrentPanel = pnlWeather
+			If oPageWeather.IsInitialized = False Then oPageWeather.Initialize(pnlWeather)
+			oPageCurrent = oPageWeather
 			
-		Case "ca" '--- calulator
-			guiHelpers.ResizeText("Calculator",lblHdrTxt1)
-			pnlCurrentPanel = pnlCalculator
+		Case "ca" '--- calculator
+			If oPageCalculator.IsInitialized = False Then oPageCalculator.Initialize(pnlCalculator)
+			oPageCurrent = oPageCalculator
+			
+		Case "ph" '--- photo albumn
+			If oPagePhoto.IsInitialized = False Then oPagePhoto.Initialize(pnlPhotos)
+			oPageCurrent = oPagePhoto
+			
+		Case "tm" '--- timers
+			If oPageTimers.IsInitialized = False Then oPageTimers.Initialize(pnlTimers)
+			oPageCurrent = oPageTimers
+		
 	End Select
-	pnlCurrentPanel.SetVisibleAnimated(500, True)
+
+	'--- set focus to page object
+	CallSub(oPageCurrent,"Set_Focus")
+	
+End Sub
+
+#if b4a
+Private Sub lblSetup_Click
+#Else
+Private Sub lblSetup_MouseClicked (EventData As MouseEvent)
+#End If
+
 End Sub
 
 
+#if b4a
+Private Sub lblMenuFooter_Click
+#Else
+Private Sub lblMenuFooter_MouseClicked (EventData As MouseEvent)
+#End If
+	Dim o As dlgAbout : o.Initialize(Dialog)
+	o.Show
+End Sub
 

@@ -111,13 +111,34 @@ Public Sub ThemeFloatTextField(Arr() As B4XFloatTextField) 'ignore
 	Next
 End Sub
 
-Public Sub BringViews2Front(Arr() As B4XView)
-	For Each o As B4XView In Arr
-		o.BringToFront
+'Public Sub BringViews2Front(Arr() As B4XView)
+'	For Each o As B4XView In Arr
+'		o.BringToFront
+'	Next
+'End Sub
+
+Public Sub SetEnableDisableColor(btnArr() As B4XView)
+	For Each btn As B4XView In btnArr
+		If btn.enabled Then
+			btn.TextColor = themes.clrTxtNormal
+			btn.SetColorAndBorder(xui.Color_Transparent,2dip,themes.clrTxtNormal,8dip)
+		Else
+			btn.TextColor = themes.clrTxtDisabled
+			btn.SetColorAndBorder(xui.Color_Transparent,2dip,themes.clrTxtDisabled,8dip)
+		End If
 	Next
 End Sub
-
-
+Public Sub SetEnableDisableColorBtnNoBoarder(btnArr() As B4XView)
+	For Each btn As B4XView In btnArr
+		If btn.enabled Then
+			btn.TextColor = themes.clrTxtNormal
+			btn.SetColorAndBorder(xui.Color_Transparent,0,themes.clrTxtNormal,0)
+		Else
+			btn.TextColor = themes.clrTxtDisabled
+			btn.SetColorAndBorder(xui.Color_Transparent,0,themes.clrTxtDisabled,0)
+		End If
+	Next
+End Sub
 '=========================================================================================
 '=========================================================================================
 
