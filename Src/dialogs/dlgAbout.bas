@@ -32,11 +32,11 @@ Public Sub Show()
 	p.SetLayoutAnimated(0, 0, 0,400dip,400dip)
 	p.LoadLayout("dlgAbout")
 	Dim rs As ResumableSub = dlg.ShowCustom(p, "", "", "OK")
-	themes.ThemeInputDialogBtns(dlg)
+	themes.SetThemeInputDialogBtns(dlg)
 		
 	'--- interesting text goes here
 	lblAbout.TextSize = 18
-	lblAbout.Text = "Kitchen Central About Box" & CRLF & "more text to be added later"
+	lblAbout.Text = "This Could Be An About Box..." & CRLF & "more text to be added later"
 		
 	Wait For (rs) Complete (Result As Int)
 	

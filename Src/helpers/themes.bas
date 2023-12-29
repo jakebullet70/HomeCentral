@@ -86,12 +86,12 @@ Private Sub SetThemeColors
 			clrTxtPositive = XUI.Color_ARGB(255,26,85,9)
 			clrTxtNegitive = XUI.Color_Red
 			
-			clrTitleBarBG = XUI.Color_ARGB(255,0, 128, 88)'0xFFD1C3B1
+			'clrTitleBarBG = XUI.Color_ARGB(255,0, 128, 88)
+			clrTitleBarBG = HexToColor("#FF60B6E2")
 			clrTitleBarTXT = XUI.Color_White
-	
 		Case "dark"
 			
-			
+			clrPanelBGround = HexToColor("#FF555555")
 			
 			
 	End Select
@@ -208,7 +208,7 @@ End Sub
 
 
 
-Public Sub ThemeInputDialogBtns(dlg As B4XDialog)
+Public Sub SetThemeInputDialogBtns(dlg As B4XDialog)
 	
 	'--- reskin buttons, if it does not exist then skip the error
 	Try 
@@ -240,6 +240,17 @@ Public Sub ThemeInputDialogBtns(dlg As B4XDialog)
 	
 End Sub
 
+Public Sub SetThemeSwiftButton(Arr() As SwiftButton)
+	For Each o As SwiftButton In Arr
+		o.SetColors(clrSwiftBtnPrimary,clrSwiftBtnSecondary)
+		o.disabledColor = clrSwiftBtnDisabled
+		o.CornersRadius = 5
+		o.SideHeight = 4
+		o.xLBL.TextColor = clrTxtNormal
+	Next
+End Sub
+
+
 'Public Sub SetThemeB4xDate(datetemplate As B4XDateTemplate)
 '	Dim TextColor As Int = xui.Color_ARGB(0xFF, 0x5B, 0x5B, 0x5B)
 '	datetemplate.DaysInWeekColor = xui.Color_Black
@@ -253,6 +264,17 @@ End Sub
 '		x.Color = xui.Color_Transparent
 '	Next
 'End Sub
+
+
+Public Sub SetThemePrefDiolog(pf As PreferencesDialog)
+	'--- Need to wait for object to be created as colors need to be set after the underlying CLV is ready
+	pf.CustomListView1.GetBase.Color =clrPanelBGround
+	pf.CustomListView1.sv.Color =clrPanelBGround
+	pf.CustomListView1.sv.ScrollViewInnerPanel.Color = clrPanelBGround
+	For i = 0 To pf.CustomListView1.Size - 1
+		pf.CustomListView1.GetPanel(i).Color = clrPanelBGround
+	Next
+End Sub
 
 
 

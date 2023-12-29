@@ -94,15 +94,6 @@ Public Sub SetTextColor(obj() As B4XView,clr As Int)
 	Next
 End Sub
 
-Public Sub ThemeSwiftButton(Arr() As SwiftButton)
-	For Each o As SwiftButton In Arr
-		o.SetColors(themes.clrSwiftBtnPrimary,themes.clrSwiftBtnSecondary)
-		o.disabledColor = themes.clrSwiftBtnDisabled
-		o.CornersRadius = 5
-		o.SideHeight = 4
-		o.xLBL.TextColor = themes.clrTxtNormal
-	Next
-End Sub
 
 
 Public Sub ThemeFloatTextField(Arr() As B4XFloatTextField) 'ignore

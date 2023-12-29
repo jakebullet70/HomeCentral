@@ -64,7 +64,7 @@ Public Sub Show2(msgText As String,title As String, _
 	Dim rs As ResumableSub = dlg.Show(msgText, yesBtn, noBtn, cancelBtn)
 	
 	'--- now we have to theme buttons after the object is created as they do not exist yet
-	themes.ThemeInputDialogBtns(dlg)
+	themes.SetThemeInputDialogBtns(dlg)
 	
 	'--- call it!
 	Wait For (rs) Complete (i As Int)

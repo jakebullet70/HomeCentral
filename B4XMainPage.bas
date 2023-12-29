@@ -29,7 +29,7 @@ Sub Class_Globals
 	Private pnlMenu As B4XView
 	Public lvMenu As CustomListView
 	
-	Private lblMenu As B4XView, btnHeaderMenu As B4XView
+	Private  btnHeaderMenu As B4XView
 	Public lblHdrTxt1,lblHdrTxt2 As B4XView
 	
 	Private pnlHeader As B4XView
@@ -99,10 +99,14 @@ Private Sub BuildGUI
 	
 End Sub
 
+
+
+'================== MAIN MENU ====================================
+#region MAIN_MENU
 '--- header menu btn show menu - or not?
 Private Sub btnHeaderMenu_Click
 	pnlMenu.SetVisibleAnimated(380, Not (pnlMenu.Visible))
-	If pnlMenu.Visible Then 
+	If pnlMenu.Visible Then
 		pnlMenu.BringToFront
 		pnlHeader.BringToFront
 	End If
@@ -149,6 +153,7 @@ Private Sub lvMenu_ItemClick (Index As Int, Value As Object)
 	CallSub(oPageCurrent,"Set_Focus")
 	
 End Sub
+#end region
 
 #if b4a
 Private Sub lblSetup_Click

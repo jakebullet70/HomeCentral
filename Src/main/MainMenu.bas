@@ -18,17 +18,15 @@ End Sub
 
 Private Sub CreateListItem(Text As String, imgName As String, Width As Int, Height As Int) As B4XView
 	Dim p As B4XView = XUI.CreatePanel("")
-	p.SetLayoutAnimated(0, 0, 0,0,Height)
-	'p.SetLayoutAnimated(0, 0, 0,Width, Height)
-	'p.Color = XUI.Color_White	
+	p.SetLayoutAnimated(0, 0, 0,Width, Height)
 	p.LoadLayout("menuItems")
 	'Note that we call DDD.CollectViewsData in CellItem designer script. This is required if we want to get views with dd.GetViewByName.
 	'dUtils.GetViewByName(p, "lblMenuText").Text = Text === errors out and only works on base b4xviews
 	For Each v As B4XView In p.GetAllViewsRecursive
 		If v.Tag Is lmB4XImageViewX Then
-			Dim bft  As lmB4XImageViewX  = v.Tag
-			If "itm" = bft.Tag Then
-				bft.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,imgName),themes.clrTxtNormal)
+			Dim iv  As lmB4XImageViewX  = v.Tag
+			If "itm" = iv.Tag Then
+				iv.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,imgName),themes.clrTxtNormal)
 			End If
 		Else if v.Tag = "txt" Then
 			v.Text = Text
