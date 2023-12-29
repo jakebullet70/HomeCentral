@@ -69,7 +69,7 @@ Private Sub SetThemeColors
 			clrSwiftBtnSecondary  = HexToColor("#FFB3AFAF") 
 			clrSwiftBtnDisabled = HexToColor("#FF999999") 
 			
-			clrPanelBGround = XUI.Color_White
+			clrPanelBGround =  XUI.Color_White
 			clrPanelBorderColor = XUI.Color_LightGray
 			
 			clrDlgButtonsTextColor = XUI.Color_Blue
@@ -86,7 +86,7 @@ Private Sub SetThemeColors
 			clrTxtPositive = XUI.Color_ARGB(255,26,85,9)
 			clrTxtNegitive = XUI.Color_Red
 			
-			clrTitleBarBG = 0xFFD1C3B1
+			clrTitleBarBG = XUI.Color_ARGB(255,0, 128, 88)'0xFFD1C3B1
 			clrTitleBarTXT = XUI.Color_White
 	
 		Case "dark"

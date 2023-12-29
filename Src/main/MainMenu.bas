@@ -18,7 +18,9 @@ End Sub
 
 Private Sub CreateListItem(Text As String, imgName As String, Width As Int, Height As Int) As B4XView
 	Dim p As B4XView = XUI.CreatePanel("")
-	p.SetLayoutAnimated(0, 0, 0, Width, Height)
+	p.SetLayoutAnimated(0, 0, 0,0,Height)
+	'p.SetLayoutAnimated(0, 0, 0,Width, Height)
+	'p.Color = XUI.Color_White	
 	p.LoadLayout("menuItems")
 	'Note that we call DDD.CollectViewsData in CellItem designer script. This is required if we want to get views with dd.GetViewByName.
 	'dUtils.GetViewByName(p, "lblMenuText").Text = Text === errors out and only works on base b4xviews
@@ -42,11 +44,12 @@ Public Sub Build()
 	lv =  B4XPages.MainPage.lvMenu
 	
 	lv.Clear
-	lv.sv.ScrollViewInnerPanel.Color = XUI.Color_Transparent
-	'lv.sv.Color= XUI.Color_Transparent
-	'lv.sv.
 	
-	'lv.GetBase.Color= XUI.Color_Transparent
+	
+	lv.GetBase.Color =XUI.Color_White	' XUI.Color_Transparent
+	lv.sv.Color = XUI.Color_White	'XUI.Color_Transparent
+	lv.sv.ScrollViewInnerPanel.Color = XUI.Color_White	'XUI.Color_Transparent
+	
 	lv.PressedColor = themes.clrTitleBarBG
 	lv.DefaultTextBackgroundColor = XUI.Color_Transparent
 	lv.DefaultTextColor = themes.clrTxtNormal
@@ -57,6 +60,8 @@ Public Sub Build()
 	lv.Add(CreateListItem(" Calculator","main_menu_calc.png",lv.AsView.Width, 60dip),"ca")
 	lv.Add(CreateListItem(" Conversions","main_menu_conversions.png",lv.AsView.Width, 60dip),"cv")
 	lv.Add(CreateListItem(" Photos","main_menu_pics.png",lv.AsView.Width, 60dip),"ph")
+	
+	'lv.sv.As(ScrollPane).SetVScrollVisibility("NEVER")  scrollbar?
 	
 End Sub
 

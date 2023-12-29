@@ -40,6 +40,7 @@ Sub Class_Globals
 	
 	
 	Private pnlTimers As B4XView
+	Private pnlMenuFooter As B4XView
 End Sub
 
 Public Sub Initialize
@@ -83,8 +84,8 @@ Private Sub BuildGUI
 	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnHeaderMenu))
 	
 	pnlBG.SetColorAndBorder(themes.clrPanelBGround,0,xui.Color_Transparent,0)
-	
-	pnlMenu.SetColorAndBorder(themes.clrPanelBGround,2,themes.clrPanelBorderColor,4)
+	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0,xui.Color_Transparent,0)
+	pnlMenu.SetColorAndBorder(xui.Color_Transparent,2,themes.clrPanelBorderColor,4)
 	pnlHeader.SetColorAndBorder(themes.clrTitleBarBG,0,xui.Color_Transparent,0)
 	
 	MainMenu.Build()
@@ -98,10 +99,13 @@ Private Sub BuildGUI
 	
 End Sub
 
-'--- hearder menu btn show menu - or not
+'--- header menu btn show menu - or not?
 Private Sub btnHeaderMenu_Click
-	pnlMenu.SetVisibleAnimated(280, Not (pnlMenu.Visible))
-	If pnlMenu.Visible Then pnlMenu.BringToFront
+	pnlMenu.SetVisibleAnimated(380, Not (pnlMenu.Visible))
+	If pnlMenu.Visible Then 
+		pnlMenu.BringToFront
+		pnlHeader.BringToFront
+	End If
 End Sub
 
 Private Sub lvMenu_ItemClick (Index As Int, Value As Object)
