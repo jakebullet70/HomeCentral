@@ -332,16 +332,16 @@ End Sub
 
 
 Public Sub LengthMonth(yearNum As Int,monthNum As Int) As Int
-	Return DateTime.GetDayOfMonth( GetLastDayOfMonth(DateTime.DateParse(monthNum & "/1/" & yearNum)) )
+	Return DateTime.GetDayOfMonth( dtHelpers.GetLastDayOfMonth(DateTime.DateParse(monthNum & "/1/" & yearNum)) )
 End Sub
-Private Sub GetLastDayOfMonth(thisDate As Long) As Long
-
-	Dim DayOfMonth As Int = DateTime.GetDayOfMonth(thisDate)   'Get the day of the month
-	Dim FirstDayOfMonth As Long = DateTime.Add(thisDate, 0, 0, (DayOfMonth * -1) + 1)   ' change the day to 1
-	Dim LastDayOfMonth As Long = DateTime.Add(FirstDayOfMonth, 0, 1, -1)  ' Add one month AND subtract 1 day
-
-	Return LastDayOfMonth
-End Sub
+'Private Sub GetLastDayOfMonth(thisDate As Long) As Long
+'
+'	Dim DayOfMonth As Int = DateTime.GetDayOfMonth(thisDate)   'Get the day of the month
+'	Dim FirstDayOfMonth As Long = DateTime.Add(thisDate, 0, 0, (DayOfMonth * -1) + 1)   ' change the day to 1
+'	Dim LastDayOfMonth As Long = DateTime.Add(FirstDayOfMonth, 0, 1, -1)  ' Add one month AND subtract 1 day
+'
+'	Return LastDayOfMonth
+'End Sub
 
 Public Sub AsView As B4XView
 	Return pnl

@@ -18,16 +18,24 @@ Version=9.5
 '--- these shouls all be in DateUtils NOW
 '--- these shouls all be in DateUtils NOW
 
-
-
-
 Sub Process_Globals
 	Private XUI As XUI	
 End Sub
 
 
+Public Sub HoursBetween(d1 As Long, d2 As Long) As Int
+	Return ((d1 - d2) / DateTime.TicksPerHour)
+End Sub
 
+Public Sub GetLastDayOfMonth(thisDate As Long) As Long
 
+	Dim DayOfMonth As Int = DateTime.GetDayOfMonth(thisDate)   'Get the day of the month
+	Dim FirstDayOfMonth As Long = DateTime.Add(thisDate, 0, 0, (DayOfMonth * -1) + 1)   ' change the day to 1
+	Dim LastDayOfMonth As Long = DateTime.Add(FirstDayOfMonth, 0, 1, -1)  ' Add one month AND subtract 1 day
+
+	Return LastDayOfMonth
+
+End Sub
 
 ''************************************************************************************************************
 ''************************************************************************************************************
@@ -216,19 +224,7 @@ End Sub
 ''============================================================================================
 '
 '
-'Public Sub GetLastDayOfMonth(thisDate As Long) As Long
-'
-'	Dim DayOfMonth As Int = DateTime.GetDayOfMonth(thisDate)   'Get the day of the month
-'	Dim FirstDayOfMonth As Long = DateTime.Add(thisDate, 0, 0, (DayOfMonth * -1) + 1)   ' change the day to 1
-'	Dim LastDayOfMonth As Long = DateTime.Add(FirstDayOfMonth, 0, 1, -1)  ' Add one month AND subtract 1 day
-'
-'	Return LastDayOfMonth
-'
-'	'ToastMessageShow("LastDayOfMonth date is: " & DateTime.Date(LastDayOfMonth),True) ' display
-'	'DateTime.DateFormat= "yyyy MM dd"
-'	'ToastMessageShow("LastDayOfMonth date is: " & DateTime.Date(LastDayOfMonth),True) ' true=3sec , false=2 sec
-'
-'End Sub
+
 'Public Sub GetLastDayOfMonth2(thisDate As Long) As String
 '	Dim LastDayOfMonth As Long = GetLastDayOfMonth(thisDate)
 '	Return DateTime.Date( LastDayOfMonth )

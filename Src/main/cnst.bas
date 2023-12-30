@@ -18,12 +18,24 @@ Sub Process_Globals
 	
 	
 	'--- KVS setting const
-	Public Const SETTINGS_INSTALL_DATE As String = "instdt"
-	Public Const SETTINGS_CURRENT_VER As String = "appver"
+	Public Const INI_INSTALL_DATE As String = "instdt"
+	Public Const INI_CURRENT_VER As String = "appver"
 		
 	
 	'--- String constants (not really...) these are left as string for multi language support
 	'--- will need a refactor if multi language support is to be supported, but for now...
+	
+	'Public INI_CONST_SETUP_COLORS As String = "colors"
+	'Public INI_CONST_SETUP As String = "setup"
+	'Public INI_CONST_MAIN As String = "main"
+	'Public INI_CONST_MENUKEYS As String = "menu"
+	'Public INI_CONST_SNAPINS As String = "snapins"
+	Public INI_CONST_WEATHER As String = "weather"
+	
+	Public const DarkSkyAPIKey As String = "ebc4475b049026afc9d48e6e5c331738"
+	Public const OpenWeatherAPI As String = "517f35137e222f9ef3ae5010ee14cffa"
+	Public const WeatherAPIxuKey As String = "97599cd456e24caf85c143130182403"
+
 	
 	
 End Sub

@@ -47,11 +47,12 @@ Public Sub Initialize
 	xui.SetDataFolder(cnst.APP_NAME)
 	#end if
 	Main.kvs.Initialize(xui.DefaultFolder,cnst.APP_NAME & "_settings.db3")
+	Main.sql = Main.kvs.sql1 '<--- pointer so we can use the SQL engine in the KVS object
 	themes.Init '--- set colors
-	If Main.kvs.ContainsKey(cnst.SETTINGS_INSTALL_DATE) = False Then
+	If Main.kvs.ContainsKey(cnst.INI_INSTALL_DATE) = False Then
 		'--- 1st run!
-		Main.kvs.Put(cnst.SETTINGS_INSTALL_DATE,DateTime.Now)
-		Main.kvs.Put(cnst.SETTINGS_CURRENT_VER,cnst.APP_FILE_VERSION)
+		Main.kvs.Put(cnst.INI_INSTALL_DATE,DateTime.Now)
+		Main.kvs.Put(cnst.INI_CURRENT_VER,cnst.APP_FILE_VERSION)
 	Else
 		'--- this will matter when a new version of the app is released as
 		'--- settings files and others things might also need to be updated

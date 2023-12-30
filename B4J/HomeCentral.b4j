@@ -1,38 +1,40 @@
 ﻿AppType=JavaFX
 Build1=Default,sadLogic.HomeCentral
-File1=digital.ttf
-File10=main_menu_timers.png
-File11=main_menu_weather.png
-File12=MainPage.bjl
-File13=menu_finger.png
-File14=menu_finger01.dn.png
-File15=menuHdrItems.bjl
-File16=menuItems.bjl
-File17=menu-selected.png
-File18=pageHomeBase.bjl
-File2=divider.png
-File3=dividerh.png
-File4=dlgAbout.bjl
-File5=logo01.png
-File6=main_menu_calc.png
-File7=main_menu_conversions.png
-File8=main_menu_home.png
-File9=main_menu_pics.png
+File1=conversion.htm
+File10=main_menu_pics.png
+File11=main_menu_timers.png
+File12=main_menu_weather.png
+File13=MainPage.bjl
+File14=menu_finger.png
+File15=menu_finger01.dn.png
+File16=menuHdrItems.bjl
+File17=menuItems.bjl
+File18=menu-selected.png
+File19=pageHomeBase.bjl
+File2=digital.ttf
+File3=divider.png
+File4=dividerh.png
+File5=dlgAbout.bjl
+File6=logo01.png
+File7=main_menu_calc.png
+File8=main_menu_conversions.png
+File9=main_menu_home.png
 FileGroup1=Default Group
 FileGroup10=Menu Icons
 FileGroup11=Menu Icons
-FileGroup12=Main
-FileGroup13=Menu Icons
+FileGroup12=Menu Icons
+FileGroup13=Main
 FileGroup14=Menu Icons
-FileGroup15=Main
-FileGroup16=Default Group
-FileGroup17=Menu Icons
-FileGroup18=snapins\home
+FileGroup15=Menu Icons
+FileGroup16=Main
+FileGroup17=Default Group
+FileGroup18=Menu Icons
+FileGroup19=snapins\home
 FileGroup2=Default Group
 FileGroup3=Default Group
-FileGroup4=Dialogs
-FileGroup5=Default Group
-FileGroup6=Menu Icons
+FileGroup4=Default Group
+FileGroup5=Dialogs
+FileGroup6=Default Group
 FileGroup7=Menu Icons
 FileGroup8=Menu Icons
 FileGroup9=Menu Icons
@@ -43,35 +45,40 @@ Library3=bctoast
 Library4=designerutils
 Library5=jcore
 Library6=jfx
-Library7=keyvaluestore
+Library7=jsql
 Library8=xui views
+Library9=jrandomaccessfile
 Module1=|relative|..\B4XMainPage
-Module10=|relative|..\Src\dialogs\dlgThemedMsgBox
-Module11=|relative|..\Src\miscClasses\DSE_Layout
-Module12=|relative|..\Src\helpers\dtHelpers
-Module13=|relative|..\Src\helpers\fileHelpers
-Module14=|relative|..\Src\helpers\guiHelpers
-Module15=|relative|..\Src\customCtrls\lmB4XImageViewX
-Module16=|relative|..\Src\main\Menus
-Module17=|relative|..\Src\Snapins_Pages\pageCalculator
-Module18=|relative|..\Src\Snapins_Pages\pageConversions
-Module19=|relative|..\Src\Snapins_Pages\pageHome
+Module10=|relative|..\Src\miscClasses\CustomCalendar
+Module11=|relative|..\Src\dialogs\dlgAbout
+Module12=|relative|..\Src\dialogs\dlgThemedMsgBox
+Module13=|relative|..\Src\miscClasses\DSE_Layout
+Module14=|relative|..\Src\helpers\dtHelpers
+Module15=|relative|..\Src\helpers\fileHelpers
+Module16=|relative|..\Src\helpers\ggg
+Module17=|relative|..\Src\helpers\guiHelpers
+Module18=|relative|..\Src\b4xOverRidess\KeyValueStore
+Module19=|relative|..\Src\customCtrls\lmB4XImageViewX
 Module2=|relative|..\Src\miscClasses\CallSubUtils
-Module20=|relative|..\Src\Snapins_Pages\pageKTimers
-Module21=|relative|..\Src\Snapins_Pages\pagePhotos
-Module22=|relative|..\Src\Snapins_Pages\pageWeather
-Module23=|relative|..\Src\helpers\strHelpers
-Module24=|relative|..\Src\helpers\themes
+Module20=|relative|..\Src\main\Menus
+Module21=|relative|..\Src\Snapins_Pages\pageCalculator
+Module22=|relative|..\Src\Snapins_Pages\pageConversions
+Module23=|relative|..\Src\Snapins_Pages\pageHome
+Module24=|relative|..\Src\Snapins_Pages\pageKTimers
+Module25=|relative|..\Src\Snapins_Pages\pagePhotos
+Module26=|relative|..\Src\Snapins_Pages\pageWeather
+Module27=|relative|..\Src\helpers\strHelpers
+Module28=|relative|..\Src\helpers\themes
 Module3=|relative|..\Src\miscClasses\CheckVersions
 Module4=|relative|..\Src\miscClasses\Clock
 Module5=|relative|..\Src\miscClasses\clsEvent
-Module6=|relative|..\Src\main\cnst
-Module7=|relative|..\Src\miscClasses\ConversionMod
-Module8=|relative|..\Src\miscClasses\CustomCalendar
-Module9=|relative|..\Src\dialogs\dlgAbout
-NumberOfFiles=18
-NumberOfLibraries=8
-NumberOfModules=24
+Module6=|relative|..\Src\miscClasses\clsWeatherData
+Module7=|relative|..\Src\miscClasses\clsWeatherDataDay
+Module8=|relative|..\Src\main\cnst
+Module9=|relative|..\Src\miscClasses\ConversionMod
+NumberOfFiles=19
+NumberOfLibraries=9
+NumberOfModules=28
 Version=10
 @EndOfDesignText@
 #Region Project Attributes 
@@ -79,12 +86,15 @@ Version=10
 	#MainFormHeight: 600 
 #End Region
 
+#AdditionalJar: sqlite-jdbc-3.7.2
+
 Sub Process_Globals
 	Private fx As JFX
 	Private MainForm As Form
 	
 	'--- a place to store settings
 	Public kvs As KeyValueStore
+	Public sql As SQL
 	'--- 
 	Public tmrTimerCallSub As CallSubUtils
 	
