@@ -26,21 +26,19 @@ Sub Class_Globals
 	Private oPageCalculator As pageCalculator,  oPageHome As pageHome, oPageWeather As pageWeather
 	
 	
-	Private pnlMenu As B4XView
-	Public lvMenu As CustomListView
-	
+	Private pnlSideMenu As B4XView
 	Private  btnHeaderMenu As B4XView
-	Public lblHdrTxt1,lblHdrTxt2 As B4XView
 	
 	Private pnlHeader As B4XView
 	Public imgHeader As lmB4XImageViewX
 	
-	Private lblSetup As B4XView
-	Private lblMenuFooter As B4XView
-	
-	
 	Private pnlTimers As B4XView
 	Private pnlMenuFooter As B4XView
+	Private btnSetupMaster As Button
+	Private btnAboutMe As Button
+	Public lvSideMenu,lvHeaderMenu As CustomListView
+	
+	
 End Sub
 
 Public Sub Initialize
@@ -79,16 +77,18 @@ End Sub
 
 Private Sub BuildGUI
 	
-	guiHelpers.SetVisible(Array As B4XView(pnlTimers,pnlMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
+	guiHelpers.SetVisible(Array As B4XView(pnlTimers,pnlSideMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
 	
-	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnHeaderMenu))
+	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnHeaderMenu,btnAboutMe,btnSetupMaster))
 	
 	pnlBG.SetColorAndBorder(themes.clrPanelBGround,0,xui.Color_Transparent,0)
 	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0,xui.Color_Transparent,0)
-	pnlMenu.SetColorAndBorder(xui.Color_Transparent,2,themes.clrPanelBorderColor,4)
+	pnlSideMenu.SetColorAndBorder(xui.Color_Transparent,2,themes.clrPanelBorderColor,4)
 	pnlHeader.SetColorAndBorder(themes.clrTitleBarBG,0,xui.Color_Transparent,0)
 	
-	MainMenu.Build()
+	Menus.Init
+	Menus.BuildSideMenu()
+	Menus.BuildHeaderMenu()
 	
 	Toast.pnl.Color = themes.clrTxtNormal
 	Toast.DefaultTextColor = themes.clrPanelBGround
@@ -105,9 +105,9 @@ End Sub
 #region MAIN_MENU
 '--- header menu btn show menu - or not?
 Private Sub btnHeaderMenu_Click
-	pnlMenu.SetVisibleAnimated(380, Not (pnlMenu.Visible))
-	If pnlMenu.Visible Then
-		pnlMenu.BringToFront
+	pnlSideMenu.SetVisibleAnimated(380, Not (pnlSideMenu.Visible))
+	If pnlSideMenu.Visible Then
+		pnlSideMenu.BringToFront
 		pnlHeader.BringToFront
 	End If
 End Sub
@@ -155,21 +155,14 @@ Private Sub lvMenu_ItemClick (Index As Int, Value As Object)
 End Sub
 #end region
 
-#if b4a
-Private Sub lblSetup_Click
-#Else
-Private Sub lblSetup_MouseClicked (EventData As MouseEvent)
-#End If
 
+
+
+Private Sub btnSetupMaster_Click
+	
 End Sub
 
-
-#if b4a
-Private Sub lblMenuFooter_Click
-#Else
-Private Sub lblMenuFooter_MouseClicked (EventData As MouseEvent)
-#End If
+Private Sub btnAboutMe_Click
 	Dim o As dlgAbout : o.Initialize(Dialog)
 	o.Show
 End Sub
-

@@ -37,7 +37,9 @@ Private Sub Update_Scrn
 	Dim fmtT As String = DateTime.TimeFormat
 	DateTime.TimeFormat = "EEE h:mm a"
 	DateTime.DateFormat = ""
-	guiHelpers.ResizeText(DateUtils.TicksToString(DateTime.Now), B4XPages.MainPage.lblHdrTxt2)
+	
+	'guiHelpers.ResizeText(DateUtils.TicksToString(DateTime.Now), B4XPages.MainPage.lblHdrTxt2)
+	Log("TODO CLosk")
 	DateTime.TimeFormat = fmtT
 	DateTime.DateFormat = fmtD
 	StartClock
