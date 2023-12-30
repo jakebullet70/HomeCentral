@@ -58,6 +58,10 @@ Public Sub BuildHeaderMenu()
 	lvHM.add(CreateListItemHdrMenu(" conversions","main_menu_conversions.png",50dip, 50dip),"cv")
 	lvHM.add(CreateListItemHdrMenu(" photos","main_menu_pics.png",50dip, 50dip),"ph")
 	'lvHM.Refresh
+	#if b4j
+	lvHM.sv.As(ScrollPane).Style="-fx-background:transparent;-fx-background-color:transparent;"
+	#End If
+	
 	
 	
 End Sub
@@ -80,7 +84,11 @@ Public Sub BuildSideMenu()
 	lvSM.AddTextItem("plugin mnu 3","03")
 	lvSM.AddTextItem("plugin mnu 4","04")
 	lvSM.AddTextItem("plugin mnu 5","05")
-
+	
+	#if b4j
+	lvSM.sv.As(ScrollPane).Style="-fx-background:transparent;-fx-background-color:transparent;"
+	#End If
+	
 	'lv.sv.As(ScrollPane).SetVScrollVisibility("NEVER")  scrollbar?
 	
 End Sub

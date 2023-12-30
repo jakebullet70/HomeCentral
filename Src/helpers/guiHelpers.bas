@@ -201,3 +201,24 @@ End Sub
 Public Sub Show_toast2(msg As String, ms As Int)
 	CallSubDelayed3(B4XPages.MainPage,"Show_Toast", msg, ms)
 End Sub
+
+
+
+Public Sub SizeFontAdjust() As Float
+	#if b4j
+	Return 1
+	#else
+	Dim I As Int = GetDeviceLayoutValues.Width
+	If I > 760 And I < 900 Then
+		Return 1
+	Else If I > 901 And I < 1099 Then
+		Return 1.20
+	Else If I > 1200 Then
+		Return 1.45
+	Else
+		LogWrite("Scrn Size Err 001:" & I,ID_LOG_ERR)
+		Return 1
+	End If
+	#End If
+End Sub
+

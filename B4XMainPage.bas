@@ -83,7 +83,7 @@ Private Sub BuildGUI
 	
 	pnlBG.SetColorAndBorder(themes.clrPanelBGround,0,xui.Color_Transparent,0)
 	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0,xui.Color_Transparent,0)
-	pnlSideMenu.SetColorAndBorder(xui.Color_Transparent,2,themes.clrPanelBorderColor,4)
+	pnlSideMenu.SetColorAndBorder(themes.clrPanelBGround,2,themes.clrPanelBorderColor,4)
 		
 	Menus.Init
 	Menus.BuildSideMenu()
