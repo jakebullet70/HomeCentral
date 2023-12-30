@@ -13,24 +13,24 @@ Version=10
 Sub Class_Globals
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
-	Private mPnlMain As B4XView
+	Private pnlMain As B4XView
 	
 	
 End Sub
 
 Public Sub Initialize(p As B4XView) 
-	mPnlMain = p
+	pnlMain = p
 End Sub
 
 '-------------------------------
 Public Sub Set_focus()
 	Menus.SetHeader("Conversions","main_menu_conversions.png")
-	mPnlMain.SetVisibleAnimated(500,True)
+	pnlMain.SetVisibleAnimated(500,True)
 End Sub
 
 
 Public Sub Lost_focus()
-	mPnlMain.SetVisibleAnimated(500,False)
+	pnlMain.SetVisibleAnimated(500,False)
 End Sub
 
 

@@ -194,3 +194,10 @@ End Sub
 #end if
 
 
+'--- just an easy wat to Toast!!!!
+Public Sub Show_toast(msg As String, ms As Int)
+	CallSub3(B4XPages.MainPage,"Show_Toast", msg, ms)
+End Sub
+Public Sub Show_toast2(msg As String, ms As Int)
+	CallSubDelayed3(B4XPages.MainPage,"Show_Toast", msg, ms)
+End Sub

@@ -16,7 +16,7 @@ Sub Class_Globals
 	Private dUtils As DDD
 	
 	Public Dialog, DialogMSGBOX As B4XDialog
-	Private oClock As Clock
+	Public oClock As Clock
 	
 	Private pnlBG As B4XView
 	
@@ -70,10 +70,9 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Root.LoadLayout("MainPage")
 	Toast.Initialize(Root) 
 	dUtils.Initialize '--- DDD desgner utils
+	oClock.Initialize
 
 	BuildGUI
-	oClock.Initialize
-	
 End Sub
 
 Private Sub BuildGUI
@@ -156,20 +155,24 @@ Private Sub lvHeaderMenu_ItemClick (Index As Int, Value As Object)
 End Sub
 #end region
 
-
+Public Sub ShowToast(Message As String)
+	ShowToast2(Message,2500)
+End Sub
+Public Sub ShowToast2(msg As String, ms As Int)
+	'--- TODO, needs to be themed!!!
+	Toast.DurationMs = ms
+	Toast.Show($"[TextSize=24][b][FontAwesome=0xF05A/]  ${msg}[/b][/TextSize]"$)
+End Sub
 
 
 Private Sub btnSetupMaster_Click
+	pnlSideMenu.SetVisibleAnimated(380, False)
 	
 End Sub
 
 Private Sub btnAboutMe_Click
+	pnlSideMenu.SetVisibleAnimated(380, False)
 	Dim o As dlgAbout : o.Initialize(Dialog)
 	o.Show
 End Sub
 
-Private Sub Button1_Click
-	Dim o As dlgAbout
-	o.Initialize(Dialog)
-	o.Show
-End Sub

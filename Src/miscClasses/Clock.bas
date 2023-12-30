@@ -12,10 +12,12 @@ Version=10
 
 Sub Class_Globals
 	Private XUI As XUI
+	Public oEventsClock As clsEvent
 	Public DoNotShow As Boolean = False
 End Sub
 
 Public Sub Initialize()	
+	oEventsClock.Initialize
 	Update_Scrn
 End Sub
 
@@ -31,17 +33,19 @@ Public Sub StopClock()
 	Main.tmrTimerCallSub.ExistsRemove(Me,"Update_Scrn")
 End Sub
 
-Private Sub Update_Scrn
+Public Sub Update_Scrn
 	If DoNotShow Then Return
 	Dim fmtD As String = DateTime.DateFormat
 	Dim fmtT As String = DateTime.TimeFormat
 	DateTime.TimeFormat = "EEE h:mm a"
 	DateTime.DateFormat = ""
 	
-	'guiHelpers.ResizeText(DateUtils.TicksToString(DateTime.Now), B4XPages.MainPage.lblHdrTxt2)
-	Log("TODO CLosk")
+	'--- raise the clock event, any subscribed to it will get it
+	oEventsClock.Raise2(DateUtils.TicksToString(DateTime.Now))
+	
 	DateTime.TimeFormat = fmtT
 	DateTime.DateFormat = fmtD
 	StartClock
+	Sleep(0)
 End Sub
 
