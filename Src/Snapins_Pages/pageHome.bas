@@ -25,7 +25,7 @@ End Sub
 
 '-------------------------------
 Public Sub Set_focus()
-	MainMenu.SetHeader("Home","main_menu_home.png")
+	Menus.SetHeader("Home","main_menu_home.png")
 	mPnlMain.SetVisibleAnimated(500,True)
 	
 	

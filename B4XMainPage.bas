@@ -38,7 +38,8 @@ Sub Class_Globals
 	Private btnAboutMe As Button
 	Public lvSideMenu,lvHeaderMenu As CustomListView
 	
-	
+	Public btnHdrTxt1 As B4XView
+	Private Button1 As B4XView
 End Sub
 
 Public Sub Initialize
@@ -79,26 +80,26 @@ Private Sub BuildGUI
 	
 	guiHelpers.SetVisible(Array As B4XView(pnlTimers,pnlSideMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
 	
-	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnHeaderMenu,btnAboutMe,btnSetupMaster))
+	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnHeaderMenu,btnAboutMe,btnSetupMaster,btnHdrTxt1))
 	
 	pnlBG.SetColorAndBorder(themes.clrPanelBGround,0,xui.Color_Transparent,0)
 	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0,xui.Color_Transparent,0)
 	pnlSideMenu.SetColorAndBorder(xui.Color_Transparent,2,themes.clrPanelBorderColor,4)
-	pnlHeader.SetColorAndBorder(themes.clrTitleBarBG,0,xui.Color_Transparent,0)
-	
+		
 	Menus.Init
 	Menus.BuildSideMenu()
 	Menus.BuildHeaderMenu()
+	
+	pnlHeader.SetColorAndBorder(themes.clrTitleBarBG,0,xui.Color_Transparent,0)
 	
 	Toast.pnl.Color = themes.clrTxtNormal
 	Toast.DefaultTextColor = themes.clrPanelBGround
 	Toast.MaxHeight = 120dip
 	
-	lvMenu_ItemClick(-2,"hm")
+	lvHeaderMenu_ItemClick(-2,"hm")
 	Sleep(0)
 	
 End Sub
-
 
 
 '================== MAIN MENU ====================================
@@ -112,9 +113,9 @@ Private Sub btnHeaderMenu_Click
 	End If
 End Sub
 
-Private Sub lvMenu_ItemClick (Index As Int, Value As Object)
+Private Sub lvHeaderMenu_ItemClick (Index As Int, Value As Object)
 	
-	If Index <> -2 Then btnHeaderMenu_Click '---  toggle side menu
+	If Index <> -2 Then pnlSideMenu.SetVisibleAnimated(380, False) '---  toggle side menu
 
 	'--- fire the lost focus event
 	If oPageCurrent <> Null Then
@@ -164,5 +165,11 @@ End Sub
 
 Private Sub btnAboutMe_Click
 	Dim o As dlgAbout : o.Initialize(Dialog)
+	o.Show
+End Sub
+
+Private Sub Button1_Click
+	Dim o As dlgAbout
+	o.Initialize(Dialog)
 	o.Show
 End Sub

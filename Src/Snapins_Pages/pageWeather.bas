@@ -24,7 +24,7 @@ End Sub
 
 '-------------------------------
 Public Sub Set_focus()
-	MainMenu.SetHeader("Weather","main_menu_weather.png")
+	Menus.SetHeader("Weather","main_menu_weather.png")
 	mPnlMain.SetVisibleAnimated(500,True)
 End Sub
 

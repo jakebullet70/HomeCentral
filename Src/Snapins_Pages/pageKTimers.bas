@@ -24,7 +24,7 @@ End Sub
 
 '-------------------------------
 Public Sub Set_focus()
-	MainMenu.SetHeader("Timers","main_menu_timers.png")
+	Menus.SetHeader("Timers","main_menu_timers.png")
 	mPnlMain.SetVisibleAnimated(500,True)
 End Sub
 

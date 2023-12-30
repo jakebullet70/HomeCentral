@@ -11,6 +11,7 @@ Version=9.5
 'Static code module
 Sub Process_Globals
 	Private xui As XUI
+	
 End Sub
 
 
@@ -191,3 +192,5 @@ Private Sub MeasureTextWidth(Text As String, Font1 As B4XFont) As Int
 End Sub
 '-----------------------------------------------------------------------------
 #end if
+
+

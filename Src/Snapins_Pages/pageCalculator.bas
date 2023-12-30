@@ -24,7 +24,7 @@ End Sub
 
 '-------------------------------
 Public Sub Set_focus()
-	MainMenu.SetHeader("Calculator","main_menu_calc.png")
+	Menus.SetHeader("Calculator","main_menu_calc.png")
 	mPnlMain.SetVisibleAnimated(500,True)
 End Sub
 Public Sub Lost_focus()
