@@ -4,11 +4,17 @@ ModulesStructureVersion=1
 Type=Class
 Version=7.3
 @EndOfDesignText@
+' Author:  No idea
+#Region VERSIONS 
+' V. 1.1		Dec/30/2023
+'				Converted to B4X from early B4A
+' V. 1.0 	Dec/01/2015
+'				Got from the B4A forum - tweaked to make work for me
+#End Region
 
-'Class module
 Sub Class_Globals
 	Private XUI As XUI
-	Type typeCalEvent(CalID As Int, eventName As String, Description As String, StartTime As Long, EndTime As Long, Loc As String, AllDay As Boolean, EventID As Int, thisDay As Int)
+	'Type typeCalEvent(CalID As Int, eventName As String, Description As String, StartTime As Long, EndTime As Long, Loc As String, AllDay As Boolean, EventID As Int, thisDay As Int)
 
 	Public callback As Object
 	Public eventName As String
@@ -20,8 +26,6 @@ Sub Class_Globals
 	Private lblTitle As B4XView         'Date	
 	
 	Private pnl,pnlbackGround As B4XView 
-	'Private EventName As String
-	'Private CallBack As Object	
 '	Public NmFullday(7) As String : NmFullday = g.Locale.WeekDays    ' Array As String("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi")
 '	Public NmMonth(12) As String : NmMonth = g.Locale.ShortMonths    'Array As String("jan","fev","mar","avr","mai","jun","jul","aug","sep","oct","nov","dec")
 '	Public NmFullMonth(12) As String : NmFullMonth = g.Locale.Months 'Array As String("janver","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre")
@@ -30,14 +34,11 @@ Sub Class_Globals
 	Public NmFullMonth(12) As String : NmFullMonth = Array As String("January","Febuary","March","April","May","June","July","Augest","September","October","November","December")
 	Private CalDay, CalMonth, CalYear As Int
 	Private RelativTextSize As Int
-	'Private SD, ED As Int 
 	Private SomeTime As Long
 
-	'Public oCal As MyCalendar
 	Public oCalNum As Int
 	Public oCalLST As List    
 	Public oCalDaysMAP As Map  
-	'Dim lblLocation As Label
 End Sub
 
 
@@ -50,9 +51,6 @@ Private Sub lblTitle_Click
 '	Dim it As Intent = pm.GetApplicationIntent("com.android.calendar")
 '	If it.IsInitialized Then StartActivity(it)
 End Sub
-
-
-
 
 'Initializes the object. You can add parameters to this method if needed.
 Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
@@ -70,29 +68,25 @@ Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
 	mx=(Ww/7)'-8
 	'mx=(Ww/3)'-8
 
-	'my=(Hh/8)'-9
 	my=(Hh/8)'-9
 	
 	If my > mx Then my = mx
-	If ((my*9) + 10dip) > Hh Then my = ((Hh-10dip)/9)
+	If ((my * 9) + 10dip) > Hh Then my = ((Hh - 10dip) / 9)
 	
 	tx = (Ww - ((mx * 7) + 8dip)) / 2
 	ty = (Hh - ((my * 9) + 8dip)) / 2
 	
-	'pnlbackGround.Initialize("")
 	pnlbackGround = XUI.CreatePanel("")
 	pnlbackGround.Color = XUI.Color_Transparent
-	pnl.addview(pnlbackGround,tx,ty,(mx*7)+8dip, (my*9)+8dip)
-	pnl.Visible=False
+	pnl.addview(pnlbackGround,tx,ty,(mx *  7) + 8dip, (my * 9) + 8dip)
+	pnl.Visible = False
 	
 	lblTitle=XUIViewsUtils.CreateLabel
-'	lblTitle.Initialize("lblTitle")
 	
-	pnlbackGround.addView(lblTitle,1dip,1dip,pnlbackGround.Width-2dip, my-6dip)
-	'lblTitle.Gravity=Bit.Or(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL)	
+	pnlbackGround.addView(lblTitle,1dip,1dip,pnlbackGround.Width - 2dip, my - 6dip)
 	'lblTitle.Typeface=Typeface.DEFAULT_BOLD	
 	
-	'lblTitle.Color = XUI.Color_Transparent
+	lblTitle.Color = XUI.Color_Transparent
 	lblTitle.TextColor =  themes.clrTxtNormal'  g.GetColorTheme(g.ehome_clrTheme,"themeColorText")
 	lblTitle.SetTextAlignment("CENTER","CENTER")
 	
@@ -103,10 +97,9 @@ Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
 	
 		lblDayTitle(i) = XUIViewsUtils.CreateLabel
 		lblDayTitle(i).SetTextAlignment("CENTER","CENTER")
-		'lblDayTitle(i).Initialize("lblDayTitle")
 		lblDayTitle(i).TextSize = (RelativTextSize)
-		'lblDayTitle(i).TextColor = g.GetColorTheme(g.ehome_clrTheme,"themeColorText")
-		pnlbackGround.AddView( lblDayTitle(i), (i*mx)+((i+1)*1dip),  (1*my)+1dip, mx+2dip, my)
+		lblDayTitle(i).TextColor = themes.clrTxtNormal
+		pnlbackGround.AddView( lblDayTitle(i), (i * mx) + ((i + 1) * 1dip),  (1 * my) + 1dip, mx + 2dip, my)
 		guiHelpers.ResizeText(dayName(i),lblDayTitle(i))
 	Next
 	
@@ -119,8 +112,8 @@ Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
 			btDays(z).tag = 0	
 			'btDays(z).TextSize = RelativTextSize 
 			'pnlbackGround.AddView(btDays(z), (i*mx)+((i+1)*1dip), ((j+2)*(my+1dip))+my,  mx,  my) 
-			Dim v1 As Int = my/30 '6           '   left                  top
-			pnlbackGround.AddView(btDays(z),(i*mx)+((i+1)*1dip),((j+2)*(my+v1+1dip)),  mx, (my+v1)) 
+			Dim v1 As Int = my / 30 '6           '   left                  top
+			pnlbackGround.AddView(btDays(z),(i * mx) + (( i + 1) * 1dip),((j + 2) * (my + v1 + 1dip)),  mx, (my + v1)) 
  		Next
 	Next
 	
@@ -188,15 +181,15 @@ End Sub
 '    Return Events
 'End Sub
 
-
-Private Sub AddDay2MonthEvent(bDate As Long, eDate As Long, allDay As Object)
-	'Log("b: " & DateTime.date(bDate) & DateTime.time(bDate))
-	'Log("E: " & DateTime.date(eDate) & DateTime.time(eDate))
-	If allDay = True Then bDate = DateTime.Add(bDate,0,0,1)
-	For nDay = DateTime.GetDayOfMonth(bDate) To DateTime.GetDayOfMonth(eDate)
-		oCalDaysMAP.Put(nDay,nDay)
-	Next
-End Sub
+'
+'Private Sub AddDay2MonthEvent(bDate As Long, eDate As Long, allDay As Object)
+'	'Log("b: " & DateTime.date(bDate) & DateTime.time(bDate))
+'	'Log("E: " & DateTime.date(eDate) & DateTime.time(eDate))
+'	If allDay = True Then bDate = DateTime.Add(bDate,0,0,1)
+'	For nDay = DateTime.GetDayOfMonth(bDate) To DateTime.GetDayOfMonth(eDate)
+'		oCalDaysMAP.Put(nDay,nDay)
+'	Next
+'End Sub
 
 
 '====================================================================
@@ -205,21 +198,21 @@ End Sub
 
 
 
-
-Public Sub PaintHighLightDays(arr() As Int, color As Int)
-	Dim offset, x As Int
-	For x = 0 To 15
-		If btDays(x).Text = "1" Then
-			offset = (x - 1)
-			Exit
-		End If
-	Next
-	
-	For x = 0 To arr.Length - 1
-		btDays(arr(x) + offset).Text = UnderScoreCreate(btDays(arr(x) + offset).Text)					
-		'btDays(arr(x) + offset).Typeface = Typeface.CreateNew(Typeface.SANS_SERIF,Typeface.STYLE_BOLD_ITALIC)
-	Next
-End Sub
+'Public Sub PaintHighLightDays(arr() As Int, color As Int)
+'  used when you have cal events and want toshow them on the cal
+'	Dim offset, x As Int
+'	For x = 0 To 15
+'		If btDays(x).Text = "1" Then
+'			offset = (x - 1)
+'			Exit
+'		End If
+'	Next
+'	
+'	For x = 0 To arr.Length - 1
+'		btDays(arr(x) + offset).Text = UnderScoreCreate(btDays(arr(x) + offset).Text)					
+'		'btDays(arr(x) + offset).Typeface = Typeface.CreateNew(Typeface.SANS_SERIF,Typeface.STYLE_BOLD_ITALIC)
+'	Next
+'End Sub
 
 'Private Sub UnderScoreCreate(str As String) As RichString
 ''	Dim rStr As RichString 
@@ -228,30 +221,16 @@ End Sub
 ''	rStr.Color(Colors.White,0,rStr.Length)
 '	Return rStr
 'End Sub
-Private Sub UnderScoreCreate(str As String) As String
-'	Dim rStr As RichString
-'	rStr.Initialize(str)
-'	rStr.Underscore(0,rStr.Length)
-'	rStr.Color(Colors.White,0,rStr.Length)
-	Log("TODO - rich string")
-	Return str
-End Sub
-
 
 
 Public Sub ShowCalendar(b As Boolean)
-	pnl.Visible=b	
+	pnl.Visible = b	
 End Sub
 
 Public Sub dayName(n As Int) As String
-	Try
 		Dim S As String
 		S = NmFullday(n)
 		Return S.SubString2(0,3)
-	Catch
-		Log(LastException)
-	End Try
-	
 End Sub
 
 Private Sub PrintDate(dts As Long)
@@ -279,42 +258,40 @@ Private Sub PrintDate(dts As Long)
 '	t8.SingleLineFitText(lblDayTitle,False)
 	'g.setText( NmFullMonth(CalMonth-1)  & "  " & CalDay& "  " & CalYear	,lblTitle)
 	
-	
 '	For mn1=0 To 6
 '		lblDayTitle(mn1).TextSize=(RelativTextSize)
 '	Next
 		
-	mn1=CalMonth-1 'prev month
-	If mn1<1 Then mn1=12
+	mn1 = CalMonth - 1 'prev month
+	If mn1 < 1 Then mn1 = 12
 	'btPrevMonth.TextSize=(RelativTextSize*0.87) '14
 	'btPrevMonth.Text=NmMonth(mn1-1)
 	
-	mn2=CalMonth+1 'next month
-	If mn2>12 Then mn2=1
+	mn2 = CalMonth + 1 'next month
+	If mn2 > 12 Then mn2 = 1
 	'btNextMonth.TextSize=(RelativTextSize*0.87) '14
 	'btNextMonth.Text=NmMonth(mn2-1)
 	
-	nbj= LengthMonth(CalYear,CalMonth)
+	nbj = LengthMonth(CalYear,CalMonth)
 	SomeTime = DateTime.DateParse(CalMonth & "/01/" & CalYear)
 	
 	nday = (DateTime.GetDayOfWeek(SomeTime)-1)
 	
 	Dim i,nb As Int
-	nb=nday
+	nb = nday
 	
-	If nb=0 Then nb=7 'decal next line dim 1
+	If nb = 0 Then nb = 7 'decal next line dim 1
 	
-	For i=0 To 41 
-		btDays(i).TextColor = themes.clrTxtBright
-		'btDays(i).Color = g.GetColorTheme(g.ehome_clrTheme,"other")
+	For i = 0 To 41 
+		btDays(i).TextColor = themes.clrTxtNormal
 		'btDays(i).Typeface=Typeface.DEFAULT
-		btDays(i).Text=""
-		btDays(i).Tag=0
+		btDays(i).Text = ""
+		btDays(i).Tag = 0
 		btDays(i).TextSize = lblDayTitle(1).TextSize 'RelativTextSize'(RelativTextSize*0.87)
 	Next	
 	
 	Dim z As Int	
-	For i=(nb) To (nb-1+nbj)
+	For i = (nb) To (nb - 1 + nbj)
 		z = i-nb+1
 		'btDays(i).Typeface=Typeface.DEFAULT_BOLD
 		btDays(i).Text=z	
@@ -325,8 +302,8 @@ Private Sub PrintDate(dts As Long)
 		If (cmm = CalMonth) And (caa = CalYear) Then
 			If (z = cdd) Then
 				'--- shows the CURRENT day
-				btDays(i).TextColor = themes.clrTxtNormal
-				btDays(i).Color = themes.clrTxtBright
+				btDays(i).TextColor = themes.clrTitleBarTXT
+				btDays(i).Color = themes.clrTitleBarBG
 				'btDays(i).TextSize = btDays(i).TextSize + 6
 				
 			End If
@@ -335,16 +312,16 @@ Private Sub PrintDate(dts As Long)
 	
 	Dim m2,m3 As Int
 	
-	m2=LengthMonth(CalYear,mn1)
-	m3=m2-(nb-1)
-	For i=0 To (nb-1) 'Prev month
+	m2 = LengthMonth(CalYear,mn1)
+	m3 = m2 - (nb - 1)
+	For i=0 To (nb - 1) 'Prev month
 		btDays(i).TextColor= XUI.Color_LightGray
 		'btDays(i).Typeface = Typeface.DEFAULT_BOLD
 		btDays(i).Text=m3+i	
 		btDays(i).Tag=100+m3+i	
 	Next
 	
-	For i=(nb+nbj) To 41 'Next month
+	For i = (nb + nbj) To 41 'Next month
 		btDays(i).TextColor=XUI.Color_LightGray
 		'btDays(i).Typeface = Typeface.DEFAULT_BOLD
 		btDays(i).Text=i-(nb+nbj)+1
@@ -357,7 +334,7 @@ End Sub
 Public Sub LengthMonth(yearNum As Int,monthNum As Int) As Int
 	Return DateTime.GetDayOfMonth( GetLastDayOfMonth(DateTime.DateParse(monthNum & "/1/" & yearNum)) )
 End Sub
-Public Sub GetLastDayOfMonth(thisDate As Long) As Long
+Private Sub GetLastDayOfMonth(thisDate As Long) As Long
 
 	Dim DayOfMonth As Int = DateTime.GetDayOfMonth(thisDate)   'Get the day of the month
 	Dim FirstDayOfMonth As Long = DateTime.Add(thisDate, 0, 0, (DayOfMonth * -1) + 1)   ' change the day to 1
@@ -376,24 +353,17 @@ Public Sub SetTextSize(value As Int)
 	'PrintDate(DateTime.DateParse(CalMonth & "/" & CalDay & "/" & CalYear))
 End Sub
 
-
-
-
-Private Sub btnDays_Click
-	
-'	If Not (g.IsCalendarReadOn) Then Return
-
-	Dim eName As String = eventName & "_ItemClick"
-	If SubExists(callback, eName) Then
-		Dim lbl As Label = Sender	
-        CallSub2(callback,eName,lbl.Text)
-	End If
-	
-End Sub
-
-
-
-
+'Private Sub btnDays_Click
+'	
+''	If Not (g.IsCalendarReadOn) Then Return
+'
+'	Dim eName As String = eventName & "_ItemClick"
+'	If SubExists(callback, eName) Then
+'		Dim lbl As Label = Sender	
+'        CallSub2(callback,eName,lbl.Text)
+'	End If
+'	
+'End Sub
 
 
 '**************************************************************************************************************

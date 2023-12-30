@@ -22,6 +22,10 @@ Sub Class_Globals
 	Private pnlCal As B4XView
 	Private lblClock As B4XView
 	
+	Private lblCurrTemp As B4XView
+	Private lblCurrTXT As B4XView,	BBlblCurrTXT As BBLabel '--- test BBlabel by hiding lblCurrTXT
+	Private lblLocation As B4XView
+	Private imgCurrent As lmB4XImageViewX
 End Sub
 
 Public Sub Initialize(p As B4XView) 
@@ -35,6 +39,10 @@ Public Sub Initialize(p As B4XView)
 	
 	'BuildSide_Menu
 	lblClock.TextColor = themes.clrTxtNormal
+	
+	BBlblCurrTXT.ForegroundImageView.Visible =False
+	
+	
 	BuildCal
 	
 End Sub

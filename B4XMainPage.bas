@@ -39,7 +39,6 @@ Sub Class_Globals
 	Public lvSideMenu,lvHeaderMenu As CustomListView
 	
 	Public btnHdrTxt1 As B4XView
-	Private Button1 As B4XView
 End Sub
 
 Public Sub Initialize
