@@ -59,16 +59,17 @@ Module16=|relative|..\Src\helpers\ggg
 Module17=|relative|..\Src\helpers\guiHelpers
 Module18=|relative|..\Src\b4xOverRidess\KeyValueStore
 Module19=|relative|..\Src\customCtrls\lmB4XImageViewX
-Module2=|relative|..\Src\miscClasses\CallSubUtils
-Module20=|relative|..\Src\main\Menus
-Module21=|relative|..\Src\Snapins_Pages\pageCalculator
-Module22=|relative|..\Src\Snapins_Pages\pageConversions
-Module23=|relative|..\Src\Snapins_Pages\pageHome
-Module24=|relative|..\Src\Snapins_Pages\pageKTimers
-Module25=|relative|..\Src\Snapins_Pages\pagePhotos
-Module26=|relative|..\Src\Snapins_Pages\pageWeather
-Module27=|relative|..\Src\helpers\strHelpers
-Module28=|relative|..\Src\helpers\themes
+Module2=|relative|..\Src\b4xOverRidess\CallSubUtils
+Module20=|relative|..\Src\helpers\LogIt
+Module21=|relative|..\Src\main\Menus
+Module22=|relative|..\Src\Snapins_Pages\pageCalculator
+Module23=|relative|..\Src\Snapins_Pages\pageConversions
+Module24=|relative|..\Src\Snapins_Pages\pageHome
+Module25=|relative|..\Src\Snapins_Pages\pageKTimers
+Module26=|relative|..\Src\Snapins_Pages\pagePhotos
+Module27=|relative|..\Src\Snapins_Pages\pageWeather
+Module28=|relative|..\Src\helpers\strHelpers
+Module29=|relative|..\Src\helpers\themes
 Module3=|relative|..\Src\miscClasses\CheckVersions
 Module4=|relative|..\Src\miscClasses\Clock
 Module5=|relative|..\Src\miscClasses\clsEvent
@@ -78,7 +79,7 @@ Module8=|relative|..\Src\main\cnst
 Module9=|relative|..\Src\miscClasses\ConversionMod
 NumberOfFiles=19
 NumberOfLibraries=9
-NumberOfModules=28
+NumberOfModules=29
 Version=10
 @EndOfDesignText@
 #Region Project Attributes 
@@ -86,17 +87,20 @@ Version=10
 	#MainFormHeight: 600 
 #End Region
 
+#if b4j
 #AdditionalJar: sqlite-jdbc-3.7.2
+#end if
 
 Sub Process_Globals
 	Private fx As JFX
 	Private MainForm As Form
 	
-	'--- a place to store settings
+	'--- globals -------
 	Public kvs As KeyValueStore
 	Public sql As SQL
-	'--- 
+	Public isInterNetConnected As Boolean = True
 	Public tmrTimerCallSub As CallSubUtils
+	'-------------------------------------------
 	
 End Sub
 

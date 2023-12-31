@@ -136,7 +136,7 @@ Private Sub ParseWeatherJob(Job As HttpJob)
 				Dim errorMap As Map = errorArray.Get(0)
 				IsError = True
 				LastErrorMessage = "Failed to update weather: " & errorMap.Get("msg")
-				 ggg.LogWrite(LastErrorMessage,  ggg.ID_LOG_MSG)
+				LogIt.LogWrite(LastErrorMessage,  1)
 			Else
 				IsError = False
 				
@@ -252,12 +252,12 @@ Private Sub ParseWeatherJob(Job As HttpJob)
 		Catch
 			WeatherUpdatedFailEvent.Raise
 			LastErrorMessage = "Unable to update weather due to an error."
-			 ggg.LogException(LastException, True)
+			LogIt.LogException(LastException, True)
 		End Try
 	Else
 		WeatherUpdatedFailEvent.Raise
 		LastErrorMessage = "Failed to update weather: " + Job.ErrorMessage
-		 ggg.LogWrite(LastErrorMessage,  ggg.ID_LOG_MSG)
+		LogIt.LogWrite(LastErrorMessage,  1)
 	End If
 End Sub
 
@@ -280,7 +280,7 @@ Private Sub JobDone(Job As HttpJob)
 			Try
 				Dim parser As JSONParser
 				Dim result As String = Job.GetString()
-				 ggg.debugLog(result)
+				 LogIt.LogDebug1(result)
 				parser.Initialize(result)
 				
 				Dim dataMap As Map = parser.NextObject.Get("data")
@@ -308,14 +308,14 @@ Private Sub Update_Weather(city As Object) As Boolean
 	LastUpdatedCity = realCity
 	Try
 
-		If  ggg.bIsInetConected = False Then
+		If  Main.isInterNetConnected = False Then
 			Try
 				LastErrorMessage = "Internet is not connected. Cannot update weather."
-				 ggg.LogWrite4(LastErrorMessage,  ggg.ID_LOG_MSG)
+				LogIt.LogWrite4(LastErrorMessage,  1)
 			Catch
 				'--- do nothing
 				'--- should only error out the first time
-				 ggg.debugLog("GetWeather - only 1st time OK")
+				 LogIt.LogDebug1("GetWeather - only 1st time OK")
 			End Try 'ignore
 		
 '		waitForInternetTimer.Interval = 5000
@@ -337,7 +337,7 @@ Private Sub Update_Weather(city As Object) As Boolean
 		Return True
 	Catch
 		' Something with weather has failed. We should try and setup for a quick refresh
-		 ggg.LogException3(LastException, True,"Something with weather has failed:")
+		 LogIt.LogException3(LastException, True,"Something with weather has failed:")
 	
 		LastUpdatedCity = realCity
 		'waitForInternetTimer.Interval = 1000
@@ -405,7 +405,7 @@ Private Sub waitForInternetTimer_Tick
 End Sub
 
 Public Sub CheckLocationValid(locationToCheck As String)
-	If ggg.bIsInetConected = False Then Return
+	If Main.isInterNetConnected = False Then Return
 	'Log("CheckLocationValid")
 	Dim job As HttpJob
 	job.Initialize("geocheck", Me)

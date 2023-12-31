@@ -15,9 +15,14 @@ Sub Class_Globals
 	Public Root As B4XView, xui As XUI, Toast As BCToast
 	Private dUtils As DDD
 	
+	Public WeatherData As clsWeatherData
+	Public OnConnectedEventWeather As clsEvent
+	Public OnDisconnectedEventWeather As clsEvent
+	
 	Public Dialog, DialogMSGBOX As B4XDialog
 	Public oClock As Clock
 	
+	'--- this page - master --------------------
 	Private pnlBG As B4XView
 	
 	Private pnlCalculator,pnlHome,pnlWeather,pnlConversions,pnlPhotos As B4XView
@@ -39,6 +44,7 @@ Sub Class_Globals
 	Public lvSideMenu,lvHeaderMenu As CustomListView
 	
 	Public btnHdrTxt1 As B4XView
+	'-----------------------------------------
 End Sub
 
 Public Sub Initialize
@@ -47,7 +53,7 @@ Public Sub Initialize
 	xui.SetDataFolder(cnst.APP_NAME)
 	#end if
 	Main.kvs.Initialize(xui.DefaultFolder,cnst.APP_NAME & "_settings.db3")
-	Main.sql = Main.kvs.sql1 '<--- pointer so we can use the SQL engine in the KVS object
+	Main.sql = Main.kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
 	themes.Init '--- set colors
 	If Main.kvs.ContainsKey(cnst.INI_INSTALL_DATE) = False Then
 		'--- 1st run!

@@ -4,8 +4,15 @@ ModulesStructureVersion=1
 Type=Class
 Version=6.5
 @EndOfDesignText@
+' Author:  B4X internal lib form B4J V10.0
+#Region VERSIONS 
+' V. 1.0 	Dec/30/2023 - sadLogic/JakeBullet
+'				Added a property to return the SQL object instance
+#End Region
+
+
 Sub Class_Globals
-	Public sql1 As SQL
+	Private sql1 As SQL
 	Private ser As B4XSerializator
 End Sub
 
@@ -19,6 +26,13 @@ Public Sub Initialize (Dir As String, FileName As String)
 #end if
 	CreateTable
 End Sub
+
+'--- Added by sadLogic ----------------
+Public Sub getoSql() As SQL
+	Return sql1
+End Sub
+'----------------------------------------
+
 
 Public Sub Put(Key As String, Value As Object)
 	sql1.ExecNonQuery2("INSERT OR REPLACE INTO main VALUES(?, ?)", Array (Key, ser.ConvertObjectToBytes(Value)))
