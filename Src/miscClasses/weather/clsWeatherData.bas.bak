@@ -11,23 +11,9 @@ Sub Class_Globals
 	
 	Public WeatherKey As String
 	Public IsError As Boolean
-	
-	Public Description As String
-	Public Location1 As String
-	Public Precipitation As String
-	Public CloudCover As String
-	Public Humidity As String
-	Public Pressure As String
-	Public Visbility As String
-	Public WindDirection As String
-	Public WindSpeed As String
-	Public SunriseTime As String
-	Public SunsetTime As String
-	Public IconMapNumber As Int
-	Public IconURL As String
-	
-	'Public TodayQuick As clsWeatherDataDay
-	Public ForcastDays(2) As clsWeatherDataDay
+
+	Public TodayQuick As clsWeatherDataDay
+	Public ForcastDays(3) As clsWeatherDataDay
 	
 	Public LastErrorMessage As String
 	
@@ -45,7 +31,9 @@ Sub getIsWeatherUpToDate As Boolean
 	End If
 End Sub
 
+
 '========================  these where in a public aobject ========================
+
 public Sub GetWeather_Icon2(id As Int, img As lmB4XImageViewX)
 	
 	If id = 0 Then Return
@@ -144,22 +132,34 @@ Private Sub ParseWeatherJob(s As String)
 	
 	Dim parser As JSONParser : parser.Initialize(s)
 	Dim root As Map = parser.NextObject
-	
 	Dim current As Map = root.Get("current")
-	Dim feelslike_f As Double = current.Get("feelslike_f")
-	Dim feelslike_c As Double = current.Get("feelslike_c")
-	Dim uv As Double = current.Get("uv")
+	
+	TodayQuick.Day = "Today"
+	TodayQuick.FeelsLike_c = current.Get("feelslike_c")
+	TodayQuick.FeelsLike_f = current.Get("feelslike_f")
+	TodayQuick.High_c = current.Get("feelslike_c")
+	TodayQuick.High_f = current.Get("feelslike_f")
+	TodayQuick.Tempurature_c = current.Get("temp_c")
+	TodayQuick.Tempurature_f = current.Get("temp_f")
+	'TodayQuick.Description
+	TodayQuick.Low_c
+	TodayQuick.Low_f
+	
+'	TodayQuick.Sunrise = astronomyMap.Get("sunrise")
+'	TodayQuick.Sunset = astronomyMap.Get("sunset")
+'	TodayQuick.IconMapNumber = currentMap.Get("weatherCode")
+				
+	'Dim uv As Double = current.Get("uv")
+	
 	Dim last_updated As String = current.Get("last_updated")
 	
-	
 	Dim wind_degree As Int = current.Get("wind_degree")
-	Dim last_updated_epoch As Int = current.Get("last_updated_epoch")
+	'Dim last_updated_epoch As Int = current.Get("last_updated_epoch")
 	Dim is_day As Int = current.Get("is_day")
 	Dim precip_in As Double = current.Get("precip_in")
 	Dim wind_dir As String = current.Get("wind_dir")
 	Dim gust_mph As Double = current.Get("gust_mph")
-	Dim temp_c As Double = current.Get("temp_c")
-	Dim temp_f As Double = current.Get("temp_f")
+	
 	Dim pressure_in As Double = current.Get("pressure_in")
 	Dim gust_kph As Double = current.Get("gust_kph")
 	
@@ -168,25 +168,28 @@ Private Sub ParseWeatherJob(s As String)
 	Dim wind_kph As Double = current.Get("wind_kph")
 	
 	Dim condition As Map = current.Get("condition")
-	'Dim code As Int = condition.Get("code")
-	IconURL = condition.Get("icon")
-	Description = condition.Get("text")
+	Dim code As Int = condition.Get("code")
+	Dim icon As String = condition.Get("icon")
+	Dim text As String = condition.Get("text")
+	
 	Dim wind_mph As Double = current.Get("wind_mph")
+	
 	Dim vis_km As Double = current.Get("vis_km")
-	Dim Humidity1 As Int = current.Get("humidity")
+	Dim Humidity As Int = current.Get("humidity")
 	Dim pressure_mb As Double = current.Get("pressure_mb")
 	Dim vis_miles As Double = current.Get("vis_miles")
 	
-	Dim Location As Map = root.Get("location")
-	Dim localtime As String = Location.Get("localtime")
-	Dim country As String = Location.Get("country")
-	Dim localtime_epoch As Int = Location.Get("localtime_epoch")
-	Location1 = Location.Get("name")
-	Dim lon As Double = Location.Get("lon")
-	Dim region As String = Location.Get("region")
-	Dim lat As Double = Location.Get("lat")
-	Dim tz_id As String = Location.Get("tz_id")
-	
+	'-------------------------------------------------------
+	Dim location As Map = root.Get("location")
+	Dim localtime As String = location.Get("localtime")
+	Dim country As String = location.Get("country")
+	Dim localtime_epoch As Int = location.Get("localtime_epoch")
+	Dim name As String = location.Get("name")
+	Dim lon As Double = location.Get("lon")
+	Dim region As String = location.Get("region")
+	Dim lat As Double = location.Get("lat")
+	Dim tz_id As String = location.Get("tz_id")
+	'-------------------------------------------------------
 	Dim forecast As Map = root.Get("forecast")
 	Dim forecastday As List = forecast.Get("forecastday")
 	For Each colforecastday As Map In forecastday
@@ -201,7 +204,7 @@ Private Sub ParseWeatherJob(s As String)
 		Dim is_sun_up As Int = astro.Get("is_sun_up")
 		Dim moonrise As String = astro.Get("moonrise")
 		Dim date_epoch As Int = colforecastday.Get("date_epoch")
-		Dim hour As List = colforecastday.Get("hour")
+'		Dim hour As List = colforecastday.Get("hour")
 '		For Each colhour As Map In hour
 '			Dim feelslike_c As Double = colhour.Get("feelslike_c")
 '			Dim feelslike_f As Double = colhour.Get("feelslike_f")
@@ -214,7 +217,7 @@ Private Sub ParseWeatherJob(s As String)
 '			Dim wind_kph As Double = colhour.Get("wind_kph")
 '			Dim wind_mph As Double = colhour.Get("wind_mph")
 '			Dim snow_cm As Double = colhour.Get("snow_cm")
-'			Dim Humidity As Int = colhour.Get("humidity")
+'			Dim humidity As Int = colhour.Get("humidity")
 '			Dim dewpoint_f As Double = colhour.Get("dewpoint_f")
 '			Dim will_it_rain As Int = colhour.Get("will_it_rain")
 '			Dim uv As Double = colhour.Get("uv")
@@ -241,7 +244,7 @@ Private Sub ParseWeatherJob(s As String)
 '			Dim pressure_mb As Double = colhour.Get("pressure_mb")
 '			Dim vis_miles As Double = colhour.Get("vis_miles")
 '		Next
-	
+		'-------------------------------------------------------
 		Dim day As Map = colforecastday.Get("day")
 		Dim avgvis_km As Double = day.Get("avgvis_km")
 		Dim uv As Double = day.Get("uv")
@@ -251,13 +254,15 @@ Private Sub ParseWeatherJob(s As String)
 		Dim maxtemp_c As Double = day.Get("maxtemp_c")
 		Dim maxtemp_f As Double = day.Get("maxtemp_f")
 		Dim mintemp_c As Double = day.Get("mintemp_c")
+		Dim mintemp_f As Double = day.Get("mintemp_f")
 		Dim avgvis_miles As Double = day.Get("avgvis_miles")
 		Dim daily_will_it_rain As Int = day.Get("daily_will_it_rain")
-		Dim mintemp_f As Double = day.Get("mintemp_f")
+		
 		Dim totalprecip_in As Double = day.Get("totalprecip_in")
 		Dim totalsnow_cm As Double = day.Get("totalsnow_cm")
 		Dim avghumidity As Double = day.Get("avghumidity")
 		Dim condition As Map = day.Get("condition")
+		
 		Dim code As Int = condition.Get("code")
 		Dim icon As String = condition.Get("icon")
 		Dim text As String = condition.Get("text")
@@ -267,7 +272,6 @@ Private Sub ParseWeatherJob(s As String)
 		Dim totalprecip_mm As Double = day.Get("totalprecip_mm")
 		Dim daily_will_it_snow As Int = day.Get("daily_will_it_snow")
 	Next
-	
 
 End Sub
 

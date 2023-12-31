@@ -128,7 +128,11 @@ Sub WeatherData_Updated
 	
 	guiHelpers.ResizeText(mpage.WeatherData.TodayQuick.description, lblCurrTXT)
 	
-	Dim description As String = "Low: " & mpage.WeatherData.TodayQuick.Low & "°" & " / High: " & mpage.WeatherData.TodayQuick.High & "°" & CRLF & CRLF &  _
+	Dim lowTemp,highTemp As String
+	'mpage.WeatherData.TodayQuick.
+	'mpage.WeatherData.TodayQuick.
+	
+	Dim description As String = "Low: " & lowTemp & "°" & " / High: " & highTemp & "°" & CRLF & CRLF &  _
 			  "Precipitation: " & mpage.WeatherData.Precipitation & "%" & CRLF & _	
 			  "Humidity: " & mpage.WeatherData.Humidity & "%" & CRLF & _
 			  "Pressure: " & mpage.WeatherData.Pressure & "''" & CRLF & _

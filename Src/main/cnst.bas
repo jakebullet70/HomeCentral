@@ -35,6 +35,7 @@ Sub Process_Globals
 	Public const DarkSkyAPIKey As String = "ebc4475b049026afc9d48e6e5c331738"
 	Public const OpenWeatherAPI As String = "517f35137e222f9ef3ae5010ee14cffa"
 	Public const WeatherAPIxuKey As String = "97599cd456e24caf85c143130182403"
+	Public const WeatherAPIKey As String = "b48d92cda3b045938a7174835233112 "
 	
 	Public WEATHERicons As String = "tv03" '--- see puSetupWeather in old eHome
 	
