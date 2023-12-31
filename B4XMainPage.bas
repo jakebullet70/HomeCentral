@@ -30,7 +30,6 @@ Sub Class_Globals
 	Private oPageConversion As pageConversions,oPagePhoto As pagePhotos,oPageTimers As pageKTimers
 	Private oPageCalculator As pageCalculator,  oPageHome As pageHome, oPageWeather As pageWeather
 	
-	
 	Private pnlSideMenu As B4XView
 	Private  btnHeaderMenu As B4XView
 	
@@ -52,6 +51,7 @@ Public Sub Initialize
 	#if b4j
 	xui.SetDataFolder(cnst.APP_NAME)
 	#end if
+	Main.EventsGlobal.Initialize
 	Main.kvs.Initialize(xui.DefaultFolder,cnst.APP_NAME & "_settings.db3")
 	Main.sql = Main.kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
 	themes.Init '--- set colors
@@ -77,9 +77,15 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Toast.Initialize(Root) 
 	dUtils.Initialize '--- DDD desgner utils
 	oClock.Initialize
+	
+	'Main.EventsGlobal.Subscribe(cnst.EVENT_CLOCK_CHANGE, Me,"clock_event")
 
 	BuildGUI
 End Sub
+
+'Private Sub clock_event(t As String)
+'	btnHdrTxt1.Text = t
+'End Sub
 
 Private Sub BuildGUI
 	

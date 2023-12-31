@@ -54,8 +54,8 @@ Module11=|relative|..\Src\dialogs\dlgAbout
 Module12=|relative|..\Src\dialogs\dlgThemedMsgBox
 Module13=|relative|..\Src\miscClasses\DSE_Layout
 Module14=|relative|..\Src\helpers\dtHelpers
-Module15=|relative|..\Src\helpers\fileHelpers
-Module16=|relative|..\Src\helpers\ggg
+Module15=|relative|..\Src\miscClasses\events_subscription\EventController
+Module16=|relative|..\Src\helpers\fileHelpers
 Module17=|relative|..\Src\helpers\guiHelpers
 Module18=|relative|..\Src\b4xOverRidess\KeyValueStore
 Module19=|relative|..\Src\customCtrls\lmB4XImageViewX
@@ -72,9 +72,9 @@ Module28=|relative|..\Src\helpers\strHelpers
 Module29=|relative|..\Src\helpers\themes
 Module3=|relative|..\Src\miscClasses\CheckVersions
 Module4=|relative|..\Src\miscClasses\Clock
-Module5=|relative|..\Src\miscClasses\clsEvent
-Module6=|relative|..\Src\miscClasses\clsWeatherData
-Module7=|relative|..\Src\miscClasses\clsWeatherDataDay
+Module5=|relative|..\Src\miscClasses\events_subscription\clsEvent
+Module6=|relative|..\Src\miscClasses\weather\clsWeatherData
+Module7=|relative|..\Src\miscClasses\weather\clsWeatherDataDay
 Module8=|relative|..\Src\main\cnst
 Module9=|relative|..\Src\miscClasses\ConversionMod
 NumberOfFiles=19
@@ -99,6 +99,7 @@ Sub Process_Globals
 	Public kvs As KeyValueStore
 	Public sql As SQL
 	Public isInterNetConnected As Boolean = True
+	Public EventsGlobal As EventController
 	Public tmrTimerCallSub As CallSubUtils
 	'-------------------------------------------
 	

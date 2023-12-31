@@ -35,7 +35,8 @@ End Sub
 Public Sub Initialize(p As B4XView) 
 	pnlMain = p
 	pnlMain.LoadLayout("pageHomeBase")
-	mpage.oClock.oEventsClock.Subscribe(Me,"clock_event") '--- fired whenever clock changes
+	
+	Main.EventsGlobal.Subscribe(cnst.EVENT_CLOCK_CHANGE, Me,"clock_event")
 	
 	pnlWeather.SetColorAndBorder(XUI.Color_Transparent,0,XUI.Color_Transparent,0)
 	pnlClock.SetColorAndBorder(XUI.Color_Transparent,0,XUI.Color_Transparent,0)

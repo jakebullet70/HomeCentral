@@ -9,6 +9,7 @@ Sub Class_Globals
 	Public lastUpdatedAt As Long
 	Public forecastDays As Int = 5
 	
+	Public WeatherKey As String
 	Public IsError As Boolean
 	
 	Public Location As String
@@ -27,11 +28,11 @@ Sub Class_Globals
 	Public OtherDays(forecastDays - 1) As clsWeatherDataDay
 	
 	Public LastErrorMessage As String
-	Public WeatherUpdatedEvent As clsEvent
-	Public WeatherUpdatedFailEvent As clsEvent
-	Public BeforeWeatherUpdatedEvent As clsEvent
-	Public OnGeoCheckSuccess As clsEvent
-	Public OnGeoCheckFailure As clsEvent
+	'Public WeatherUpdatedEvent As clsEvent
+	'Public WeatherUpdatedFailEvent As clsEvent
+	'Public BeforeWeatherUpdatedEvent As clsEvent
+	'Public OnGeoCheckSuccess As clsEvent
+	'Public OnGeoCheckFailure As clsEvent
 	
 	Public IsInitialize As Boolean
 	Public LastUpdatedCity As String
@@ -60,15 +61,16 @@ End Sub
 'Initializes the object. You can add parameters to this method if needed.
 Public Sub Initialize
 	IsInitialize = True
-	WeatherUpdatedEvent.Initialize
-	WeatherUpdatedFailEvent.Initialize
-	BeforeWeatherUpdatedEvent.Initialize
-	OnGeoCheckSuccess.Initialize
-	OnGeoCheckFailure.Initialize
+'	WeatherUpdatedEvent.Initialize
+'	WeatherUpdatedFailEvent.Initialize
+'	BeforeWeatherUpdatedEvent.Initialize
+'	OnGeoCheckSuccess.Initialize
+'	OnGeoCheckFailure.Initialize
 	
 	lastUpdatedAt = 1
 	
-	 ggg.OnConnectedEventWeather.Subscribe(Me, "Internet_OnConnected")
+	 'ggg.OnConnectedEventWeather.Subscribe(Me, "Internet_OnConnected")
+	Main.EventsGlobal.Subscribe(cnst.EVENT_INET_ON_CONNECT,Me, "Internet_OnConnected")
 	tmrErrorInRecievingWeather.Initialize("ErrorGettingWeather",1000 * 60) '--- every 1 minute
 	
 End Sub
@@ -87,10 +89,12 @@ Public Sub TryUpdate
 	If lastUpdatedAt <> 0 Then
 		If dtHelpers.HoursBetween(DateTime.now, lastUpdatedAt) >= 1 Then
 			If (LastUpdatedCity = "") Then
-				BeforeWeatherUpdatedEvent.Raise()
+				Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
+				'BeforeWeatherUpdatedEvent.Raise()
 				Update_Weather_Default_City
 			Else
-				BeforeWeatherUpdatedEvent.Raise()
+				Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
+				'BeforeWeatherUpdatedEvent.Raise()
 				'If  ggg.IsDebuggerAttatch Then
 				Update_Weather(LastUpdatedCity)
 				'Else
@@ -106,10 +110,12 @@ End Sub
 Public Sub TryUpdateBecauseOfError
 	If dtHelpers.HoursBetween(DateTime.now, lastUpdatedAt) >= 1 Then
 		If (LastUpdatedCity = "") Then
-			BeforeWeatherUpdatedEvent.Raise()
+			'BeforeWeatherUpdatedEvent.Raise()
+			Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
 			Update_Weather_Default_City
 		Else
-			BeforeWeatherUpdatedEvent.Raise()
+			'BeforeWeatherUpdatedEvent.Raise()
+			Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
 			Update_Weather(LastUpdatedCity)
 		End If
 	End If
@@ -248,14 +254,17 @@ Private Sub ParseWeatherJob(Job As HttpJob)
 			End If
 			
 			'Alert everyone that the weather has updated information
-			WeatherUpdatedEvent.Raise
+			'WeatherUpdatedEvent.Raise
+			Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_UPDATED)
 		Catch
-			WeatherUpdatedFailEvent.Raise
+			Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_UPDATE_FAILED)
+			'WeatherUpdatedFailEvent.Raise
 			LastErrorMessage = "Unable to update weather due to an error."
 			LogIt.LogException(LastException, True)
 		End Try
 	Else
-		WeatherUpdatedFailEvent.Raise
+		Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_UPDATE_FAILED)
+		'WeatherUpdatedFailEvent.Raise
 		LastErrorMessage = "Failed to update weather: " + Job.ErrorMessage
 		LogIt.LogWrite(LastErrorMessage,  1)
 	End If
@@ -271,7 +280,8 @@ Private Sub JobDone(Job As HttpJob)
 		
 	Else if (Job.JobName = "weather" And Job.Success = False) Then
 		Log("Recieving weather data FAILED")
-		 ggg.WeatherData.WeatherUpdatedFailEvent.Raise
+		Main.EventsGlobal.Raise(cnst.EVENT_INET_ON_CONNECT)
+		 'ggg.WeatherData.WeatherUpdatedFailEvent.Raise
 		tmrErrorInRecievingWeather.Enabled = True
 		
 		
@@ -285,15 +295,19 @@ Private Sub JobDone(Job As HttpJob)
 				
 				Dim dataMap As Map = parser.NextObject.Get("data")
 				If (dataMap.ContainsKey("error")) Then
-					OnGeoCheckFailure.Raise
+					Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_GEO_FAILED)
+					'OnGeoCheckFailure.Raise
 				Else
-					OnGeoCheckSuccess.Raise
+					Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_GEO_OK)
+					'OnGeoCheckSuccess.Raise
 				End If
 			Catch
-				OnGeoCheckFailure.Raise
+				Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_GEO_FAILED)
+				'OnGeoCheckFailure.Raise
 			End Try
 		Else
-			OnGeoCheckFailure.Raise
+			Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_GEO_FAILED)
+			'OnGeoCheckFailure.Raise
 		End If
 	End If
 	
@@ -329,7 +343,7 @@ Private Sub Update_Weather(city As Object) As Boolean
 		Dim job As HttpJob
 		job.Initialize("weather", Me)
 		job.Download2("http://api.worldweatheronline.com/free/v2/weather.ashx",  _
-				Array As String("key",  ggg.GetWeatherKey, "q", city, "num_of_days", _
+				Array As String("key",  WeatherKey, "q", city, "num_of_days", _
 				forecastDays, "format", "json", "showlocaltime", "yes"))
 	
 		Location = city
@@ -409,6 +423,6 @@ Public Sub CheckLocationValid(locationToCheck As String)
 	'Log("CheckLocationValid")
 	Dim job As HttpJob
 	job.Initialize("geocheck", Me)
-	job.Download2("http://api.worldweatheronline.com/free/v2/weather.ashx", Array As String("key",  ggg.GetWeatherKey, "q", locationToCheck, "format", "json"))
+	job.Download2("http://api.worldweatheronline.com/free/v2/weather.ashx", Array As String("key",  WeatherKey, "q", locationToCheck, "format", "json"))
 End Sub
 
