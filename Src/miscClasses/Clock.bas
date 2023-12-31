@@ -13,18 +13,17 @@ Version=10
 Sub Class_Globals
 	Private XUI As XUI
 	Public DoNotShow As Boolean = False
-	Dim tmrClock As Timer
+	Private tmrClock As Timer
 End Sub
 
 Public Sub Initialize()	
 	#if release	
 	Dim mn As Int = 1000 * 60
 	#else
-	Dim mn As Int = 1000 * 60
+	Dim mn As Int = 15000 * 60
 	Log("Clock refresh set = 15min")
 	#End If
 	tmrClock.Initialize("tmrClock",mn)
-	Update_Scrn
 	StartClock
 End Sub
 
@@ -37,6 +36,7 @@ Public Sub StopClock()
 End Sub
 Public Sub StartClock()
 	tmrClock.Enabled = True
+	Update_Scrn
 End Sub
 
 Public Sub Update_Scrn
