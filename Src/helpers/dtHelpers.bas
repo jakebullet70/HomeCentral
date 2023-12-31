@@ -37,6 +37,136 @@ Public Sub GetLastDayOfMonth(thisDate As Long) As Long
 
 End Sub
 
+
+Public Sub IsItDayTime(sunrise As String, sunset As String,CityLocalTime As String) As Boolean
+	
+	#if release
+	Try
+	#end if
+		
+	Dim sunrise1,sunset1,curTime As Float
+	CityLocalTime = CityLocalTime.SubString(10).trim
+	Log(CityLocalTime)
+		
+	DateTime.TimeFormat = "H:mm"
+	Dim tmpCur As String = DateTime.Time(DateTime.TimeParse(CityLocalTime))
+	Dim tmpSunset As String = ChangeTime12To24Hours(sunset)
+	Dim tmpSunrise As String = ChangeTime12To24Hours(sunrise)
+		
+	sunrise1 = tmpSunrise.Replace(":",".")
+	sunset1 = tmpSunset.Replace(":",".")
+	curTime = tmpCur.Replace(":",".")
+
+	'Log(dt.ChangeTime12To24Hours("11:30 pm"))
+		
+	If curTime > (sunrise1 + .5) And curTime < (sunset1 + 1) Then
+		Return True
+	Else
+		Return False
+	End If
+
+	#if release
+	Catch
+		Log(LastException)
+		Return True
+	End Try
+	#end if
+
+End Sub
+
+Public Sub FormatTime(mask As String,ticks As Int) As String
+	Dim ret As String
+	Dim fmtD As String = DateTime.DateFormat
+	Dim fmtT As String = DateTime.TimeFormat
+	DateTime.TimeFormat = mask
+	DateTime.DateFormat = ""
+	
+	ret = DateUtils.TicksToString(ticks)
+	
+	DateTime.TimeFormat = fmtT
+	DateTime.DateFormat = fmtD
+	Return ret
+End Sub
+
+'---------------------------------------------------------
+' returns a 24 hr long
+'---------------------------------------------------------
+Public Sub ChangeTime12To24Hours3(a As String) As Long
+	Try
+		'Dim a As String = "4:31 PM"
+		a = a.ToUpperCase.replace("PM"," PM").Replace("AM"," AM")
+		DateTime.TimeFormat = "h:mm a"
+		Return DateTime.TimeParse(a)
+	Catch
+		Log(LastException)
+		'g.LogWrite2("(ChangeTime12To24Hours) Failed to convert time 24/12: " & a,g.ID_LOG_ERR)
+		Return "12:00"
+	End Try
+End Sub
+
+
+'---------------------  NEEDS TO BE REFACTORED -------------------------------
+'---------------------  NEEDS TO BE REFACTORED -------------------------------
+'---------------------------------------------------------
+' returns a 24 hr string
+'---------------------------------------------------------
+Public Sub ChangeTime12To24Hours2(a As String) As String
+	Try
+		'Dim a As String = "4:31 PM"
+		a = a.ToUpperCase.replace("PM"," PM").Replace("AM"," AM")
+		DateTime.TimeFormat = "hh:mm a"
+		Dim b As Long = DateTime.TimeParse(a)
+		'Log(FormatTime( "k:mm",b))
+		Return  FormatTime( "k:mm",b)
+	Catch
+		Log(LastException)
+		'g.LogWrite2("(ChangeTime12To24Hours) Failed to convert time 24/12: " & a,g.ID_LOG_ERR)
+		Return "12:00"
+	End Try
+End Sub
+
+
+Public Sub ChangeTime12To24Hours(s As String) As String
+	Try
+	
+		's = CleanUpAMPM_issues(s)
+'	
+'		'---  why????
+'		If s.Contains("amam") Then 
+'			g.LogWrite("(ChangeTime12To24Hours) Failed to convert time 24/12: " & s,g.ID_LOG_ERR)
+'			s = s.Replace("amam","am")
+'		End If
+'		If s.Contains("pmam") Then 
+'			g.LogWrite("(ChangeTime12To24Hours) Failed to convert time 24/12: " & s,g.ID_LOG_ERR)
+'			s = s.Replace("pmam","pm")
+'		End If
+'	
+		'Log("time----   " & s)
+		
+		s = s.Replace(":",".").Replace(" ","") '--- remove the : so we can add 12 if needed
+		Dim ret As String
+		
+		If s.Contains("AM") Or s.Contains("am") Then
+			Return s.Replace("AM","").Replace("am","").Trim
+		Else
+			ret = s.Replace("PM","").Replace("pm","").Trim
+			Dim f1 As Float = 12 + ret
+			Dim f2 As String = Round2(f1,2)
+			If f2.Length = 4 Then f2 = f2 & "0"
+			Return f2
+		End If
+	Catch
+		'g.LogWrite2("(ChangeTime12To24Hours) Failed to convert time 24/12: " & s,g.ID_LOG_ERR)
+		Return "12:00"
+	End Try
+	
+	
+End Sub
+'=============================================================================================
+
+
+
+
 ''************************************************************************************************************
 ''************************************************************************************************************
 ''*************************************    DATE AND TIME FUNCTION S AND CRAP !!!         *********************

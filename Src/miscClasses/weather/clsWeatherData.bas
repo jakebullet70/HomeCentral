@@ -6,6 +6,7 @@ Version=7.3
 @EndOfDesignText@
 'Class module
 Sub Class_Globals
+	Private xui As XUI
 	Public lastUpdatedAt As Long
 	Public forecastDays As Int = 5
 	
@@ -68,6 +69,8 @@ Public Sub Initialize
 '	OnGeoCheckFailure.Initialize
 	
 	lastUpdatedAt = 1
+	
+	WeatherKey = cnst.OpenWeatherAPI
 	
 	 'ggg.OnConnectedEventWeather.Subscribe(Me, "Internet_OnConnected")
 	Main.EventsGlobal.Subscribe(cnst.EVENT_INET_ON_CONNECT,Me, "Internet_OnConnected")
@@ -367,36 +370,39 @@ End Sub
 Private Sub Update_Weather_Default_City()
 	
 	Dim defaultCityIndex As Int = Main.kvs.GetDefault( "default_city_index", "-1")
-	Dim defaultCityMissing As Boolean
+	Dim defaultCityMissing As Boolean = IIf(defaultCityIndex = -1,True,False)
 
-	If (defaultCityIndex = -1) Then
-		'' Choose the first city
-		Dim resultValue As String = Main.sql.ExecQuerySingleResult("select location from weather limit 1")
-		
-		'' Bad state here. No cities..
-		If strHelpers.IsNullOrEmpty( resultValue) Then
-			defaultCityMissing = True
-		Else
-			'If  ggg.IsDebuggerAttatch Then
-			Update_Weather(resultValue)
-			'Else
-			'	threadWeather.Start(Me, "Update_Weather", Array As Object(resultValue))
-			'End If
-		End If
-	Else
-		'' Validate the default city exists.
-		Dim cityName As String = Main.sql.ExecQuerySingleResult2("select location from weather where weather_id = ?", Array As String(defaultCityIndex))
-		
-		If  strHelpers.IsNullOrEmpty (cityName) Then
-			defaultCityMissing = True
-		Else
-			'If  ggg.IsDebuggerAttatch Then
-			Update_Weather(cityName)
-			'Else
-			'	threadWeather.Start(Me, "Update_Weather", Array As Object(cityName))
-			'End If
-		End If
-	End If
+'	If (defaultCityIndex = -1) Then
+'		'' Choose the first city
+'		Dim resultValue As String = Main.sql.ExecQuerySingleResult("select location from weather limit 1")
+'		
+'		'' Bad state here. No cities..
+'		If strHelpers.IsNullOrEmpty( resultValue) Then
+'			defaultCityMissing = True
+'		Else
+'			'If  ggg.IsDebuggerAttatch Then
+'			Update_Weather(resultValue)
+'			'Else
+'			'	threadWeather.Start(Me, "Update_Weather", Array As Object(resultValue))
+'			'End If
+'		End If
+'	Else
+'		'' Validate the default city exists.
+'		Dim cityName As String = Main.sql.ExecQuerySingleResult2("select location from weather where weather_id = ?", Array As String(defaultCityIndex))
+'		
+'		If  strHelpers.IsNullOrEmpty (cityName) Then
+'			defaultCityMissing = True
+'		Else
+'			'If  ggg.IsDebuggerAttatch Then
+'			Update_Weather(cityName)
+'			'Else
+'			'	threadWeather.Start(Me, "Update_Weather", Array As Object(cityName))
+'			'End If
+'		End If
+'	End If
+'	
+	
+	
 	
 	'' Unable to determine default city
 	If (defaultCityMissing) Then
@@ -426,3 +432,37 @@ Public Sub CheckLocationValid(locationToCheck As String)
 	job.Download2("http://api.worldweatheronline.com/free/v2/weather.ashx", Array As String("key",  WeatherKey, "q", locationToCheck, "format", "json"))
 End Sub
 
+
+'========================  these where in a public aobject ========================
+
+public Sub GetWeather_Icon2(id As Int, img As lmB4XImageViewX)
+	
+	If id = 0 Then Return
+	Try
+		
+		If Not (img.IsInitialized) Then
+			img.Initialize("","")
+		End If
+		
+		Dim daytime As Boolean =  dtHelpers.IsItDayTime(SunriseTime,SunsetTime,TodayQuick.LocalTime)
+		img.Bitmap =  xui.LoadBitmap(File.DirAssets,GetWeather_IconFileName(id,daytime))
+		
+	Catch
+		Log(LastException)
+	End Try
+End Sub
+
+
+private Sub GetWeather_IconFileName(id As Int,daytime As Boolean) As String
+	Dim DayOrNight As String
+
+	If daytime Then
+		DayOrNight = "/day/"
+	Else
+		DayOrNight = "/night/"
+	End If
+	Dim fname As String =  "weathericon/" & cnst.WEATHERicons & DayOrNight & id & ".png"
+	Return fname
+	
+End Sub
+'===============================================================

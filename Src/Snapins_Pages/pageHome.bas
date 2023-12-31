@@ -28,7 +28,13 @@ Sub Class_Globals
 	Private lblCurrTXT As B4XView,	BBlblCurrTXT As BBLabel '--- test BBlabel by hiding lblCurrTXT
 	Private lblLocation As B4XView
 	Private imgCurrent As lmB4XImageViewX
+	Private lastWeatherCall As Long
 	'---
+	
+	Private pnlCalDay As B4XView
+	Private lblCalDayExit As B4XView
+	Private lblCalDayTXT As B4XView
+	
 	
 End Sub
 
@@ -42,14 +48,41 @@ Public Sub Initialize(p As B4XView)
 	pnlClock.SetColorAndBorder(XUI.Color_Transparent,0,XUI.Color_Transparent,0)
 	pnlCal.SetColorAndBorder(XUI.Color_Transparent,0,XUI.Color_Transparent,0)
 	
+	pnlCalDay.SetColorAndBorder(XUI.Color_Transparent,0,XUI.Color_Transparent,0)
+	
 	'BuildSide_Menu
 	lblClock.TextColor = themes.clrTxtNormal
 	
 	'--- weather stuff
 	BBlblCurrTXT.ForegroundImageView.Visible =False
 	
+	Main.EventsGlobal.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_Updated")
+	Main.EventsGlobal.Subscribe(cnst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
+	
+	lblCalDayTXT.TextColor = themes.clrTxtNormal
+	lblCurrTXT.TextColor = themes.clrTxtNormal
+	lblCurrTemp.TextColor = themes.clrTxtNormal
+	lblLocation.TextColor = themes.clrTxtNormal
+	lblCalDayExit.TextColor = themes.clrTxtNormal
+	lblClock.TextColor = themes.clrTxtNormal
+	
+'	lstViewCalDays.DefaultTextColor = g.GetColorTheme(g.ehome_clrTheme,"themeColorText")
+'	lstViewCalDays.DefaultTextBackgroundColor  = Colors.Transparent
+'	lstViewCalDays.DefaultTextSize = 16
 	
 	BuildCal
+	
+	guiHelpers.ResizeText("     Getting Weather Data...     ",lblCurrTXT)
+	
+	'If the weather doesn't need an update, then someone else already updated it before we loaded. So refresh our UI.
+	If (mpage.WeatherData.IsWeatherUpToDate = True) Then
+		WeatherData_Updated
+	Else
+		mpage.WeatherData.TryUpdate
+	End If
+	
+	'Init_setup_menu
+	
 	
 End Sub
 
@@ -57,7 +90,8 @@ End Sub
 Public Sub Set_focus()
 	Menus.SetHeader("Home","main_menu_home.png")
 	pnlMain.SetVisibleAnimated(500,True)
-	mpage.oClock.Update_Scrn
+	mpage.oClock.Update_Scrn 'UpdateDateTime
+	WeatherData_Updated
 End Sub
 
 Public Sub Lost_focus()
@@ -89,4 +123,48 @@ Private Sub BuildCal()
 	'pnlCal.AddView(csCal.,0,0,100%x,100%y)
 	csCal.ShowCalendar(True)
 End Sub
+
+Sub WeatherData_Updated
+	
+	guiHelpers.ResizeText(mpage.WeatherData.TodayQuick.description, lblCurrTXT)
+	
+	Dim description As String = "Low: " & mpage.WeatherData.TodayQuick.Low & "°" & " / High: " & mpage.WeatherData.TodayQuick.High & "°" & CRLF & CRLF &  _
+			  "Precipitation: " & mpage.WeatherData.Precipitation & "%" & CRLF & _	
+			  "Humidity: " & mpage.WeatherData.Humidity & "%" & CRLF & _
+			  "Pressure: " & mpage.WeatherData.Pressure & "''" & CRLF & _
+			  "Wind Speed: " & mpage.WeatherData.WindSpeed & "Mph" & CRLF & _
+			  "Wind Direction: " & mpage.WeatherData.WindDirection & CRLF & _
+			  "Cloud Cover: " & mpage.WeatherData.CloudCover & "%" & CRLF & _
+			  "Sunrise: " & mpage.WeatherData.SunriseTime & CRLF & "Sunset: " & mpage.WeatherData.SunsetTime
+	
+	guiHelpers.ResizeText(description, lblCurrTXT)
+	lblCurrTXT.TextSize = lblCurrTXT.TextSize - 4
+		
+	guiHelpers.ResizeText(mpage.WeatherData.TodayQuick.Tempurature & "°", lblCurrTemp)
+	guiHelpers.ResizeText(mpage.WeatherData.Location, lblLocation)
+	'g.setText("Low: " & g.WeatherData.TodayQuick.Low & CRLF & "High: " & g.WeatherData.TodayQuick.High, lblDay0)
+	
+	'g.WeatherData.GetWeatherIcon(g.WeatherData.IconMapNumber,imgCurrent)
+	CallSubDelayed3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.IconMapNumber,imgCurrent)
+	
+	
+	'fn.SetTextShadow(lblCurrTemp, 1, 1, 1, Colors.ARGB(255, 0, 0, 0))
+	
+	If mpage.WeatherData.lastUpdatedAt <> lastWeatherCall Then
+		If pnlCalDay.Visible = False Then '--- is cal day is showing?
+			'--- only do the fade in when a new call to the weather site
+'			Dim a As Animation
+'			a.InitializeAlpha("",0,1)
+'			a.Duration = 900
+'			a.Start(pnlCurrent)
+			lastWeatherCall = mpage.WeatherData.lastUpdatedAt
+		End If
+	End If
+
+End Sub
+
+Sub WeatherData_Fail
+	guiHelpers.ResizeText("Error, trying again in 1 minute", lblLocation)
+End Sub
+
 

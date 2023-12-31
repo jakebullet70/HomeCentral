@@ -36,7 +36,10 @@ Sub Process_Globals
 	Public const OpenWeatherAPI As String = "517f35137e222f9ef3ae5010ee14cffa"
 	Public const WeatherAPIxuKey As String = "97599cd456e24caf85c143130182403"
 	
+	Public WEATHERicons As String = "tv03" '--- see puSetupWeather in old eHome
 	
+	
+	'=================================================================================================
 	Public Const EVENT_CLOCK_CHANGE As String = "clckch"
 	Public Const EVENT_INET_ON_CONNECT As String = "inetonc"
 	

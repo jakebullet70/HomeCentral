@@ -15,9 +15,11 @@ Sub Class_Globals
 	Public Root As B4XView, xui As XUI, Toast As BCToast
 	Private dUtils As DDD
 	
+	
 	Public WeatherData As clsWeatherData
-	Public OnConnectedEventWeather As clsEvent
-	Public OnDisconnectedEventWeather As clsEvent
+	
+	'Public OnConnectedEventWeather As clsEvent
+	'Public OnDisconnectedEventWeather As clsEvent
 	
 	Public Dialog, DialogMSGBOX As B4XDialog
 	Public oClock As Clock
@@ -65,6 +67,7 @@ Public Sub Initialize
 		Dim vo As CheckVersions : vo.Initialize
 		vo.CheckAndUpgrade
 	End If
+	WeatherData.Initialize
 End Sub
 
 
