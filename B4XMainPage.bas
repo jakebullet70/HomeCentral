@@ -11,15 +11,18 @@ Version=9.85
 
 'Ctrl + click to export as zip: ide://run?File=%B4X%\Zipper.jar&Args=Project.zip
 
+' Project folder: ide://run?file=%WINDIR%\SysWOW64\explorer.exe&Args=%PROJECT%
+
+'-------------------------  Run this project in different IDE
+'B4A ide://run?file=%WINDIR%\System32\cmd.exe&Args=/c&Args=start&Args=..\..\B4A\%PROJECT_NAME%.b4a
+'B4i ide://run?file=%WINDIR%\System32\cmd.exe&Args=/c&Args=start&Args=..\..\B4i\%PROJECT_NAME%.b4i
+'B4J ide://run?file=%WINDIR%\System32\cmd.exe&Args=/c&Args=start&Args=..\..\B4J\%PROJECT_NAME%.b4j
+
 Sub Class_Globals
 	Public Root As B4XView, xui As XUI, Toast As BCToast
 	Private dUtils As DDD
 	
-	
 	Public WeatherData As clsWeatherData
-	
-	'Public OnConnectedEventWeather As clsEvent
-	'Public OnDisconnectedEventWeather As clsEvent
 	
 	Public Dialog, DialogMSGBOX As B4XDialog
 	Public oClock As Clock
@@ -81,14 +84,9 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	dUtils.Initialize '--- DDD desgner utils
 	oClock.Initialize
 	
-	'Main.EventsGlobal.Subscribe(cnst.EVENT_CLOCK_CHANGE, Me,"clock_event")
-
 	BuildGUI
 End Sub
 
-'Private Sub clock_event(t As String)
-'	btnHdrTxt1.Text = t
-'End Sub
 
 Private Sub BuildGUI
 	
