@@ -23,6 +23,12 @@ Public Sub Initialize(p As B4XView)
 End Sub
 
 '-------------------------------
+#if b4j
+public Sub resize_me (width As Int, height As Int)
+	pnlMain.width = width
+	pnlMain.height = height
+End Sub
+#end if
 Public Sub Set_focus()
 	Menus.SetHeader("Conversions","main_menu_conversions.png")
 	pnlMain.SetVisibleAnimated(500,True)
