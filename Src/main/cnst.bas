@@ -20,6 +20,11 @@ Sub Process_Globals
 	'--- KVS setting const
 	Public Const INI_INSTALL_DATE As String = "instdt"
 	Public Const INI_CURRENT_VER As String = "appver"
+	
+	Public Const INI_WEATHER_DEFAULT_CITY As String = "dwcty"
+	Public Const INI_WEATHER_USE_METRIC As String = "wmtrc"
+	Public Const INI_WEATHER_USE_CELSIUS As String = "wcels"
+	
 		
 	
 	'--- String constants (not really...) these are left as string for multi language support

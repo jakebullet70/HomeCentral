@@ -22,8 +22,6 @@ Sub Class_Globals
 	Public WindDirection As String
 	Public WindSpeed_mph,WindSpeed_kph As String
 	Public GustSpeed_mph,GustSpeed_kph As String
-	Public SunriseTime As String
-	Public SunsetTime As String
 	Public IconMapNumber As Int
 	Public IconURL As String
 	Public FeelsLike_f,FeelsLike_c As String
@@ -31,7 +29,7 @@ Sub Class_Globals
 	Public Visibility_km,Visibility_miles As String
 	Public LocalTime As String, LocalTime_Epoch As Long
 		
-	Public ForcastDays(2) As clsWeatherDataDay '--- 3 total
+	Public ForcastDays(3) As clsWeatherDataDay 
 	
 	Public LastErrorMessage As String
 	
@@ -52,15 +50,15 @@ End Sub
 '========================  these where in a public aobject ========================
 public Sub GetWeather_Icon2(id As Int, img As lmB4XImageViewX)
 	
-	If id = 0 Then Return
+	If id <= 0 Then Return
 	Try
 		
 		If Not (img.IsInitialized) Then
 			img.Initialize("","")
 		End If
 		
-		Dim daytime As Boolean =  dtHelpers.IsItDayTime(SunriseTime,SunsetTime,LocalTime)
-		img.Bitmap =  xui.LoadBitmap(File.DirAssets,GetWeather_IconFileName(id,daytime))
+		'Dim daytime As Boolean =  dtHelpers.IsItDayTime(SunriseTime,SunsetTime,LocalTime)
+		img.Bitmap =  xui.LoadBitmap(File.DirAssets,GetWeather_IconFileName(id,IsDay.As(Boolean)))
 		
 	Catch
 		Log(LastException)
@@ -196,7 +194,8 @@ Private Sub ParseWeatherJob(s As String)
 		Dim forecast As Map = root.Get("forecast")
 		Dim forecastday As List = forecast.Get("forecastday")
 	
-		Dim conv As ConversionMod : conv.Initialize
+		Dim conv As ConversionMod 
+		conv.Initialize
 		For Each colforecastday As Map In forecastday
 			ForcastDays(forcastSlot).Day = colforecastday.Get("date") '--- format to day
 			
@@ -260,7 +259,7 @@ Private Sub ParseWeatherJob(s As String)
 End Sub
 
 Sub Update_Weather_Default_City
-	Update_Weather("")
+	Update_Weather(Main.kvs.GetDefault(cnst.INI_WEATHER_DEFAULT_CITY,"Seattle"))
 End Sub
 
 'Update the weather for a specific City
@@ -294,14 +293,13 @@ Private Sub Update_Weather(city As String) As ResumableSub
 		retVal = job.Success
 		
 		If job.Success Then
-			
 			'File.WriteString(xui.DefaultFolder,"1.txt",job.GetString)
-			
 			ParseWeatherJob(job.GetString)   
-			
+			Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_UPDATED)
 			'Location = city
 		Else
-			Log("wether cal failed - responce code = " & job.Response.StatusCode)	
+			Log("weather call failed - responce code = " & job.Response.StatusCode)	
+			Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_UPDATE_FAILED)
 		End If
 		
 		job.Release

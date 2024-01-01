@@ -30,12 +30,9 @@ Sub Class_Globals
 	Private imgCurrent As lmB4XImageViewX
 	Private lastWeatherCall As Long
 	'---
+
 	
-	Private pnlCalDay As B4XView
-	Private lblCalDayExit As B4XView
-	Private lblCalDayTXT As B4XView
-	
-	
+	Private lblCurrDesc As B4XView
 End Sub
 
 Public Sub Initialize(p As B4XView) 
@@ -48,7 +45,7 @@ Public Sub Initialize(p As B4XView)
 	pnlClock.SetColorAndBorder(XUI.Color_Transparent,0,XUI.Color_Transparent,0)
 	pnlCal.SetColorAndBorder(XUI.Color_Transparent,0,XUI.Color_Transparent,0)
 	
-	pnlCalDay.SetColorAndBorder(XUI.Color_Transparent,0,XUI.Color_Transparent,0)
+	
 	
 	'BuildSide_Menu
 	lblClock.TextColor = themes.clrTxtNormal
@@ -59,11 +56,9 @@ Public Sub Initialize(p As B4XView)
 	Main.EventsGlobal.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_Updated")
 	Main.EventsGlobal.Subscribe(cnst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
 	
-	lblCalDayTXT.TextColor = themes.clrTxtNormal
 	lblCurrTXT.TextColor = themes.clrTxtNormal
 	lblCurrTemp.TextColor = themes.clrTxtNormal
 	lblLocation.TextColor = themes.clrTxtNormal
-	lblCalDayExit.TextColor = themes.clrTxtNormal
 	lblClock.TextColor = themes.clrTxtNormal
 	
 '	lstViewCalDays.DefaultTextColor = g.GetColorTheme(g.ehome_clrTheme,"themeColorText")
@@ -128,32 +123,28 @@ Sub WeatherData_Updated
 	
 	guiHelpers.ResizeText(mpage.WeatherData.description, lblCurrTXT)
 	
-	'--- temp stuff
-	Dim useCel As Boolean = True
-	Dim useMetric As Boolean = True
-	'--------------
+	Dim useCel As Boolean = Main.kvs.GetDefault(cnst.INI_WEATHER_USE_CELSIUS,True)
+	Dim useMetric As Boolean = Main.kvs.GetDefault(cnst.INI_WEATHER_USE_METRIC,False)
 	
 	Dim lowTemp,highTemp,TempCurr As String
 	TempCurr = IIf(useCel, mpage.WeatherData.Temp_c & "°c",mpage.WeatherData.Temp_f & "°f")
-	highTemp = IIf(useCel, mpage.WeatherData.ForcastDays(0).High_c,mpage.WeatherData.ForcastDays(0).High_f)
-	lowTemp =IIf(useCel, mpage.WeatherData.ForcastDays(0).Low_c,mpage.WeatherData.ForcastDays(0).Low_f)
+	highTemp = IIf(useCel, mpage.WeatherData.ForcastDays(0).High_c & "°c",mpage.WeatherData.ForcastDays(0).High_f & "°f")
+	lowTemp =IIf(useCel, mpage.WeatherData.ForcastDays(0).Low_c & "°c",mpage.WeatherData.ForcastDays(0).Low_f & "°f")
 	Dim Precipitation,WindSpeed As String
 	Precipitation = IIf(useMetric, mpage.WeatherData.Precipitation_mm & "mm",mpage.WeatherData.Precipitation_inches & "inches")
 	WindSpeed = IIf(useMetric, mpage.WeatherData.WindSpeed_kph & "Kph" ,mpage.WeatherData.WindSpeed_mph & "Mph")
 	
-		
-	
-	Dim description As String = "Low: " & lowTemp & "°" & " / High: " & highTemp & "°" & CRLF & CRLF &  _
-			  "Precipitation: " & Precipitation & "%" & CRLF & _	
+	Dim details As String = "Low: " & lowTemp & " / High: " & highTemp  & CRLF &  _
+			  "Precipitation: " & Precipitation & CRLF & _	
 			  "Humidity: " & mpage.WeatherData.Humidity & "%" & CRLF & _
-			  "Pressure: " & mpage.WeatherData.Pressure & "''" & CRLF & _
+			  "Pressure: " & mpage.WeatherData.Pressure  & CRLF & _
 			  "Wind Speed: " & WindSpeed  & CRLF & _
 			  "Wind Direction: " & mpage.WeatherData.WindDirection & CRLF & _
 			  "Cloud Cover: " & mpage.WeatherData.CloudCover & "%" & CRLF & _
-			  "Sunrise: " & mpage.WeatherData.SunriseTime & CRLF & "Sunset: " & mpage.WeatherData.SunsetTime
+			  "Sunrise: " & mpage.WeatherData.ForcastDays(0).Sunrise &  " - Sunset: " & mpage.WeatherData.ForcastDays(0).Sunset
 	
-	
-	guiHelpers.ResizeText(description, lblCurrTXT)
+	guiHelpers.ResizeText(mpage.WeatherData.Description, lblCurrDesc)
+	guiHelpers.ResizeText(details, lblCurrTXT)
 	lblCurrTXT.TextSize = lblCurrTXT.TextSize - 4
 		
 	guiHelpers.ResizeText(TempCurr , lblCurrTemp)
@@ -168,14 +159,7 @@ Sub WeatherData_Updated
 	'fn.SetTextShadow(lblCurrTemp, 1, 1, 1, Colors.ARGB(255, 0, 0, 0))
 	
 	If mpage.WeatherData.lastUpdatedAt <> lastWeatherCall Then
-		If pnlCalDay.Visible = False Then '--- is cal day is showing?
-			'--- only do the fade in when a new call to the weather site
-'			Dim a As Animation
-'			a.InitializeAlpha("",0,1)
-'			a.Duration = 900
-'			a.Start(pnlCurrent)
-			lastWeatherCall = mpage.WeatherData.lastUpdatedAt
-		End If
+		lastWeatherCall = mpage.WeatherData.lastUpdatedAt
 	End If
 
 End Sub

@@ -64,6 +64,9 @@ Public Sub Initialize
 		'--- 1st run!
 		Main.kvs.Put(cnst.INI_INSTALL_DATE,DateTime.Now)
 		Main.kvs.Put(cnst.INI_CURRENT_VER,cnst.APP_FILE_VERSION)
+		Main.kvs.Put(cnst.INI_WEATHER_DEFAULT_CITY,"Kherson, Ukraine")
+		Main.kvs.Put(cnst.INI_WEATHER_USE_CELSIUS,True)
+		Main.kvs.Put(cnst.INI_WEATHER_USE_METRIC,False)
 	Else
 		'--- this will matter when a new version of the app is released as
 		'--- settings files and others things might also need to be updated
