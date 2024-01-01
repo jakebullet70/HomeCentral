@@ -126,30 +126,43 @@ End Sub
 
 Sub WeatherData_Updated
 	
-	guiHelpers.ResizeText(mpage.WeatherData.TodayQuick.description, lblCurrTXT)
+	guiHelpers.ResizeText(mpage.WeatherData.description, lblCurrTXT)
 	
-	Dim lowTemp,highTemp As String
-	'mpage.WeatherData.TodayQuick.
-	'mpage.WeatherData.TodayQuick.
+	'--- temp stuff
+	Dim useCel As Boolean = True
+	Dim useMetric As Boolean = True
+	'--------------
+	
+	Dim lowTemp,highTemp,TempCurr As String
+	TempCurr = IIf(useCel, mpage.WeatherData.Temp_c & "°c",mpage.WeatherData.Temp_f & "°f")
+	highTemp = IIf(useCel, mpage.WeatherData.ForcastDays(0).High_c,mpage.WeatherData.ForcastDays(0).High_f)
+	lowTemp =IIf(useCel, mpage.WeatherData.ForcastDays(0).Low_c,mpage.WeatherData.ForcastDays(0).Low_f)
+	Dim Precipitation,WindSpeed As String
+	Precipitation = IIf(useMetric, mpage.WeatherData.Precipitation_mm & "mm",mpage.WeatherData.Precipitation_inches & "inches")
+	WindSpeed = IIf(useMetric, mpage.WeatherData.WindSpeed_kph & "Kph" ,mpage.WeatherData.WindSpeed_mph & "Mph")
+	
+		
 	
 	Dim description As String = "Low: " & lowTemp & "°" & " / High: " & highTemp & "°" & CRLF & CRLF &  _
-			  "Precipitation: " & mpage.WeatherData.Precipitation & "%" & CRLF & _	
+			  "Precipitation: " & Precipitation & "%" & CRLF & _	
 			  "Humidity: " & mpage.WeatherData.Humidity & "%" & CRLF & _
 			  "Pressure: " & mpage.WeatherData.Pressure & "''" & CRLF & _
-			  "Wind Speed: " & mpage.WeatherData.WindSpeed & "Mph" & CRLF & _
+			  "Wind Speed: " & WindSpeed  & CRLF & _
 			  "Wind Direction: " & mpage.WeatherData.WindDirection & CRLF & _
 			  "Cloud Cover: " & mpage.WeatherData.CloudCover & "%" & CRLF & _
 			  "Sunrise: " & mpage.WeatherData.SunriseTime & CRLF & "Sunset: " & mpage.WeatherData.SunsetTime
 	
+	
 	guiHelpers.ResizeText(description, lblCurrTXT)
 	lblCurrTXT.TextSize = lblCurrTXT.TextSize - 4
 		
-	guiHelpers.ResizeText(mpage.WeatherData.TodayQuick.Tempurature & "°", lblCurrTemp)
-	guiHelpers.ResizeText(mpage.WeatherData.Location, lblLocation)
+	guiHelpers.ResizeText(TempCurr , lblCurrTemp)
+	guiHelpers.ResizeText(mpage.WeatherData.Location1, lblLocation)
+	
 	'g.setText("Low: " & g.WeatherData.TodayQuick.Low & CRLF & "High: " & g.WeatherData.TodayQuick.High, lblDay0)
 	
 	'g.WeatherData.GetWeatherIcon(g.WeatherData.IconMapNumber,imgCurrent)
-	CallSubDelayed3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.IconMapNumber,imgCurrent)
+	'CallSubDelayed3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.IconMapNumber,imgCurrent)
 	
 	
 	'fn.SetTextShadow(lblCurrTemp, 1, 1, 1, Colors.ARGB(255, 0, 0, 0))

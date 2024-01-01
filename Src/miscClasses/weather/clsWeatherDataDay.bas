@@ -7,8 +7,8 @@ Version=7.3
 'Class module
 Sub Class_Globals
 	Public Day As String = "N/A"
-	Public Tempurature_c As String = "N/A"
-	Public Tempurature_f As String = "N/A"
+	Public AverageTemp_c As String = "N/A"
+	Public AverageTemp_f As String = "N/A"
 	Public High_c As String = "N/A"
 	Public Low_c As String = "N/A"
 	Public High_f As String = "N/A"
@@ -19,7 +19,21 @@ Sub Class_Globals
 	Public Sunrise As String = "N/A"
 	Public Sunset As String = "N/A"
 	Public IconMapNumber As Int = -1
+	Public IconURL As String = "N/A"
 	Public LocalTime As String = "N/A"
+	Public ChanceOfSnow As String = "N/A"
+	Public ChanceOfRain As String = "N/A"
+	Public WillItRain As String = "N/A"
+	Public WillItSnow As String = "N/A"
+	Public Percip_mm As String = "N/A"
+	Public Percip_inches As String = "N/A"
+	Public UV As String = "N/A"
+	Public Snow_cm As String = "N/A"
+	Public Snow_inches As String = "N/A"
+	Public Max_Wind_kph As String  = "N/A"
+	Public Max_Wind_mph As String = "N/A"
+	Public Humidity As String = "N/A"
+	
 End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
