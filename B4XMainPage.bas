@@ -56,7 +56,7 @@ Public Sub Initialize
 	#if b4j
 	xui.SetDataFolder(cnst.APP_NAME)
 	#end if
-	Main.EventsGlobal.Initialize
+	Main.EventGbl.Initialize
 	Main.kvs.Initialize(xui.DefaultFolder,cnst.APP_NAME & "_settings.db3")
 	Main.sql = Main.kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
 	themes.Init '--- set colors
@@ -116,6 +116,13 @@ Private Sub BuildGUI
 	
 End Sub
 
+#if b4j
+Private Sub B4XPage_Resize (Width As Int, Height As Int)
+	pnlBG.Width = Width
+	pnlBG.Height = Height
+	If SubExists(oPageCurrent,"Resize_Me") Then  CallSubDelayed3(oPageCurrent,"Resize_Me", Width,Height)
+End Sub
+#end if
 
 '================== MAIN MENU ====================================
 #region MAIN_MENU

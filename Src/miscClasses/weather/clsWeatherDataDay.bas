@@ -18,8 +18,9 @@ Sub Class_Globals
 	Public Description As String = "N/A"
 	Public Sunrise As String = "N/A"
 	Public Sunset As String = "N/A"
-	Public IconMapNumber As Int = -1
+	Public IconID As Int = -1
 	Public IconURL As String = "N/A"
+	Public APIcode As Int = -1
 	Public LocalTime As String = "N/A"
 	Public ChanceOfSnow As String = "N/A"
 	Public ChanceOfRain As String = "N/A"

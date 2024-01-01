@@ -47,7 +47,7 @@ Public Sub Update_Scrn
 	DateTime.DateFormat = ""
 	
 	'--- raise the clock event, any object subscribed to it will get it
-	Main.EventsGlobal.Raise2(cnst.EVENT_CLOCK_CHANGE,DateUtils.TicksToString(DateTime.Now))
+	Main.EventGbl.Raise2(cnst.EVENT_CLOCK_CHANGE,DateUtils.TicksToString(DateTime.Now))
 	
 	DateTime.TimeFormat = fmtT
 	DateTime.DateFormat = fmtD

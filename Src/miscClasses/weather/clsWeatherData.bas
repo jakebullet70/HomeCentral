@@ -8,9 +8,13 @@ Version=7.3
 Sub Class_Globals
 	Private xui As XUI
 	Public lastUpdatedAt As Long
+	Type typeWeatherCodeData(DayDesc As String, NightDesc As String, IconID As Int)
 	
 	Public WeatherKey As String
+	Public WeatherAPICodes As Map
+	Public WeatherAPIcode As Int
 	Public IsError As Boolean
+	
 	
 	Public Description As String
 	Public Location1, Country As String
@@ -18,12 +22,10 @@ Sub Class_Globals
 	Public CloudCover As String
 	Public Humidity As String
 	Public Pressure As String
-	Public IsDay As String
+	Public IsDay As Boolean
 	Public WindDirection As String
 	Public WindSpeed_mph,WindSpeed_kph As String
 	Public GustSpeed_mph,GustSpeed_kph As String
-	Public IconMapNumber As Int
-	Public IconURL As String
 	Public FeelsLike_f,FeelsLike_c As String
 	Public Temp_f,Temp_c As String
 	Public Visibility_km,Visibility_miles As String
@@ -48,7 +50,7 @@ Sub getIsWeatherUpToDate As Boolean
 End Sub
 
 '========================  these where in a public aobject ========================
-public Sub GetWeather_Icon2(id As Int, img As lmB4XImageViewX)
+Public Sub GetWeather_Icon2(id As Int, img As lmB4XImageViewX)
 	
 	If id <= 0 Then Return
 	Try
@@ -58,25 +60,14 @@ public Sub GetWeather_Icon2(id As Int, img As lmB4XImageViewX)
 		End If
 		
 		'Dim daytime As Boolean =  dtHelpers.IsItDayTime(SunriseTime,SunsetTime,LocalTime)
-		img.Bitmap =  xui.LoadBitmap(File.DirAssets,GetWeather_IconFileName(id,IsDay.As(Boolean)))
+		img.Bitmap =  xui.LoadBitmap(File.DirAssets, _ 
+							"weathericon/" & cnst.WEATHERicons & IIf(IsDay,"/day/","/night/") & id & ".png")
 		
 	Catch
 		Log(LastException)
 	End Try
 End Sub
 
-private Sub GetWeather_IconFileName(id As Int,daytime As Boolean) As String
-	Dim DayOrNight As String
-
-	If daytime Then
-		DayOrNight = "/day/"
-	Else
-		DayOrNight = "/night/"
-	End If
-	Dim fname As String =  "weathericon/" & cnst.WEATHERicons & DayOrNight & id & ".png"
-	Return fname
-	
-End Sub
 '===============================================================
 
 Public Sub Initialize
@@ -84,12 +75,28 @@ Public Sub Initialize
 	
 	lastUpdatedAt = 1
 	
-	WeatherKey = cnst.OpenWeatherAPI
+	WeatherKey = cnst.WeatherAPIKey
+	ReadApiCodes
 	
-	Main.EventsGlobal.Subscribe(cnst.EVENT_INET_ON_CONNECT,Me, "Internet_OnConnected")
+	Main.EventGbl.Subscribe(cnst.EVENT_INET_ON_CONNECT,Me, "Internet_OnConnected")
 
 	tmrErrorInRecievingWeather.Initialize("ErrorGettingWeather",1000 * 60) '--- every 1 minute
 	
+End Sub
+
+Private Sub ReadApiCodes()
+	Dim parser As JSONParser
+	parser.Initialize(File.ReadString(File.DirAssets,"weatherAPI_codes.json"))
+	Dim root As List = parser.NextArray
+	WeatherAPICodes.Initialize
+	For Each colroot As Map In root
+		Dim m As Map : 	m.Initialize
+		Dim o As typeWeatherCodeData
+		o.DayDesc = colroot.Get("day")
+		o.NightDesc = colroot.Get("night")
+		o.IconID = colroot.Get("icon")
+		WeatherAPICodes.Put(colroot.Get("code").As(Int),o)
+	Next
 End Sub
 
 Sub Internet_OnConnected
@@ -105,10 +112,10 @@ Public Sub TryUpdate
 	If lastUpdatedAt <> 0 Then
 		If dtHelpers.HoursBetween(DateTime.now, lastUpdatedAt) >= 1 Then
 			If (LastUpdatedCity = "") Then
-				Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
+				Main.EventGbl.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
 				Update_Weather_Default_City
 			Else
-				Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
+				Main.EventGbl.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
 				Update_Weather(LastUpdatedCity)
 			End If
 		End If
@@ -117,7 +124,7 @@ End Sub
 
 Public Sub TryUpdateBecauseOfError
 	If dtHelpers.HoursBetween(DateTime.now, lastUpdatedAt) >= 1 Then
-		Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
+		Main.EventGbl.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
 		If (LastUpdatedCity = "") Then
 			Update_Weather_Default_City
 		Else
@@ -155,7 +162,7 @@ Private Sub ParseWeatherJob(s As String)
 		'Dim last_updated As String = current.Get("last_updated")
 		'Dim wind_degree As Int = current.Get("wind_degree")
 		'Dim last_updated_epoch As Int = current.Get("last_updated_epoch")
-		IsDay = current.Get("is_day")
+		IsDay = fnct.int2bool(current.Get("is_day").As(Int))
 		Precipitation_inches = current.Get("precip_in")
 		Precipitation_mm =  current.Get("precip_mm")
 		WindDirection = current.Get("wind_dir")
@@ -175,7 +182,7 @@ Private Sub ParseWeatherJob(s As String)
 		'--- Condition info
 		Dim condition As Map = current.Get("condition")
 		'Dim code As Int = condition.Get("code")
-		IconURL = condition.Get("icon")
+		'IconURL = condition.Get("icon")
 		Description = condition.Get("text")
 	
 		'--- Location info
@@ -203,8 +210,8 @@ Private Sub ParseWeatherJob(s As String)
 			Dim astro As Map = colforecastday.Get("astro")
 			'Dim moonset As String = astro.Get("moonset")
 			'Dim moon_illumination As Int = astro.Get("moon_illumination")
-			ForcastDays(forcastSlot).Sunrise = astro.Get("sunrise")
-			ForcastDays(forcastSlot).Sunset = astro.Get("sunset")
+			ForcastDays(forcastSlot).Sunrise = FormatTimeStr(astro.Get("sunrise"))
+			ForcastDays(forcastSlot).Sunset = FormatTimeStr(astro.Get("sunset"))
 			'Dim moon_phase As String = astro.Get("moon_phase")
 			'Dim is_moon_up As Int = astro.Get("is_moon_up")
 			'Dim is_sun_up As Int = astro.Get("is_sun_up")
@@ -243,7 +250,8 @@ Private Sub ParseWeatherJob(s As String)
 		
 			'--- conditions ???
 			Dim condition As Map = day.Get("condition")
-			'Dim code As Int = condition.Get("code")
+			ForcastDays(forcastSlot).APIcode = condition.Get("code")
+			ForcastDays(forcastSlot).IconID = GetIconFromApi(ForcastDays(forcastSlot).APIcode)
 			ForcastDays(forcastSlot).Description = condition.Get("text")
 			ForcastDays(forcastSlot).Max_Wind_kph = day.Get("maxwind_kph")
 			ForcastDays(forcastSlot).Max_Wind_mph = day.Get("maxwind_mph")
@@ -258,11 +266,30 @@ Private Sub ParseWeatherJob(s As String)
 
 End Sub
 
+Private Sub GetIconFromApi(code As Int) As Int
+	Try
+		
+		Dim o As typeWeatherCodeData
+		o = WeatherAPICodes.Get(code).As(typeWeatherCodeData)
+		Return o.IconID
+		
+	Catch
+		Log(LastException)
+	End Try
+	Return -1
+	
+End Sub
+
+
+Private Sub FormatTimeStr(ti As String) As String
+	Log("TODO - fmtTimeStr")
+	Return ti
+End Sub
+
 Sub Update_Weather_Default_City
 	Update_Weather(Main.kvs.GetDefault(cnst.INI_WEATHER_DEFAULT_CITY,"Seattle"))
 End Sub
 
-'Update the weather for a specific City
 Private Sub Update_Weather(city As String) As ResumableSub
 	
 	Dim realCity As String = city
@@ -288,32 +315,31 @@ Private Sub Update_Weather(city As String) As ResumableSub
 		
 		Dim retVal As Boolean,  job As HttpJob
 		job.Initialize("", Me)
-		job.Download("http://api.weatherapi.com/v1/forecast.json?key=b48d92cda3b045938a7174835233112&q=kherson&days=3&aqi=no&alerts=no")
+		job.Download($"http://api.weatherapi.com/v1/forecast.json?key=${WeatherKey}&q=kherson&days=3&aqi=no&alerts=no"$)
 		Wait For (job) JobDone(job As HttpJob)
 		retVal = job.Success
 		
 		If job.Success Then
 			'File.WriteString(xui.DefaultFolder,"1.txt",job.GetString)
 			ParseWeatherJob(job.GetString)   
-			Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_UPDATED)
+			Main.EventGbl.Raise(cnst.EVENT_WEATHER_UPDATED)
 			'Location = city
 		Else
 			Log("weather call failed - responce code = " & job.Response.StatusCode)	
-			Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_UPDATE_FAILED)
+			Main.EventGbl.Raise(cnst.EVENT_WEATHER_UPDATE_FAILED)
 		End If
 		
 		job.Release
 		Return retVal
 		
 	Catch
-		' Something with weather has failed. We should try and setup for a quick refresh
+		'--- Something with weather has failed. We should try and setup for a quick refresh
 		 Log("Something with weather has failed:")
 		LastUpdatedCity = realCity
 		
 	End Try
 	Return False
 End Sub
-
 
 Public Sub ResetWeatherTimer()
 	lastUpdatedAt = 1
