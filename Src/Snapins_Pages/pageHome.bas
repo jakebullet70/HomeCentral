@@ -135,29 +135,29 @@ Sub WeatherData_RefreshScrn
 	Dim useMetric As Boolean = Main.kvs.GetDefault(cnst.INI_WEATHER_USE_METRIC,False)
 	
 	Dim lowTemp,highTemp,TempCurr,Precipitation,WindSpeed As String
-	TempCurr     = IIf(useCel, mpage.WeatherData.Temp_c & "°c",mpage.WeatherData.Temp_f & "°f")
+	TempCurr     = IIf(useCel, mpage.WeatherData.qTemp_c & "°c",mpage.WeatherData.qTemp_f & "°f")
 	highTemp      = IIf(useCel, mpage.WeatherData.ForcastDays(0).High_c & "°c",mpage.WeatherData.ForcastDays(0).High_f & "°f")
 	lowTemp       = IIf(useCel, mpage.WeatherData.ForcastDays(0).Low_c & "°c",mpage.WeatherData.ForcastDays(0).Low_f & "°f")
-	Precipitation = IIf(useMetric, mpage.WeatherData.Precipitation_mm & "mm",mpage.WeatherData.Precipitation_inches & "inches")
-	WindSpeed   = IIf(useMetric, mpage.WeatherData.WindSpeed_kph & "Kph" ,mpage.WeatherData.WindSpeed_mph & "Mph")
+	Precipitation = IIf(useMetric, mpage.WeatherData.qPrecipitation_mm & "mm",mpage.WeatherData.qPrecipitation_inches & "inches")
+	WindSpeed   = IIf(useMetric, mpage.WeatherData.qWindSpeed_kph & "Kph" ,mpage.WeatherData.qWindSpeed_mph & "Mph")
 	
 	Dim details As String = "Low: " & lowTemp & " / High: " & highTemp  & CRLF &  _
 			  "Precipitation: " & Precipitation & CRLF & _	
-			  "Humidity: " & mpage.WeatherData.Humidity & "%" & CRLF & _
-			  "Pressure: " & mpage.WeatherData.Pressure  & CRLF & _
+			  "Humidity: " & mpage.WeatherData.qHumidity & "%" & CRLF & _
+			  "Pressure: " & mpage.WeatherData.qPressure  & CRLF & _
 			  "Wind Speed: " & WindSpeed  & CRLF & _
-			  "Wind Direction: " & mpage.WeatherData.WindDirection & CRLF & _
-			  "Cloud Cover: " & mpage.WeatherData.CloudCover & "%" & CRLF & _
+			  "Wind Direction: " & mpage.WeatherData.qWindDirection & CRLF & _
+			  "Cloud Cover: " & mpage.WeatherData.qCloudCover & "%" & CRLF & _
 			  "Sunrise: " & mpage.WeatherData.ForcastDays(0).Sunrise &  " - Sunset: " & mpage.WeatherData.ForcastDays(0).Sunset
 	
-	guiHelpers.ResizeText(mpage.WeatherData.Description, lblCurrDesc)
+	guiHelpers.ResizeText(mpage.WeatherData.qDescription, lblCurrDesc)
 	guiHelpers.ResizeText(details, lblCurrTXT)
 	#if b4a
 	lblCurrTXT.TextSize = lblCurrTXT.TextSize - 4
 	#end if
 		
 	guiHelpers.ResizeText(TempCurr , lblCurrTemp)
-	guiHelpers.ResizeText(mpage.WeatherData.Location1, lblLocation)
+	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
 	
 	CallSubDelayed3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.ForcastDays(0).IconID,imgCurrent)
 	

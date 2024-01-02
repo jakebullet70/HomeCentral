@@ -5,6 +5,7 @@ Type=Class
 Version=7.3
 @EndOfDesignText@
 'Class module
+'https://www.weatherapi.com/docs/
 Sub Class_Globals
 	Private xui As XUI
 	Public lastUpdatedAt As Long
@@ -16,20 +17,20 @@ Sub Class_Globals
 	Public IsError As Boolean
 	
 	
-	Public Description As String
-	Public Location1, Country As String
-	Public Precipitation_mm,Precipitation_inches As String
-	Public CloudCover As String
-	Public Humidity As String
-	Public Pressure As String
-	Public IsDay As Boolean
-	Public WindDirection As String
-	Public WindSpeed_mph,WindSpeed_kph As String
-	Public GustSpeed_mph,GustSpeed_kph As String
-	Public FeelsLike_f,FeelsLike_c As String
-	Public Temp_f,Temp_c As String
-	Public Visibility_km,Visibility_miles As String
-	Public LocalTime As String, LocalTime_Epoch As Long
+	Public qDescription As String
+	Public qLocation, qCountry As String
+	Public qPrecipitation_mm,qPrecipitation_inches As String
+	Public qCloudCover As String
+	Public qHumidity As String
+	Public qPressure As String
+	Public qIsDay As Boolean
+	Public qWindDirection As String
+	Public qWindSpeed_mph,qWindSpeed_kph As String
+	Public qGustSpeed_mph,qGustSpeed_kph As String
+	Public qFeelsLike_f,qFeelsLike_c As String
+	Public qTemp_f,qTemp_c As String
+	Public qVisibility_km,qVisibility_miles As String
+	Public qLocalTime As String, qLocalTime_Epoch As Long
 		
 	Public ForcastDays(3) As clsWeatherDataDay 
 	
@@ -61,7 +62,7 @@ Public Sub GetWeather_Icon2(id As Int, img As lmB4XImageViewX)
 		
 		'Dim daytime As Boolean =  dtHelpers.IsItDayTime(SunriseTime,SunsetTime,LocalTime)
 		img.Bitmap =  xui.LoadBitmap(File.DirAssets, _ 
-							"weathericon/" & cnst.WEATHERicons & IIf(IsDay,"/day/","/night/") & id & ".png")
+							"weathericon/" & cnst.WEATHERicons & IIf(qIsDay,"/day/","/night/") & id & ".png")
 		
 	Catch
 		Log(LastException)
@@ -156,41 +157,41 @@ Private Sub ParseWeatherJob(s As String)
 	
 	Try
 		Dim current As Map = root.Get("current")
-		FeelsLike_f  = current.Get("feelslike_f")
-		FeelsLike_c = current.Get("feelslike_c")
+		qFeelsLike_f  = current.Get("feelslike_f")
+		qFeelsLike_c = current.Get("feelslike_c")
 		'Dim uv As Double = current.Get("uv")
 		'Dim last_updated As String = current.Get("last_updated")
 		'Dim wind_degree As Int = current.Get("wind_degree")
 		'Dim last_updated_epoch As Int = current.Get("last_updated_epoch")
-		IsDay = fnct.int2bool(current.Get("is_day").As(Int))
-		Precipitation_inches = current.Get("precip_in")
-		Precipitation_mm =  current.Get("precip_mm")
-		WindDirection = current.Get("wind_dir")
-		GustSpeed_mph = current.Get("gust_mph") & "mph"
-		GustSpeed_kph = current.Get("gust_kph") & "kph"
-		Temp_c = current.Get("temp_c")
-		Temp_f  = current.Get("temp_f")
-		Pressure = current.Get("pressure_in")
-		CloudCover = current.Get("cloud")
-		WindSpeed_kph  = current.Get("wind_kph") & "kph"
-		WindSpeed_mph  = current.Get("wind_mph")
-		Humidity = current.Get("humidity")
-		Pressure = current.Get("pressure_mb") & "mb"
-		Visibility_miles = current.Get("vis_miles")
-		Visibility_km  = current.Get("vis_km")
+		qIsDay = fnct.int2bool(current.Get("is_day").As(Int))
+		qPrecipitation_inches = current.Get("precip_in")
+		qPrecipitation_mm =  current.Get("precip_mm")
+		qWindDirection = current.Get("wind_dir")
+		qGustSpeed_mph = current.Get("gust_mph") & "mph"
+		qGustSpeed_kph = current.Get("gust_kph") & "kph"
+		qTemp_c = current.Get("temp_c")
+		qTemp_f  = current.Get("temp_f")
+		qPressure = current.Get("pressure_in")
+		qCloudCover = current.Get("cloud")
+		qWindSpeed_kph  = current.Get("wind_kph") & "kph"
+		qWindSpeed_mph  = current.Get("wind_mph")
+		qHumidity = current.Get("humidity")
+		qPressure = current.Get("pressure_mb") & "mb"
+		qVisibility_miles = current.Get("vis_miles")
+		qVisibility_km  = current.Get("vis_km")
 	
 		'--- Condition info
 		Dim condition As Map = current.Get("condition")
 		'Dim code As Int = condition.Get("code")
 		'IconURL = condition.Get("icon")
-		Description = condition.Get("text")
+		qDescription = condition.Get("text")
 	
 		'--- Location info
 		Dim Location As Map = root.Get("location")
-		LocalTime = Location.Get("localtime")
-		Country = Location.Get("country")
-		LocalTime_Epoch = Location.Get("localtime_epoch")
-		Location1 = Location.Get("name")
+		qLocalTime = Location.Get("localtime")
+		qCountry = Location.Get("country")
+		qLocalTime_Epoch = Location.Get("localtime_epoch")
+		qLocation = Location.Get("name")
 		'Dim lon As Double = Location.Get("lon")
 		'Dim region As String = Location.Get("region")
 		'Dim lat As Double = Location.Get("lat")
@@ -282,6 +283,7 @@ End Sub
 
 
 Private Sub FormatTimeStr(ti As String) As String
+	'--- The JSON is in AM/PM by default
 	Log("TODO - fmtTimeStr")
 	Return ti
 End Sub
