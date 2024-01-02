@@ -1,5 +1,5 @@
 ﻿B4J=true
-Group=Helpers
+Group=Helpers-StaticCodeMods
 ModulesStructureVersion=1
 Type=StaticCode
 Version=9.5
@@ -151,8 +151,8 @@ End Sub
 '-----------------------------------------------------------------------------
 Public Sub ResizeText(value As Object, lbl As B4XView)
 	
-	XUIViewsUtils.SetTextOrCSBuilderToLabel(lbl,value)
 	#if b4j '--- b4j dose not resize
+	XUIViewsUtils.SetTextOrCSBuilderToLabel(lbl,value)
 	Return
 	#else
 	Dim multipleLines As Boolean = lbl.Text.Contains(CRLF)

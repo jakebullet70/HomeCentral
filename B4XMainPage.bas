@@ -11,20 +11,29 @@ Version=9.85
 
 'Ctrl + click to export as zip: ide://run?File=%B4X%\Zipper.jar&Args=Project.zip
 
+' Project folder: ide://run?file=%WINDIR%\SysWOW64\explorer.exe&Args=%PROJECT%
+
+'-------------------------  Run this project in different IDE
+'B4A ide://run?file=%WINDIR%\System32\cmd.exe&Args=/c&Args=start&Args=..\..\B4A\%PROJECT_NAME%.b4a
+'B4i ide://run?file=%WINDIR%\System32\cmd.exe&Args=/c&Args=start&Args=..\..\B4i\%PROJECT_NAME%.b4i
+'B4J ide://run?file=%WINDIR%\System32\cmd.exe&Args=/c&Args=start&Args=..\..\B4J\%PROJECT_NAME%.b4j
+
 Sub Class_Globals
 	Public Root As B4XView, xui As XUI, Toast As BCToast
 	Private dUtils As DDD
 	
+	Public WeatherData As clsWeatherData
+	
 	Public Dialog, DialogMSGBOX As B4XDialog
 	Public oClock As Clock
 	
+	'--- this page - master --------------------
 	Private pnlBG As B4XView
 	
 	Private pnlCalculator,pnlHome,pnlWeather,pnlConversions,pnlPhotos As B4XView
 	Public oPageCurrent As Object = Null
 	Private oPageConversion As pageConversions,oPagePhoto As pagePhotos,oPageTimers As pageKTimers
 	Private oPageCalculator As pageCalculator,  oPageHome As pageHome, oPageWeather As pageWeather
-	
 	
 	Private pnlSideMenu As B4XView
 	Private  btnHeaderMenu As B4XView
@@ -39,6 +48,7 @@ Sub Class_Globals
 	Public lvSideMenu,lvHeaderMenu As CustomListView
 	
 	Public btnHdrTxt1 As B4XView
+	'-----------------------------------------
 End Sub
 
 Public Sub Initialize
@@ -46,18 +56,24 @@ Public Sub Initialize
 	#if b4j
 	xui.SetDataFolder(cnst.APP_NAME)
 	#end if
+	Main.EventGbl.Initialize
 	Main.kvs.Initialize(xui.DefaultFolder,cnst.APP_NAME & "_settings.db3")
+	Main.sql = Main.kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
 	themes.Init '--- set colors
-	If Main.kvs.ContainsKey(cnst.SETTINGS_INSTALL_DATE) = False Then
+	If Main.kvs.ContainsKey(cnst.INI_INSTALL_DATE) = False Then
 		'--- 1st run!
-		Main.kvs.Put(cnst.SETTINGS_INSTALL_DATE,DateTime.Now)
-		Main.kvs.Put(cnst.SETTINGS_CURRENT_VER,cnst.APP_FILE_VERSION)
+		Main.kvs.Put(cnst.INI_INSTALL_DATE,DateTime.Now)
+		Main.kvs.Put(cnst.INI_CURRENT_VER,cnst.APP_FILE_VERSION)
+		Main.kvs.Put(cnst.INI_WEATHER_DEFAULT_CITY,"Kherson, Ukraine")
+		Main.kvs.Put(cnst.INI_WEATHER_USE_CELSIUS,True)
+		Main.kvs.Put(cnst.INI_WEATHER_USE_METRIC,False)
 	Else
 		'--- this will matter when a new version of the app is released as
 		'--- settings files and others things might also need to be updated
 		Dim vo As CheckVersions : vo.Initialize
 		vo.CheckAndUpgrade
 	End If
+	WeatherData.Initialize
 End Sub
 
 
@@ -70,9 +86,10 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	Toast.Initialize(Root) 
 	dUtils.Initialize '--- DDD desgner utils
 	oClock.Initialize
-
+	
 	BuildGUI
 End Sub
+
 
 Private Sub BuildGUI
 	
@@ -99,6 +116,13 @@ Private Sub BuildGUI
 	
 End Sub
 
+#if b4j
+Private Sub B4XPage_Resize (Width As Int, Height As Int)
+	pnlBG.Width = Width
+	pnlBG.Height = Height
+	If SubExists(oPageCurrent,"Resize_Me") Then  CallSubDelayed3(oPageCurrent,"Resize_Me", Width,Height)
+End Sub
+#end if
 
 '================== MAIN MENU ====================================
 #region MAIN_MENU

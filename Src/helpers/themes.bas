@@ -1,5 +1,5 @@
 ﻿B4J=true
-Group=Helpers
+Group=Helpers-StaticCodeMods
 ModulesStructureVersion=1
 Type=StaticCode
 Version=9.5

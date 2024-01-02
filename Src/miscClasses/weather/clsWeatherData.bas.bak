@@ -1,0 +1,343 @@
+﻿B4A=true
+Group=MiscClasses\Weather
+ModulesStructureVersion=1
+Type=Class
+Version=7.3
+@EndOfDesignText@
+'Class module
+Sub Class_Globals
+	Private xui As XUI
+	Public lastUpdatedAt As Long
+	
+	Public WeatherKey As String
+	Public IsError As Boolean
+
+	Public TodayQuick As clsWeatherDataDay
+	Public ForcastDays(3) As clsWeatherDataDay
+	
+	Public LastErrorMessage As String
+	
+	Public IsInitialize As Boolean
+	Public LastUpdatedCity As String
+	Private tmrErrorInRecievingWeather As Timer
+	
+End Sub
+
+Sub getIsWeatherUpToDate As Boolean
+	If lastUpdatedAt <> 0 And dtHelpers.HoursBetween(DateTime.now, lastUpdatedAt) >= 1 Then
+		Return False
+	Else
+		Return True
+	End If
+End Sub
+
+
+'========================  these where in a public aobject ========================
+
+public Sub GetWeather_Icon2(id As Int, img As lmB4XImageViewX)
+	
+	If id = 0 Then Return
+	Try
+		
+		If Not (img.IsInitialized) Then
+			img.Initialize("","")
+		End If
+		
+		Dim daytime As Boolean =  dtHelpers.IsItDayTime(SunriseTime,SunsetTime,TodayQuick.LocalTime)
+		img.Bitmap =  xui.LoadBitmap(File.DirAssets,GetWeather_IconFileName(id,daytime))
+		
+	Catch
+		Log(LastException)
+	End Try
+End Sub
+
+private Sub GetWeather_IconFileName(id As Int,daytime As Boolean) As String
+	Dim DayOrNight As String
+
+	If daytime Then
+		DayOrNight = "/day/"
+	Else
+		DayOrNight = "/night/"
+	End If
+	Dim fname As String =  "weathericon/" & cnst.WEATHERicons & DayOrNight & id & ".png"
+	Return fname
+	
+End Sub
+'===============================================================
+
+Public Sub Initialize
+	IsInitialize = True
+	
+	lastUpdatedAt = 1
+	
+	WeatherKey = cnst.OpenWeatherAPI
+	
+	Main.EventsGlobal.Subscribe(cnst.EVENT_INET_ON_CONNECT,Me, "Internet_OnConnected")
+
+	tmrErrorInRecievingWeather.Initialize("ErrorGettingWeather",1000 * 60) '--- every 1 minute
+	
+End Sub
+
+Sub Internet_OnConnected
+	TryUpdate
+End Sub
+
+Sub	ErrorGettingWeather_Tick
+	tmrErrorInRecievingWeather.Enabled = False '--- turn off the timer
+	TryUpdateBecauseOfError
+End Sub
+
+Public Sub TryUpdate
+	If lastUpdatedAt <> 0 Then
+		If dtHelpers.HoursBetween(DateTime.now, lastUpdatedAt) >= 1 Then
+			If (LastUpdatedCity = "") Then
+				Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
+				Update_Weather_Default_City
+			Else
+				Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
+				Update_Weather(LastUpdatedCity)
+			End If
+		End If
+	End If
+End Sub
+
+Public Sub TryUpdateBecauseOfError
+	If dtHelpers.HoursBetween(DateTime.now, lastUpdatedAt) >= 1 Then
+		Main.EventsGlobal.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
+		If (LastUpdatedCity = "") Then
+			Update_Weather_Default_City
+		Else
+			Update_Weather(LastUpdatedCity)
+		End If
+	End If
+End Sub
+
+Private Sub ParseDateStr2Ticks(utc As String) As Long
+	Dim df As String = DateTime.DateFormat
+	Dim res As Long
+	Try
+		'2023-12-31 19:45
+		DateTime.DateFormat = "yyyy MM dd HH:mm"
+		res = DateTime.DateParse(utc)
+	Catch
+		res = 0
+		Log("Error parsing Date 2: " & utc)
+	End Try
+	DateTime.DateFormat = df
+	Return res
+End Sub
+
+Private Sub ParseWeatherJob(s As String)
+	lastUpdatedAt = DateTime.Now
+	
+	Dim parser As JSONParser : parser.Initialize(s)
+	Dim root As Map = parser.NextObject
+	Dim current As Map = root.Get("current")
+	
+	TodayQuick.Day = "Today"
+	TodayQuick.FeelsLike_c = current.Get("feelslike_c")
+	TodayQuick.FeelsLike_f = current.Get("feelslike_f")
+	TodayQuick.High_c = current.Get("feelslike_c")
+	TodayQuick.High_f = current.Get("feelslike_f")
+	TodayQuick.Tempurature_c = current.Get("temp_c")
+	TodayQuick.Tempurature_f = current.Get("temp_f")
+	'TodayQuick.Description
+	TodayQuick.Low_c
+	TodayQuick.Low_f
+	
+'	TodayQuick.Sunrise = astronomyMap.Get("sunrise")
+'	TodayQuick.Sunset = astronomyMap.Get("sunset")
+'	TodayQuick.IconMapNumber = currentMap.Get("weatherCode")
+				
+	'Dim uv As Double = current.Get("uv")
+	
+	Dim last_updated As String = current.Get("last_updated")
+	
+	Dim wind_degree As Int = current.Get("wind_degree")
+	'Dim last_updated_epoch As Int = current.Get("last_updated_epoch")
+	Dim is_day As Int = current.Get("is_day")
+	Dim precip_in As Double = current.Get("precip_in")
+	Dim wind_dir As String = current.Get("wind_dir")
+	Dim gust_mph As Double = current.Get("gust_mph")
+	
+	Dim pressure_in As Double = current.Get("pressure_in")
+	Dim gust_kph As Double = current.Get("gust_kph")
+	
+	Dim precip_mm As Double = current.Get("precip_mm")
+	Dim cloud As Int = current.Get("cloud")
+	Dim wind_kph As Double = current.Get("wind_kph")
+	
+	Dim condition As Map = current.Get("condition")
+	Dim code As Int = condition.Get("code")
+	Dim icon As String = condition.Get("icon")
+	Dim text As String = condition.Get("text")
+	
+	Dim wind_mph As Double = current.Get("wind_mph")
+	
+	Dim vis_km As Double = current.Get("vis_km")
+	Dim Humidity As Int = current.Get("humidity")
+	Dim pressure_mb As Double = current.Get("pressure_mb")
+	Dim vis_miles As Double = current.Get("vis_miles")
+	
+	'-------------------------------------------------------
+	Dim location As Map = root.Get("location")
+	Dim localtime As String = location.Get("localtime")
+	Dim country As String = location.Get("country")
+	Dim localtime_epoch As Int = location.Get("localtime_epoch")
+	Dim name As String = location.Get("name")
+	Dim lon As Double = location.Get("lon")
+	Dim region As String = location.Get("region")
+	Dim lat As Double = location.Get("lat")
+	Dim tz_id As String = location.Get("tz_id")
+	'-------------------------------------------------------
+	Dim forecast As Map = root.Get("forecast")
+	Dim forecastday As List = forecast.Get("forecastday")
+	For Each colforecastday As Map In forecastday
+		Dim date As String = colforecastday.Get("date")
+		Dim astro As Map = colforecastday.Get("astro")
+		Dim moonset As String = astro.Get("moonset")
+		Dim moon_illumination As Int = astro.Get("moon_illumination")
+		Dim sunrise As String = astro.Get("sunrise")
+		Dim moon_phase As String = astro.Get("moon_phase")
+		Dim sunset As String = astro.Get("sunset")
+		Dim is_moon_up As Int = astro.Get("is_moon_up")
+		Dim is_sun_up As Int = astro.Get("is_sun_up")
+		Dim moonrise As String = astro.Get("moonrise")
+		Dim date_epoch As Int = colforecastday.Get("date_epoch")
+'		Dim hour As List = colforecastday.Get("hour")
+'		For Each colhour As Map In hour
+'			Dim feelslike_c As Double = colhour.Get("feelslike_c")
+'			Dim feelslike_f As Double = colhour.Get("feelslike_f")
+'			Dim wind_degree As Int = colhour.Get("wind_degree")
+'			Dim windchill_f As Double = colhour.Get("windchill_f")
+'			Dim windchill_c As Double = colhour.Get("windchill_c")
+'			Dim temp_c As Double = colhour.Get("temp_c")
+'			Dim temp_f As Double = colhour.Get("temp_f")
+'			Dim cloud As Int = colhour.Get("cloud")
+'			Dim wind_kph As Double = colhour.Get("wind_kph")
+'			Dim wind_mph As Double = colhour.Get("wind_mph")
+'			Dim snow_cm As Double = colhour.Get("snow_cm")
+'			Dim humidity As Int = colhour.Get("humidity")
+'			Dim dewpoint_f As Double = colhour.Get("dewpoint_f")
+'			Dim will_it_rain As Int = colhour.Get("will_it_rain")
+'			Dim uv As Double = colhour.Get("uv")
+'			Dim heatindex_f As Double = colhour.Get("heatindex_f")
+'			Dim dewpoint_c As Double = colhour.Get("dewpoint_c")
+'			Dim is_day As Int = colhour.Get("is_day")
+'			Dim precip_in As Double = colhour.Get("precip_in")
+'			Dim heatindex_c As Double = colhour.Get("heatindex_c")
+'			Dim wind_dir As String = colhour.Get("wind_dir")
+'			Dim gust_mph As Double = colhour.Get("gust_mph")
+'			Dim pressure_in As Double = colhour.Get("pressure_in")
+'			Dim chance_of_rain As Int = colhour.Get("chance_of_rain")
+'			Dim gust_kph As Double = colhour.Get("gust_kph")
+'			Dim precip_mm As Double = colhour.Get("precip_mm")
+'			Dim condition As Map = colhour.Get("condition")
+'			Dim code As Int = condition.Get("code")
+'			Dim icon As String = condition.Get("icon")
+'			Dim text As String = condition.Get("text")
+'			Dim will_it_snow As Int = colhour.Get("will_it_snow")
+'			Dim vis_km As Double = colhour.Get("vis_km")
+'			Dim time_epoch As Int = colhour.Get("time_epoch")
+'			Dim time As String = colhour.Get("time")
+'			Dim chance_of_snow As Int = colhour.Get("chance_of_snow")
+'			Dim pressure_mb As Double = colhour.Get("pressure_mb")
+'			Dim vis_miles As Double = colhour.Get("vis_miles")
+'		Next
+		'-------------------------------------------------------
+		Dim day As Map = colforecastday.Get("day")
+		Dim avgvis_km As Double = day.Get("avgvis_km")
+		Dim uv As Double = day.Get("uv")
+		Dim avgtemp_f As Double = day.Get("avgtemp_f")
+		Dim avgtemp_c As Double = day.Get("avgtemp_c")
+		Dim daily_chance_of_snow As Int = day.Get("daily_chance_of_snow")
+		Dim maxtemp_c As Double = day.Get("maxtemp_c")
+		Dim maxtemp_f As Double = day.Get("maxtemp_f")
+		Dim mintemp_c As Double = day.Get("mintemp_c")
+		Dim mintemp_f As Double = day.Get("mintemp_f")
+		Dim avgvis_miles As Double = day.Get("avgvis_miles")
+		Dim daily_will_it_rain As Int = day.Get("daily_will_it_rain")
+		
+		Dim totalprecip_in As Double = day.Get("totalprecip_in")
+		Dim totalsnow_cm As Double = day.Get("totalsnow_cm")
+		Dim avghumidity As Double = day.Get("avghumidity")
+		Dim condition As Map = day.Get("condition")
+		
+		Dim code As Int = condition.Get("code")
+		Dim icon As String = condition.Get("icon")
+		Dim text As String = condition.Get("text")
+		Dim maxwind_kph As Double = day.Get("maxwind_kph")
+		Dim maxwind_mph As Double = day.Get("maxwind_mph")
+		Dim daily_chance_of_rain As Int = day.Get("daily_chance_of_rain")
+		Dim totalprecip_mm As Double = day.Get("totalprecip_mm")
+		Dim daily_will_it_snow As Int = day.Get("daily_will_it_snow")
+	Next
+
+End Sub
+
+Sub Update_Weather_Default_City
+	Update_Weather("")
+End Sub
+
+'Update the weather for a specific City
+Private Sub Update_Weather(city As String) As ResumableSub
+	
+	Dim realCity As String = city
+	LastUpdatedCity = realCity
+	
+	Try
+
+		If  Main.isInterNetConnected = False Then
+			Try
+				Log("Internet is not connected. Cannot update weather.")
+				'--- log to disk?
+			Catch
+				'--- do nothing, --- should only error out the first time
+				 LogIt.LogDebug1("GetWeather - only 1st time OK")
+			End Try 'ignore
+			
+			lastUpdatedAt = 1
+		
+			Return False
+		End If
+	
+		Log("Requesting weather data")
+		
+		Dim retVal As Boolean,  job As HttpJob
+		job.Initialize("", Me)
+		job.Download("http://api.weatherapi.com/v1/forecast.json?key=b48d92cda3b045938a7174835233112&q=kherson&days=3&aqi=no&alerts=no")
+		Wait For (job) JobDone(job As HttpJob)
+		retVal = job.Success
+		
+		If job.Success Then
+			
+			File.WriteString(xui.DefaultFolder,"1.txt",job.GetString)
+			
+			ParseWeatherJob(job.GetString)   
+			
+			Location = city
+		Else
+			Log("wether cal failed - responce code = " & job.Response.StatusCode)	
+		End If
+		
+		job.Release
+		Return retVal
+		
+	Catch
+		' Something with weather has failed. We should try and setup for a quick refresh
+		 Log("Something with weather has failed:")
+		LastUpdatedCity = realCity
+		
+	End Try
+	Return False
+End Sub
+
+
+Public Sub ResetWeatherTimer()
+	lastUpdatedAt = 1
+End Sub
+
+Private Sub waitForInternetTimer_Tick
+	'waitForInternetTimer.Enabled = False
+	Update_Weather(LastUpdatedCity)
+End Sub

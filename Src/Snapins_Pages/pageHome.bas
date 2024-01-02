@@ -11,6 +11,7 @@ Version=10
 
 
 Sub Class_Globals
+	
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
@@ -22,16 +23,23 @@ Sub Class_Globals
 	Private pnlCal As B4XView
 	Private lblClock As B4XView
 	
+	'--- weather crap
 	Private lblCurrTemp As B4XView
-	Private lblCurrTXT As B4XView,	BBlblCurrTXT As BBLabel '--- test BBlabel by hiding lblCurrTXT
+	Private lblCurrTXT As B4XView
 	Private lblLocation As B4XView
 	Private imgCurrent As lmB4XImageViewX
+	Private lastWeatherCall As Long
+	'---
+
+	
+	Private lblCurrDesc As B4XView
 End Sub
 
 Public Sub Initialize(p As B4XView) 
 	pnlMain = p
 	pnlMain.LoadLayout("pageHomeBase")
-	mpage.oClock.oEventsClock.Subscribe(Me,"clock_event") '--- fired whenever clock changes
+	
+	Main.EventGbl.Subscribe(cnst.EVENT_CLOCK_CHANGE, Me,"clock_event")
 	
 	pnlWeather.SetColorAndBorder(XUI.Color_Transparent,0,XUI.Color_Transparent,0)
 	pnlClock.SetColorAndBorder(XUI.Color_Transparent,0,XUI.Color_Transparent,0)
@@ -40,18 +48,55 @@ Public Sub Initialize(p As B4XView)
 	'BuildSide_Menu
 	lblClock.TextColor = themes.clrTxtNormal
 	
-	BBlblCurrTXT.ForegroundImageView.Visible =False
+	'--- weather stuff
+	
+	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
+	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
+	
+	lblCurrTXT.TextColor = themes.clrTxtNormal
+	lblCurrTemp.TextColor = themes.clrTxtNormal
+	lblLocation.TextColor = themes.clrTxtNormal
+	lblClock.TextColor = themes.clrTxtNormal
+	
+'	lstViewCalDays.DefaultTextColor = g.GetColorTheme(g.ehome_clrTheme,"themeColorText")
+'	lstViewCalDays.DefaultTextBackgroundColor  = Colors.Transparent
+'	lstViewCalDays.DefaultTextSize = 16
+	
+	'CallSubDelayed(Me,"Build_Cal")
 	
 	
-	BuildCal
+	guiHelpers.ResizeText("     Getting Weather Data...     ",lblCurrTXT)
+	
+	'If the weather doesn't need an update, then someone else already updated it before we loaded. So refresh our UI.
+	If (mpage.WeatherData.IsWeatherUpToDate = True) Then
+		WeatherData_RefreshScrn
+	Else
+		mpage.WeatherData.TryUpdate
+	End If
+	
+	'Init_setup_menu
+	
 	
 End Sub
 
 '-------------------------------
+#if b4j
+public Sub resize_me (width As Int, height As Int)
+	pnlMain.width = width
+	pnlMain.height = height
+	
+	Main.tmrTimerCallSub.ExistsRemove(Me,"Build_Cal")
+	Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Cal",1000)
+	
+End Sub
+#end if
+
 Public Sub Set_focus()
 	Menus.SetHeader("Home","main_menu_home.png")
 	pnlMain.SetVisibleAnimated(500,True)
-	mpage.oClock.Update_Scrn
+	mpage.oClock.Update_Scrn 'UpdateDateTime
+	WeatherData_RefreshScrn
+	Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Cal",500)
 End Sub
 
 Public Sub Lost_focus()
@@ -68,7 +113,7 @@ End Sub
 '=============================================================================================
 
 
-Private Sub BuildCal()
+Private Sub Build_Cal()
 	'--- show cal
 	pnlCal.RemoveAllViews
 	csCal.Initialize(pnlCal.Width,pnlCal.Height,DateTime.Now,16dip * guiHelpers.SizeFontAdjust)
@@ -83,4 +128,50 @@ Private Sub BuildCal()
 	'pnlCal.AddView(csCal.,0,0,100%x,100%y)
 	csCal.ShowCalendar(True)
 End Sub
+
+Sub WeatherData_RefreshScrn
+	
+	Dim useCel As Boolean = Main.kvs.GetDefault(cnst.INI_WEATHER_USE_CELSIUS,True)
+	Dim useMetric As Boolean = Main.kvs.GetDefault(cnst.INI_WEATHER_USE_METRIC,False)
+	
+	Dim lowTemp,highTemp,TempCurr,Precipitation,WindSpeed As String
+	TempCurr     = IIf(useCel, mpage.WeatherData.qTemp_c & "°c",mpage.WeatherData.qTemp_f & "°f")
+	highTemp      = IIf(useCel, mpage.WeatherData.ForcastDays(0).High_c & "°c",mpage.WeatherData.ForcastDays(0).High_f & "°f")
+	lowTemp       = IIf(useCel, mpage.WeatherData.ForcastDays(0).Low_c & "°c",mpage.WeatherData.ForcastDays(0).Low_f & "°f")
+	Precipitation = IIf(useMetric, mpage.WeatherData.qPrecipitation_mm & "mm",mpage.WeatherData.qPrecipitation_inches & "inches")
+	WindSpeed   = IIf(useMetric, mpage.WeatherData.qWindSpeed_kph & "Kph" ,mpage.WeatherData.qWindSpeed_mph & "Mph")
+	
+	Dim details As String = "Low: " & lowTemp & " / High: " & highTemp  & CRLF &  _
+			  "Precipitation: " & Precipitation & CRLF & _	
+			  "Humidity: " & mpage.WeatherData.qHumidity & "%" & CRLF & _
+			  "Pressure: " & mpage.WeatherData.qPressure  & CRLF & _
+			  "Wind Speed: " & WindSpeed  & CRLF & _
+			  "Wind Direction: " & mpage.WeatherData.qWindDirection & CRLF & _
+			  "Cloud Cover: " & mpage.WeatherData.qCloudCover & "%" & CRLF & _
+			  "Sunrise: " & mpage.WeatherData.ForcastDays(0).Sunrise &  " - Sunset: " & mpage.WeatherData.ForcastDays(0).Sunset
+	
+	guiHelpers.ResizeText(mpage.WeatherData.qDescription, lblCurrDesc)
+	guiHelpers.ResizeText(details, lblCurrTXT)
+	#if b4a
+	lblCurrTXT.TextSize = lblCurrTXT.TextSize - 4
+	#end if
+		
+	guiHelpers.ResizeText(TempCurr , lblCurrTemp)
+	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
+	
+	CallSubDelayed3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.ForcastDays(0).IconID,imgCurrent)
+	
+	'fn.SetTextShadow(lblCurrTemp, 1, 1, 1, Colors.ARGB(255, 0, 0, 0))
+	
+	If mpage.WeatherData.lastUpdatedAt <> lastWeatherCall Then
+		lastWeatherCall = mpage.WeatherData.lastUpdatedAt
+	End If
+
+End Sub
+
+
+Sub WeatherData_Fail
+	guiHelpers.ResizeText("Error, trying again in 1 minute", lblLocation)
+End Sub
+
 

@@ -1,10 +1,10 @@
 ﻿B4A=true
-Group=MiscClasses
+Group=B4Xlibs-OverRides
 ModulesStructureVersion=1
 Type=Class
 Version=5.5
 @EndOfDesignText@
-' Author:  B4X
+' Author:  B4X 
 #Region VERSIONS 
 ' V. 1.1	Aug/20/2023
 '			Added Exists and ExistsRemove methods
@@ -18,9 +18,10 @@ Sub Class_Globals
 End Sub
 
 Public Sub Initialize
-
 End Sub
 
+
+'------------------------------ Added  ----------------------------------------------------
 Public Sub ExistsRemove(Module As Object, SubName As String) 
 	
 	Dim t As Timer = Exists(Module,SubName) 
@@ -32,17 +33,19 @@ Public Sub ExistsRemove(Module As Object, SubName As String)
 End Sub
 Public Sub Exists(Module As Object, SubName As String) As Timer
 	
-	For Each t As Timer In RunDelayed.Keys
-		Dim dt As RunDelayedData = RunDelayed.Get(t)
-		If dt.SubName = SubName And dt.Module = Module Then
-			Log("tmr already here")
-			Return t
-		End If
-	Next
+	If RunDelayed.IsInitialized <> False Then 
+		For Each t As Timer In RunDelayed.Keys
+			Dim dt As RunDelayedData = RunDelayed.Get(t)
+			If dt.SubName = SubName And dt.Module = Module Then
+				Log("tmr already here")
+				Return t
+			End If
+		Next
+	End If
 	Return Null
 	
 End Sub
-
+'-------------------------------------------------------------------------------------------
 
 
 'Similar to CallSubDelayed. This method allows you to set the delay (in milliseconds).
