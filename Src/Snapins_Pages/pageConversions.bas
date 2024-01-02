@@ -27,14 +27,13 @@ End Sub
 public Sub resize_me (width As Int, height As Int)
 	pnlMain.width = width
 	pnlMain.height = height
+	Sleep(0)
 End Sub
 #end if
 Public Sub Set_focus()
 	Menus.SetHeader("Conversions","main_menu_conversions.png")
 	pnlMain.SetVisibleAnimated(500,True)
 End Sub
-
-
 Public Sub Lost_focus()
 	pnlMain.SetVisibleAnimated(500,False)
 End Sub
