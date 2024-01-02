@@ -196,10 +196,10 @@ End Sub
 
 '--- just an easy wat to Toast!!!!
 Public Sub Show_toast(msg As String)
-	CallSubDelayed3(B4XPages.MainPage,"Show_Toast", msg, 2400)
+	CallSubDelayed2(B4XPages.MainPage,"Show_Toast", msg)
 End Sub
 Public Sub Show_toast2(msg As String, ms As Int)
-	CallSubDelayed3(B4XPages.MainPage,"Show_Toast", msg, ms)
+	CallSubDelayed3(B4XPages.MainPage,"Show_Toast2", msg, ms)
 End Sub
 
 

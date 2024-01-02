@@ -91,6 +91,6 @@ ModuleClosedNodes6=2,5,9,12
 ModuleClosedNodes7=
 ModuleClosedNodes8=
 ModuleClosedNodes9=
-NavigationStack=B4XMainPage,btnSetupMaster_Click,194,0,B4XMainPage,btnAboutMe_Click,197,0,pageHome,Page_Setup,100,0,pageCalculator,Page_Setup,35,0,pageConversions,Page_Setup,34,0,pageConversions,Lost_focus,32,0,pageKTimers,Page_Setup,30,0,pageKTimers,Set_focus,28,0,pagePhotos,Page_Setup,31,0,pageWeather,Page_Setup,31,0,pageWeather,Initialize,18,0
+NavigationStack=pageKTimers,Page_Setup,30,0,pageKTimers,Set_focus,28,0,pagePhotos,Page_Setup,31,0,pageWeather,Page_Setup,31,0,pageWeather,Initialize,15,0,B4XMainPage,lvHeaderMenu_ItemClick,142,0,B4XMainPage,Class_Globals,22,0,guiHelpers,Show_toast2,194,0,guiHelpers,Show_toast,192,0,guiHelpers,ResizeText,189,0
 SelectedBuild=0
 VisibleModules=1,25,6,26,27,28,18,23,24
