@@ -49,6 +49,9 @@ Sub Class_Globals
 	
 	Public btnHdrTxt1 As B4XView
 	'-----------------------------------------
+	Private lblSnapinText As B4XView
+	Private btnSnapinSetup As B4XView
+	Private pnlSnapinSetup As B4XView
 End Sub
 
 Public Sub Initialize
@@ -95,7 +98,7 @@ Private Sub BuildGUI
 	
 	guiHelpers.SetVisible(Array As B4XView(pnlTimers,pnlSideMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
 	
-	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnHeaderMenu,btnAboutMe,btnSetupMaster,btnHdrTxt1))
+	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnSnapinSetup,btnHeaderMenu,btnAboutMe,btnSetupMaster,btnHdrTxt1))
 	
 	pnlBG.SetColorAndBorder(themes.clrPanelBGround,0,xui.Color_Transparent,0)
 	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0,xui.Color_Transparent,0)
@@ -138,6 +141,7 @@ End Sub
 Private Sub lvHeaderMenu_ItemClick (Index As Int, Value As Object)
 	
 	If Index <> -2 Then pnlSideMenu.SetVisibleAnimated(380, False) '---  toggle side menu
+	pnlSnapinSetup.Visible = False
 
 	'--- fire the lost focus event
 	If oPageCurrent <> Null Then
@@ -153,10 +157,12 @@ Private Sub lvHeaderMenu_ItemClick (Index As Int, Value As Object)
 		Case "hm" '--- home
 			If oPageHome.IsInitialized = False Then oPageHome.Initialize(pnlHome)
 			oPageCurrent = oPageHome
+			pnlSnapinSetup.Visible = True :	guiHelpers.ResizeText("Home Setup", lblSnapinText)
 			
 		Case "wt" '--- weather	
 			If oPageWeather.IsInitialized = False Then oPageWeather.Initialize(pnlWeather)
 			oPageCurrent = oPageWeather
+			pnlSnapinSetup.Visible = True : 	guiHelpers.ResizeText("Weather Setup", lblSnapinText)
 			
 		Case "ca" '--- calculator
 			If oPageCalculator.IsInitialized = False Then oPageCalculator.Initialize(pnlCalculator)
@@ -165,10 +171,12 @@ Private Sub lvHeaderMenu_ItemClick (Index As Int, Value As Object)
 		Case "ph" '--- photo albumn
 			If oPagePhoto.IsInitialized = False Then oPagePhoto.Initialize(pnlPhotos)
 			oPageCurrent = oPagePhoto
+			pnlSnapinSetup.Visible = True : guiHelpers.ResizeText("Photos Setup", lblSnapinText)
 			
 		Case "tm" '--- timers
 			If oPageTimers.IsInitialized = False Then oPageTimers.Initialize(pnlTimers)
 			oPageCurrent = oPageTimers
+			pnlSnapinSetup.Visible = True : guiHelpers.ResizeText("Timers Setup", lblSnapinText)
 		
 	End Select
 
@@ -178,10 +186,10 @@ Private Sub lvHeaderMenu_ItemClick (Index As Int, Value As Object)
 End Sub
 #end region
 
-Public Sub ShowToast(Message As String)
-	ShowToast2(Message,2500)
+Public Sub Show_Toast(Message As String)
+	Show_Toast2(Message,2500)
 End Sub
-Public Sub ShowToast2(msg As String, ms As Int)
+Public Sub Show_Toast2(msg As String, ms As Int)
 	'--- TODO, needs to be themed!!!
 	Toast.DurationMs = ms
 	Toast.Show($"[TextSize=24][b][FontAwesome=0xF05A/]  ${msg}[/b][/TextSize]"$)
@@ -190,7 +198,7 @@ End Sub
 
 Private Sub btnSetupMaster_Click
 	pnlSideMenu.SetVisibleAnimated(380, False)
-	
+	guiHelpers.Show_toast2("TODO",3500)
 End Sub
 
 Private Sub btnAboutMe_Click
@@ -199,3 +207,9 @@ Private Sub btnAboutMe_Click
 	o.Show
 End Sub
 
+Private Sub btnSnapinSetup_Click
+	pnlSideMenu.SetVisibleAnimated(380, False)
+	If SubExists(oPageCurrent,"Page_Setup") Then 
+		CallSub(oPageCurrent,"Page_Setup")
+	End If
+End Sub

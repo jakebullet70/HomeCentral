@@ -34,7 +34,9 @@ Public Sub Set_focus()
 	pnlMain.SetVisibleAnimated(500,True)
 End Sub
 
-
+Private Sub Page_Setup
+	guiHelpers.Show_toast2("TODO",3500)
+End Sub
 Public Sub Lost_focus()
 	pnlMain.SetVisibleAnimated(500,False)
 End Sub

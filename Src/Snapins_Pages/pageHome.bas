@@ -103,6 +103,10 @@ Public Sub Lost_focus()
 	pnlMain.SetVisibleAnimated(500,False)
 End Sub
 
+Private Sub Page_Setup
+	guiHelpers.Show_toast2("TODO",3500)
+End Sub
+
 Public Sub clock_event(s As String)
 	If pnlMain.Visible = False Then Return
 	guiHelpers.ResizeText(s,lblClock)

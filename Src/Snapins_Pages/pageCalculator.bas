@@ -24,7 +24,7 @@ End Sub
 
 '-------------------------------
 #if b4j
-public Sub resize_me (width As Int, height As Int)
+Public Sub resize_me (width As Int, height As Int)
 	pnlMain.width = width
 	pnlMain.height = height
 End Sub
@@ -35,6 +35,9 @@ Public Sub Set_focus()
 End Sub
 Public Sub Lost_focus()
 	pnlMain.SetVisibleAnimated(500,False)
+End Sub
+Private Sub Page_Setup
+	guiHelpers.Show_toast2("No setup for this page",3500)
 End Sub
 
 
