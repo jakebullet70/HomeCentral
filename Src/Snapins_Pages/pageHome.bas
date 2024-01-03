@@ -82,11 +82,12 @@ End Sub
 '-------------------------------
 #if b4j
 public Sub resize_me (width As Int, height As Int)
+	
 	pnlMain.width = width
 	pnlMain.height = height
 	
 	Main.tmrTimerCallSub.ExistsRemove(Me,"Build_Cal")
-	Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Cal",1000)
+	Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Cal",800)
 	
 End Sub
 #end if
@@ -96,7 +97,7 @@ Public Sub Set_focus()
 	pnlMain.SetVisibleAnimated(500,True)
 	mpage.oClock.Update_Scrn 'UpdateDateTime
 	WeatherData_RefreshScrn
-	Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Cal",500)
+	Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Cal",300)
 End Sub
 
 Public Sub Lost_focus()

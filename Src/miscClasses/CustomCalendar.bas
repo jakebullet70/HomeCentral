@@ -26,12 +26,15 @@ Sub Class_Globals
 	Private lblTitle As B4XView         'Date	
 	
 	Private pnl,pnlbackGround As B4XView 
-'	Public NmFullday(7) As String : NmFullday = g.Locale.WeekDays    ' Array As String("Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi")
-'	Public NmMonth(12) As String : NmMonth = g.Locale.ShortMonths    'Array As String("jan","fev","mar","avr","mai","jun","jul","aug","sep","oct","nov","dec")
-'	Public NmFullMonth(12) As String : NmFullMonth = g.Locale.Months 'Array As String("janver","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre")
-	Public NmFullday(7) As String : NmFullday = Array As String("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Satuday")
+	
+	'Public NmFullday(7) As String : NmFullday = Array As String("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Satuday")
+	'Public NmFullMonth(12) As String : NmFullMonth = Array As String("January","Febuary","March","April","May","June","July","Augest","September","October","November","December")
 	Public NmMonth(12) As String : NmMonth = Array As String("Jan","Feb","Mar","April","May","June","July","Aug","Sept","Oct","Nov","Dec")
-	Public NmFullMonth(12) As String : NmFullMonth = Array As String("January","Febuary","March","April","May","June","July","Augest","September","October","November","December")
+	
+	Public NmFullday() As String
+	Public NmFullMonth() As String 
+	
+		
 	Private CalDay, CalMonth, CalYear As Int
 	Private RelativTextSize As Int
 	Private SomeTime As Long
@@ -47,6 +50,7 @@ Private Sub lblDayTitle_Click
 	lblTitle_Click
 End Sub
 Private Sub lblTitle_Click
+'--- call the android cal
 '	Dim pm As PackageManager
 '	Dim it As Intent = pm.GetApplicationIntent("com.android.calendar")
 '	If it.IsInitialized Then StartActivity(it)
@@ -54,6 +58,9 @@ End Sub
 
 'Initializes the object. You can add parameters to this method if needed.
 Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
+	
+	NmFullday =  objHelpers.List2StrArray( DateUtils.GetDaysNames)
+	NmFullMonth = objHelpers.List2StrArray(DateUtils.GetMonthsNames)
 	
 	oCalLST.Initialize
 	oCalDaysMAP.Initialize
@@ -93,7 +100,7 @@ Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
 	
 	''''If g.IsCalendarReadOn Then ReadAndroidCals(BeginDate)
 	
-	For i=0 To 6 'Days name buttons
+	For i = 0 To 6 'Days name buttons
 	
 		lblDayTitle(i) = XUIViewsUtils.CreateLabel
 		lblDayTitle(i).SetTextAlignment("CENTER","CENTER")
@@ -103,8 +110,8 @@ Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
 		guiHelpers.ResizeText(dayName(i),lblDayTitle(i))
 	Next
 	
-	For j=0 To 5 'Days buttons		
-		For i=0 To 6	
+	For j = 0 To 5 'Days buttons		
+		For i = 0 To 6	
 			z = (j*7)+i
 			btDays(z) = XUIViewsUtils.CreateLabel
 			btDays(z).SetTextAlignment("CENTER","CENTER")
@@ -119,7 +126,6 @@ Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
 	
 	PrintDate(BeginDate)	
 	'If c.ThreeDText Then fn.SetTextShadowAll(pnl,c.CLR_TXT_BRIGHT)
-	
 	
 End Sub
 
@@ -251,6 +257,9 @@ Private Sub PrintDate(dts As Long)
 	
 	'lblTitle.TextSize = RelativTextSize 
 	Dim s As String = NmFullMonth(CalMonth-1)  & "  " & CalDay& "  " & CalYear
+	#if b4j
+	lblTitle.TextSize = 27
+	#End If
 	guiHelpers.ResizeText(s,lblTitle)
 	'g.setText(NmFullMonth(CalMonth-1)  & "  " & CalDay& "  " & CalYear	,lblTitle)
 	'lblTitle.Typeface = Typeface.
@@ -332,16 +341,9 @@ End Sub
 
 
 Public Sub LengthMonth(yearNum As Int,monthNum As Int) As Int
-	Return DateTime.GetDayOfMonth( dtHelpers.GetLastDayOfMonth(DateTime.DateParse(monthNum & "/1/" & yearNum)) )
+	Return DateUtils.NumberOfDaysInMonth(monthNum,yearNum)
+	'Return DateTime.GetDayOfMonth( dtHelpers.GetLastDayOfMonth(DateTime.DateParse(monthNum & "/1/" & yearNum)) )
 End Sub
-'Private Sub GetLastDayOfMonth(thisDate As Long) As Long
-'
-'	Dim DayOfMonth As Int = DateTime.GetDayOfMonth(thisDate)   'Get the day of the month
-'	Dim FirstDayOfMonth As Long = DateTime.Add(thisDate, 0, 0, (DayOfMonth * -1) + 1)   ' change the day to 1
-'	Dim LastDayOfMonth As Long = DateTime.Add(FirstDayOfMonth, 0, 1, -1)  ' Add one month AND subtract 1 day
-'
-'	Return LastDayOfMonth
-'End Sub
 
 Public Sub AsView As B4XView
 	Return pnl

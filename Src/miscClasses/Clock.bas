@@ -43,7 +43,7 @@ Public Sub Update_Scrn
 	If DoNotShow Then Return
 	Dim fmtD As String = DateTime.DateFormat
 	Dim fmtT As String = DateTime.TimeFormat
-	DateTime.TimeFormat = "EEE h:mm a"
+	DateTime.TimeFormat = cnst.LOCALE_CLOCK
 	DateTime.DateFormat = ""
 	
 	'--- raise the clock event, any object subscribed to it will get it
