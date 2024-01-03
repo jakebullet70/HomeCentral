@@ -16,10 +16,9 @@ Sub Process_Globals
 	Public Const APP_DISPLAY_VERSION As String = "0.5.0" '--- what the user see's
 	Public Const APP_FILE_VERSION As Int = 1
 	
-	'--- Locale crap! --- need to get these from somewhere
+	'--- Locale crap! --- need to get these from somewhere 
 	Public LOCALE_DATE As String = ""
 	Public LOCALE_CLOCK As String =  "EEE h:mm a"
-	Public LOCALE_CAL As String =  "EEE h:mm a"
 	Public LOCALE_DATETIME As String = ""
 	Public LOCALE_TIME As String = ""
 	

@@ -17,14 +17,14 @@ End Sub
 
 
 Public Sub List2StrArray(lst As List) As String()
+	
 	Dim ret(lst.Size) As String
 	For index=0 To lst.Size - 1
 		ret(index) = lst.Get(index)
 	Next
 	Return ret
+	
 End Sub
-
-
 
 Public Sub Map2Json(m As Map) As String
 	

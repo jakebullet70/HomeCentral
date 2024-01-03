@@ -64,7 +64,7 @@ Public Sub Initialize(p As B4XView)
 	
 	'CallSubDelayed(Me,"Build_Cal")
 	
-	
+	imgCurrent.Bitmap = XUI.LoadBitmap(File.DirAssets, "no weather.png")
 	guiHelpers.ResizeText("     Getting Weather Data...     ",lblCurrTXT)
 	
 	'If the weather doesn't need an update, then someone else already updated it before we loaded. So refresh our UI.
