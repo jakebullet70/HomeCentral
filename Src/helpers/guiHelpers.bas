@@ -109,6 +109,12 @@ End Sub
 '	Next
 'End Sub
 
+Public Sub SetPanelsTranparent(Arr() As B4XView)
+	For Each o As B4XView In Arr
+		o.SetColorAndBorder(xui.Color_Transparent,0dip,xui.Color_Transparent,0dip)
+	Next
+End Sub
+
 Public Sub SetEnableDisableColor(btnArr() As B4XView)
 	For Each btn As B4XView In btnArr
 		If btn.enabled Then

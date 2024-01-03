@@ -18,12 +18,13 @@ Sub Class_Globals
 	Private pnlCurrentQuickInfo As B4XView
 	
 	'--- main today forcast view
-	Private lblCurrTemp As B4XView
 	Private lblCurrentHigh As B4XView
 	Private lblCurrentLow As B4XView
-	Private lblCurrentDesc As B4XView
+	Private lblCurrDesc As B4XView
 	Private lblCurrTXT As B4XView
-	Private imgCurrentWeather As lmB4XImageViewX
+	Private imgCurrent As lmB4XImageViewX
+	Private lblLocation As B4XView
+	Private btnCurrTemp As B4XView
 	
 	'--- scroll panel forcast days
 	Private imgForecastIcon1 As lmB4XImageViewX
@@ -32,24 +33,25 @@ Sub Class_Globals
 	Private lblForecastHigh1 As B4XView
 	Private lblForecastLow1 As B4XView
 	
+
+	Private pnlCurrent As B4XView
 End Sub
 
 Public Sub Initialize(p As B4XView) 
 	pnlMain = p
 	pnlMain.LoadLayout("pageWeatherBase")
+	pnlCurrent.LoadLayout("viewWeatherCurrent")
 	
-	pnlCurrentQuickInfo.SetColorAndBorder(XUI.Color_Transparent,0,XUI.Color_Transparent,0)
+	guiHelpers.SetPanelsTranparent(Array As B4XView(pnlCurrentQuickInfo))
+	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnCurrTemp))
 	
-	imgCurrentWeather.Bitmap = XUI.LoadBitmap(File.DirAssets, "no weather.png")
+	imgCurrent.Bitmap = XUI.LoadBitmap(File.DirAssets, "no weather.png")
 	
-	lblCurrentDesc.TextColor = themes.clrTxtNormal
-	lblCurrTXT.TextColor =  themes.clrTxtNormal
-	lblCurrTemp.TextColor=  themes.clrTxtNormal
-	lblCurrentHigh.TextColor=  themes.clrTxtNormal
-	lblCurrentLow.TextColor=  themes.clrTxtNormal
+	guiHelpers.SetTextColor(Array As B4XView(lblCurrentLow,lblCurrentHigh,lblCurrTXT,lblCurrDesc,lblLocation),themes.clrTxtNormal)
 	
 	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
 	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
+	btnCurrTemp.TextSize = 54
 	
 End Sub
 
@@ -63,6 +65,7 @@ End Sub
 Public Sub Set_focus()
 	Menus.SetHeader("Weather","main_menu_weather.png")
 	pnlMain.SetVisibleAnimated(500,True)
+	WeatherData_RefreshScrn
 End Sub
 
 Private Sub Page_Setup
@@ -84,17 +87,14 @@ End Sub
 
 Public Sub WeatherData_RefreshScrn
 	
-	Dim useCel As Boolean = Main.kvs.GetDefault(cnst.INI_WEATHER_USE_CELSIUS,True)
-	Dim useMetric As Boolean = Main.kvs.GetDefault(cnst.INI_WEATHER_USE_METRIC,False)
-	
 	Dim lowTemp,highTemp,TempCurr,Precipitation,WindSpeed As String
-	TempCurr     = IIf(useCel, mpage.WeatherData.qTemp_c & "°c",mpage.WeatherData.qTemp_f & "°f")
-	highTemp      = IIf(useCel, mpage.WeatherData.ForcastDays(0).High_c & "°c",mpage.WeatherData.ForcastDays(0).High_f & "°f")
-	lowTemp       = IIf(useCel, mpage.WeatherData.ForcastDays(0).Low_c & "°c",mpage.WeatherData.ForcastDays(0).Low_f & "°f")
-	Precipitation = IIf(useMetric, mpage.WeatherData.qPrecipitation_mm & "mm",mpage.WeatherData.qPrecipitation_inches & "inches")
-	WindSpeed   = IIf(useMetric, mpage.WeatherData.qWindSpeed_kph & "Kph" ,mpage.WeatherData.qWindSpeed_mph & "Mph")
+	TempCurr     = IIf(mpage.useCel, mpage.WeatherData.qTemp_c & "°c",mpage.WeatherData.qTemp_f & "°f")
+	highTemp      = IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).High_c & "°c",mpage.WeatherData.ForcastDays(0).High_f & "°f")
+	lowTemp       = IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).Low_c & "°c",mpage.WeatherData.ForcastDays(0).Low_f & "°f")
+	Precipitation = IIf(mpage.useMetric, mpage.WeatherData.qPrecipitation_mm & "mm",mpage.WeatherData.qPrecipitation_inches & "inches")
+	WindSpeed   = IIf(mpage.useMetric, mpage.WeatherData.qWindSpeed_kph & "Kph" ,mpage.WeatherData.qWindSpeed_mph & "Mph")
 	
-	Dim details As String = "Low: " & lowTemp & " / High: " & highTemp  & CRLF &  _
+	Dim details As String =   _
 			  "Precipitation: " & Precipitation & CRLF & _	
 			  "Humidity: " & mpage.WeatherData.qHumidity & "%" & CRLF & _
 			  "Pressure: " & mpage.WeatherData.qPressure  & CRLF & _
@@ -105,26 +105,40 @@ Public Sub WeatherData_RefreshScrn
 	
 	guiHelpers.ResizeText(mpage.WeatherData.qDescription, lblCurrDesc)
 	guiHelpers.ResizeText(details, lblCurrTXT)
+	guiHelpers.ResizeText("High: " & highTemp, lblCurrentHigh)
+	guiHelpers.ResizeText("Low: " & lowTemp, lblCurrentLow)
+	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
+	guiHelpers.ResizeText(TempCurr , btnCurrTemp)
+	
 	#if b4a
 	lblCurrTXT.TextSize = lblCurrTXT.TextSize - 4
 	#end if
-		
-	guiHelpers.ResizeText(TempCurr , lblCurrTemp)
-	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
+
+	#if b4j
+	'https://www.b4x.com/android/forum/threads/multiline-labels-text-alignment.95494/#content
+	Dim jo As JavaObject = lblCurrTXT.As(Label)
+	jo.RunMethod("setTextAlignment", Array("CENTER"))
+	'--------- these will be auto sized in Android
+	lblLocation.TextSize = IIf(lblLocation.Text.Length < 20,40,24)
+	lblCurrDesc.TextSize = IIf(lblLocation.Text.Length < 24,34,22)
+	#end if
 	
-	CallSubDelayed3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.ForcastDays(0).IconID,imgCurrentWeather)
+	
+	'guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)  TODO
+	
+	CallSubDelayed3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.ForcastDays(0).IconID,imgCurrent)
 	
 	'fn.SetTextShadow(lblCurrTemp, 1, 1, 1, Colors.ARGB(255, 0, 0, 0))
 	
 '	If mpage.WeatherData.lastUpdatedAt <> lastWeatherCall Then
 '		lastWeatherCall = mpage.WeatherData.lastUpdatedAt
 '	End If
-	
-	#if b4j
-	' NOT WORKING!!!!
-	'https://www.b4x.com/android/forum/threads/multiline-labels-text-alignment.95494/#content
-	Dim jo As JavaObject = lblCurrDesc.As(Label)
-	jo.RunMethod("setTextAlignment", Array("CENTER"))
-	#end if
 
+
+End Sub
+
+
+Private Sub btnCurrTemp_Click
+	mpage.useCel = Not (mpage.useCel)
+	WeatherData_RefreshScrn
 End Sub

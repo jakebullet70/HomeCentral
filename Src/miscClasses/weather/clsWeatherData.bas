@@ -352,3 +352,10 @@ Private Sub waitForInternetTimer_Tick
 	'waitForInternetTimer.Enabled = False
 	Update_Weather(LastUpdatedCity)
 End Sub
+
+
+Public Sub RenderWeatherScrn(p As Object)
+
+End Sub
+
+

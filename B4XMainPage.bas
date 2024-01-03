@@ -23,6 +23,7 @@ Sub Class_Globals
 	Private dUtils As DDD
 	
 	Public WeatherData As clsWeatherData
+	Public useMetric,useCel As Boolean
 	
 	Public Dialog, DialogMSGBOX As B4XDialog
 	Public oClock As Clock
@@ -76,7 +77,11 @@ Public Sub Initialize
 		Dim vo As CheckVersions : vo.Initialize
 		vo.CheckAndUpgrade
 	End If
+	
 	WeatherData.Initialize
+	useCel = Main.kvs.GetDefault(cnst.INI_WEATHER_USE_CELSIUS,True)
+	useMetric = Main.kvs.GetDefault(cnst.INI_WEATHER_USE_METRIC,False)
+	
 End Sub
 
 
