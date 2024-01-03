@@ -170,6 +170,13 @@ Sub WeatherData_RefreshScrn
 	If mpage.WeatherData.lastUpdatedAt <> lastWeatherCall Then
 		lastWeatherCall = mpage.WeatherData.lastUpdatedAt
 	End If
+	
+	#if b4j
+	' NOT WORKING!!!!
+	'https://www.b4x.com/android/forum/threads/multiline-labels-text-alignment.95494/#content
+	Dim jo As JavaObject = lblCurrDesc.As(Label)
+	jo.RunMethod("setTextAlignment", Array("CENTER"))
+	#end if
 
 End Sub
 
