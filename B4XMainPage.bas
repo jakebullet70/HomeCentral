@@ -101,6 +101,20 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	oClock.Initialize
 	
 	BuildGUI
+	#region RaspPI
+	#if raspPiFullScrn	
+	'--- needs to be checked
+	'--- https://www.b4x.com/android/forum/threads/full-screen-form.130511/
+	MainForm = Form1
+	MainForm.SetFormStyle("TRANSPARENT")
+	Dim jform As JavaObject = MainForm
+	Dim jStage As JavaObject=jform.GetFieldJO("stage")
+	jStage.RunMethod("setMaximized", Array(True))
+	jStage.RunMethod("setAlwaysOnTop", Array(True))
+	MainForm.Resizable=False
+	MainForm.Show
+	#end if
+	#end region
 End Sub
 
 
