@@ -84,6 +84,11 @@ Public Sub Initialize
 	
 End Sub
 
+'https://www.b4x.com/android/forum/threads/b4x-sd-customkeyboard.138438/
+'https://www.b4x.com/android/forum/threads/b4x-sd-customkeyboard.138438/
+'https://www.b4x.com/android/forum/threads/b4x-sd-customkeyboard.138438/
+'https://www.b4x.com/android/forum/threads/b4x-sd-customkeyboard.138438/
+
 
 'You can see the list of page related events in the B4XPagesManager object. The event name is B4XPage.
 'This event will be called once, before the page becomes visible.

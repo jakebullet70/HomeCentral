@@ -18,42 +18,37 @@ Sub Class_Globals
 	Private csCal As CustomCalendar
 	
 	Private pnlBase As B4XView
-	Private pnlWeather As B4XView
 	Private pnlClock As B4XView
 	Private pnlCal As B4XView
 	Private lblClock As B4XView
 	
 	'--- weather crap
-	Private lblCurrentHigh As B4XView
-	Private lblCurrentLow As B4XView
+	Private pnlCurrent As B4XView
+	Private lblCurrentLow,lblCurrentHigh As B4XView
+	Private lblCurrDesc As B4XView
 	Private lblCurrTXT As B4XView
 	Private lblLocation As B4XView
-	Private imgCurrent As lmB4XImageViewX
-	Private lastWeatherCall As Long
 	Private btnCurrTemp As B4XView
+	Private imgCurrent As lmB4XImageViewX	
 	'---
 
-	Private lblCurrentHigh As B4XView
-	Private lblCurrentLow As B4XView
-	Private lblCurrDesc As B4XView
-	Private pnlCurrentQuickInfo As B4XView
+	Private pnlCurrent As B4XView
 	
 End Sub
 
 Public Sub Initialize(p As B4XView) 
 	pnlMain = p
 	pnlMain.LoadLayout("pageHomeBase")
-	pnlWeather.LoadLayout("viewWeatherCurrent")
-	
-	Main.EventGbl.Subscribe(cnst.EVENT_CLOCK_CHANGE, Me,"clock_event")
-	
-	guiHelpers.SetPanelsTranparent(Array As B4XView(pnlWeather,pnlClock,pnlCal))
-	
-	'BuildSide_Menu
+	pnlCurrent.LoadLayout("viewWeatherCurrent")
 	
 	'--- weather stuff
 	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
 	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
+	Main.EventGbl.Subscribe(cnst.EVENT_CLOCK_CHANGE, Me,"clock_event")
+	
+	guiHelpers.SetPanelsTranparent(Array As B4XView(pnlClock,pnlCal))
+	
+	'BuildSide_Menu
 	
 	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnCurrTemp))
 	guiHelpers.SetTextColor(Array As B4XView(lblCurrentHigh,lblCurrentLow, lblLocation,lblCurrTXT,lblClock),themes.clrTxtNormal)
@@ -61,21 +56,24 @@ Public Sub Initialize(p As B4XView)
 	imgCurrent.Bitmap = XUI.LoadBitmap(File.DirAssets, "no weather.png")
 	guiHelpers.ResizeText("     Getting Weather Data...     ",lblCurrTXT)
 	
-	'If the weather doesn't need an update, then someone else already updated it before we loaded. So refresh our UI.
 	If (mpage.WeatherData.IsWeatherUpToDate = True) Then
 		WeatherData_RefreshScrn
 	Else
 		mpage.WeatherData.TryUpdate
 	End If
+	btnCurrTemp.TextSize = 54
 	
-	'Init_setup_menu
-	
+	#if b4j
+	'https://www.b4x.com/android/forum/threads/multiline-labels-text-alignment.95494/#content
+	Dim jo As JavaObject = lblCurrTXT.As(Label)
+	jo.RunMethod("setTextAlignment", Array("CENTER"))
+	#End If
 	
 End Sub
 
 '-------------------------------
 #if b4j
-public Sub resize_me (width As Int, height As Int)
+Public Sub resize_me (width As Int, height As Int)
 	
 	pnlMain.width = width
 	pnlMain.height = height
@@ -91,7 +89,7 @@ Public Sub Set_focus()
 	pnlMain.SetVisibleAnimated(500,True)
 	mpage.oClock.Update_Scrn 'UpdateDateTime
 	WeatherData_RefreshScrn
-	Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Cal",300)
+	Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Cal",200)
 End Sub
 
 Public Sub Lost_focus()
@@ -129,7 +127,6 @@ Private Sub Build_Cal()
 End Sub
 
 Sub WeatherData_RefreshScrn
-	
 		
 	Dim lowTemp,highTemp,TempCurr,Precipitation,WindSpeed As String
 	TempCurr     = IIf(mpage.useCel, mpage.WeatherData.qTemp_c & "°c",mpage.WeatherData.qTemp_f & "°f")
@@ -148,7 +145,7 @@ Sub WeatherData_RefreshScrn
 			  "Sunrise: " & mpage.WeatherData.ForcastDays(0).Sunrise &  " - Sunset: " & mpage.WeatherData.ForcastDays(0).Sunset
 	
 	guiHelpers.ResizeText(mpage.WeatherData.qDescription, lblCurrDesc)
-	guiHelpers.ResizeText(details, lblCurrTXT)
+	guiHelpers.ResizeText(details.Trim, lblCurrTXT)
 	guiHelpers.ResizeText("High: " & highTemp, lblCurrentHigh)
 	guiHelpers.ResizeText("Low: " & lowTemp, lblCurrentLow)
 	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
@@ -159,16 +156,10 @@ Sub WeatherData_RefreshScrn
 	#end if
 
 	#if b4j
-	'https://www.b4x.com/android/forum/threads/multiline-labels-text-alignment.95494/#content
-	Dim jo As JavaObject = lblCurrTXT.As(Label)
-	jo.RunMethod("setTextAlignment", Array("CENTER"))
 	'--------- these will be auto sized in Android
 	lblLocation.TextSize = IIf(lblLocation.Text.Length < 20,40,24)
-	lblCurrDesc.TextSize = IIf(lblLocation.Text.Length < 24,34,22)
+	lblCurrDesc.TextSize = IIf(lblCurrDesc.Text.Length < 24,34,22)
 	#end if
-	
-	
-	'guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)  TODO
 	
 	CallSubDelayed3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.ForcastDays(0).IconID,imgCurrent)
 	
@@ -177,48 +168,7 @@ Sub WeatherData_RefreshScrn
 '	If mpage.WeatherData.lastUpdatedAt <> lastWeatherCall Then
 '		lastWeatherCall = mpage.WeatherData.lastUpdatedAt
 '	End If
-	Return
-	
-'	
-'	Dim lowTemp,highTemp,TempCurr,Precipitation,WindSpeed As String
-'	TempCurr     = IIf(mpage.useCel, mpage.WeatherData.qTemp_c & "°c",mpage.WeatherData.qTemp_f & "°f")
-'	highTemp      = IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).High_c & "°c",mpage.WeatherData.ForcastDays(0).High_f & "°f")
-'	lowTemp       = IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).Low_c & "°c",mpage.WeatherData.ForcastDays(0).Low_f & "°f")
-'	Precipitation = IIf(mpage.useMetric, mpage.WeatherData.qPrecipitation_mm & "mm",mpage.WeatherData.qPrecipitation_inches & "inches")
-'	WindSpeed   = IIf(mpage.useMetric, mpage.WeatherData.qWindSpeed_kph & "Kph" ,mpage.WeatherData.qWindSpeed_mph & "Mph")
-'	
-'	Dim details As String =   _
-'			  "Precipitation: " & Precipitation & CRLF & _	
-'			  "Humidity: " & mpage.WeatherData.qHumidity & "%" & CRLF & _
-'			  "Pressure: " & mpage.WeatherData.qPressure  & CRLF & _
-'			  "Wind Speed: " & WindSpeed  & CRLF & _
-'			  "Wind Direction: " & mpage.WeatherData.qWindDirection & CRLF & _
-'			  "Cloud Cover: " & mpage.WeatherData.qCloudCover & "%" & CRLF & _
-'			  "Sunrise: " & mpage.WeatherData.ForcastDays(0).Sunrise &  " - Sunset: " & mpage.WeatherData.ForcastDays(0).Sunset
-'	
-'	'guiHelpers.ResizeText(mpage.WeatherData.qDescription, lblCurrDesc)
-'	guiHelpers.ResizeText(details,lblCurrTXT)
-'	guiHelpers.ResizeText("Low: " & lowTemp & " / High: " & highTemp, lblHighLowTemps)
-'	#if b4a
-'	lblCurrTXT.TextSize = lblCurrTXT.TextSize - 4
-'	#end if
-'		
-'	guiHelpers.ResizeText(TempCurr , btnCurrTemp)
-'	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
-'	
-'	CallSubDelayed3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.ForcastDays(0).IconID,imgCurrent)
-'	
-'	'fn.SetTextShadow(lblCurrTemp, 1, 1, 1, Colors.ARGB(255, 0, 0, 0))
-'	
-'	If mpage.WeatherData.lastUpdatedAt <> lastWeatherCall Then
-'		lastWeatherCall = mpage.WeatherData.lastUpdatedAt
-'	End If
-'	
-'	#if b4j
-'	'https://www.b4x.com/android/forum/threads/multiline-labels-text-alignment.95494/#content
-'	Dim jo As JavaObject = lblCurrTXT.As(Label)
-'	jo.RunMethod("setTextAlignment", Array("CENTER"))
-'	#end if
+
 
 End Sub
 

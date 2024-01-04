@@ -8,15 +8,18 @@ Version=7.3
 'https://www.weatherapi.com/docs/
 Sub Class_Globals
 	Private xui As XUI
-	Public lastUpdatedAt As Long
+	Public IsInitialize As Boolean
 	Type typeWeatherCodeData(DayDesc As String, NightDesc As String, IconID As Int)
 	
+	Public LastUpdatedAt As Long
 	Public WeatherKey As String
 	Public WeatherAPICodes As Map
 	Public WeatherAPIcode As Int
 	Public IsError As Boolean
+	Public LastErrorMessage As String
+	Public LastUpdatedCity As String
 	
-	
+	'--- quick - current conditions	
 	Public qDescription As String
 	Public qLocation, qCountry As String
 	Public qPrecipitation_mm,qPrecipitation_inches As String
@@ -33,17 +36,13 @@ Sub Class_Globals
 	Public qLocalTime As String, qLocalTime_Epoch As Long
 		
 	Public ForcastDays(3) As clsWeatherDataDay 
-	
-	Public LastErrorMessage As String
-	
-	Public IsInitialize As Boolean
-	Public LastUpdatedCity As String
+
 	Private tmrErrorInRecievingWeather As Timer
 	
 End Sub
 
 Sub getIsWeatherUpToDate As Boolean
-	If lastUpdatedAt <> 0 And dtHelpers.HoursBetween(DateTime.now, lastUpdatedAt) >= 1 Then
+	If LastUpdatedAt <> 0 And dtHelpers.HoursBetween(DateTime.now, LastUpdatedAt) >= 1 Then
 		Return False
 	Else
 		Return True
@@ -74,7 +73,7 @@ End Sub
 Public Sub Initialize
 	IsInitialize = True
 	
-	lastUpdatedAt = 1
+	LastUpdatedAt = 1
 	
 	WeatherKey = cnst.WeatherAPIKey
 	ReadApiCodes
@@ -110,8 +109,8 @@ Sub	ErrorGettingWeather_Tick
 End Sub
 
 Public Sub TryUpdate
-	If lastUpdatedAt <> 0 Then
-		If dtHelpers.HoursBetween(DateTime.now, lastUpdatedAt) >= 1 Then
+	If LastUpdatedAt <> 0 Then
+		If dtHelpers.HoursBetween(DateTime.now, LastUpdatedAt) >= 1 Then
 			If (LastUpdatedCity = "") Then
 				Main.EventGbl.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
 				Update_Weather_Default_City
@@ -124,7 +123,7 @@ Public Sub TryUpdate
 End Sub
 
 Public Sub TryUpdateBecauseOfError
-	If dtHelpers.HoursBetween(DateTime.now, lastUpdatedAt) >= 1 Then
+	If dtHelpers.HoursBetween(DateTime.now, LastUpdatedAt) >= 1 Then
 		Main.EventGbl.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
 		If (LastUpdatedCity = "") Then
 			Update_Weather_Default_City
@@ -151,7 +150,7 @@ Private Sub ParseDateStr2Ticks(utc As String) As Long
 End Sub
 
 Private Sub ParseWeatherJob(s As String)
-	lastUpdatedAt = DateTime.Now
+	LastUpdatedAt = DateTime.Now
 	
 	Dim parser As JSONParser : parser.Initialize(s)
 	Dim root As Map = parser.NextObject
@@ -309,7 +308,7 @@ Private Sub Update_Weather(city As String) As ResumableSub
 				 LogIt.LogDebug1("GetWeather - only 1st time OK")
 			End Try 'ignore
 			
-			lastUpdatedAt = 1
+			LastUpdatedAt = 1
 		
 			Return False
 		End If
@@ -345,17 +344,12 @@ Private Sub Update_Weather(city As String) As ResumableSub
 End Sub
 
 Public Sub ResetWeatherTimer()
-	lastUpdatedAt = 1
+	LastUpdatedAt = 1
 End Sub
 
 Private Sub waitForInternetTimer_Tick
 	'waitForInternetTimer.Enabled = False
 	Update_Weather(LastUpdatedCity)
-End Sub
-
-
-Public Sub RenderWeatherScrn(p As Object)
-
 End Sub
 
 

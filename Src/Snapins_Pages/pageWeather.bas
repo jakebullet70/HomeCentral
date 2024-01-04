@@ -14,17 +14,16 @@ Sub Class_Globals
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
-		
-	Private pnlCurrentQuickInfo As B4XView
 	
-	'--- main today forcast view
-	Private lblCurrentHigh As B4XView
-	Private lblCurrentLow As B4XView
+	'--- weather	
+	Private pnlCurrent As B4XView
+	Private lblCurrentLow,lblCurrentHigh As B4XView
 	Private lblCurrDesc As B4XView
 	Private lblCurrTXT As B4XView
-	Private imgCurrent As lmB4XImageViewX
 	Private lblLocation As B4XView
 	Private btnCurrTemp As B4XView
+	Private imgCurrent As lmB4XImageViewX
+	'---
 	
 	'--- scroll panel forcast days
 	Private imgForecastIcon1 As lmB4XImageViewX
@@ -32,9 +31,9 @@ Sub Class_Globals
 	Private lblForecastDesc1 As B4XView
 	Private lblForecastHigh1 As B4XView
 	Private lblForecastLow1 As B4XView
-	
 
-	Private pnlCurrent As B4XView
+	
+	Private lvForecast As CustomListView
 End Sub
 
 Public Sub Initialize(p As B4XView) 
@@ -42,17 +41,27 @@ Public Sub Initialize(p As B4XView)
 	pnlMain.LoadLayout("pageWeatherBase")
 	pnlCurrent.LoadLayout("viewWeatherCurrent")
 	
-	guiHelpers.SetPanelsTranparent(Array As B4XView(pnlCurrentQuickInfo))
+	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
+	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
+	
+	'guiHelpers.SetPanelsTranparent(Array As B4XView(pnlCurrentQuickInfo))
 	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnCurrTemp))
 	
+	'BuildSide_Menu
 	imgCurrent.Bitmap = XUI.LoadBitmap(File.DirAssets, "no weather.png")
 	
 	guiHelpers.SetTextColor(Array As B4XView(lblCurrentLow,lblCurrentHigh,lblCurrTXT,lblCurrDesc,lblLocation),themes.clrTxtNormal)
-	
-	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
-	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
+
 	btnCurrTemp.TextSize = 54
 	
+	#if b4j
+	'https://www.b4x.com/android/forum/threads/multiline-labels-text-alignment.95494/#content
+	Dim jo As JavaObject = lblCurrTXT.As(Label)
+	jo.RunMethod("setTextAlignment", Array("CENTER"))
+	lvForecast.sv.As(ScrollPane).Style="-fx-background:transparent;-fx-background-color:transparent;"
+	#End If
+	
+	lvForecast.sv.As(ScrollPane).SetVScrollVisibility("NEVER")  'scrollbar?
 End Sub
 
 '-------------------------------
@@ -104,7 +113,7 @@ Public Sub WeatherData_RefreshScrn
 			  "Sunrise: " & mpage.WeatherData.ForcastDays(0).Sunrise &  " - Sunset: " & mpage.WeatherData.ForcastDays(0).Sunset
 	
 	guiHelpers.ResizeText(mpage.WeatherData.qDescription, lblCurrDesc)
-	guiHelpers.ResizeText(details, lblCurrTXT)
+	guiHelpers.ResizeText(details.Trim, lblCurrTXT)
 	guiHelpers.ResizeText("High: " & highTemp, lblCurrentHigh)
 	guiHelpers.ResizeText("Low: " & lowTemp, lblCurrentLow)
 	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
@@ -115,16 +124,10 @@ Public Sub WeatherData_RefreshScrn
 	#end if
 
 	#if b4j
-	'https://www.b4x.com/android/forum/threads/multiline-labels-text-alignment.95494/#content
-	Dim jo As JavaObject = lblCurrTXT.As(Label)
-	jo.RunMethod("setTextAlignment", Array("CENTER"))
 	'--------- these will be auto sized in Android
 	lblLocation.TextSize = IIf(lblLocation.Text.Length < 20,40,24)
-	lblCurrDesc.TextSize = IIf(lblLocation.Text.Length < 24,34,22)
+	lblCurrDesc.TextSize = IIf(lblCurrDesc.Text.Length < 24,34,22)
 	#end if
-	
-	
-	'guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)  TODO
 	
 	CallSubDelayed3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.ForcastDays(0).IconID,imgCurrent)
 	
@@ -134,6 +137,11 @@ Public Sub WeatherData_RefreshScrn
 '		lastWeatherCall = mpage.WeatherData.lastUpdatedAt
 '	End If
 
+	
+	lvForecast.Clear
+	lvForecast.Add(CreateListItemWeather(0,480dip,150),"0")
+	lvForecast.Add(CreateListItemWeather(1,480dip,160),"1")
+	lvForecast.Add(CreateListItemWeather(2,480dip,170),"2")
 
 End Sub
 
@@ -141,4 +149,25 @@ End Sub
 Private Sub btnCurrTemp_Click
 	mpage.useCel = Not (mpage.useCel)
 	WeatherData_RefreshScrn
+End Sub
+
+
+
+Private Sub CreateListItemWeather(arrID As Int, Width As Int, Height As Int) As B4XView
+	
+	Dim p As B4XView = XUI.CreatePanel("")
+	p.SetLayoutAnimated(0, 0, 0,Width, Height)
+	p.LoadLayout("pageWeatherForcast")
+	
+	Dim lowTemp,highTemp As String
+	highTemp  = "High " & IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).High_c & "°c",mpage.WeatherData.ForcastDays(0).High_f & "°f")
+	lowTemp   = "Low" & IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).Low_c & "°c",mpage.WeatherData.ForcastDays(0).Low_f & "°f")
+	
+	CallSub3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.ForcastDays(arrID).IconID,imgForecastIcon1)
+	lblForecastDay1.Text = mpage.WeatherData.ForcastDays(arrID).Day
+	lblForecastDesc1.Text = mpage.WeatherData.ForcastDays(arrID).Description
+	lblForecastHigh1.Text  = highTemp
+	lblForecastLow1.Text  = lowTemp
+	
+	Return p
 End Sub
