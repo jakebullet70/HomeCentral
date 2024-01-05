@@ -21,6 +21,11 @@ Version=9.85
 Sub Class_Globals
 	Public Root As B4XView, xui As XUI, Toast As BCToast
 	Private dUtils As DDD
+	Private MainForm As Form 'ignore
+	Public xWidth As Int
+	Public xHeight As Int
+	
+	'------------------------------------------------------------
 	
 	Public WeatherData As clsWeatherData
 	Public useMetric,useCel As Boolean
@@ -96,6 +101,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	
 	Root = Root1
 	Root.LoadLayout("MainPage")
+	MainForm = B4XPages.GetNativeParent(Me)
 	Toast.Initialize(Root) 
 	dUtils.Initialize '--- DDD desgner utils
 	oClock.Initialize
@@ -145,9 +151,15 @@ End Sub
 
 #if b4j
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
-	pnlBG.Width = Width
+	pnlBG.Width =  Width 
 	pnlBG.Height = Height
+	xWidth =  Width 
+	xHeight = Height
+		
+	If Dialog.IsInitialized And Dialog.Visible Then Dialog.Resize(Width, Height)
+	
 	If SubExists(oPageCurrent,"Resize_Me") Then  CallSubDelayed3(oPageCurrent,"Resize_Me", Width,Height)
+	
 End Sub
 #end if
 
@@ -233,7 +245,9 @@ End Sub
 
 Private Sub btnSnapinSetup_Click
 	pnlSideMenu.SetVisibleAnimated(380, False)
-	If SubExists(oPageCurrent,"Page_Setup") Then 
+	If SubExists(oPageCurrent,"Page_Setup") Then
 		CallSub(oPageCurrent,"Page_Setup")
 	End If
 End Sub
+
+

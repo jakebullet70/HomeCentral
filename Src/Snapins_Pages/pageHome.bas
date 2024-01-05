@@ -40,6 +40,7 @@ Public Sub Initialize(p As B4XView)
 	pnlMain = p
 	pnlMain.LoadLayout("pageHomeBase")
 	pnlCurrent.LoadLayout("viewWeatherCurrent")
+	'pnlCurrent.SetLayoutAnimated(0,0,0,pnlCurrent.Width,pnlBase.Height)
 	
 	'--- weather stuff
 	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
@@ -74,17 +75,18 @@ End Sub
 '-------------------------------
 #if b4j
 Public Sub resize_me (width As Int, height As Int)
-	
 	pnlMain.width = width
 	pnlMain.height = height
 	
 	Main.tmrTimerCallSub.ExistsRemove(Me,"Build_Cal")
 	Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Cal",800)
-	
 End Sub
 #end if
 
 Public Sub Set_focus()
+	#if b4j
+	resize_me(mpage.xWidth,mpage.xHeight)
+	#end if
 	Menus.SetHeader("Home","main_menu_home.png")
 	pnlMain.SetVisibleAnimated(500,True)
 	mpage.oClock.Update_Scrn 'UpdateDateTime

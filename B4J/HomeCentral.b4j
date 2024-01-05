@@ -95,8 +95,8 @@ NumberOfModules=31
 Version=10
 @EndOfDesignText@
 #Region Project Attributes 
-	#MainFormWidth: 900
-	#MainFormHeight: 600 
+	#MainFormWidth: 800
+	#MainFormHeight: 480 
 #End Region
 
 #if b4j

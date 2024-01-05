@@ -40,6 +40,7 @@ Public Sub Initialize(p As B4XView)
 	pnlMain = p
 	pnlMain.LoadLayout("pageWeatherBase")
 	pnlCurrent.LoadLayout("viewWeatherCurrent")
+	'pnlCurrent.SetLayoutAnimated(0,0,0,pnlCurrent.Width,)
 	
 	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
 	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
@@ -72,6 +73,9 @@ public Sub resize_me (width As Int, height As Int)
 End Sub
 #end if
 Public Sub Set_focus()
+	#if b4j
+	resize_me(mpage.xWidth,mpage.xHeight)
+	#end if
 	Menus.SetHeader("Weather","main_menu_weather.png")
 	pnlMain.SetVisibleAnimated(500,True)
 	WeatherData_RefreshScrn
