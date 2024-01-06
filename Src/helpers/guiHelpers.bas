@@ -140,6 +140,16 @@ End Sub
 '=========================================================================================
 '=========================================================================================
 
+'--- just an easy wat to Toast!!!!
+Public Sub Show_toast(msg As String)
+	CallSubDelayed2(B4XPages.MainPage,"Show_Toast", msg)
+End Sub
+Public Sub Show_toast2(msg As String, ms As Int)
+	CallSubDelayed3(B4XPages.MainPage,"Show_Toast2", msg, ms)
+End Sub
+
+
+
 
 Public Sub ToolTipOnNode(Nd As Node, msg As String, add As Boolean)
 	Dim joToolTip As JavaObject
@@ -199,15 +209,25 @@ End Sub
 '-----------------------------------------------------------------------------
 #end if
 
-
-'--- just an easy wat to Toast!!!!
-Public Sub Show_toast(msg As String)
-	CallSubDelayed2(B4XPages.MainPage,"Show_Toast", msg)
+Private Sub MeasureTextHeight(Text As String, Font1 As B4XFont) As Int 'ignore
+#If B4A    
+    Private bmp As Bitmap
+    bmp.InitializeMutable(2dip, 2dip)
+    Private cvs As Canvas
+    cvs.Initialize2(bmp)
+    Return cvs.MeasureStringHeight(Text, Font1.ToNativeFont, Font1.Size)
+#Else If B4i
+    Return Text.MeasureHeight(Font1.ToNativeFont)
+#Else If B4J
+	Dim jo As JavaObject
+	jo.InitializeNewInstance("javafx.scene.text.Text", Array(Text))
+	jo.RunMethod("setFont",Array(Font1.ToNativeFont))
+	jo.RunMethod("setLineSpacing",Array(0.0))
+	jo.RunMethod("setWrappingWidth",Array(0.0))
+	Dim Bounds As JavaObject = jo.RunMethod("getLayoutBounds",Null)
+	Return Bounds.RunMethod("getHeight",Null)
+#End If
 End Sub
-Public Sub Show_toast2(msg As String, ms As Int)
-	CallSubDelayed3(B4XPages.MainPage,"Show_Toast2", msg, ms)
-End Sub
-
 
 
 Public Sub SizeFontAdjust() As Float
@@ -227,4 +247,36 @@ Public Sub SizeFontAdjust() As Float
 	End If
 	#End If
 End Sub
+
+
+Public Sub ResizeText2( Text As String,lbl As B4XView) 
+	Dim font As Font = lbl.Font
+	Dim width As Double = lbl.Width
+	Dim v As Double = jMeasureMultilineTextHeight2(font, width , Text)
+	'Dim l As Int = fnct.CountChar(Text,CRLF)
+	lbl.TextSize = v.As(Int)
+	lbl.Text = Text
+	'Log(v)
+End Sub
+
+
+
+Private Sub jMeasureMultilineTextHeight2(Font As Font, Width As Double, Text As String) As Double
+	' Erel --> https://www.b4x.com/android/forum/threads/measure-multiline-text-height.84331/
+	Dim jo As JavaObject = Me
+	Return jo.RunMethod("MeasureMultilineTextHeight", Array(Font, Text, Width))
+End Sub
+#if Java
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextBoundsType;
+public static double MeasureMultilineTextHeight(Font f, String text, double width) throws Exception {
+  Method m = Class.forName("com.sun.javafx.scene.control.skin.Utils").getDeclaredMethod("computeTextHeight",
+  Font.class, String.class, double.class, TextBoundsType.class);
+  m.setAccessible(true);
+  return (Double)m.invoke(null, f, text, width, TextBoundsType.LOGICAL);
+  }
+#end if
+
 
