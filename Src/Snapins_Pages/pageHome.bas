@@ -36,11 +36,13 @@ Sub Class_Globals
 	
 End Sub
 
+
+
 Public Sub Initialize(p As B4XView) 
 	pnlMain = p
 	pnlMain.LoadLayout("pageHomeBase")
 	pnlCurrent.LoadLayout("viewWeatherCurrent")
-	'pnlCurrent.SetLayoutAnimated(0,0,0,pnlCurrent.Width,pnlBase.Height)
+	'pnlCurrent.SetLayoutAnimated(0,0,0,pnlCurrent.Width,pnlCurrent.Height-50dip)
 	
 	'--- weather stuff
 	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
@@ -62,7 +64,7 @@ Public Sub Initialize(p As B4XView)
 	Else
 		mpage.WeatherData.TryUpdate
 	End If
-	btnCurrTemp.TextSize = 54
+	btnCurrTemp.TextSize = 50
 	
 	#if b4j
 	'https://www.b4x.com/android/forum/threads/multiline-labels-text-alignment.95494/#content
@@ -74,18 +76,19 @@ End Sub
 
 '-------------------------------
 #if b4j
-Public Sub resize_me (width As Int, height As Int)
-	pnlMain.width = width
-	pnlMain.height = height
-	
-	Main.tmrTimerCallSub.ExistsRemove(Me,"Build_Cal")
-	Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Cal",800)
+Public Sub resize_me (width As Double, height As Double)
+	If width <> 0 Then
+		pnlMain.width = width
+		pnlMain.height = height
+		Main.tmrTimerCallSub.ExistsRemove(Me,"Build_Cal")
+		Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Cal",800)
+	End If
 End Sub
 #end if
 
 Public Sub Set_focus()
 	#if b4j
-	resize_me(mpage.xWidth,mpage.xHeight)
+	resize_me(mpage.snapInWidth,mpage.snapInHeight)
 	#end if
 	Menus.SetHeader("Home","main_menu_home.png")
 	pnlMain.SetVisibleAnimated(500,True)
@@ -161,11 +164,14 @@ Sub WeatherData_RefreshScrn
 	'--------- these will be auto sized in Android
 	lblLocation.TextSize = IIf(lblLocation.Text.Length < 20,40,24)
 	lblCurrDesc.TextSize = IIf(lblCurrDesc.Text.Length < 24,34,22)
+	
+	lblCurrTXT.TextSize = 16
+	
 	#end if
 	
 	CallSubDelayed3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.ForcastDays(0).IconID,imgCurrent)
 	
-	'fn.SetTextShadow(lblCurrTemp, 1, 1, 1, Colors.ARGB(255, 0, 0, 0))
+	'SetTextShadow(btnCurrTemp.As(Button). , 1, 1, 1,  XUI.Color_ARGB(255, 0, 0, 0))
 	
 '	If mpage.WeatherData.lastUpdatedAt <> lastWeatherCall Then
 '		lastWeatherCall = mpage.WeatherData.lastUpdatedAt
@@ -173,7 +179,6 @@ Sub WeatherData_RefreshScrn
 
 
 End Sub
-
 
 Sub WeatherData_Fail
 	guiHelpers.ResizeText("Error, trying again in 1 minute", lblLocation)

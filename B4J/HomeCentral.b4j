@@ -50,14 +50,15 @@ FileGroup8=Menu Icons
 FileGroup9=Menu Icons
 Group=Main
 Library1=b4xpages
+Library10=jreflection
 Library2=b4xpreferencesdialog
 Library3=bctoast
 Library4=designerutils
 Library5=jcore
 Library6=jfx
-Library7=jsql
-Library8=xui views
-Library9=jrandomaccessfile
+Library7=jrandomaccessfile
+Library8=jsql
+Library9=xui views
 Module1=|relative|..\B4XMainPage
 Module10=|relative|..\Src\miscClasses\CustomCalendar
 Module11=|relative|..\Src\dialogs\dlgAbout
@@ -90,13 +91,13 @@ Module7=|relative|..\Src\miscClasses\weather\clsWeatherDataDay
 Module8=|relative|..\Src\main\cnst
 Module9=|relative|..\Src\miscClasses\ConversionMod
 NumberOfFiles=24
-NumberOfLibraries=9
+NumberOfLibraries=10
 NumberOfModules=31
 Version=10
 @EndOfDesignText@
 #Region Project Attributes 
-	#MainFormWidth: 800
-	#MainFormHeight: 480 
+	#MainFormWidth: 960
+	#MainFormHeight: 600 
 #End Region
 
 #if b4j

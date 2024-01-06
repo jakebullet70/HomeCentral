@@ -22,8 +22,9 @@ Sub Class_Globals
 	Public Root As B4XView, xui As XUI, Toast As BCToast
 	Private dUtils As DDD
 	Private MainForm As Form 'ignore
-	Public xWidth As Int
-	Public xHeight As Int
+	#if b4j
+	Public snapInHeight,snapInWidth As Int
+	#end If
 	
 	'------------------------------------------------------------
 	
@@ -151,14 +152,15 @@ End Sub
 
 #if b4j
 Private Sub B4XPage_Resize (Width As Int, Height As Int)
-	pnlBG.Width =  Width 
-	pnlBG.Height = Height
-	xWidth =  Width 
-	xHeight = Height
+	pnlBG.Width =  Width : snapInWidth =  Width
+	pnlBG.Height = Height : snapInHeight =  Height - pnlHeader.Height
 		
 	If Dialog.IsInitialized And Dialog.Visible Then Dialog.Resize(Width, Height)
 	
-	If SubExists(oPageCurrent,"Resize_Me") Then  CallSubDelayed3(oPageCurrent,"Resize_Me", Width,Height)
+	If SubExists(oPageCurrent,"Resize_Me") Then  
+		Sleep(0) 	'--- this is the size of the snapin page (full page - header)
+		CallSubDelayed3(oPageCurrent,"Resize_Me",snapInWidth , snapInHeight)
+	End If
 	
 End Sub
 #end if

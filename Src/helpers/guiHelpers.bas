@@ -18,6 +18,14 @@ End Sub
 '=====================================================================================
 '  Generic GUI helper methods
 '=====================================================================================
+'
+'Public Sub SetTextShadow(pView As B4XView, pRadius As Float, pDx As Float, pDy As Float, pColor As Int)
+'	'--- Seems to be Android only???????
+'	Dim ref As Reflector
+'	ref.Target = pView
+'	ref.RunMethod4("setShadowLayer", Array As Object(pRadius, pDx, pDy, pColor), Array As String("java.lang.float", "java.lang.float", "java.lang.float", "java.lang.int"))
+'End Sub
+
 
 'Public Sub FontAwesomeToBitmap(Text As String, FontSize As Float) As B4XBitmap
 '	Dim xui As XUI
@@ -209,7 +217,7 @@ End Sub
 '-----------------------------------------------------------------------------
 #end if
 
-Private Sub MeasureTextHeight(Text As String, Font1 As B4XFont) As Int 'ignore
+Public Sub MeasureTextHeight(Text As String, Font1 As B4XFont) As Int 'ignore
 #If B4A    
     Private bmp As Bitmap
     bmp.InitializeMutable(2dip, 2dip)

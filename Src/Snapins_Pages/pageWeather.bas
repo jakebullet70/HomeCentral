@@ -59,6 +59,12 @@ Public Sub Initialize(p As B4XView)
 	'https://www.b4x.com/android/forum/threads/multiline-labels-text-alignment.95494/#content
 	Dim jo As JavaObject = lblCurrTXT.As(Label)
 	jo.RunMethod("setTextAlignment", Array("CENTER"))
+'	'https://www.b4x.com/android/forum/threads/textfield-autosize.60567/#post-381984
+'	Dim tf As Label = lblCurrTXT.As(Label)
+'	'tf.PrefHeight = tf.Height
+'	Dim fs As Int = (tf.PrefHeight /1.5) / 7
+'	tf.Style = tf.Style & "-fx-font-size: "& fs & "px;"
+	'----
 	lvForecast.sv.As(ScrollPane).Style="-fx-background:transparent;-fx-background-color:transparent;"
 	#End If
 	
@@ -67,14 +73,14 @@ End Sub
 
 '-------------------------------
 #if b4j
-public Sub resize_me (width As Int, height As Int)
+public Sub resize_me (width As Double, height As Double)
 	pnlMain.width = width
 	pnlMain.height = height
 End Sub
 #end if
 Public Sub Set_focus()
 	#if b4j
-	resize_me(mpage.xWidth,mpage.xHeight)
+	resize_me(mpage.snapInWidth,mpage.snapInHeight)
 	#end if
 	Menus.SetHeader("Weather","main_menu_weather.png")
 	pnlMain.SetVisibleAnimated(500,True)
@@ -131,6 +137,8 @@ Public Sub WeatherData_RefreshScrn
 	'--------- these will be auto sized in Android
 	lblLocation.TextSize = IIf(lblLocation.Text.Length < 20,40,24)
 	lblCurrDesc.TextSize = IIf(lblCurrDesc.Text.Length < 24,34,22)
+	'guiHelpers.ResizeText2(mpage.WeatherData.qDescription,lblCurrDesc)
+	
 	#end if
 	
 	CallSubDelayed3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.ForcastDays(0).IconID,imgCurrent)

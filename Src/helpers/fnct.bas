@@ -26,3 +26,19 @@ Public Sub int2bool(I As Int) As Boolean
 	End Try
 	Return False
 End Sub
+
+' Counts the number of times a char appears in a string.
+' Param - searchMe, the string to be searched
+' Param - findMe, the single char to search for
+Public Sub CountChar(searchMe As String, findMe As Char) As Int
+	If Not(searchMe.Contains(findMe)) Then Return 0
+	Dim CountMe As Int = 0
+
+	For x = 0 To searchMe.Length - 1
+		If searchMe.CharAt(x) = findMe Then
+			CountMe = CountMe + 1
+		End If
+	Next
+	Return CountMe
+End Sub
+
