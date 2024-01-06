@@ -143,8 +143,8 @@ Public Sub WeatherData_RefreshScrn
 	
 	#end if
 	
-	mpage.WeatherData.GetWeather_Icon2(mpage.WeatherData.ForcastDays(0).IconID ,imgCurrent,mpage.WeatherData.qIsDay)
-	'CallSubDelayed3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.ForcastDays(0).IconID,imgCurrent)
+	mpage.WeatherData.LoadWeatherIcon(mpage.WeatherData.ForcastDays(0).IconID ,imgCurrent,mpage.WeatherData.qIsDay)
+	'CallSubDelayed3(mpage.WeatherData,"LoadWeatherIcon",mpage.WeatherData.ForcastDays(0).IconID,imgCurrent)
 	
 	'fn.SetTextShadow(lblCurrTemp, 1, 1, 1, Colors.ARGB(255, 0, 0, 0))
 	
@@ -182,10 +182,9 @@ Private Sub CreateListItemWeather(arrID As Int, Width As Int, Height As Int) As 
 		highTemp  = "High " & IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).High_c & "°c",mpage.WeatherData.ForcastDays(0).High_f & "°f")
 		lowTemp   = "Low " & IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).Low_c & "°c",mpage.WeatherData.ForcastDays(0).Low_f & "°f")
 	
-		Log(mpage.WeatherData.ForcastDays(arrID).Day)
-		mpage.WeatherData.GetWeather_Icon2(mpage.WeatherData.ForcastDays(arrID).IconID , imgForecastIcon1, True)
+		mpage.WeatherData.LoadWeatherIcon(mpage.WeatherData.ForcastDays(arrID).IconID , imgForecastIcon1, True)
 	
-		lblForecastDay1.Text = mpage.WeatherData.ForcastDays(arrID).Day
+		lblForecastDay1.Text   = mpage.WeatherData.ForcastDays(arrID).Day
 		lblForecastDesc1.Text = mpage.WeatherData.ForcastDays(arrID).Description
 		lblForecastHigh1.Text  = highTemp
 		lblForecastLow1.Text  = lowTemp

@@ -50,7 +50,7 @@ Sub getIsWeatherUpToDate As Boolean
 End Sub
 
 '========================  these where in a public aobject ========================
-Public Sub GetWeather_Icon2(iconID As Int, img As lmB4XImageViewX,isDay As Boolean)
+Public Sub LoadWeatherIcon(iconID As Int, img As lmB4XImageViewX,isDay As Boolean)
 		
 	If iconID <= 0 Then Return
 	Try
@@ -132,21 +132,6 @@ Public Sub TryUpdateBecauseOfError
 	End If
 End Sub
 
-Private Sub ParseDateStr2Ticks(utc As String) As Long
-	'TODO
-	Dim df As String = DateTime.DateFormat
-	Dim res As Long
-	Try
-		'2023-12-31 19:45
-		DateTime.DateFormat = "yyyy MM dd HH:mm"
-		res = DateTime.DateParse(utc)
-	Catch
-		res = 0
-		Log("Error parsing Date 2: " & utc)
-	End Try
-	DateTime.DateFormat = df
-	Return res
-End Sub
 
 Private Sub ParseWeatherJob(s As String)
 	LastUpdatedAt = DateTime.Now
@@ -210,8 +195,8 @@ Private Sub ParseWeatherJob(s As String)
 			Dim astro As Map = colforecastday.Get("astro")
 			'Dim moonset As String = astro.Get("moonset")
 			'Dim moon_illumination As Int = astro.Get("moon_illumination")
-			ForcastDays(ForcastSlot).Sunrise = FormatTimeStr(astro.Get("sunrise"))
-			ForcastDays(ForcastSlot).Sunset = FormatTimeStr(astro.Get("sunset"))
+			ForcastDays(ForcastSlot).Sunrise = astro.Get("sunrise")
+			ForcastDays(ForcastSlot).Sunset = astro.Get("sunset")
 			'Dim moon_phase As String = astro.Get("moon_phase")
 			'Dim is_moon_up As Int = astro.Get("is_moon_up")
 			'Dim is_sun_up As Int = astro.Get("is_sun_up")
@@ -308,12 +293,6 @@ Private Sub GetDayInfoApi(code As Int,slot As Int)
 	
 End Sub
 
-
-Private Sub FormatTimeStr(ti As String) As String
-	'--- The JSON is in AM/PM by default
-	Log("TODO - fmtTimeStr")
-	Return ti
-End Sub
 
 Sub Update_Weather_Default_City
 	Update_Weather(Main.kvs.GetDefault(cnst.INI_WEATHER_DEFAULT_CITY,"Seattle"))

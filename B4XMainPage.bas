@@ -148,7 +148,7 @@ Private Sub BuildGUI
 	Toast.DefaultTextColor = themes.clrPanelBGround
 	Toast.MaxHeight = 120dip
 	
-	btnHdrTxt1.BringToFront
+	'btnHdrTxt1.BringToFront
 	lvHeaderMenu_ItemClick(-2,"hm")
 	Sleep(0)
 	

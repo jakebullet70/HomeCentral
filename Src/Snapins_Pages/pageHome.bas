@@ -17,7 +17,6 @@ Sub Class_Globals
 	Private pnlMain As B4XView
 	Private csCal As CustomCalendar
 	
-	Private pnlBase As B4XView
 	Private pnlClock As B4XView
 	Private pnlCal As B4XView
 	Private lblClock As B4XView
@@ -169,7 +168,7 @@ Sub WeatherData_RefreshScrn
 	lblCurrTXT.TextSize = 18		
 	#end if
 	
-	mpage.WeatherData.GetWeather_Icon2(mpage.WeatherData.ForcastDays(0).IconID ,imgCurrent,mpage.WeatherData.qIsDay)
+	mpage.WeatherData.LoadWeatherIcon(mpage.WeatherData.ForcastDays(0).IconID ,imgCurrent,mpage.WeatherData.qIsDay)
 	
 	'SetTextShadow(btnCurrTemp.As(Button). , 1, 1, 1,  XUI.Color_ARGB(255, 0, 0, 0))
 	
