@@ -41,24 +41,24 @@ Sub Class_Globals
 	Public oPageCurrent As Object = Null
 	Private oPageConversion As pageConversions,oPagePhoto As pagePhotos,oPageTimers As pageKTimers
 	Private oPageCalculator As pageCalculator,  oPageHome As pageHome, oPageWeather As pageWeather
-	
-	Private pnlSideMenu As B4XView
-	Private  btnHeaderMenu As B4XView
-	
-	Private pnlHeader As B4XView
-	Public imgHeader As lmB4XImageViewX
-	
-	Private pnlTimers As B4XView
-	Private pnlMenuFooter As B4XView
-	Private btnSetupMaster As Button
-	Private btnAboutMe As Button
-	Public lvSideMenu,lvHeaderMenu As CustomListView
-	
-	Public btnHdrTxt1 As B4XView
 	'-----------------------------------------
+	Private pnlTimers As B4XView
 	Private lblSnapinText As B4XView
 	Private btnSnapinSetup As B4XView
 	Private pnlSnapinSetup As B4XView
+	'-----------------------------------------
+	
+	'--- header crap -  menu buttons
+	Private pnlHeader As B4XView
+	Private imgSoundButton,imgMenuButton As lmB4XImageViewX
+	Public btnHdrTxt1 As B4XView
+	
+	Public lvSideMenu,lvHeaderMenu As CustomListView
+	Private pnlMenuFooter As B4XView
+	Private btnSetupMaster As Button
+	Private btnAboutMe As Button
+	Private pnlSideMenu As B4XView
+	
 End Sub
 
 Public Sub Initialize
@@ -129,7 +129,7 @@ Private Sub BuildGUI
 	
 	guiHelpers.SetVisible(Array As B4XView(pnlTimers,pnlSideMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
 	
-	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnSnapinSetup,btnHeaderMenu,btnAboutMe,btnSetupMaster,btnHdrTxt1))
+	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnSnapinSetup,btnAboutMe,btnSetupMaster,btnHdrTxt1))
 	
 	pnlBG.SetColorAndBorder(themes.clrPanelBGround,0,xui.Color_Transparent,0)
 	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0,xui.Color_Transparent,0)
@@ -140,11 +140,15 @@ Private Sub BuildGUI
 	Menus.BuildHeaderMenu()
 	
 	pnlHeader.SetColorAndBorder(themes.clrTitleBarBG,0,xui.Color_Transparent,0)
+	imgMenuButton.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(xui.LoadBitmap(File.DirAssets,"main_menu_menu.png"),themes.clrTxtNormal)
+	imgSoundButton.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(xui.LoadBitmap(File.DirAssets,"main_menu_volume.png"),themes.clrTxtNormal)
+	
 	
 	Toast.pnl.Color = themes.clrTxtNormal
 	Toast.DefaultTextColor = themes.clrPanelBGround
 	Toast.MaxHeight = 120dip
 	
+	btnHdrTxt1.BringToFront
 	lvHeaderMenu_ItemClick(-2,"hm")
 	Sleep(0)
 	
@@ -168,12 +172,15 @@ End Sub
 '================== MAIN MENU ====================================
 #region MAIN_MENU
 '--- header menu btn show menu - or not?
-Private Sub btnHeaderMenu_Click
+Private Sub imgMenuButton_MouseClicked(EventData As MouseEvent)
 	pnlSideMenu.SetVisibleAnimated(380, Not (pnlSideMenu.Visible))
 	If pnlSideMenu.Visible Then
 		pnlSideMenu.BringToFront
 		pnlHeader.BringToFront
 	End If
+End Sub
+
+Private Sub imgSoundButton_MouseClicked(EventData As MouseEvent)	
 End Sub
 
 Private Sub lvHeaderMenu_ItemClick (Index As Int, Value As Object)
@@ -251,5 +258,6 @@ Private Sub btnSnapinSetup_Click
 		CallSub(oPageCurrent,"Page_Setup")
 	End If
 End Sub
+
 
 

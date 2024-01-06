@@ -30,8 +30,8 @@ Sub Class_Globals
 	Public qWindDirection As String
 	Public qWindSpeed_mph,qWindSpeed_kph As String
 	Public qGustSpeed_mph,qGustSpeed_kph As String
-	Public qFeelsLike_f,qFeelsLike_c As String
-	Public qTemp_f,qTemp_c As String
+	Public qFeelsLike_f,qFeelsLike_c As Int
+	Public qTemp_f,qTemp_c As Int
 	Public qVisibility_km,qVisibility_miles As String
 	Public qLocalTime As String, qLocalTime_Epoch As Long
 		
@@ -50,9 +50,9 @@ Sub getIsWeatherUpToDate As Boolean
 End Sub
 
 '========================  these where in a public aobject ========================
-Public Sub GetWeather_Icon2(id As Int, img As lmB4XImageViewX)
-	
-	If id <= 0 Then Return
+Public Sub GetWeather_Icon2(iconID As Int, img As lmB4XImageViewX,isDay As Boolean)
+		
+	If iconID <= 0 Then Return
 	Try
 		
 		If Not (img.IsInitialized) Then
@@ -61,7 +61,7 @@ Public Sub GetWeather_Icon2(id As Int, img As lmB4XImageViewX)
 		
 		'Dim daytime As Boolean =  dtHelpers.IsItDayTime(SunriseTime,SunsetTime,LocalTime)
 		img.Bitmap =  xui.LoadBitmap(File.DirAssets, _ 
-							"weathericon/" & cnst.WEATHERicons & IIf(qIsDay,"/day/","/night/") & id & ".png")
+							"weathericon/" & cnst.WEATHERicons & IIf(isDay,"/day/","/night/") & iconID & ".png")
 		
 	Catch
 		Log(LastException)
@@ -79,8 +79,7 @@ Public Sub Initialize
 	ReadApiCodes
 	
 	Main.EventGbl.Subscribe(cnst.EVENT_INET_ON_CONNECT,Me, "Internet_OnConnected")
-
-	tmrErrorInRecievingWeather.Initialize("ErrorGettingWeather",1000 * 60) '--- every 1 minute
+'	tmrErrorInRecievingWeather.Initialize("ErrorGettingWeather",1000 * 60) '--- every 1 minute * 60
 	
 End Sub
 
@@ -198,21 +197,21 @@ Private Sub ParseWeatherJob(s As String)
 		'Dim tz_id As String = Location.Get("tz_id")
 	
 		'--- forcast
-		Dim forcastSlot As Int = 0
-		Dim forecast As Map = root.Get("forecast")
-		Dim forecastday As List = forecast.Get("forecastday")
+		Dim ForcastSlot As Int = 0
+		Dim Forecast As Map = root.Get("forecast")
+		Dim ForecastDay As List = Forecast.Get("forecastday")
 	
 		Dim conv As ConversionMod 
 		conv.Initialize
-		For Each colforecastday As Map In forecastday
-			ForcastDays(forcastSlot).Day = colforecastday.Get("date") '--- format to day
+		For Each colforecastday As Map In ForecastDay
+			ForcastDays(ForcastSlot).Day = FormatDayName( colforecastday.Get("date") )'--- format to day
 			
 			'--- astro
 			Dim astro As Map = colforecastday.Get("astro")
 			'Dim moonset As String = astro.Get("moonset")
 			'Dim moon_illumination As Int = astro.Get("moon_illumination")
-			ForcastDays(forcastSlot).Sunrise = FormatTimeStr(astro.Get("sunrise"))
-			ForcastDays(forcastSlot).Sunset = FormatTimeStr(astro.Get("sunset"))
+			ForcastDays(ForcastSlot).Sunrise = FormatTimeStr(astro.Get("sunrise"))
+			ForcastDays(ForcastSlot).Sunset = FormatTimeStr(astro.Get("sunset"))
 			'Dim moon_phase As String = astro.Get("moon_phase")
 			'Dim is_moon_up As Int = astro.Get("is_moon_up")
 			'Dim is_sun_up As Int = astro.Get("is_sun_up")
@@ -223,61 +222,89 @@ Private Sub ParseWeatherJob(s As String)
 			Dim day As Map = colforecastday.Get("day")
 			'Dim avgvis_km As Double = day.Get("avgvis_km")
 			'Dim avgvis_miles As Double = day.Get("avgvis_miles")
-			ForcastDays(forcastSlot).uv = day.Get("uv")
-			ForcastDays(forcastSlot).AverageTemp_f = day.Get("avgtemp_f")
-			ForcastDays(forcastSlot).AverageTemp_c = day.Get("avgtemp_c")
-			ForcastDays(forcastSlot).ChanceOfSnow = day.Get("daily_chance_of_snow")
-			ForcastDays(forcastSlot).ChanceOfRain = day.Get("daily_chance_of_rain")
-			ForcastDays(forcastSlot).Low_c = day.Get("mintemp_c")
-			ForcastDays(forcastSlot).Low_f = day.Get("mintemp_f")
-			ForcastDays(forcastSlot).High_f = day.Get("maxtemp_f")
-			ForcastDays(forcastSlot).High_c = day.Get("maxtemp_c")
+			ForcastDays(ForcastSlot).uv = day.Get("uv")
+			ForcastDays(ForcastSlot).AverageTemp_f = day.Get("avgtemp_f")
+			ForcastDays(ForcastSlot).AverageTemp_c = day.Get("avgtemp_c")
+			ForcastDays(ForcastSlot).ChanceOfSnow = day.Get("daily_chance_of_snow")
+			ForcastDays(ForcastSlot).ChanceOfRain = day.Get("daily_chance_of_rain")
+			ForcastDays(ForcastSlot).Low_c = day.Get("mintemp_c")
+			ForcastDays(ForcastSlot).Low_f = day.Get("mintemp_f")
+			ForcastDays(ForcastSlot).High_f = day.Get("maxtemp_f")
+			ForcastDays(ForcastSlot).High_c = day.Get("maxtemp_c")
 		
-			ForcastDays(forcastSlot).WillItRain = day.Get("daily_will_it_rain")
-			ForcastDays(forcastSlot).WillItSnow = day.Get("daily_will_it_snow")
-			ForcastDays(forcastSlot).IconURL = condition.Get("icon")
-			ForcastDays(forcastSlot).Percip_inches = day.Get("totalprecip_in")
-			ForcastDays(forcastSlot).Percip_mm = day.Get("totalprecip_mm")
+			ForcastDays(ForcastSlot).WillItRain = day.Get("daily_will_it_rain")
+			ForcastDays(ForcastSlot).WillItSnow = day.Get("daily_will_it_snow")
+			ForcastDays(ForcastSlot).IconURL = condition.Get("icon")
+			ForcastDays(ForcastSlot).Percip_inches = day.Get("totalprecip_in")
+			ForcastDays(ForcastSlot).Percip_mm = day.Get("totalprecip_mm")
 		
-			ForcastDays(forcastSlot).Snow_cm = day.Get("totalsnow_cm")
+			ForcastDays(ForcastSlot).Snow_cm = day.Get("totalsnow_cm")
 			Try
 				If Not (strHelpers.IsNullOrEmpty(day.Get("totalsnow_cm"))) Then
-					ForcastDays(forcastSlot).Snow_inches = conv.length_mm2inches((ForcastDays(forcastSlot).Snow_cm.As(Double) * 10))
+					ForcastDays(ForcastSlot).Snow_inches = conv.length_mm2inches((ForcastDays(ForcastSlot).Snow_cm.As(Double) * 10))
 				End If
 			Catch
 				Log(LastException)
 			End Try
-			ForcastDays(forcastSlot).Humidity = day.Get("avghumidity")
+			ForcastDays(ForcastSlot).Humidity = day.Get("avghumidity")
 		
 			'--- conditions ???
 			Dim condition As Map = day.Get("condition")
-			ForcastDays(forcastSlot).APIcode = condition.Get("code")
-			ForcastDays(forcastSlot).IconID = GetIconFromApi(ForcastDays(forcastSlot).APIcode)
-			ForcastDays(forcastSlot).Description = condition.Get("text")
-			ForcastDays(forcastSlot).Max_Wind_kph = day.Get("maxwind_kph")
-			ForcastDays(forcastSlot).Max_Wind_mph = day.Get("maxwind_mph")
+			ForcastDays(ForcastSlot).APIcode = condition.Get("code")
+			GetDayInfoApi(ForcastDays(ForcastSlot).APIcode,ForcastSlot)
+			'ForcastDays(forcastSlot).Description = condition.Get("text")
+			ForcastDays(ForcastSlot).Max_Wind_kph = day.Get("maxwind_kph")
+			ForcastDays(ForcastSlot).Max_Wind_mph = day.Get("maxwind_mph")
 		
-			forcastSlot = forcastSlot + 1
+			ForcastSlot = ForcastSlot + 1
 		Next
 	
 	Catch
 		Log(LastException)
 	End Try
 	
+	ForcastDays(0).Day = "Today"
 
 End Sub
 
-Private Sub GetIconFromApi(code As Int) As Int
+Private Sub FormatDayName(dt As String) As String
+
+	Dim fmtD As String = DateTime.DateFormat
+	Dim fmtT As String = DateTime.TimeFormat
+	
+	DateTime.TimeFormat = ""
+	DateTime.DateFormat = ""
+	Dim ret As String = dt
+	
+	Try
+		DateTime.DateFormat = "yyyy-MM-dd"
+		Dim d As Long =  DateTime.DateParse(dt)
+		ret = DateUtils.GetDaysNames.Get(DateTime.GetDayOfWeek(d)) &  " - " & dtHelpers.ReturnDayExt( Regex.Split("-",dt)(2))
+	Catch
+		Log(LastException)
+	End Try
+	
+	DateTime.TimeFormat = fmtT
+	DateTime.DateFormat = fmtD
+	Return ret
+End Sub
+
+
+Private Sub GetDayInfoApi(code As Int,slot As Int) 
 	Try
 		
 		Dim o As typeWeatherCodeData
 		o = WeatherAPICodes.Get(code).As(typeWeatherCodeData)
-		Return o.IconID
+		ForcastDays(slot).IconID = o.IconID
+'		If qIsDay Then
+			ForcastDays(slot).Description = o.DayDesc
+'		Else
+'			ForcastDays(slot).Description = o.nightDesc
+'		End If
 		
 	Catch
 		Log(LastException)
 	End Try
-	Return -1
 	
 End Sub
 

@@ -23,8 +23,9 @@ Sub Class_Globals
 	Private lblClock As B4XView
 	
 	'--- weather crap
+	Private lblFeelsLike As B4XView
 	Private pnlCurrent As B4XView
-	Private lblCurrentLow,lblCurrentHigh As B4XView
+	Private lblCurrentHigh As B4XView
 	Private lblCurrDesc As B4XView
 	Private lblCurrTXT As B4XView
 	Private lblLocation As B4XView
@@ -33,6 +34,7 @@ Sub Class_Globals
 	'---
 
 	Private pnlCurrent As B4XView
+	
 	
 End Sub
 
@@ -54,7 +56,7 @@ Public Sub Initialize(p As B4XView)
 	'BuildSide_Menu
 	
 	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnCurrTemp))
-	guiHelpers.SetTextColor(Array As B4XView(lblCurrentHigh,lblCurrentLow, lblLocation,lblCurrTXT,lblClock),themes.clrTxtNormal)
+	guiHelpers.SetTextColor(Array As B4XView(lblCurrentHigh, lblLocation,lblCurrTXT,lblClock,lblFeelsLike),themes.clrTxtNormal)
 	
 	imgCurrent.Bitmap = XUI.LoadBitmap(File.DirAssets, "no weather.png")
 	guiHelpers.ResizeText("     Getting Weather Data...     ",lblCurrTXT)
@@ -133,12 +135,13 @@ End Sub
 
 Sub WeatherData_RefreshScrn
 		
-	Dim lowTemp,highTemp,TempCurr,Precipitation,WindSpeed As String
+	Dim lowTemp,highTemp,TempCurr,Precipitation,WindSpeed,FeelsLike As String
 	TempCurr     = IIf(mpage.useCel, mpage.WeatherData.qTemp_c & "°c",mpage.WeatherData.qTemp_f & "°f")
-	highTemp      = IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).High_c & "°c",mpage.WeatherData.ForcastDays(0).High_f & "°f")
-	lowTemp       = IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).Low_c & "°c",mpage.WeatherData.ForcastDays(0).Low_f & "°f")
+	highTemp      = IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).High_c & "°",mpage.WeatherData.ForcastDays(0).High_f & "°")
+	lowTemp       = IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).Low_c & "°",mpage.WeatherData.ForcastDays(0).Low_f & "°")
 	Precipitation = IIf(mpage.useMetric, mpage.WeatherData.qPrecipitation_mm & "mm",mpage.WeatherData.qPrecipitation_inches & "inches")
-	WindSpeed   = IIf(mpage.useMetric, mpage.WeatherData.qWindSpeed_kph & "Kph" ,mpage.WeatherData.qWindSpeed_mph & "Mph")
+	WindSpeed   = IIf(mpage.useMetric, mpage.WeatherData.qWindSpeed_kph & "km/h" ,mpage.WeatherData.qWindSpeed_mph & "mph")
+	FeelsLike      = IIf(mpage.useCel, mpage.WeatherData.qFeelsLike_c & "°",mpage.WeatherData.qFeelsLike_f & "°")
 	
 	Dim details As String =   _
 			  "Precipitation: " & Precipitation & CRLF & _	
@@ -151,32 +154,28 @@ Sub WeatherData_RefreshScrn
 	
 	guiHelpers.ResizeText(mpage.WeatherData.qDescription, lblCurrDesc)
 	guiHelpers.ResizeText(details.Trim, lblCurrTXT)
-	guiHelpers.ResizeText("High: " & highTemp, lblCurrentHigh)
-	guiHelpers.ResizeText("Low: " & lowTemp, lblCurrentLow)
+	guiHelpers.ResizeText("High " & highTemp   & "  /  Low " & lowTemp, lblCurrentHigh)
 	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
 	guiHelpers.ResizeText(TempCurr , btnCurrTemp)
+	guiHelpers.ResizeText("Feels like: " & FeelsLike , lblFeelsLike)
 	
 	#if b4a
 	lblCurrTXT.TextSize = lblCurrTXT.TextSize - 4
-	#end if
-
-	#if b4j
+	#else if b4j
 	'--------- these will be auto sized in Android
-	lblLocation.TextSize = IIf(lblLocation.Text.Length < 20,40,24)
-	lblCurrDesc.TextSize = IIf(lblCurrDesc.Text.Length < 24,34,22)
-	
-	lblCurrTXT.TextSize = 16
-	
+	lblLocation.TextSize = IIf(lblLocation.Text.Length < 20,38,24)
+	lblCurrDesc.TextSize = IIf(lblCurrDesc.Text.Length < 24,38,22)
+	lblCurrentHigh.TextSize = 20
+	lblCurrTXT.TextSize = 18		
 	#end if
 	
-	CallSubDelayed3(mpage.WeatherData,"GetWeather_Icon2",mpage.WeatherData.ForcastDays(0).IconID,imgCurrent)
+	mpage.WeatherData.GetWeather_Icon2(mpage.WeatherData.ForcastDays(0).IconID ,imgCurrent,mpage.WeatherData.qIsDay)
 	
 	'SetTextShadow(btnCurrTemp.As(Button). , 1, 1, 1,  XUI.Color_ARGB(255, 0, 0, 0))
 	
 '	If mpage.WeatherData.lastUpdatedAt <> lastWeatherCall Then
 '		lastWeatherCall = mpage.WeatherData.lastUpdatedAt
 '	End If
-
 
 End Sub
 

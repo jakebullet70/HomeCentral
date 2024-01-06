@@ -1,22 +1,24 @@
 ﻿AppType=JavaFX
 Build1=Default,sadLogic.HomeCentral
 File1=conversion.htm
-File10=main_menu_pics.png
-File11=main_menu_timers.png
-File12=main_menu_weather.png
-File13=MainPage.bjl
-File14=menu_finger.png
-File15=menu_finger01.dn.png
-File16=menuHdrItems.bjl
-File17=menuItems.bjl
-File18=menu-selected.png
-File19=no weather.png
+File10=main_menu_menu.png
+File11=main_menu_pics.png
+File12=main_menu_timers.png
+File13=main_menu_volume.png
+File14=main_menu_weather.png
+File15=MainPage.bjl
+File16=menu_finger.png
+File17=menu_finger01.dn.png
+File18=menuHdrItems.bjl
+File19=menuItems.bjl
 File2=digital.ttf
-File20=pageHomeBase.bjl
-File21=pageWeatherBase.bjl
-File22=pageWeatherForcast.bjl
-File23=viewWeatherCurrent.bjl
-File24=weatherAPI_codes.json
+File20=menu-selected.png
+File21=no weather.png
+File22=pageHomeBase.bjl
+File23=pageWeatherBase.bjl
+File24=viewWeatherCurrent.bjl
+File25=viewWeatherForcast.bjl
+File26=weatherAPI_codes.json
 File3=divider.png
 File4=dividerh.png
 File5=dlgAbout.bjl
@@ -28,19 +30,21 @@ FileGroup1=Default Group
 FileGroup10=Menu Icons
 FileGroup11=Menu Icons
 FileGroup12=Menu Icons
-FileGroup13=Main
+FileGroup13=Menu Icons
 FileGroup14=Menu Icons
-FileGroup15=Menu Icons
-FileGroup16=Main
-FileGroup17=Default Group
-FileGroup18=Menu Icons
+FileGroup15=Main
+FileGroup16=Menu Icons
+FileGroup17=Menu Icons
+FileGroup18=Main
 FileGroup19=Default Group
 FileGroup2=Default Group
-FileGroup20=snapins-pages\home
+FileGroup20=Menu Icons
 FileGroup21=snapins-pages\Weather
-FileGroup22=snapins-pages\Weather
+FileGroup22=snapins-pages\home
 FileGroup23=snapins-pages\Weather
 FileGroup24=snapins-pages\Weather
+FileGroup25=snapins-pages\Weather
+FileGroup26=snapins-pages\Weather
 FileGroup3=Default Group
 FileGroup4=Default Group
 FileGroup5=Dialogs
@@ -90,13 +94,13 @@ Module6=|relative|..\Src\miscClasses\weather\clsWeatherData
 Module7=|relative|..\Src\miscClasses\weather\clsWeatherDataDay
 Module8=|relative|..\Src\main\cnst
 Module9=|relative|..\Src\miscClasses\ConversionMod
-NumberOfFiles=24
+NumberOfFiles=26
 NumberOfLibraries=10
 NumberOfModules=31
 Version=10
 @EndOfDesignText@
 #Region Project Attributes 
-	#MainFormWidth: 960
+	#MainFormWidth: 800
 	#MainFormHeight: 600 
 #End Region
 

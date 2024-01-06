@@ -19,9 +19,18 @@ Version=9.5
 '--- these shouls all be in DateUtils NOW
 
 Sub Process_Globals
-	Private XUI As XUI	
+	Private XUI As XUI
 End Sub
 
+Public Sub ReturnDayExt(n As Int) As String
+	Select Case n
+		Case 1 : Return n & "st"
+		Case 2 : Return n & "nd"
+		Case 3 : Return n & "rd"
+		'Case 4,5,6,7,8,9 : Return n & "th"
+	End Select
+	Return n & "th"
+End Sub
 
 Public Sub HoursBetween(d1 As Long, d2 As Long) As Int
 	Return ((d1 - d2) / DateTime.TicksPerHour)
@@ -331,20 +340,18 @@ End Sub
 'End Sub
 '
 ''
-''Public Sub IsDate(strDate As String) As Boolean
-''
-''	DateTime.DateFormat = "MM/dd/yy"
-''	Try
-''		DateTime.DateParse(strDate)
-''	Catch
-''		DateTime.DateFormat = "MM/dd/yyyy"
-''		Return False
-''	End Try
-''	DateTime.DateFormat = "MM/dd/yyyy"
-''	Return True
-''
-''	
-''End Sub
+'Public Sub IsDate(strDate As String) As Boolean
+'
+'	DateTime.DateFormat = "MM/dd/yy"
+'	Try
+'		DateTime.DateParse(strDate)
+'	Catch
+'		DateTime.DateFormat = "MM/dd/yyyy"
+'		Return False
+'	End Try
+'	DateTime.DateFormat = "MM/dd/yyyy"
+'	Return True
+'End Sub
 '
 '
 '

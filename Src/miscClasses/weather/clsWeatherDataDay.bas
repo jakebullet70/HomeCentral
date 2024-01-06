@@ -9,12 +9,12 @@ Sub Class_Globals
 	Public Day As String = "N/A"
 	Public AverageTemp_c As String = "N/A"
 	Public AverageTemp_f As String = "N/A"
-	Public High_c As String = "N/A"
-	Public Low_c As String = "N/A"
-	Public High_f As String = "N/A"
-	Public Low_f As String = "N/A"
-	Public FeelsLike_c As String = "N/A"
-	Public FeelsLike_f As String = "N/A"
+	Public High_c As Int 
+	Public Low_c As Int
+	Public High_f As Int
+	Public Low_f As Int
+	Public FeelsLike_c As String 
+	Public FeelsLike_f As String 
 	Public Description As String = "N/A"
 	Public Sunrise As String = "N/A"
 	Public Sunset As String = "N/A"
@@ -33,7 +33,7 @@ Sub Class_Globals
 	Public Snow_inches As String = "N/A"
 	Public Max_Wind_kph As String  = "N/A"
 	Public Max_Wind_mph As String = "N/A"
-	Public Humidity As String = "N/A"
+	Public Humidity As String 
 	
 End Sub
 

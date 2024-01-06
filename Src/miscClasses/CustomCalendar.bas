@@ -88,7 +88,7 @@ Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
 	pnl.addview(pnlbackGround,tx,ty,(mx *  7) + 8dip, (my * 9) + 8dip)
 	pnl.Visible = False
 	
-	lblTitle=XUIViewsUtils.CreateLabel
+	lblTitle = XUIViewsUtils.CreateLabel
 	
 	pnlbackGround.addView(lblTitle,1dip,1dip,pnlbackGround.Width - 2dip, my - 6dip)
 	'lblTitle.Typeface=Typeface.DEFAULT_BOLD	
@@ -256,7 +256,7 @@ Private Sub PrintDate(dts As Long)
 '	t8.Initialize
 	
 	'lblTitle.TextSize = RelativTextSize 
-	Dim s As String = NmFullMonth(CalMonth-1)  & "  " & CalDay& "  " & CalYear
+	Dim s As String = NmFullMonth(CalMonth-1)  & "  " &  dtHelpers.ReturnDayExt(CalDay) & "  " & CalYear
 	#if b4j
 	lblTitle.TextSize = 27
 	#End If

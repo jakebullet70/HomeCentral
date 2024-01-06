@@ -48,7 +48,7 @@ Sub Process_Globals
 '	Public const WeatherAPIxuKey As String = "97599cd456e24caf85c143130182403"
 	Public const WeatherAPIKey As String = "b48d92cda3b045938a7174835233112 "
 	
-	Public WEATHERicons As String = "tv03" '--- see puSetupWeather in old eHome
+	Public WEATHERicons As String = "cc01" '--- see puSetupWeather in old eHome - api,cc01,ms01,tv01,ww01
 	
 	
 	'=================================================================================================

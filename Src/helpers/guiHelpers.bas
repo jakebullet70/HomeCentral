@@ -256,6 +256,23 @@ Public Sub SizeFontAdjust() As Float
 	#End If
 End Sub
 
+'
+'Public Sub ResizeText3(Text As String,lbl As B4XView) 
+'	'https://www.b4x.com/android/forum/threads/label-resize-according-Text-size.151992/#post-955249
+'	'The porpuse is expand the label width according the text lenght
+'	Dim cvs1 As B4XCanvas
+'	Dim Panel1 As Pane : Panel1.Initialize("")
+'	Panel1.prefHeight = lbl.Height
+'	Panel1.PrefWidth = lbl.Width
+'	cvs1.Initialize ( Panel1)
+'	
+'	Dim font As Font = lbl.Font
+'	Dim r As B4XRect = cvs1.MeasureText(Text, font)
+'		
+'	lbl.TextSize = r.Width + 14
+'	lbl.Text = Text
+'	'Log(v)
+'End Sub
 
 Public Sub ResizeText2( Text As String,lbl As B4XView) 
 	Dim font As Font = lbl.Font
