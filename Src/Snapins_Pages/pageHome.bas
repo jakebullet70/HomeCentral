@@ -63,7 +63,7 @@ Public Sub Initialize(p As B4XView)
 	If (mpage.WeatherData.IsWeatherUpToDate = True) Then
 		WeatherData_RefreshScrn
 	Else
-		mpage.WeatherData.TryUpdate
+		mpage.WeatherData.Try_Update
 	End If
 	btnCurrTemp.TextSize = 50
 	

@@ -36,8 +36,6 @@ Sub Class_Globals
 	Public qLocalTime As String, qLocalTime_Epoch As Long
 		
 	Public ForcastDays(3) As clsWeatherDataDay 
-
-	Private tmrErrorInRecievingWeather As Timer
 	
 End Sub
 
@@ -49,37 +47,23 @@ Sub getIsWeatherUpToDate As Boolean
 	End If
 End Sub
 
-'========================  these where in a public aobject ========================
 Public Sub LoadWeatherIcon(iconID As Int, img As lmB4XImageViewX,isDay As Boolean)
 		
 	If iconID <= 0 Then Return
-	Try
-		
-		If Not (img.IsInitialized) Then
-			img.Initialize("","")
-		End If
-		
-		'Dim daytime As Boolean =  dtHelpers.IsItDayTime(SunriseTime,SunsetTime,LocalTime)
-		img.Bitmap =  xui.LoadBitmap(File.DirAssets, _ 
-							"weathericon/" & cnst.WEATHERicons & IIf(isDay,"/day/","/night/") & iconID & ".png")
-		
-	Catch
-		Log(LastException)
-	End Try
-End Sub
+	If Not (img.IsInitialized) Then 	img.Initialize("","")
+	img.Bitmap =  xui.LoadBitmap(File.DirAssets, _ 
+						"weathericon/" & cnst.WEATHERicons & IIf(isDay,"/day/","/night/") & iconID & ".png")
 
-'===============================================================
+End Sub
 
 Public Sub Initialize
 	IsInitialize = True
 	
 	LastUpdatedAt = 1
-	
 	WeatherKey = cnst.WeatherAPIKey
 	ReadApiCodes
 	
 	Main.EventGbl.Subscribe(cnst.EVENT_INET_ON_CONNECT,Me, "Internet_OnConnected")
-'	tmrErrorInRecievingWeather.Initialize("ErrorGettingWeather",1000 * 60) '--- every 1 minute * 60
 	
 End Sub
 
@@ -99,38 +83,35 @@ Private Sub ReadApiCodes()
 End Sub
 
 Sub Internet_OnConnected
-	TryUpdate
+	Try_Update
 End Sub
 
-Sub	ErrorGettingWeather_Tick
-	tmrErrorInRecievingWeather.Enabled = False '--- turn off the timer
-	TryUpdateBecauseOfError
-End Sub
 
-Public Sub TryUpdate
+Public Sub Try_Update
 	If LastUpdatedAt <> 0 Then
-		If dtHelpers.HoursBetween(DateTime.now, LastUpdatedAt) >= 1 Then
+		'If dtHelpers.HoursBetween(DateTime.now, LastUpdatedAt) >= 1 Then
+			Main.EventGbl.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
 			If (LastUpdatedCity = "") Then
-				Main.EventGbl.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
-				Update_Weather_Default_City
+				Update_Weather(Main.kvs.getdefault(cnst.INI_WEATHER_DEFAULT_CITY,"seattle"))
 			Else
-				Main.EventGbl.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
 				Update_Weather(LastUpdatedCity)
 			End If
-		End If
+		'End If
+	Else
+		Log("LastUpdatedAt=0") '--- should never happen
 	End If
 End Sub
 
-Public Sub TryUpdateBecauseOfError
-	If dtHelpers.HoursBetween(DateTime.now, LastUpdatedAt) >= 1 Then
-		Main.EventGbl.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
-		If (LastUpdatedCity = "") Then
-			Update_Weather_Default_City
-		Else
-			Update_Weather(LastUpdatedCity)
-		End If
-	End If
-End Sub
+'Public Sub Try_UpdateBecauseOfError
+'	If dtHelpers.HoursBetween(DateTime.now, LastUpdatedAt) >= 1 Then
+'		Main.EventGbl.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
+'		If (LastUpdatedCity = "") Then
+'			Update_Weather_Default_City
+'		Else
+'			Update_Weather(LastUpdatedCity)
+'		End If
+'	End If
+'End Sub
 
 
 Private Sub ParseWeatherJob(s As String)
@@ -293,69 +274,55 @@ Private Sub GetDayInfoApi(code As Int,slot As Int)
 	
 End Sub
 
-
-Sub Update_Weather_Default_City
-	Update_Weather(Main.kvs.GetDefault(cnst.INI_WEATHER_DEFAULT_CITY,"Seattle"))
-End Sub
-
 Private Sub Update_Weather(city As String) As ResumableSub
 	
-	Dim realCity As String = city
-	LastUpdatedCity = realCity
+	LastUpdatedAt = 1 '--- reset lastUpdated dateTime
+
+	If  Main.isInterNetConnected = False Then
+		Try
+			'--- log to disk?
+			Log("Internet is not connected. Cannot update weather.")
+
+		Catch
+			'--- do nothing, --- should only error out the first time- STILLTRUE???
+			 LogIt.LogDebug1("GetWeather - only 1st time OK")
+		End Try 'ignore
 	
-	Try
+		Return False
+	End If
 
-		If  Main.isInterNetConnected = False Then
-			Try
-				Log("Internet is not connected. Cannot update weather.")
-				'--- log to disk?
-			Catch
-				'--- do nothing, --- should only error out the first time
-				 LogIt.LogDebug1("GetWeather - only 1st time OK")
-			End Try 'ignore
-			
-			LastUpdatedAt = 1
-		
-			Return False
-		End If
+	LogIt.LogDebug1("Requesting weather data")
 	
-		Log("Requesting weather data")
+	Dim retVal As Boolean,  job As HttpJob
+	job.Initialize("", Me)
+	job.Download($"http://api.weatherapi.com/v1/forecast.json?key=${WeatherKey}&q=kherson&days=3&aqi=no&alerts=no"$)
+	Wait For (job) JobDone(job As HttpJob)
+	retVal = job.Success
+	
+	If job.Success Then
 		
-		Dim retVal As Boolean,  job As HttpJob
-		job.Initialize("", Me)
-		job.Download($"http://api.weatherapi.com/v1/forecast.json?key=${WeatherKey}&q=kherson&days=3&aqi=no&alerts=no"$)
-		Wait For (job) JobDone(job As HttpJob)
-		retVal = job.Success
+		'File.WriteString(xui.DefaultFolder,"1.txt",job.GetString)
+		ParseWeatherJob(job.GetString)   
+		Main.EventGbl.Raise(cnst.EVENT_WEATHER_UPDATED)
+		LastUpdatedAt = DateTime.Now
+		LastUpdatedCity = city
+		LogIt.LogDebug1(DateUtils.TicksToString(DateTime.Now) & "--> Weather Job-OK: Setting next update for 61 min")
+		Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 61) '--- set the next call - 61min
 		
-		If job.Success Then
-			'File.WriteString(xui.DefaultFolder,"1.txt",job.GetString)
-			ParseWeatherJob(job.GetString)   
-			Main.EventGbl.Raise(cnst.EVENT_WEATHER_UPDATED)
-			'Location = city
-		Else
-			Log("weather call failed - responce code = " & job.Response.StatusCode)	
-			Main.EventGbl.Raise(cnst.EVENT_WEATHER_UPDATE_FAILED)
-		End If
+	Else
 		
-		job.Release
-		Return retVal
+		Log("weather call failed - responce code = " & job.Response.StatusCode)	
+		Main.EventGbl.Raise(cnst.EVENT_WEATHER_UPDATE_FAILED)
+		Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 3) '--- set the next call - 2min
 		
-	Catch
-		'--- Something with weather has failed. We should try and setup for a quick refresh
-		 Log("Something with weather has failed:")
-		LastUpdatedCity = realCity
-		
-	End Try
-	Return False
+	End If
+	
+	job.Release
+	Return retVal
+
 End Sub
 
-Public Sub ResetWeatherTimer()
-	LastUpdatedAt = 1
-End Sub
-
-Private Sub waitForInternetTimer_Tick
-	'waitForInternetTimer.Enabled = False
-	Update_Weather(LastUpdatedCity)
-End Sub
-
+'Public Sub ResetWeatherTimer()
+'	LastUpdatedAt = 1
+'End Sub
 
