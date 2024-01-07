@@ -242,13 +242,8 @@ Private Sub FormatDayName(dt As String) As String
 	DateTime.TimeFormat = ""
 	DateTime.DateFormat = ""
 	Dim ret As String = dt
+	
 	Try
-'		DateTime.DateFormat = "dd/MM/yyyy"
-'		Dim nice As String = Regex.Split("-",dt)(2)&"/"&Regex.Split("-",dt)(1)&"/"&Regex.Split("-",dt)(0)
-'		Dim d As Long =  DateTime.DateParse(nice)
-'		Dim dn As String = DateUtils.GetDaysNames.Get(DateTime.GetDayOfWeek(d) - 1)
-'		Dim dayNum As String = dtHelpers.ReturnDayExt( Regex.Split("/",nice)(0))
-		
 		DateTime.DateFormat = "yyyy-MM-dd"
 		Dim d As Long =  DateTime.DateParse(dt)
 		Dim dn As String = DateUtils.GetDaysNames.Get(DateTime.GetDayOfWeek(d) - 1)
