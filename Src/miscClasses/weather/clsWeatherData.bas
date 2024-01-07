@@ -170,6 +170,7 @@ Private Sub ParseWeatherJob(s As String)
 		Dim conv As ConversionMod 
 		conv.Initialize
 		For Each colforecastday As Map In ForecastDay
+			'Log(colforecastday.Get("date"))
 			ForcastDays(ForcastSlot).Day = FormatDayName( colforecastday.Get("date") )'--- format to day
 			
 			'--- astro
@@ -241,13 +242,20 @@ Private Sub FormatDayName(dt As String) As String
 	DateTime.TimeFormat = ""
 	DateTime.DateFormat = ""
 	Dim ret As String = dt
-	
 	Try
+'		DateTime.DateFormat = "dd/MM/yyyy"
+'		Dim nice As String = Regex.Split("-",dt)(2)&"/"&Regex.Split("-",dt)(1)&"/"&Regex.Split("-",dt)(0)
+'		Dim d As Long =  DateTime.DateParse(nice)
+'		Dim dn As String = DateUtils.GetDaysNames.Get(DateTime.GetDayOfWeek(d) - 1)
+'		Dim dayNum As String = dtHelpers.ReturnDayExt( Regex.Split("/",nice)(0))
+		
 		DateTime.DateFormat = "yyyy-MM-dd"
 		Dim d As Long =  DateTime.DateParse(dt)
-		ret = DateUtils.GetDaysNames.Get(DateTime.GetDayOfWeek(d)) &  " - " & dtHelpers.ReturnDayExt( Regex.Split("-",dt)(2))
+		Dim dn As String = DateUtils.GetDaysNames.Get(DateTime.GetDayOfWeek(d) - 1)
+		Dim dayNum As String = dtHelpers.ReturnDayExt( Regex.Split("-",dt)(2))
+		ret = dn&  " - " & dayNum
 	Catch
-		Log(LastException)
+		Log("err-FormatDayName:" & dt & " -> " &  LastException)
 	End Try
 	
 	DateTime.TimeFormat = fmtT
@@ -311,7 +319,7 @@ Private Sub Update_Weather(city As String) As ResumableSub
 		
 	Else
 		
-		Log("weather call failed - responce code = " & job.Response.StatusCode)	
+		Log("weather call failed - response code = " & job.Response.StatusCode)	
 		Main.EventGbl.Raise(cnst.EVENT_WEATHER_UPDATE_FAILED)
 		Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 3) '--- set the next call - 2min
 		

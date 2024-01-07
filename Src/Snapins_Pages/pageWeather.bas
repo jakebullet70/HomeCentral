@@ -179,8 +179,8 @@ Private Sub CreateListItemWeather(arrID As Int, Width As Int, Height As Int) As 
 		guiHelpers.SetTextColor(Array As B4XView(lblForecastLow1,lblForecastHigh1,lblForecastDay1,lblForecastDesc1),themes.clrTxtNormal)
 	
 		Dim lowTemp,highTemp As String
-		highTemp  = "High " & IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).High_c & "°c",mpage.WeatherData.ForcastDays(0).High_f & "°f")
-		lowTemp   = "Low " & IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).Low_c & "°c",mpage.WeatherData.ForcastDays(0).Low_f & "°f")
+		highTemp  = "High " & IIf(mpage.useCel, mpage.WeatherData.ForcastDays(arrID).High_c & "°c",mpage.WeatherData.ForcastDays(arrID).High_f & "°f")
+		lowTemp   = "Low " & IIf(mpage.useCel, mpage.WeatherData.ForcastDays(arrID).Low_c & "°c",mpage.WeatherData.ForcastDays(arrID).Low_f & "°f")
 	
 		mpage.WeatherData.LoadWeatherIcon(mpage.WeatherData.ForcastDays(arrID).IconID , imgForecastIcon1, True)
 	
