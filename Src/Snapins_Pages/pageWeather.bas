@@ -77,6 +77,7 @@ End Sub
 public Sub resize_me (width As Double, height As Double)
 	pnlMain.width = width
 	pnlMain.height = height
+	Main.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus2(Me,"WeatherData_RefreshScrn",800,Null)
 End Sub
 #end if
 Public Sub Set_focus()

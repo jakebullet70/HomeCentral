@@ -81,8 +81,7 @@ Public Sub resize_me (width As Double, height As Double)
 	If width <> 0 Then
 		pnlMain.width = width
 		pnlMain.height = height
-		Main.tmrTimerCallSub.ExistsRemove(Me,"Build_Cal")
-		Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Cal",800)
+		Main.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus2(Me,"Build_Cal",800,Null)
 	End If
 End Sub
 #end if
@@ -167,6 +166,27 @@ Sub WeatherData_RefreshScrn
 	lblCurrentHigh.TextSize = 20
 	lblCurrTXT.TextSize = 18		
 	#end if
+	
+'	Try
+'		Dim jo As JavaObject = lblLocation.As(Label)
+'		jo.RunMethod("setEllipsisString", Array("/003"))
+'		lblLocation.Text = "string - make me fit, OK? - do I overflow? please! -- BIG string - make me fit, OK? - do I overflow? please!  -- BIG string - make me fit, OK? - do I overflow? please!"
+'		lblLocation.TextSize = 30
+'		Sleep(100)
+'		Dim jo1 As JavaObject = lblLocation.As(Label)
+'		Log(jo1.RunMethodjo("lookup", Array As Object(".text")))
+'		Dim jl As JavaObject = (jo1.RunMethodjo("lookup", Array As Object(".text")))
+'		Log(jl.As(String))
+'		'Log(jl.RunMethodjo("getText",Null))
+'				
+'		'Log(out.As(String).Contains("\003"))
+'		'Log(out.As(String).Contains(Chr(3)))
+'		
+'	Catch
+'		
+'		Log(LastException)
+'	End Try
+	
 	
 	mpage.WeatherData.LoadWeatherIcon(mpage.WeatherData.ForcastDays(0).IconID ,imgCurrent,mpage.WeatherData.qIsDay)
 	
