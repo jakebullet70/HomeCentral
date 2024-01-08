@@ -6,8 +6,8 @@ Version=5.5
 @EndOfDesignText@
 ' Author:  B4X 
 #Region VERSIONS 
-' V. 1.2	Jan/07/2024
-'			Added ExistsRemoveAdd_DelayedPlus2 method
+' V. 1.2	Jan/08/2024
+'			Added ExistsRemoveAdd_DelayedPlus2, ExistsRemoveAdd_DelayedPlus methods
 ' V. 1.1	Aug/20/2023
 '			Added Exists and ExistsRemove methods
 ' V. 1.0 From https://www.b4x.com/android/forum/threads/b4x-callsubplus-callsub-with-explicit-delay.60877/#content
@@ -24,16 +24,20 @@ End Sub
 
 
 '------------------------------ Added  ----------------------------------------------------
+Public Sub ExistsRemoveAdd_DelayedPlus(Module As Object, SubName As String,Delay As Int)
+	
+	ExistsRemove(Module, SubName)
+	CallSubDelayedPlus(Module,SubName,Delay)
+	
+End Sub
+
 Public Sub ExistsRemoveAdd_DelayedPlus2(Module As Object, SubName As String,Delay As Int, Arg() As Object)
 	
-	Dim t As Timer = Exists(Module,SubName)
-	If t <> Null Then
-		t.Enabled = False
-		RunDelayed.Remove(t)
-	End If
+	ExistsRemove(Module, SubName)
 	CallSubDelayedPlus2(Module,SubName,Delay,Arg)
 	
 End Sub
+
 Public Sub ExistsRemove(Module As Object, SubName As String) 
 	
 	Dim t As Timer = Exists(Module,SubName) 
