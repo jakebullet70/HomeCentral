@@ -14,6 +14,7 @@ Sub Class_Globals
 	
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
+	Private PageHasBeenResized As Boolean = True
 	Private pnlMain As B4XView
 	Private csCal As CustomCalendar
 	
@@ -81,7 +82,8 @@ Public Sub resize_me (width As Double, height As Double)
 	If width <> 0 Then
 		pnlMain.width = width
 		pnlMain.height = height
-		Main.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus2(Me,"Build_Cal",800,Null)
+		Main.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus2(Me,"Render_Scrn",600,Null)
+		PageHasBeenResized = True
 	End If
 End Sub
 #end if
@@ -92,9 +94,9 @@ Public Sub Set_focus()
 	#end if
 	Menus.SetHeader("Home","main_menu_home.png")
 	pnlMain.SetVisibleAnimated(500,True)
-	mpage.oClock.Update_Scrn 'UpdateDateTime
-	WeatherData_RefreshScrn
-	Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Cal",200)
+	If Main.tmrTimerCallSub.Exists(Me,"Render_Scrn") <> Null Then
+		Main.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus2(Me,"Render_Scrn",100,Null)
+	End If
 End Sub
 
 Public Sub Lost_focus()
@@ -113,7 +115,11 @@ End Sub
 '=============================================================================================
 '=============================================================================================
 '=============================================================================================
-
+Private Sub Render_Scrn()
+	mpage.oClock.Update_Scrn 'UpdateDateTime
+	Build_Cal
+	WeatherData_RefreshScrn
+End Sub
 
 Private Sub Build_Cal()
 	'--- show cal
@@ -132,7 +138,9 @@ Private Sub Build_Cal()
 End Sub
 
 Sub WeatherData_RefreshScrn
-		
+	
+	If Main.DebugLog Then Log("WeatherData_RefreshScrn")
+	Sleep(0)
 	Dim lowTemp,highTemp,TempCurr,Precipitation,WindSpeed,FeelsLike As String
 	TempCurr     = IIf(mpage.useCel, mpage.WeatherData.qTemp_c & "°c",mpage.WeatherData.qTemp_f & "°f")
 	highTemp      = IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).High_c & "°",mpage.WeatherData.ForcastDays(0).High_f & "°")
@@ -148,45 +156,29 @@ Sub WeatherData_RefreshScrn
 			  "Wind Speed: " & WindSpeed  & CRLF & _
 			  "Wind Direction: " & mpage.WeatherData.qWindDirection & CRLF & _
 			  "Cloud Cover: " & mpage.WeatherData.qCloudCover & "%" & CRLF & _
-			  "Sunrise: " & mpage.WeatherData.ForcastDays(0).Sunrise &  " - Sunset: " & mpage.WeatherData.ForcastDays(0).Sunset
+			  "Sunrise: " & mpage.WeatherData.ForcastDays(0).Sunrise &  " - Sunset: " & mpage.WeatherData.ForcastDays(0).Sunset & CRLF & _
+			  "Last Updated At: " &  mpage.oClock.FormatTime(mpage.WeatherData.LastUpdatedAt)
 	
+	#if b4a
 	guiHelpers.ResizeText(mpage.WeatherData.qDescription, lblCurrDesc)
+	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
+	#else
+	guiHelpers.ResizeText2(mpage.WeatherData.qLocation ,lblLocation,50,PageHasBeenResized)
+	guiHelpers.ResizeText2(mpage.WeatherData.qDescription ,lblCurrDesc,36,PageHasBeenResized)
+	'lblLocation.TextSize = IIf(lblLocation.Text.Length < 20,38,24)
+	'lblCurrDesc.TextSize = IIf(lblCurrDesc.Text.Length < 24,38,22)
+	#end if
 	guiHelpers.ResizeText(details.Trim, lblCurrTXT)
 	guiHelpers.ResizeText("High " & highTemp   & "  /  Low " & lowTemp, lblCurrentHigh)
-	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
 	guiHelpers.ResizeText(TempCurr , btnCurrTemp)
 	guiHelpers.ResizeText("Feels like: " & FeelsLike , lblFeelsLike)
 	
 	#if b4a
 	lblCurrTXT.TextSize = lblCurrTXT.TextSize - 4
 	#else if b4j
-	'--------- these will be auto sized in Android
-	lblLocation.TextSize = IIf(lblLocation.Text.Length < 20,38,24)
-	lblCurrDesc.TextSize = IIf(lblCurrDesc.Text.Length < 24,38,22)
 	lblCurrentHigh.TextSize = 20
 	lblCurrTXT.TextSize = 18		
 	#end if
-	
-'	Try
-'		Dim jo As JavaObject = lblLocation.As(Label)
-'		jo.RunMethod("setEllipsisString", Array("/003"))
-'		lblLocation.Text = "string - make me fit, OK? - do I overflow? please! -- BIG string - make me fit, OK? - do I overflow? please!  -- BIG string - make me fit, OK? - do I overflow? please!"
-'		lblLocation.TextSize = 30
-'		Sleep(100)
-'		Dim jo1 As JavaObject = lblLocation.As(Label)
-'		Log(jo1.RunMethodjo("lookup", Array As Object(".text")))
-'		Dim jl As JavaObject = (jo1.RunMethodjo("lookup", Array As Object(".text")))
-'		Log(jl.As(String))
-'		'Log(jl.RunMethodjo("getText",Null))
-'				
-'		'Log(out.As(String).Contains("\003"))
-'		'Log(out.As(String).Contains(Chr(3)))
-'		
-'	Catch
-'		
-'		Log(LastException)
-'	End Try
-	
 	
 	mpage.WeatherData.LoadWeatherIcon(mpage.WeatherData.ForcastDays(0).IconID ,imgCurrent,mpage.WeatherData.qIsDay)
 	
@@ -195,11 +187,23 @@ Sub WeatherData_RefreshScrn
 '	If mpage.WeatherData.lastUpdatedAt <> lastWeatherCall Then
 '		lastWeatherCall = mpage.WeatherData.lastUpdatedAt
 '	End If
+	PageHasBeenResized = False
+End Sub
 
+Private Sub WeatherData_BeforeUpdated
+	#if b4a
+	guiHelpers.ResizeText(Updating weather...", lblCurrDesc)
+	#else
+	guiHelpers.ResizeText2("Updating weather..." ,lblLocation,50,False)
+	#end if
 End Sub
 
 Sub WeatherData_Fail
+	#if b4j
+	guiHelpers.ResizeText2( "Error, trying again in 1 minute",lblLocation,50,False)
+	#else
 	guiHelpers.ResizeText("Error, trying again in 1 minute", lblLocation)
+	#End If
 End Sub
 
 Private Sub btnCurrTemp_Click

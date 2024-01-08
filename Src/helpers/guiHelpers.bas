@@ -158,7 +158,7 @@ End Sub
 
 
 
-
+#if b4j
 Public Sub ToolTipOnNode(Nd As Node, msg As String, add As Boolean)
 	Dim joToolTip As JavaObject
 	Dim joToolTip2 As JavaObject = joToolTip.InitializeNewInstance("javafx.scene.control.Tooltip", Array(msg))
@@ -168,8 +168,36 @@ Public Sub ToolTipOnNode(Nd As Node, msg As String, add As Boolean)
 		joToolTip.RunMethod("uninstall", Array(Nd, joToolTip2))
 	End If
 End Sub
+#end if
 
 
+Public Sub ResizeText2(value As Object, lbl As B4XView, maxSize As Float,Force As Boolean)
+
+	'--- B4J Only
+	If (Force = False)  Then
+		If (value.As(String) = lbl.Text) Then 
+			If Main.DebugLog Then Log("ResizeText2 exit") '--- txt wise string is the same size
+			Return
+		End If
+	End If
+	
+	lbl.Text = value : lbl.Visible =False
+	Sleep(0)
+	Dim jo1 As JavaObject = lbl.As(Label)
+	jo1.RunMethod("setEllipsisString", Array("/003"))
+	For ts = maxSize To 15 Step -2
+		lbl.TextSize = ts
+		Sleep(10)
+		Dim tvs As Object = (jo1.RunMethodjo("lookup", Array As Object(".text")).RunMethodjo("getText",Null).As(String))'ignore
+		Log(tvs)
+		If Not (tvs.As(String).EndsWith("/003"))Then
+			Exit '-- all done!
+		End If
+	Next
+	Log(lbl.TextSize)
+	lbl.Visible =True
+	Sleep(0)
+End Sub
 
 
 '-----------------------------------------------------------------------------
@@ -274,34 +302,34 @@ End Sub
 '	'Log(v)
 'End Sub
 
-Public Sub ResizeText2( Text As String,lbl As B4XView) 
-	Dim font As Font = lbl.Font
-	Dim width As Double = lbl.Width
-	Dim v As Double = jMeasureMultilineTextHeight2(font, width , Text)
-	'Dim l As Int = fnct.CountChar(Text,CRLF)
-	lbl.TextSize = v.As(Int)
-	lbl.Text = Text
-	'Log(v)
-End Sub
+'Public Sub ResizeText2( Text As String,lbl As B4XView) 
+'	Dim font As Font = lbl.Font
+'	Dim width As Double = lbl.Width
+'	Dim v As Double = jMeasureMultilineTextHeight2(font, width , Text)
+'	'Dim l As Int = fnct.CountChar(Text,CRLF)
+'	lbl.TextSize = v.As(Int)
+'	lbl.Text = Text
+'	'Log(v)
+'End Sub
 
 
-
-Private Sub jMeasureMultilineTextHeight2(Font As Font, Width As Double, Text As String) As Double
-	' Erel --> https://www.b4x.com/android/forum/threads/measure-multiline-text-height.84331/
-	Dim jo As JavaObject = Me
-	Return jo.RunMethod("MeasureMultilineTextHeight", Array(Font, Text, Width))
-End Sub
-#if Java
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import javafx.scene.text.Font;
-import javafx.scene.text.TextBoundsType;
-public static double MeasureMultilineTextHeight(Font f, String text, double width) throws Exception {
-  Method m = Class.forName("com.sun.javafx.scene.control.skin.Utils").getDeclaredMethod("computeTextHeight",
-  Font.class, String.class, double.class, TextBoundsType.class);
-  m.setAccessible(true);
-  return (Double)m.invoke(null, f, text, width, TextBoundsType.LOGICAL);
-  }
-#end if
+'
+'Private Sub jMeasureMultilineTextHeight2(Font As Font, Width As Double, Text As String) As Double
+'	' Erel --> https://www.b4x.com/android/forum/threads/measure-multiline-text-height.84331/
+'	Dim jo As JavaObject = Me
+'	Return jo.RunMethod("MeasureMultilineTextHeight", Array(Font, Text, Width))
+'End Sub
+'#if Java
+'import java.lang.reflect.InvocationTargetException;
+'import java.lang.reflect.Method;
+'import javafx.scene.text.Font;
+'import javafx.scene.text.TextBoundsType;
+'public static double MeasureMultilineTextHeight(Font f, String text, double width) throws Exception {
+'  Method m = Class.forName("com.sun.javafx.scene.control.skin.Utils").getDeclaredMethod("computeTextHeight",
+'  Font.class, String.class, double.class, TextBoundsType.class);
+'  m.setAccessible(true);
+'  return (Double)m.invoke(null, f, text, width, TextBoundsType.LOGICAL);
+'  }
+'#end if
 
 

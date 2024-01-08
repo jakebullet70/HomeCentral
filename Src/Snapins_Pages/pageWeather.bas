@@ -14,6 +14,7 @@ Sub Class_Globals
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
+	Private PageHasBeenResized As Boolean = True
 	
 	'--- weather	
 	Private pnlCurrent As B4XView
@@ -77,7 +78,8 @@ End Sub
 public Sub resize_me (width As Double, height As Double)
 	pnlMain.width = width
 	pnlMain.height = height
-	Main.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus2(Me,"WeatherData_RefreshScrn",800,Null)
+	Main.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus2(Me,"WeatherData_RefreshScrn",600,Null)
+	PageHasBeenResized = True
 End Sub
 #end if
 Public Sub Set_focus()
@@ -101,13 +103,26 @@ End Sub
 '=============================================================================================
 '=============================================================================================
 
-Public Sub WeatherData_Fail
-	'guiHelpers.ResizeText("Updating failed... Trying again in 1 minute", lblHeader)
-
+Private Sub WeatherData_BeforeUpdated
+	#if b4a
+	guiHelpers.ResizeText(Updating weather...", lblCurrDesc)
+	#else
+	guiHelpers.ResizeText2("Updating weather..." ,lblCurrDesc,50,False)
+	#end if
 End Sub
 
-Public Sub WeatherData_RefreshScrn
+Sub WeatherData_Fail
+	#if b4j
+	guiHelpers.ResizeText2( "Error, trying again in 1 minute",lblLocation,50,False)
+	#else
+	guiHelpers.ResizeText("Error, trying again in 1 minute", lblLocation)
+	#End If
+End Sub
+
+Sub WeatherData_RefreshScrn
 	
+	If Main.DebugLog Then Log("WeatherData_RefreshScrn")
+	Sleep(0)
 	Dim lowTemp,highTemp,TempCurr,Precipitation,WindSpeed,FeelsLike As String
 	TempCurr     = IIf(mpage.useCel, mpage.WeatherData.qTemp_c & "°c",mpage.WeatherData.qTemp_f & "°f")
 	highTemp      = IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).High_c & "°",mpage.WeatherData.ForcastDays(0).High_f & "°")
@@ -123,44 +138,47 @@ Public Sub WeatherData_RefreshScrn
 			  "Wind Speed: " & WindSpeed  & CRLF & _
 			  "Wind Direction: " & mpage.WeatherData.qWindDirection & CRLF & _
 			  "Cloud Cover: " & mpage.WeatherData.qCloudCover & "%" & CRLF & _
-			  "Sunrise: " & mpage.WeatherData.ForcastDays(0).Sunrise &  " - Sunset: " & mpage.WeatherData.ForcastDays(0).Sunset
+			  "Sunrise: " & mpage.WeatherData.ForcastDays(0).Sunrise &  " - Sunset: " & mpage.WeatherData.ForcastDays(0).Sunset & CRLF & _
+			  "Last Updated At: " &  mpage.oClock.FormatTime(mpage.WeatherData.LastUpdatedAt)
 	
+	#if b4a
 	guiHelpers.ResizeText(mpage.WeatherData.qDescription, lblCurrDesc)
+	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
+	#else
+	guiHelpers.ResizeText2(mpage.WeatherData.qLocation ,lblLocation,50,PageHasBeenResized)
+	guiHelpers.ResizeText2(mpage.WeatherData.qDescription ,lblCurrDesc,36,PageHasBeenResized)
+	'lblLocation.TextSize = IIf(lblLocation.Text.Length < 20,38,24)
+	'lblCurrDesc.TextSize = IIf(lblCurrDesc.Text.Length < 24,38,22)
+	#end if
 	guiHelpers.ResizeText(details.Trim, lblCurrTXT)
 	guiHelpers.ResizeText("High " & highTemp   & "  /  Low " & lowTemp, lblCurrentHigh)
-	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
 	guiHelpers.ResizeText(TempCurr , btnCurrTemp)
 	guiHelpers.ResizeText("Feels like: " & FeelsLike , lblFeelsLike)
 	
 	#if b4a
 	lblCurrTXT.TextSize = lblCurrTXT.TextSize - 4
-	#end if
-
-	#if b4j
-	'--------- these will be auto sized in Android
-	lblLocation.TextSize = IIf(lblLocation.Text.Length < 20,40,24)
-	lblCurrDesc.TextSize = IIf(lblCurrDesc.Text.Length < 24,34,22)
-	'guiHelpers.ResizeText2(mpage.WeatherData.qDescription,lblCurrDesc)
-	
+	#else if b4j
+	lblCurrentHigh.TextSize = 20
+	lblCurrTXT.TextSize = 18
 	#end if
 	
 	mpage.WeatherData.LoadWeatherIcon(mpage.WeatherData.ForcastDays(0).IconID ,imgCurrent,mpage.WeatherData.qIsDay)
-	'CallSubDelayed3(mpage.WeatherData,"LoadWeatherIcon",mpage.WeatherData.ForcastDays(0).IconID,imgCurrent)
 	
-	'fn.SetTextShadow(lblCurrTemp, 1, 1, 1, Colors.ARGB(255, 0, 0, 0))
+	'SetTextShadow(btnCurrTemp.As(Button). , 1, 1, 1,  XUI.Color_ARGB(255, 0, 0, 0))
 	
 '	If mpage.WeatherData.lastUpdatedAt <> lastWeatherCall Then
 '		lastWeatherCall = mpage.WeatherData.lastUpdatedAt
 '	End If
 
-	
 	lvForecast.Clear
 	Dim size As Int = lvForecast.AsView.Height / 3
 	lvForecast.Add(CreateListItemWeather(0,480dip,size),"0")
 	lvForecast.Add(CreateListItemWeather(1,480dip,size),"1")
 	lvForecast.Add(CreateListItemWeather(2,480dip,size),"2")
-
+	
+	PageHasBeenResized = False
 End Sub
+
 
 
 Private Sub btnCurrTemp_Click

@@ -113,6 +113,7 @@ Sub Process_Globals
 	Private MainForm As Form
 	
 	'--- globals -------
+	Public DebugLog As Boolean = False
 	Public kvs As KeyValueStore
 	Public sql As SQL
 	Public isInterNetConnected As Boolean = True

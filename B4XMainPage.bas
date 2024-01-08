@@ -122,6 +122,12 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	MainForm.Show
 	#end if
 	#end region
+	
+	
+	#if debug
+	Main.DebugLog = True
+	#End If
+	
 End Sub
 
 

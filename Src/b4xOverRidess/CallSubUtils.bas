@@ -53,7 +53,7 @@ Public Sub Exists(Module As Object, SubName As String) As Timer
 		For Each t As Timer In RunDelayed.Keys
 			Dim dt As RunDelayedData = RunDelayed.Get(t)
 			If dt.SubName = SubName And dt.Module = Module Then
-				Log("tmr already here")
+				'Log("tmr already here")
 				Return t
 			End If
 		Next

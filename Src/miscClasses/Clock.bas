@@ -41,15 +41,24 @@ End Sub
 
 Public Sub Update_Scrn
 	If DoNotShow Then Return
+	
+	'--- raise the clock event, any object subscribed to it will get it
+	Main.EventGbl.Raise2(cnst.EVENT_CLOCK_CHANGE,FormatTime(DateTime.Now))
+	
+End Sub
+
+
+Public Sub FormatTime(t As Long) As String
 	Dim fmtD As String = DateTime.DateFormat
 	Dim fmtT As String = DateTime.TimeFormat
 	DateTime.TimeFormat = cnst.LOCALE_CLOCK
 	DateTime.DateFormat = ""
 	
-	'--- raise the clock event, any object subscribed to it will get it
-	Main.EventGbl.Raise2(cnst.EVENT_CLOCK_CHANGE,DateUtils.TicksToString(DateTime.Now))
+	Dim retMe As String = DateUtils.TicksToString(t)
 	
 	DateTime.TimeFormat = fmtT
 	DateTime.DateFormat = fmtD
+	
+	Return retMe
 End Sub
 
