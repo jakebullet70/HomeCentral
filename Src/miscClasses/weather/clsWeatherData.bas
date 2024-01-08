@@ -310,7 +310,7 @@ Private Sub Update_Weather(city As String) As ResumableSub
 		LastUpdatedAt = DateTime.Now
 		LastUpdatedCity = city
 		LogIt.LogDebug1(DateUtils.TicksToString(DateTime.Now) & "--> Weather Job-OK: Setting next update for 61 min")
-		Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 61) '--- set the next call - 61min
+		Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 45) '--- set the next call - 45min
 		
 	Else
 		
