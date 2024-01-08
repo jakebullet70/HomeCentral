@@ -91,9 +91,6 @@ Public Sub Set_focus()
 	WeatherData_RefreshScrn
 End Sub
 
-Private Sub Page_Setup
-	guiHelpers.Show_toast2("TODO",3500)
-End Sub
 Public Sub Lost_focus()
 	pnlMain.SetVisibleAnimated(500,False)
 End Sub
@@ -215,3 +212,11 @@ Private Sub CreateListItemWeather(arrID As Int, Width As Int, Height As Int) As 
 	
 	Return p
 End Sub
+
+
+
+Private Sub Page_Setup
+	Dim o As dlgSetupWeather : o.Initialize(mpage.Dialog)
+	o.Show
+End Sub
+
