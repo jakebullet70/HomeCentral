@@ -27,9 +27,15 @@ Sub Process_Globals
 	Public Const INI_INSTALL_DATE As String = "instdt"
 	Public Const INI_CURRENT_VER As String = "appver"
 	
-	Public Const INI_WEATHER_DEFAULT_CITY As String = "dwcty"
-	Public Const INI_WEATHER_USE_METRIC As String = "wmtrc"
-	Public Const INI_WEATHER_USE_CELSIUS As String = "wcels"
+	Public Const INI_WEATHER_DEFAULT_CITY As String = "wtdtcty"
+	Public Const INI_WEATHER_USE_METRIC As String = "wtmtrc"
+	Public Const INI_WEATHER_USE_CELSIUS As String = "wtcels"
+	Public Const INI_WEATHER_CITY_LIST As String = "wtclist"
+	Public Const INI_WEATHER_ICONS_PATH As String = "wtipth"
+	
+	Public WeatherAPIKey As String = "b48d92cda3b045938a7174835233112 "
+	Public WEATHERicons As String = "cc01" '--- see puSetupWeather in old eHome - api,cc01,ms01,tv01,ww01
+	
 	
 		
 	
@@ -41,7 +47,7 @@ Sub Process_Globals
 	'Public INI_CONST_MAIN As String = "main"
 	'Public INI_CONST_MENUKEYS As String = "menu"
 	'Public INI_CONST_SNAPINS As String = "snapins"
-	Public INI_CONST_WEATHER As String = "weather"
+	'Public INI_CONST_WEATHER As String = "weather"
 	
 '	Public const DarkSkyAPIKey As String = "ebc4475b049026afc9d48e6e5c331738"
 '	Public const OpenWeatherAPI As String = "517f35137e222f9ef3ae5010ee14cffa"

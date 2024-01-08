@@ -70,13 +70,9 @@ Public Sub Initialize
 	Main.kvs.Initialize(xui.DefaultFolder,cnst.APP_NAME & "_settings.db3")
 	Main.sql = Main.kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
 	themes.Init '--- set colors
+	'Main.kvs.DeleteAll
 	If Main.kvs.ContainsKey(cnst.INI_INSTALL_DATE) = False Then
-		'--- 1st run!
-		Main.kvs.Put(cnst.INI_INSTALL_DATE,DateTime.Now)
-		Main.kvs.Put(cnst.INI_CURRENT_VER,cnst.APP_FILE_VERSION)
-		Main.kvs.Put(cnst.INI_WEATHER_DEFAULT_CITY,"Kherson, Ukraine")
-		Main.kvs.Put(cnst.INI_WEATHER_USE_CELSIUS,True)
-		Main.kvs.Put(cnst.INI_WEATHER_USE_METRIC,False)
+		Prep1stRun  '--- 1st run!
 	Else
 		'--- this will matter when a new version of the app is released as
 		'--- settings files and others things might also need to be updated
@@ -88,6 +84,15 @@ Public Sub Initialize
 	useCel = Main.kvs.GetDefault(cnst.INI_WEATHER_USE_CELSIUS,True)
 	useMetric = Main.kvs.GetDefault(cnst.INI_WEATHER_USE_METRIC,False)
 	
+End Sub
+
+Private Sub Prep1stRun
+	Main.kvs.Put(cnst.INI_INSTALL_DATE,DateTime.Now)
+	Main.kvs.Put(cnst.INI_CURRENT_VER,cnst.APP_FILE_VERSION)
+	Main.kvs.Put(cnst.INI_WEATHER_DEFAULT_CITY,"Kherson, Ukraine")
+	Main.kvs.Put(cnst.INI_WEATHER_USE_CELSIUS,True)
+	Main.kvs.Put(cnst.INI_WEATHER_USE_METRIC,False)
+	Main.kvs.Put(cnst.INI_WEATHER_CITY_LIST,"Kherson, Ukraine;;Seattle, Wa;;Paris, France")
 End Sub
 
 'https://www.b4x.com/android/forum/threads/b4x-sd-customkeyboard.138438/

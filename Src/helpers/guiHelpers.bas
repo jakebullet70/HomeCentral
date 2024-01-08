@@ -12,12 +12,25 @@ Version=9.5
 Sub Process_Globals
 	Private xui As XUI
 	
+	Private lstLocations As ListView
 End Sub
 
 
 '=====================================================================================
 '  Generic GUI helper methods
 '=====================================================================================
+
+'Public Sub LstView2BasicListbox(lst As ListView)
+'	lst.
+'	lst.singleLineDevider = True
+'	lst.dividerHeight = 0
+'	lst.ChangeItemPressedColor(g.GetLstItemPressedCD(0))
+'	lst.DefaultTextColor = darkText
+'	lst.DefaultTextSize = 20
+'End Sub
+
+
+
 '
 'Public Sub SetTextShadow(pView As B4XView, pRadius As Float, pDx As Float, pDy As Float, pColor As Int)
 '	'--- Seems to be Android only???????
