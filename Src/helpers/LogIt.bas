@@ -17,8 +17,8 @@ End Sub
 
 
 Public Sub LogDebug1(s As String)
-	#If Debug
-	Log(s)
+	#If Debug 
+	Log(s) 
 	#End If
 End Sub
 
