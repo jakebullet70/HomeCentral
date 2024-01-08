@@ -69,11 +69,6 @@ End Sub
 
 Public Sub CopyMap(original As Map) As Map 'ignore
 	Return CopyObject(original)
-'	Dim m As Map : m.Initialize
-'	For Each k As Object In original.Keys
-'		m.Put(k, original.Get(k))
-'	Next
-'	Return m
 End Sub
 
 
