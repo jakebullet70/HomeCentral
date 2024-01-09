@@ -57,7 +57,7 @@ End Sub
 
 Private Sub LoadData()
 	
-	Dim ll() As String = Regex.Split(";;", Main.kvs.Get(cnst.INI_WEATHER_CITY_LIST))
+	Dim ll() As String = Regex.Split(";;", B4XPages.MainPage.kvs.Get(cnst.INI_WEATHER_CITY_LIST))
 	
 	'lstLocations.Items.Initialize
 	For Each city As String In ll
@@ -65,9 +65,9 @@ Private Sub LoadData()
 		lstLocations.AddSingleLine(city)
 	Next
 	
-	DefCity = Main.kvs.Get(cnst.INI_WEATHER_DEFAULT_CITY)
-	chkCelsius.Checked = Main.kvs.Get(cnst.INI_WEATHER_USE_CELSIUS)
-	chkMetric.Checked = Main.kvs.Get(cnst.INI_WEATHER_USE_METRIC)
+	DefCity = B4XPages.MainPage.kvs.Get(cnst.INI_WEATHER_DEFAULT_CITY)
+	chkCelsius.Checked = B4XPages.MainPage.kvs.Get(cnst.INI_WEATHER_USE_CELSIUS)
+	chkMetric.Checked = B4XPages.MainPage.kvs.Get(cnst.INI_WEATHER_USE_METRIC)
 	
 	'lstLocations.SelectedIndex = 0
 	'lstLocations.Items.
@@ -81,10 +81,10 @@ Private Sub SaveData()
 '		dd = dd & lstLocations.Items.Get(x) & ";;"
 '	Next
 	dd = strHelpers.TrimLast(dd,";;")
-	Main.kvs.Put(cnst.INI_WEATHER_CITY_LIST,dd)
-	Main.kvs.Put(cnst.INI_WEATHER_DEFAULT_CITY,DefCity)
-	Main.kvs.Put(cnst.INI_WEATHER_USE_CELSIUS,chkCelsius.Checked)
-	Main.kvs.Put(cnst.INI_WEATHER_USE_METRIC,chkMetric.Checked)
+	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_CITY_LIST,dd)
+	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_DEFAULT_CITY,DefCity)
+	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_USE_CELSIUS,chkCelsius.Checked)
+	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_USE_METRIC,chkMetric.Checked)
 	
 End Sub
 

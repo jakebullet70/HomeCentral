@@ -46,8 +46,8 @@ Public Sub Initialize(p As B4XView)
 	pnlCurrent.LoadLayout("viewWeatherCurrent")
 	'pnlCurrent.SetLayoutAnimated(0,0,0,pnlCurrent.Width,)
 	
-	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
-	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
+	B4XPages.MainPage.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
+	B4XPages.MainPage.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
 	
 	'guiHelpers.SetPanelsTranparent(Array As B4XView(pnlCurrentQuickInfo))
 	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnCurrTemp))
@@ -90,7 +90,7 @@ Public Sub Set_focus()
 	resize_me(mpage.snapInWidth,mpage.snapInHeight)
 	#end if
 	Menus.SetHeader("Weather","main_menu_weather.png")
-	pnlMain.SetVisibleAnimated(500,True)
+	pnlMain.SetVisibleAnimated(500,True): Sleep(0)
 	WeatherData_RefreshScrn
 End Sub
 
@@ -120,8 +120,8 @@ Sub WeatherData_Fail
 End Sub
 
 Sub WeatherData_RefreshScrn
-	
-	If Main.DebugLog Then Log("WeatherData_RefreshScrn")
+	If pnlMain.Visible = False Then Return
+	If B4XPages.MainPage.DebugLog Then Log("WeatherData_RefreshScrn")
 	Sleep(0)
 	Dim lowTemp,highTemp,TempCurr,Precipitation,WindSpeed,FeelsLike As String
 	TempCurr     = IIf(mpage.useCel, mpage.WeatherData.qTemp_c & "°c",mpage.WeatherData.qTemp_f & "°f")

@@ -49,9 +49,9 @@ Public Sub Initialize(p As B4XView)
 	'pnlCurrent.SetLayoutAnimated(0,0,0,pnlCurrent.Width,pnlCurrent.Height-50dip)
 	
 	'--- weather stuff
-	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
-	Main.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
-	Main.EventGbl.Subscribe(cnst.EVENT_CLOCK_CHANGE, Me,"clock_event")
+	B4XPages.MainPage.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
+	B4XPages.MainPage.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
+	B4XPages.MainPage.EventGbl.Subscribe(cnst.EVENT_CLOCK_CHANGE, Me,"clock_event")
 	
 	guiHelpers.SetPanelsTranparent(Array As B4XView(pnlClock,pnlCal))
 	
@@ -95,10 +95,12 @@ Public Sub Set_focus()
 	resize_me(mpage.snapInWidth,mpage.snapInHeight)
 	#end if
 	Menus.SetHeader("Home","main_menu_home.png")
-	pnlMain.SetVisibleAnimated(500,True)
-	If Main.tmrTimerCallSub.Exists(Me,"Render_Scrn") <> Null Then
-		Main.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus2(Me,"Render_Scrn",100,Null)
+	pnlMain.SetVisibleAnimated(500,True) : Sleep(0)
+	
+	If B4XPages.MainPage.tmrTimerCallSub.Exists(Me,"Render_Scrn") = Null Then
+		B4XPages.MainPage.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus2(Me,"Render_Scrn",250,Null)
 	End If
+
 End Sub
 
 Public Sub Lost_focus()
@@ -118,6 +120,7 @@ End Sub
 '=============================================================================================
 '=============================================================================================
 Private Sub Render_Scrn()
+	If pnlMain.Visible = False Then Return
 	mpage.oClock.Update_Scrn 'UpdateDateTime
 	Build_Cal
 	WeatherData_RefreshScrn
@@ -126,6 +129,7 @@ End Sub
 Private Sub Build_Cal()
 	'--- show cal
 	pnlCal.RemoveAllViews
+	'If csCal.IsInitialized Then Return
 	csCal.Initialize(pnlCal.Width,pnlCal.Height,DateTime.Now,16dip * guiHelpers.SizeFontAdjust)
 	csCal.callback = Me
 	csCal.eventName = "Cal"
@@ -141,7 +145,9 @@ End Sub
 
 Sub WeatherData_RefreshScrn
 	
-	If Main.DebugLog Then Log("WeatherData_RefreshScrn")
+	If pnlMain.Visible = False Then Return
+	If B4XPages.MainPage.DebugLog Then Log("WeatherData_RefreshScrn")
+	
 	Sleep(0)
 	Dim lowTemp,highTemp,TempCurr,Precipitation,WindSpeed,FeelsLike As String
 	TempCurr     = IIf(mpage.useCel, mpage.WeatherData.qTemp_c & "°c",mpage.WeatherData.qTemp_f & "°f")

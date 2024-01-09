@@ -21,6 +21,14 @@ Version=9.85
 Sub Class_Globals
 	Public Root As B4XView, xui As XUI, Toast As BCToast
 	Private dUtils As DDD
+	'--- globals -------
+	Public DebugLog As Boolean = False
+	Public kvs As KeyValueStore
+	Public sql As SQL
+	Public isInterNetConnected As Boolean = True
+	Public EventGbl As EventController
+	Public tmrTimerCallSub As CallSubUtils
+	'-------------------------------------------
 	
 	#if b4j
 	Private MainForm As Form 'ignore
@@ -68,12 +76,13 @@ Public Sub Initialize
 	#if b4j
 	xui.SetDataFolder(cnst.APP_NAME)
 	#end if
-	Main.EventGbl.Initialize
-	Main.kvs.Initialize(xui.DefaultFolder,cnst.APP_NAME & "_settings.db3")
-	Main.sql = Main.kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
+	tmrTimerCallSub.Initialize
+	EventGbl.Initialize
+	kvs.Initialize(xui.DefaultFolder,cnst.APP_NAME & "_settings.db3")
+	sql = kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
 	themes.Init '--- set colors
 	'Main.kvs.DeleteAll
-	If Main.kvs.ContainsKey(cnst.INI_INSTALL_DATE) = False Then
+	If kvs.ContainsKey(cnst.INI_INSTALL_DATE) = False Then
 		Prep1stRun  '--- 1st run!
 	Else
 		'--- this will matter when a new version of the app is released as
@@ -83,18 +92,18 @@ Public Sub Initialize
 	End If
 	
 	WeatherData.Initialize
-	useCel = Main.kvs.GetDefault(cnst.INI_WEATHER_USE_CELSIUS,True)
-	useMetric = Main.kvs.GetDefault(cnst.INI_WEATHER_USE_METRIC,False)
+	useCel = kvs.GetDefault(cnst.INI_WEATHER_USE_CELSIUS,True)
+	useMetric = kvs.GetDefault(cnst.INI_WEATHER_USE_METRIC,False)
 	
 End Sub
 
 Private Sub Prep1stRun
-	Main.kvs.Put(cnst.INI_INSTALL_DATE,DateTime.Now)
-	Main.kvs.Put(cnst.INI_CURRENT_VER,cnst.APP_FILE_VERSION)
-	Main.kvs.Put(cnst.INI_WEATHER_DEFAULT_CITY,"Kherson, Ukraine")
-	Main.kvs.Put(cnst.INI_WEATHER_USE_CELSIUS,True)
-	Main.kvs.Put(cnst.INI_WEATHER_USE_METRIC,False)
-	Main.kvs.Put(cnst.INI_WEATHER_CITY_LIST,"Kherson, Ukraine;;Seattle, Wa;;Paris, France")
+	B4XPages.MainPage.kvs.Put(cnst.INI_INSTALL_DATE,DateTime.Now)
+	B4XPages.MainPage.kvs.Put(cnst.INI_CURRENT_VER,cnst.APP_FILE_VERSION)
+	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_DEFAULT_CITY,"Kherson, Ukraine")
+	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_USE_CELSIUS,True)
+	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_USE_METRIC,False)
+	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_CITY_LIST,"Kherson, Ukraine;;Seattle, Wa;;Paris, France")
 End Sub
 
 'https://www.b4x.com/android/forum/threads/b4x-sd-customkeyboard.138438/
@@ -134,7 +143,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	
 	
 	#if debug
-	Main.DebugLog = True
+	B4XPages.MainPage.DebugLog = True
 	#End If
 	
 End Sub

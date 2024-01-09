@@ -43,7 +43,7 @@ Public Sub Update_Scrn
 	If DoNotShow Then Return
 	
 	'--- raise the clock event, any object subscribed to it will get it
-	Main.EventGbl.Raise2(cnst.EVENT_CLOCK_CHANGE,FormatTime(DateTime.Now))
+	B4XPages.MainPage.EventGbl.Raise2(cnst.EVENT_CLOCK_CHANGE,FormatTime(DateTime.Now))
 	
 End Sub
 

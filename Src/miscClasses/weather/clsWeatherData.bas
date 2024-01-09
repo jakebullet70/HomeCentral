@@ -66,7 +66,7 @@ Public Sub Initialize
 	WeatherKey = cnst.WeatherAPIKey
 	ReadApiCodes
 	
-	Main.EventGbl.Subscribe(cnst.EVENT_INET_ON_CONNECT,Me, "Internet_OnConnected")
+	B4XPages.MainPage.EventGbl.Subscribe(cnst.EVENT_INET_ON_CONNECT,Me, "Internet_OnConnected")
 	
 End Sub
 
@@ -93,9 +93,9 @@ End Sub
 Public Sub Try_Update
 	If LastUpdatedAt <> 0 Then
 		'If dtHelpers.HoursBetween(DateTime.now, LastUpdatedAt) >= 1 Then
-			Main.EventGbl.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
+		B4XPages.MainPage.EventGbl.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
 			If (LastUpdatedCity = "") Then
-				Update_Weather(Main.kvs.getdefault(cnst.INI_WEATHER_DEFAULT_CITY,"seattle"))
+			Update_Weather(B4XPages.MainPage.kvs.getdefault(cnst.INI_WEATHER_DEFAULT_CITY,"seattle"))
 			Else
 				Update_Weather(LastUpdatedCity)
 			End If
@@ -284,7 +284,7 @@ Private Sub Update_Weather(city As String) As ResumableSub
 	
 	LastUpdatedAt = 1 '--- reset lastUpdated dateTime
 
-	If  Main.isInterNetConnected = False Then
+	If  B4XPages.MainPage.isInterNetConnected = False Then
 		Try
 			'--- log to disk?
 			Log("Internet is not connected. Cannot update weather.")
@@ -309,17 +309,17 @@ Private Sub Update_Weather(city As String) As ResumableSub
 		
 		'File.WriteString(xui.DefaultFolder,"1.txt",job.GetString)
 		ParseWeatherJob(job.GetString)   
-		Main.EventGbl.Raise(cnst.EVENT_WEATHER_UPDATED)
+		B4XPages.MainPage.EventGbl.Raise(cnst.EVENT_WEATHER_UPDATED)
 		LastUpdatedAt = DateTime.Now
 		LastUpdatedCity = city
 		LogIt.LogDebug1(DateUtils.TicksToString(DateTime.Now) & "--> Weather Job-OK: Setting next update for 61 min")
-		Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 45) '--- set the next call - 45min
+		B4XPages.MainPage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 45) '--- set the next call - 45min
 		
 	Else
 		
 		Log("weather call failed - response code = " & job.Response.StatusCode)	
-		Main.EventGbl.Raise(cnst.EVENT_WEATHER_UPDATE_FAILED)
-		Main.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 3) '--- set the next call - 2min
+		B4XPages.MainPage.EventGbl.Raise(cnst.EVENT_WEATHER_UPDATE_FAILED)
+		B4XPages.MainPage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 3) '--- set the next call - 2min
 		
 	End If
 	

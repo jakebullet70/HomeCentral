@@ -1,4 +1,4 @@
-﻿Build1=Default,b4a.example
+﻿Build1=Default,sadLogic.HomeCentral
 File1=conversion.htm
 File10=main_menu_menu.png
 File11=main_menu_pics.png
@@ -51,17 +51,19 @@ FileGroup8=Page-Snapin-Icons
 FileGroup9=Page-Snapin-Icons
 Group=Main
 Library1=b4xpages
-Library10=xui views
-Library11=randomaccessfile
+Library10=sql
+Library11=xui
+Library12=xui views
+Library13=accessibility
 Library2=b4xpreferencesdialog
 Library3=bctoast
 Library4=core
 Library5=designerutils
 Library6=json
-Library7=runtimepermissions
-Library8=sql
-Library9=xui
-ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="33"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~
+Library7=phone
+Library8=randomaccessfile
+Library9=runtimepermissions
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="33"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~~\n~'--- https://www.b4x.com/android/forum/threads/android-jar-targetsdkversion-minsdkversion.87610/~\n~'--- Non-ssl (non-https) communication is not permitted by default. It can be enabled in B4A v9+ by adding this line to the manifest editor:~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~~\n~'--- Take over power functions~\n~AddPermission(android.permission.WAKE_LOCK)~\n~AddPermission(android.permission.WRITE_SETTINGS)~\n~~\n~AddPermission(android.permission.INTERNET)~\n~'--- app update crap~\n~AddManifestText(<uses-permission~\n~	android:name="android.permission.WRITE_EXTERNAL_STORAGE"~\n~	android:maxSdkVersion="18" />~\n~)~\n~~\n~AddApplicationText(~\n~  <provider~\n~  android:name="android.support.v4.content.FileProvider"~\n~  android:authorities="$PACKAGE$.provider"~\n~  android:exported="false"~\n~  android:grantUriPermissions="true">~\n~  <meta-data~\n~  android:name="android.support.FILE_PROVIDER_PATHS"~\n~  android:resource="@xml/provider_paths"/>~\n~  </provider>~\n~)~\n~CreateResource(xml, provider_paths,~\n~   <files-path name="name" path="shared" />~\n~)~\n~AddPermission(android.permission.REQUEST_INSTALL_PACKAGES)~\n~~\n~AddManifestText(<uses-permission~\n~	android:name="android.permission.WRITE_EXTERNAL_STORAGE"~\n~	android:maxSdkVersion="18" />~\n~)~\n~~\n~~\n~~\n~~\n~'===============================================================================~\n~~\n~''''https://www.b4x.com/android/forum/threads/android-jar-targetsdkversion-minsdkversion.87610/~\n~''''Non-ssl (non-https) communication is not permitted by default. It can be enabled in B4A v9+ by adding this line to the manifest editor:~\n~'''CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~'''~\n~'''AddManifestText(~\n~'''~\n~'''	<Activity android:launchMode="singleInstance" />~\n~'''	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="18"/>~\n~'''	~\n~'''	<supports-screens android:largeScreens="true" ~\n~'''	    android:xlargeScreens="true"~\n~'''    	android:normalScreens="false" ~\n~'''    	android:smallScreens="false" ~\n~'''		android:requiresSmallestWidthDp="800"~\n~'''    	android:anyDensity="true"/>~\n~'''~\n~'''		~\n~'''	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>~\n~'''	<uses-permission android:name="android.permission.GET_ACCOUNTS" />~\n~'''	~\n~''')~\n~'''~\n~'''SetActivityAttribute(main, android:windowSoftInputMode, adjustPan|stateHidden)~\n~'''~\n~'''SetApplicationAttribute(android:hardwareAccelerated, "true")~\n~'''SetApplicationAttribute(android:theme, "@android:style/Theme.Holo.Light")~\n~'''SetApplicationAttribute(android:icon, "@drawable/icon")~\n~'''SetApplicationAttribute(android:label, "$LABEL$")~\n~'''~\n~'''AddPermission(android.permission.REBOOT)~\n~'''AddPermission(android.permission.WAKE_LOCK)~\n~'''AddPermission(android.permission.ACCESS_NETWORK_STATE)~\n~'''~\n~'''#if not (KE)~\n~'''AddPermission(android.permission.MEDIA_UNMOUNTED)~\n~'''AddPermission(android.permission.MEDIA_MOUNTED)~\n~'''~\n~'''AddReceiverText(svrMediaHelper,~\n~'''<intent-filter>~\n~'''    <action android:name="android.intent.action.MEDIA_MOUNTED" />~\n~'''	<data android:scheme="file"/>~\n~'''</intent-filter>)~\n~'''~\n~'''AddReceiverText(svrMediaHelper,~\n~'''<intent-filter>~\n~'''    <action android:name="android.intent.action.MEDIA_UNMOUNTED" />~\n~'''	<data android:scheme="file"/>~\n~'''</intent-filter>)~\n~'''#end if~\n~'''~\n~'''#if not (KE)~\n~'''AddReceiverText(eu.dgconsulting.appupdating.newinst2,~\n~'''  <intent-filter>~\n~'''  <action android:name="android.intent.action.PACKAGE_REPLACED" />~\n~'''    <data android:scheme="package" />~\n~'''  </intent-filter>)~\n~''' #end if~\n~~\n~
 Module1=|relative|..\Src\customCtrls\ASSegmentedTab
 Module10=|relative|..\Src\miscClasses\ConversionMod
 Module11=|relative|..\Src\miscClasses\CustomCalendar
@@ -98,7 +100,7 @@ Module7=|relative|..\Src\miscClasses\weather\clsWeatherData
 Module8=|relative|..\Src\miscClasses\weather\clsWeatherDataDay
 Module9=|relative|..\Src\main\cnst
 NumberOfFiles=25
-NumberOfLibraries=11
+NumberOfLibraries=13
 NumberOfModules=35
 Version=12.5
 @EndOfDesignText@
@@ -116,26 +118,20 @@ Version=12.5
 	#IncludeTitle: False
 #End Region
 
-'#BridgeLogger: True
+#BridgeLogger: True
 
 Sub Process_Globals
 	Public ActionBarHomeClicked As Boolean
-	
-	'--- globals -------
-	Public DebugLog As Boolean = False
-	Public kvs As KeyValueStore
-	Public sql As SQL
-	Public isInterNetConnected As Boolean = True
-	Public EventGbl As EventController
-	Public tmrTimerCallSub As CallSubUtils
-	'-------------------------------------------
+
+
 End Sub
 
 Sub Globals
-
+	Private ph As Phone
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
+	SetupFullScrn
 	Dim pm As B4XPagesManager
 	pm.Initialize(Activity)
 End Sub
@@ -179,3 +175,109 @@ public boolean _onCreateOptionsMenu(android.view.Menu menu) {
 #End Region
 
 'Program code should go into B4XMainPage and other pages.
+
+
+#Region "SCREEN_STUFF"
+Private Sub SetupFullScrn
+	
+	'https://www.b4x.com/android/forum/threads/immersive-mode-hide-the-navigation-bar.90882/
+	
+	Dim lv As LayoutValues
+	
+	If ph.SdkVersion >= 28 Then
+		'--- cutout mode...  ????
+		Dim ctxt As JavaObject
+		ctxt.InitializeContext
+		ctxt.RunMethodJO("getWindow", Null).RunMethodJO("getAttributes", Null).SetField("layoutInDisplayCutoutMode", 1)
+	End If
+
+	If ph.SdkVersion >= 19 Then
+		Activity_WindowFocusChanged(True)
+		lv = GetRealSize
+		Dim jo As JavaObject = Activity
+		jo.RunMethod("setBottom", Array(lv.Height))
+		jo.RunMethod("setRight", Array(lv.Width))
+		Activity.Height = lv.Height
+		Activity.Width = lv.Width
+	Else
+		'--- size *WITH* taskbar
+		lv = GetDeviceLayoutValues
+	End If
+	
+	guiHelpers.gScreenSizeAprox = lv.ApproximateScreenSize
+	guiHelpers.gIsLandScape = Not (lv.Height > lv.Width)
+	guiHelpers.gWidth  = lv.Width
+	guiHelpers.gHeight = lv.Height
+	Dim ac As Accessibility : guiHelpers.gFscale = ac.GetUserFontScale
+	
+	'SetUserOrientPref
+	
+End Sub
+
+
+Sub Activity_WindowFocusChanged(HasFocus As Boolean)
+	
+	If ph.SdkVersion < cnst.API_ANDROID_4_4 Then Return
+	
+	'--- restore imersive mode
+	If HasFocus Then
+		Try
+			Dim jo As JavaObject = Activity
+			Sleep(300)
+			jo.RunMethod("setSystemUiVisibility", Array As Object(5894)) '3846 - non-sticky
+		Catch
+			Log("error")
+			'Log(LastException) 'This can cause another error
+		End Try 'ignore
+		
+	End If
+End Sub
+
+
+'Private Sub SetUserOrientPref
+'	
+'	If File.Exists(xui.DefaultFolder,gblConst.GENERAL_OPTIONS_FILE) = False Then
+'		OrientPrefAuto
+'		Return
+'	End If
+'	
+'	Dim Data As Map = File.ReadMap(xui.DefaultFolder,gblConst.GENERAL_OPTIONS_FILE)
+'	Dim pref As String = Data.GetDefault("ort","Auto").As(String).ToUpperCase
+'	
+'	'--- lock orientation
+'	Select Case True
+'		Case pref.StartsWith("PO")
+'			ph.SetScreenOrientation(7)
+'		Case pref.StartsWith("LA")
+'			ph.SetScreenOrientation(6)
+'		Case Else
+'			OrientPrefAuto
+'	End Select
+'	
+'End Sub
+'
+'Private Sub OrientPrefAuto
+'	If Activity.width < Activity.Height Then
+'		ph.SetScreenOrientation(7)
+'	Else
+'		ph.SetScreenOrientation(6)
+'	End If
+'End Sub
+
+Private Sub GetRealSize() As LayoutValues
+	
+	Dim lv As LayoutValues
+	Dim ctxt As JavaObject
+	ctxt.InitializeContext
+	Dim WindowManager As JavaObject = ctxt.RunMethodJO("getSystemService", Array("window"))
+	Dim display As JavaObject = WindowManager.RunMethod("getDefaultDisplay", Null)
+	Dim point As JavaObject
+	point.InitializeNewInstance("android.graphics.Point", Null)
+	display.RunMethod("getRealSize", Array(point))
+	lv.Width = point.GetField("x")
+	lv.Height = point.GetField("y")
+	lv.Scale = 100dip / 100
+	Return lv
+	
+End Sub
+#end region

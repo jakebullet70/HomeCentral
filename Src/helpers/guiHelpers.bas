@@ -11,6 +11,14 @@ Version=9.5
 'Static code module
 Sub Process_Globals
 	Private xui As XUI
+	
+	Public gScreenSizeAprox As Double = 7 '--- asume a small tablet
+	Public gScreenSizeDPI As Int = 0
+	Public gIsLandScape As Boolean
+	Public gFscale As Float
+	Public gWidth As Float
+	Public gHeight As Float
+	
 End Sub
 
 
@@ -213,11 +221,12 @@ End Sub
 
 '-----------------------------------------------------------------------------
 Public Sub ResizeText(value As Object, lbl As B4XView)
-	
+	'Sleep(0)
 	#if b4j '--- b4j dose not resize
 	XUIViewsUtils.SetTextOrCSBuilderToLabel(lbl,value)
 	Return
 	#else
+	'lbl.Text = value
 	Dim multipleLines As Boolean = lbl.Text.Contains(CRLF)
 	Dim size As Float
 	For size = 5 To 72
@@ -280,8 +289,8 @@ End Sub
 Public Sub SizeFontAdjust() As Float
 	#if b4j
 	Return 1
-	#else
-	Dim I As Int = GetDeviceLayoutValues.Width
+	#elsE
+	Dim I As Int =  gWidth
 	If I > 760 And I < 900 Then
 		Return 1
 	Else If I > 901 And I < 1099 Then
