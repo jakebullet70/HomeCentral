@@ -14,7 +14,7 @@ Sub Process_Globals
 	
 	Public SelectedTheme As String 
 	
-	'Public clrBackGround As Int
+	Public clrMenuSelected As Int
 	Public clrTxtNormal As Int
 	Public clrTxtBright As Int
 	Public clrTxtDisabled As Int
@@ -32,15 +32,7 @@ Sub Process_Globals
 	Public clrDlgButtonsColor As Int
 	Public clrDlgButtonsBorder As Int
 	Public clrDlgBorderColor As Int
-	
 		
-	Public clrSwiftBtnPrimary As Int 
-	Public clrSwiftBtnSecondary As Int
-	Public clrSwiftBtnDisabled As Int 
-	
-	
-	
-	
 	'--- more to be added i am sure
 	
 	
@@ -65,10 +57,6 @@ Private Sub SetThemeColors
 		'--- these are temp - need to refactored to someting pretty
 		
 		Case "light"
-			clrSwiftBtnPrimary = HexToColor("#FFD7D7D7")
-			clrSwiftBtnSecondary  = HexToColor("#FFB3AFAF") 
-			clrSwiftBtnDisabled = HexToColor("#FF999999") 
-			
 			clrPanelBGround =  XUI.Color_White
 			clrPanelBorderColor = XUI.Color_LightGray
 			
@@ -89,6 +77,9 @@ Private Sub SetThemeColors
 			'clrTitleBarBG = XUI.Color_ARGB(255,0, 128, 88)
 			clrTitleBarBG = HexToColor("#FF60B6E2")
 			clrTitleBarTXT = XUI.Color_White
+			
+			clrMenuSelected = XUI.Color_Black
+			
 		Case "dark"
 			
 			clrPanelBGround = HexToColor("#FF555555")
@@ -240,15 +231,15 @@ Public Sub SetThemeInputDialogBtns(dlg As B4XDialog)
 	
 End Sub
 
-Public Sub SetThemeSwiftButton(Arr() As SwiftButton)
-	For Each o As SwiftButton In Arr
-		o.SetColors(clrSwiftBtnPrimary,clrSwiftBtnSecondary)
-		o.disabledColor = clrSwiftBtnDisabled
-		o.CornersRadius = 5
-		o.SideHeight = 4
-		o.xLBL.TextColor = clrTxtNormal
-	Next
-End Sub
+'Public Sub SetThemeSwiftButton(Arr() As SwiftButton)
+'	For Each o As SwiftButton In Arr
+'		o.SetColors(clrSwiftBtnPrimary,clrSwiftBtnSecondary)
+'		o.disabledColor = clrSwiftBtnDisabled
+'		o.CornersRadius = 5
+'		o.SideHeight = 4
+'		o.xLBL.TextColor = clrTxtNormal
+'	Next
+'End Sub
 
 
 'Public Sub SetThemeB4xDate(datetemplate As B4XDateTemplate)

@@ -12,58 +12,61 @@ Version=9.5
 Sub Process_Globals
 	Private XUI As XUI
 	Private lvSM As CustomListView '--- menu scrollView
-	Private lvHM As CustomListView '--- menu scrollView
+	'Private lvHM As CustomListView '--- menu scrollView
 End Sub
 
 Public Sub Init()
 	lvSM =  B4XPages.MainPage.lvSideMenu
-	lvHM =  B4XPages.MainPage.lvHeaderMenu
+	'lvHM =  B4XPages.MainPage.lvHeaderMenu
 End Sub
 
 
 
-Private Sub CreateListItemHdrMenu(Text As String, imgName As String, Width As Int, Height As Int) As B4XView
-	Dim p As B4XView = XUI.CreatePanel("")
-	p.SetLayoutAnimated(0, 0, 0,Width, Height)
-	p.LoadLayout("menuHdrItems")
-	'Note that we call DDD.CollectViewsData in CellItem designer script. This is required if we want to get views with dd.GetViewByName.
-	'dUtils.GetViewByName(p, "lblMenuText").Text = Text '=== errors out and only works on base b4xviews
-	For Each v As B4XView In p.GetAllViewsRecursive
-		If v.Tag Is lmB4XImageViewX Then
-			Dim iv  As lmB4XImageViewX  = v.Tag
-			If "itm" = iv.Tag Then
-				iv.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,imgName),themes.clrTxtNormal)
-				iv.Tag = Text
-			End If
-		End If
-	Next
-	Return p
-End Sub
+'Private Sub CreateListItemHdrMenu(Text As String, imgName As String, Width As Int, Height As Int) As B4XView
+'	Dim p As B4XView = XUI.CreatePanel("")
+'	p.SetLayoutAnimated(0, 0, 0,Width, Height)
+'	p.LoadLayout("menuHdrItems")
+'	'Note that we call DDD.CollectViewsData in CellItem designer script. This is required if we want to get views with dd.GetViewByName.
+'	'dUtils.GetViewByName(p, "lblMenuText").Text = Text '=== errors out and only works on base b4xviews
+'	For Each v As B4XView In p.GetAllViewsRecursive
+'		If v.Tag Is lmB4XImageViewX Then
+'			Dim iv  As lmB4XImageViewX  = v.Tag
+'			If "itm" = iv.Tag Then
+'				iv.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,imgName),themes.clrTxtNormal)
+'				iv.Tag = Text
+'			End If
+'		End If
+'	Next
+'	Return p
+'End Sub
 
-Public Sub BuildHeaderMenu()
+Public Sub BuildHeaderMenu(tb As ASSegmentedTab)
 	
-	lvHM.Clear
-	lvHM.GetBase.Color = XUI.Color_Transparent
-	lvHM.sv.Color =  XUI.Color_Transparent
-	lvHM.sv.ScrollViewInnerPanel.Color =  XUI.Color_Transparent
+	tb.ShowSeperators = True
+	'tb.PaddingSelectionPanel =1dip
+	tb.SelectionPanel.Color = themes.clrMenuSelected
 	
-	lvHM.PressedColor = themes.clrTitleBarBG
-	lvHM.DefaultTextBackgroundColor = XUI.Color_Transparent
-	lvHM.DefaultTextColor = themes.clrTxtNormal
+	'tb.CornerRadiusBackground = tb.Base.Height/2 'make the view rounded
+	'tb.CornerRadiusBackground = 10dip 'make the view rounded
 	
-	lvHM.add(CreateListItemHdrMenu(" home","main_menu_home.png",50dip, 50dip),"hm")
-	lvHM.add(CreateListItemHdrMenu(" weather","main_menu_weather.png",50dip, 50dip),"wt")
-	lvHM.add(CreateListItemHdrMenu(" timers","main_menu_timers.png",50dip, 50dip),"tm")
-	lvHM.add(CreateListItemHdrMenu(" calculator","main_menu_calc.png",50dip, 50dip),"ca")
-	lvHM.add(CreateListItemHdrMenu(" conversions","main_menu_conversions.png",50dip, 50dip),"cv")
-	lvHM.add(CreateListItemHdrMenu(" photos","main_menu_pics.png",50dip, 50dip),"ph")
-	'lvHM.Refresh
-	#if b4j
-	lvHM.sv.As(ScrollPane).Style="-fx-background:transparent;-fx-background-color:transparent;"
-	#End If
+'	Dim Tab1 As ASSegmentedTab_Tab
+'	Tab1.Initialize
+'	Tab1.Icon = tb.FontToBitmap(Chr(0xE068),True,15,xui.Color_White)
+'	Tab1.Width = 40dip
+
+	Sleep(0)
 	
+	tb.AddTab2("", guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,"main_menu_home.png"),themes.clrTxtBright),"hm")
+	tb.AddTab2("",guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,"main_menu_weather.png"),themes.clrTxtBright),"wf")
+	tb.AddTab2("",guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,"main_menu_timers.png"),themes.clrTxtBright),"tm")
+	tb.AddTab2("",guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,"main_menu_calc.png"),themes.clrTxtBright),"ca")
+	tb.AddTab2("",guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,"main_menu_conversions.png"),themes.clrTxtBright),"cv")
+	tb.AddTab2("",guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,"main_menu_pics.png"),themes.clrTxtBright),"ph")
 	
-	
+	Dim NumOfItems As Int = 6
+	tb.mBase.Width = (NumOfItems * 80dip) + (NumOfItems * 4dip)
+	tb.Base_Resize2
+
 End Sub
 
 

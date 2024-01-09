@@ -68,6 +68,7 @@ Private Sub LoadData()
 	chkMetric.Checked = Main.kvs.Get(cnst.INI_WEATHER_USE_METRIC)
 	
 	lstLocations.SelectedIndex = 0
+	'lstLocations.Items.
 	
 End Sub
 

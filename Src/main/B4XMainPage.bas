@@ -59,6 +59,7 @@ Sub Class_Globals
 	Private btnAboutMe As Button
 	Private pnlSideMenu As B4XView
 	
+	Private segTabMenu As ASSegmentedTab
 End Sub
 
 Public Sub Initialize
@@ -148,20 +149,18 @@ Private Sub BuildGUI
 		
 	Menus.Init
 	Menus.BuildSideMenu()
-	Menus.BuildHeaderMenu()
+	Menus.BuildHeaderMenu(segTabMenu)
 	
 	pnlHeader.SetColorAndBorder(themes.clrTitleBarBG,0,xui.Color_Transparent,0)
 	imgMenuButton.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(xui.LoadBitmap(File.DirAssets,"main_menu_menu.png"),themes.clrTxtNormal)
 	imgSoundButton.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(xui.LoadBitmap(File.DirAssets,"main_menu_volume.png"),themes.clrTxtNormal)
 	
-	
 	Toast.pnl.Color = themes.clrTxtNormal
 	Toast.DefaultTextColor = themes.clrPanelBGround
 	Toast.MaxHeight = 120dip
 	
-	'btnHdrTxt1.BringToFront
-	lvHeaderMenu_ItemClick(-2,"hm")
 	Sleep(0)
+	segTabMenu_TabChanged(-2)
 	
 End Sub
 
@@ -194,9 +193,16 @@ End Sub
 Private Sub imgSoundButton_MouseClicked(EventData As MouseEvent)	
 End Sub
 
-Private Sub lvHeaderMenu_ItemClick (Index As Int, Value As Object)
+Private Sub segTabMenu_TabChanged(index As Int)
 	
-	If Index <> -2 Then pnlSideMenu.SetVisibleAnimated(380, False) '---  toggle side menu
+	Dim value As String
+	If index <> -2 Then 
+		pnlSideMenu.SetVisibleAnimated(380, False) '---  toggle side menu
+		value = segTabMenu.Getvalue(index)
+	Else
+		value = "hm"
+	End If
+	
 	pnlSnapinSetup.Visible = False
 
 	'--- fire the lost focus event
@@ -204,7 +210,7 @@ Private Sub lvHeaderMenu_ItemClick (Index As Int, Value As Object)
 		CallSub(oPageCurrent,"Lost_Focus")
 	End If
 	
-	Select Case Value
+	Select Case value
 		
 		Case "cv" ' ---- conversions
 			If oPageConversion.IsInitialized = False Then oPageConversion.Initialize(pnlConversions)
@@ -272,3 +278,7 @@ End Sub
 
 
 
+
+
+
+	
