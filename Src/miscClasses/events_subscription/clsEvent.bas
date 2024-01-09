@@ -1,5 +1,5 @@
 ﻿B4A=true
-Group=MiscClasses\EventsController
+Group=MiscClasses\EventController
 ModulesStructureVersion=1
 Type=Class
 Version=7.3

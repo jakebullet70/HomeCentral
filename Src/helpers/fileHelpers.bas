@@ -1,5 +1,5 @@
 ﻿B4J=true
-Group=Helpers-StaticCodeMods
+Group=Helpers
 ModulesStructureVersion=1
 Type=StaticCode
 Version=9.5
@@ -71,7 +71,7 @@ Public Sub BytesToReadableString(Bytes As String) As String
 	
 End Sub
 
-Public Sub FileExist(PathAndFile As String) As Boolean
-	Return File.Exists(File.GetFileParent(PathAndFile),File.GetName(PathAndFile))
-End Sub
+'Public Sub FileExist(PathAndFile As String) As Boolean
+'	Return File.Exists(File.GetFile  Parent(PathAndFile),File.GetName(PathAndFile))
+'End Sub
 

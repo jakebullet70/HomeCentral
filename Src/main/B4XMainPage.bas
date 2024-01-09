@@ -21,8 +21,9 @@ Version=9.85
 Sub Class_Globals
 	Public Root As B4XView, xui As XUI, Toast As BCToast
 	Private dUtils As DDD
-	Private MainForm As Form 'ignore
+	
 	#if b4j
+	Private MainForm As Form 'ignore
 	Public snapInHeight,snapInWidth As Int
 	#end If
 	
@@ -53,7 +54,7 @@ Sub Class_Globals
 	Private imgSoundButton,imgMenuButton As lmB4XImageViewX
 	Public btnHdrTxt1 As B4XView
 	
-	Public lvSideMenu,lvHeaderMenu As CustomListView
+	Public lvSideMenu As CustomListView
 	Private pnlMenuFooter As B4XView
 	Private btnSetupMaster As Button
 	Private btnAboutMe As Button
@@ -108,7 +109,9 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	
 	Root = Root1
 	Root.LoadLayout("MainPage")
+	#if b4j
 	MainForm = B4XPages.GetNativeParent(Me)
+	#end if
 	Toast.Initialize(Root) 
 	dUtils.Initialize '--- DDD desgner utils
 	oClock.Initialize
@@ -143,9 +146,9 @@ Private Sub BuildGUI
 	
 	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnSnapinSetup,btnAboutMe,btnSetupMaster,btnHdrTxt1))
 	
-	pnlBG.SetColorAndBorder(themes.clrPanelBGround,0,xui.Color_Transparent,0)
-	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0,xui.Color_Transparent,0)
-	pnlSideMenu.SetColorAndBorder(themes.clrPanelBGround,2,themes.clrPanelBorderColor,4)
+	pnlBG.SetColorAndBorder(themes.clrPanelBGround,0dip,xui.Color_Transparent,0dip)
+	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0dip,xui.Color_Transparent,0dip)
+	pnlSideMenu.SetColorAndBorder(themes.clrPanelBGround,2dip,themes.clrPanelBorderColor,4dip)
 		
 	Menus.Init
 	Menus.BuildSideMenu()
@@ -182,7 +185,11 @@ End Sub
 '================== MAIN MENU ====================================
 #region MAIN_MENU
 '--- header menu btn show menu - or not?
+#if b4j
 Private Sub imgMenuButton_MouseClicked(EventData As MouseEvent)
+#Else
+Private Sub imgMenuButton_Clicked()
+#End If
 	pnlSideMenu.SetVisibleAnimated(380, Not (pnlSideMenu.Visible))
 	If pnlSideMenu.Visible Then
 		pnlSideMenu.BringToFront
@@ -190,7 +197,11 @@ Private Sub imgMenuButton_MouseClicked(EventData As MouseEvent)
 	End If
 End Sub
 
+#if b4j
 Private Sub imgSoundButton_MouseClicked(EventData As MouseEvent)	
+#Else
+Private Sub imgSoundButton_Clicked()
+#End If
 End Sub
 
 Private Sub segTabMenu_TabChanged(index As Int)

@@ -14,7 +14,9 @@ Sub Class_Globals
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
+	#if b4j
 	Private PageHasBeenResized As Boolean = True
+	#end if
 	
 	'--- weather	
 	Private pnlCurrent As B4XView
@@ -68,9 +70,10 @@ Public Sub Initialize(p As B4XView)
 '	tf.Style = tf.Style & "-fx-font-size: "& fs & "px;"
 	'----
 	lvForecast.sv.As(ScrollPane).Style="-fx-background:transparent;-fx-background-color:transparent;"
+	lvForecast.sv.As(ScrollPane).SetVScrollVisibility("NEVER")  'scrollbar?
 	#End If
 	
-	lvForecast.sv.As(ScrollPane).SetVScrollVisibility("NEVER")  'scrollbar?
+	
 End Sub
 
 '-------------------------------
@@ -102,7 +105,7 @@ End Sub
 
 Private Sub WeatherData_BeforeUpdated
 	#if b4a
-	guiHelpers.ResizeText(Updating weather...", lblCurrDesc)
+	guiHelpers.ResizeText("Updating weather...", lblCurrDesc)
 	#else
 	guiHelpers.ResizeText2("Updating weather..." ,lblCurrDesc,50,False)
 	#end if
@@ -172,8 +175,9 @@ Sub WeatherData_RefreshScrn
 	lvForecast.Add(CreateListItemWeather(0,480dip,size),"0")
 	lvForecast.Add(CreateListItemWeather(1,480dip,size),"1")
 	lvForecast.Add(CreateListItemWeather(2,480dip,size),"2")
-	
+	#if b4j
 	PageHasBeenResized = False
+	#end if
 End Sub
 
 

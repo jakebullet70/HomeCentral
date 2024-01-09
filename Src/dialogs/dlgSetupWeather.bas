@@ -18,11 +18,11 @@ Sub Class_Globals
 	Private btnAdd As B4XView
 	Private btnRemove As B4XView
 	Private btnSetDefaultCity As B4XView
-	Private cboIconSets As ComboBox
 	Private chkCelsius As CheckBox
 	Private lstLocations As ListView
 	Private DefCity As String = ""
 	Private chkMetric As CheckBox
+	Private cboIconSets As Spinner
 End Sub
 
 
@@ -58,16 +58,18 @@ End Sub
 Private Sub LoadData()
 	
 	Dim ll() As String = Regex.Split(";;", Main.kvs.Get(cnst.INI_WEATHER_CITY_LIST))
-	lstLocations.Items.Initialize
+	
+	'lstLocations.Items.Initialize
 	For Each city As String In ll
-		lstLocations.Items.Add(city)
+		'lstLocations.Items.Add(city)
+		lstLocations.AddSingleLine(city)
 	Next
 	
 	DefCity = Main.kvs.Get(cnst.INI_WEATHER_DEFAULT_CITY)
 	chkCelsius.Checked = Main.kvs.Get(cnst.INI_WEATHER_USE_CELSIUS)
 	chkMetric.Checked = Main.kvs.Get(cnst.INI_WEATHER_USE_METRIC)
 	
-	lstLocations.SelectedIndex = 0
+	'lstLocations.SelectedIndex = 0
 	'lstLocations.Items.
 	
 End Sub
@@ -75,9 +77,9 @@ End Sub
 Private Sub SaveData()
 	
 	Dim dd As String
-	For x = 0 To lstLocations.Items.Size -1
-		dd = dd & lstLocations.Items.Get(x) & ";;"
-	Next
+'	For x = 0 To lstLocations.Items.Size -1
+'		dd = dd & lstLocations.Items.Get(x) & ";;"
+'	Next
 	dd = strHelpers.TrimLast(dd,";;")
 	Main.kvs.Put(cnst.INI_WEATHER_CITY_LIST,dd)
 	Main.kvs.Put(cnst.INI_WEATHER_DEFAULT_CITY,DefCity)

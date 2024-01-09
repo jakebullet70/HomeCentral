@@ -1,5 +1,5 @@
 ﻿B4A=true
-Group=CustomControls
+Group=Controls
 ModulesStructureVersion=1
 Type=Class
 Version=10.5

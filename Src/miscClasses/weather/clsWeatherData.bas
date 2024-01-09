@@ -50,11 +50,14 @@ End Sub
 Public Sub LoadWeatherIcon(iconID As Int, img As lmB4XImageViewX,isDay As Boolean)
 		
 	If iconID <= 0 Then Return
-	If Not (img.IsInitialized) Then 	img.Initialize("","")
+'	If Not (img.IsInitialized) Then 
+'			img.Initialize(Null,"")
+'	End If
 	img.Bitmap =  xui.LoadBitmap(File.DirAssets, _ 
 						"weathericon/" & cnst.WEATHERicons & IIf(isDay,"/day/","/night/") & iconID & ".png")
 
 End Sub
+
 
 Public Sub Initialize
 	IsInitialize = True

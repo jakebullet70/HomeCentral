@@ -103,6 +103,6 @@ ModuleClosedNodes6=
 ModuleClosedNodes7=1,3,4,5,10,11
 ModuleClosedNodes8=
 ModuleClosedNodes9=
-NavigationStack=themes,SetThemeColors,74,6,themes,HexToColor,112,0,themes,Int2ARGB,124,0,themes,ShadeColor,128,0,B4XMainPage,BuildGUI,158,0,Menus,BuildHeaderMenu,42,0,B4XMainPage,segTabMenu_TabChanged,199,0,pageHome,WeatherData_RefreshScrn,135,0,Visual Designer,viewSetupWeather.bjl,-100,1,guiHelpers,ResizeText2,190,0
+NavigationStack=themes,Int2ARGB,124,0,themes,ShadeColor,128,0,B4XMainPage,BuildGUI,158,0,Menus,BuildHeaderMenu,42,0,B4XMainPage,segTabMenu_TabChanged,199,0,pageHome,WeatherData_RefreshScrn,135,0,Visual Designer,viewSetupWeather.bjl,-100,1,guiHelpers,ResizeText2,190,0,Visual Designer,menuItems.bjl,-100,2,Main,AppStart,24,0
 SelectedBuild=0
 VisibleModules=2,29,25,13,34,20

@@ -1,5 +1,5 @@
 ﻿B4J=true
-Group=Helpers-StaticCodeMods
+Group=Helpers
 ModulesStructureVersion=1
 Type=StaticCode
 Version=9.5
@@ -10,7 +10,10 @@ Version=9.5
 #End Region
 'Static code module
 Sub Process_Globals
-	Private fx As JFX, XUI As XUI
+	#if b4j
+	Private fx As JFX
+	#end if
+	Private XUI As XUI
 	
 	Public SelectedTheme As String 
 	

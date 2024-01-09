@@ -1,5 +1,5 @@
 ﻿B4J=true
-Group=Helpers-StaticCodeMods
+Group=Helpers
 ModulesStructureVersion=1
 Type=StaticCode
 Version=9.5
@@ -11,8 +11,6 @@ Version=9.5
 'Static code module
 Sub Process_Globals
 	Private xui As XUI
-	
-	Private lstLocations As ListView
 End Sub
 
 
@@ -291,7 +289,7 @@ Public Sub SizeFontAdjust() As Float
 	Else If I > 1200 Then
 		Return 1.45
 	Else
-		LogWrite("Scrn Size Err 001:" & I,ID_LOG_ERR)
+		'LogWrite("Scrn Size Err 001:" & I,ID_LOG_ERR)
 		Return 1
 	End If
 	#End If

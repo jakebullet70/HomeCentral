@@ -14,7 +14,9 @@ Sub Class_Globals
 	
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
+	#if b4j
 	Private PageHasBeenResized As Boolean = True
+	#end if
 	Private pnlMain As B4XView
 	Private csCal As CustomCalendar
 	
@@ -187,12 +189,14 @@ Sub WeatherData_RefreshScrn
 '	If mpage.WeatherData.lastUpdatedAt <> lastWeatherCall Then
 '		lastWeatherCall = mpage.WeatherData.lastUpdatedAt
 '	End If
+#if b4j
 	PageHasBeenResized = False
+	#end if
 End Sub
 
 Private Sub WeatherData_BeforeUpdated
 	#if b4a
-	guiHelpers.ResizeText(Updating weather...", lblCurrDesc)
+	guiHelpers.ResizeText("Updating weather...", lblCurrDesc)
 	#else
 	guiHelpers.ResizeText2("Updating weather..." ,lblLocation,50,False)
 	#end if

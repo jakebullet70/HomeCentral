@@ -11,12 +11,12 @@ Version=9.5
 'Static code module
 Sub Process_Globals
 	Private XUI As XUI
-	Private lvSM As CustomListView '--- menu scrollView
+	'Private lvSM As CustomListView '--- menu scrollView
 	'Private lvHM As CustomListView '--- menu scrollView
 End Sub
 
 Public Sub Init()
-	lvSM =  B4XPages.MainPage.lvSideMenu
+	'lvSM =  B4XPages.MainPage.lvSideMenu
 	'lvHM =  B4XPages.MainPage.lvHeaderMenu
 End Sub
 
@@ -68,6 +68,7 @@ End Sub
 
 Public Sub BuildSideMenu()
 	
+	Dim lvSM As CustomListView = B4XPages.MainPage.lvSideMenu
 	lvSM.Clear
 	
 	lvSM.GetBase.Color = XUI.Color_Transparent
