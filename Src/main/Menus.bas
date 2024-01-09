@@ -43,28 +43,24 @@ End Sub
 Public Sub BuildHeaderMenu(tb As ASSegmentedTab)
 	
 	tb.ShowSeperators = True
-	'tb.PaddingSelectionPanel =1dip
+	tb.ImageHeight = 46dip
 	tb.SelectionPanel.Color = themes.clrMenuSelected
+	tb.ItemTextProperties.TextColor = themes.clrTxtNormal
+	'tb.ItemTextProperties.SelectedTextColor = themes.clrTxtBright
 	
 	'tb.CornerRadiusBackground = tb.Base.Height/2 'make the view rounded
 	'tb.CornerRadiusBackground = 10dip 'make the view rounded
-	
-'	Dim Tab1 As ASSegmentedTab_Tab
-'	Tab1.Initialize
-'	Tab1.Icon = tb.FontToBitmap(Chr(0xE068),True,15,xui.Color_White)
-'	Tab1.Width = 40dip
-
 	Sleep(0)
 	
-	tb.AddTab2("", guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,"main_menu_home.png"),themes.clrTxtBright),"hm")
-	tb.AddTab2("",guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,"main_menu_weather.png"),themes.clrTxtBright),"wf")
-	tb.AddTab2("",guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,"main_menu_timers.png"),themes.clrTxtBright),"tm")
-	tb.AddTab2("",guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,"main_menu_calc.png"),themes.clrTxtBright),"ca")
-	tb.AddTab2("",guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,"main_menu_conversions.png"),themes.clrTxtBright),"cv")
-	tb.AddTab2("",guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,"main_menu_pics.png"),themes.clrTxtBright),"ph")
+	tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_home.png"),"hm")
+	tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_weather.png"),"wt")
+	tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_timers.png"),"tm")
+	tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_calc.png"),"ca")
+	tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_conversions.png"),"cv")
+	tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_pics.png"),"ph")
 	
 	Dim NumOfItems As Int = 6
-	tb.mBase.Width = (NumOfItems * 80dip) + (NumOfItems * 4dip)
+	tb.mBase.Width = (NumOfItems * 70dip) + (NumOfItems * 4dip)
 	tb.Base_Resize2
 
 End Sub

@@ -189,7 +189,7 @@ Public Sub ResizeText2(value As Object, lbl As B4XView, maxSize As Float,Force A
 	'--- B4J Only
 	If (Force = False)  Then
 		If (value.As(String) = lbl.Text) Then 
-			If Main.DebugLog Then Log("ResizeText2 exit") '--- txt wise string is the same size
+			'If Main.DebugLog Then Log("ResizeText2 exit") '--- txt wise string is the same size
 			Return
 		End If
 	End If
@@ -202,12 +202,12 @@ Public Sub ResizeText2(value As Object, lbl As B4XView, maxSize As Float,Force A
 		lbl.TextSize = ts
 		Sleep(10)
 		Dim tvs As Object = (jo1.RunMethodjo("lookup", Array As Object(".text")).RunMethodjo("getText",Null).As(String))'ignore
-		Log(tvs)
+		'Log(tvs)
 		If Not (tvs.As(String).EndsWith("/003"))Then
 			Exit '-- all done!
 		End If
 	Next
-	Log(lbl.TextSize)
+	'Log(lbl.TextSize)
 	lbl.Visible =True
 	Sleep(0)
 End Sub

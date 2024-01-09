@@ -78,7 +78,7 @@ Private Sub SetThemeColors
 			clrTitleBarBG = HexToColor("#FF60B6E2")
 			clrTitleBarTXT = XUI.Color_White
 			
-			clrMenuSelected = XUI.Color_Black
+			clrMenuSelected =  ShadeColor(HexToColor("#FF60B6D1"))
 			
 		Case "dark"
 			
@@ -130,7 +130,11 @@ Public Sub Int2ARGB(Color As Int) As Int()
 End Sub
 
 
-
+Public Sub ShadeColor(clr As Int) As Int
+	Dim argb() As Int = Int2ARGB(clr)
+	Dim factor As Float = 0.95
+	Return XUI.Color_RGB(argb(1) * factor, argb(2) * factor, argb(3) * factor)
+End Sub
 
 '====================================================================
 '--- theme standard B4x dialog controls
@@ -257,7 +261,7 @@ End Sub
 'End Sub
 
 
-Public Sub SetThemePrefDiolog(pf As PreferencesDialog)
+Public Sub SetThemePrefDialog(pf As PreferencesDialog)
 	'--- Need to wait for object to be created as colors need to be set after the underlying CLV is ready
 	pf.CustomListView1.GetBase.Color =clrPanelBGround
 	pf.CustomListView1.sv.Color =clrPanelBGround
