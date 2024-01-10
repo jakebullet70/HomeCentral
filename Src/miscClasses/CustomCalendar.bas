@@ -312,8 +312,8 @@ Private Sub PrintDate(dts As Long)
 		If (cmm = CalMonth) And (caa = CalYear) Then
 			If (z = cdd) Then
 				'--- shows the CURRENT day
-				btDays(i).TextColor = clrTheme.txtNormal
-				btDays(i).Color = clrTheme.BackgroundHeader
+				btDays(i).TextColor = clrTheme.txtAccent
+				btDays(i).Color = clrTheme.Background2
 				'btDays(i).TextSize = btDays(i).TextSize + 6
 				
 			End If
@@ -325,14 +325,14 @@ Private Sub PrintDate(dts As Long)
 	m2 = LengthMonth(CalYear,mn1)
 	m3 = m2 - (nb - 1)
 	For i=0 To (nb - 1) 'Prev month
-		btDays(i).TextColor= XUI.Color_LightGray
+		btDays(i).TextColor= clrTheme.btnDisableText
 		'btDays(i).Typeface = Typeface.DEFAULT_BOLD
 		btDays(i).Text=m3+i	
 		btDays(i).Tag=100+m3+i	
 	Next
 	
 	For i = (nb + nbj) To 41 'Next month
-		btDays(i).TextColor=XUI.Color_LightGray
+		btDays(i).TextColor=clrTheme.btnDisableText
 		'btDays(i).Typeface = Typeface.DEFAULT_BOLD
 		btDays(i).Text=i-(nb+nbj)+1
 		btDays(i).Tag=200+(i-(nb+nbj)+1)

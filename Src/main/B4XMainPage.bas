@@ -77,7 +77,7 @@ Public Sub Initialize
 	EventGbl.Initialize
 	Main.kvs.Initialize(xui.DefaultFolder,gblConst.APP_NAME & "_settings.db3")
 	sql = Main.kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
-	clrTheme.Init(Main.kvs.GetDefault(gblConst.SELECTED_CLR_THEME,"blue"))
+	clrTheme.Init(Main.kvs.GetDefault(gblConst.SELECTED_CLR_THEME,"dark-green"))
 	'Main.kvs.DeleteAll
 	If Main.kvs.ContainsKey(gblConst.INI_INSTALL_DATE) = False Then
 		Prep1stRun  '--- 1st run!

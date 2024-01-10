@@ -114,6 +114,7 @@ End Sub
 
 Public Sub SetHeader(txt As String, imgName As String)
 	guiHelpers.ResizeText("  " & txt,B4XPages.MainPage.btnHdrTxt1)
+	B4XPages.MainPage.btnHdrTxt1.TextSize = B4XPages.MainPage.btnHdrTxt1.TextSize - 1
 	'B4XPages.MainPage.imgHeader.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,imgName),clrTheme.txtNormal)
 End Sub
 

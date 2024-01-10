@@ -46,7 +46,7 @@ Public Sub Initialize(p As B4XView)
 	B4XPages.MainPage.EventGbl.Subscribe(gblConst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
 	B4XPages.MainPage.EventGbl.Subscribe(gblConst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
 	
-	'guiHelpers.SetPanelsTranparent(Array As B4XView(pnlCurrentQuickInfo))
+	guiHelpers.SetPanelsTranparent(Array As B4XView(pnlCurrent))
 	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnCurrTemp))
 	
 	'BuildSide_Menu

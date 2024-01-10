@@ -39,7 +39,7 @@ Public Sub InitTheme(theme As String)
 	
 	txtNormal = xui.Color_white
 	txtAccent = xui.Color_LightGray
-	btnDisableText = xui.Color_ARGB(50,192,192,192)
+	btnDisableText = xui.Color_LightGray
 	DividerColor = xui.Color_LightGray
 	
 	theme = theme.ToLowerCase
@@ -103,7 +103,7 @@ Public Sub InitTheme(theme As String)
 			Background2 = xui.Color_ARGB(255,43, 43, 43)
 			txtNormal = -11276022
 			txtAccent = 0xFFB1E89A
-			btnDisableText = -12366785
+			btnDisableText =0xFF425845
 			
 		Case "prusa"
 			Background = -14672868
@@ -250,51 +250,6 @@ Public Sub SetThemeB4xSearchTemplate(search As B4XSearchTemplate)
 
 End Sub
 
-'
-'
-'Public Sub SetThemeInputDialogBtns(dlg As B4XDialog)
-'	
-'	'--- reskin buttons, if it does not exist then skip the error
-'	Try
-'		Dim btnCancel As B4XView = dlg.GetButton(xui.DialogResponse_Cancel)
-'		Dim btnCancel As B4XView = dlg.GetButton(xui.DialogResponse_Cancel)
-'		btnCancel.Font = xui.CreateDefaultBoldFont(btnCancel.TextSize - 1)
-'		btnCancel.SetColorAndBorder(xui.Color_Transparent,2dip,txtNormal, 8dip)
-'		btnCancel.Height = btnCancel.Height - 4dip '--- resize height just a hair
-'		btnCancel.Top = btnCancel.Top + 4dip
-'	Catch
-'	End Try 'ignore
-'	
-'	Try
-'		Dim btnOk As B4XView = dlg.GetButton(xui.DialogResponse_Positive)
-'		btnOk.Font = xui.CreateDefaultBoldFont(btnOk.TextSize - 1)
-'		btnOk.SetColorAndBorder(xui.Color_Transparent,2dip,txtNormal, 8dip)
-'		btnOk.Height = btnOk.Height - 4dip '--- resize height just a hair
-'		btnOk.Top = btnOk.Top + 4dip
-'	Catch
-'	End Try 'ignore
-'	
-'	Try
-'		Dim btnNo As B4XView = dlg.GetButton(xui.DialogResponse_Negative)
-'		btnNo.Font = xui.CreateDefaultBoldFont(btnNo.TextSize - 1)
-'		btnNo.SetColorAndBorder(xui.Color_Transparent,2dip,txtNormal, 8dip)
-'		btnNo.Height = btnNo.Height - 4dip '--- resize height just a hair
-'		btnNo.Top = btnNo.Top + 4dip
-'	Catch
-'	End Try 'ignore
-'	
-'End Sub
-
-'Public Sub SetThemeSwiftButton(Arr() As SwiftButton)
-'	For Each o As SwiftButton In Arr
-'		o.SetColors(clrSwiftBtnPrimary,clrSwiftBtnSecondary)
-'		o.disabledColor = clrSwiftBtnDisabled
-'		o.CornersRadius = 5
-'		o.SideHeight = 4
-'		o.xLBL.TextColor = clrTxtNormal
-'	Next
-'End Sub
-
 
 'Public Sub SetThemeB4xDate(datetemplate As B4XDateTemplate)
 '	Dim TextColor As Int = xui.Color_ARGB(0xFF, 0x5B, 0x5B, 0x5B)
@@ -312,6 +267,10 @@ End Sub
 
 
 Public Sub SetThemePrefDialog(pf As PreferencesDialog)
+	
+	'--- TODO, needs to be set to theme colors - NEEDS TO BE CHECKED!!!!
+	'--- SEEMS TO THEME EVERYTHING
+	
 	'--- Need to wait for object to be created as colors need to be set after the underlying CLV is ready
 	pf.CustomListView1.GetBase.Color =Background
 	pf.CustomListView1.sv.Color =Background

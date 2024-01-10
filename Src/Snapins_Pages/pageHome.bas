@@ -56,7 +56,7 @@ Public Sub Initialize(p As B4XView)
 	'BuildSide_Menu
 	
 	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnCurrTemp))
-	guiHelpers.SetTextColor(Array As B4XView(lblCurrentHigh, lblLocation,lblCurrTXT,lblClock,lblFeelsLike),clrTheme.txtNormal)
+	guiHelpers.SetTextColor(Array As B4XView(lblCurrentHigh, lblLocation,lblCurrTXT,lblClock,lblFeelsLike,lblCurrDesc),clrTheme.txtNormal)
 	
 	imgCurrent.Bitmap = XUI.LoadBitmap(File.DirAssets, "no weather.png")
 	guiHelpers.ResizeText("     Getting Weather Data...     ",lblCurrTXT)
