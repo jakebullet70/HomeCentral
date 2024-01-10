@@ -11,6 +11,7 @@ Version=9.5
 'Static code module
 Sub Process_Globals
 	Private xui As XUI
+	Private su As StringUtils
 	
 	Public gScreenSizeAprox As Double = 7 '--- asume a small tablet
 	Public gScreenSizeDPI As Int = 0
@@ -34,8 +35,6 @@ End Sub
 '	lst.DefaultTextColor = darkText
 '	lst.DefaultTextSize = 20
 'End Sub
-
-
 
 '
 'Public Sub SetTextShadow(pView As B4XView, pRadius As Float, pDx As Float, pDy As Float, pColor As Int)
@@ -190,106 +189,110 @@ End Sub
 #end if
 
 
-Public Sub ResizeText2(value As Object, lbl As B4XView, maxSize As Float,Force As Boolean)
 
-	'--- B4J Only
-	If (Force = False)  Then
-		If (value.As(String) = lbl.Text) Then 
-			'If Main.DebugLog Then Log("ResizeText2 exit") '--- txt wise string is the same size
-			Return
-		End If
-	End If
+'--- returns true if the size is too large
+'--- called from setText
+public Sub CheckSize(size As Float, MultipleLines As Boolean, mLbl As Label) As Boolean
+	#if release
+	Try
+	#end if
 	
-	lbl.Text = value : lbl.Visible =False
-	Sleep(0)
-	Dim jo1 As JavaObject = lbl.As(Label)
-	jo1.RunMethod("setEllipsisString", Array("/003"))
-	For ts = maxSize To 15 Step -2
-		lbl.TextSize = ts
-		Sleep(10)
-		Dim tvs As Object = (jo1.RunMethodjo("lookup", Array As Object(".text")).RunMethodjo("getText",Null).As(String))'ignore
-		'Log(tvs)
-		If Not (tvs.As(String).EndsWith("/003"))Then
-			Exit '-- all done!
-		End If
-	Next
-	'Log(lbl.TextSize)
-	lbl.Visible =True
-	Sleep(0)
-End Sub
-
-
-'-----------------------------------------------------------------------------
-Public Sub ResizeText(value As Object, lbl As B4XView)
-	'Sleep(0)
-	#if b4j '--- b4j dose not resize
-	XUIViewsUtils.SetTextOrCSBuilderToLabel(lbl,value)
-	Return
-	#else
-	'lbl.Text = value
-	Dim multipleLines As Boolean = lbl.Text.Contains(CRLF)
-	Dim size As Float
-	For size = 5 To 72
-		If CheckSize(size, multipleLines,lbl) Then Exit
-	Next
-	size = size - 0.5
-	If CheckSize(size, multipleLines,lbl) Then size = size - 0.5
-	'Sleep(0)
-	lbl.TextSize = size
-	'Return size
-	#End If
-	
-End Sub
-
-#if b4a
-'returns true if the size is too large
-Private Sub CheckSize(size As Float, multipleLines As Boolean, lbl As B4XView) As Boolean
-	lbl.TextSize = size
-	If multipleLines Then
-		Dim su As StringUtils
-		Return su.MeasureMultilineTextHeight(lbl,lbl.Text) > lbl.Height
-	Else
-		Dim stuti As StringUtils
-		Return MeasureTextWidth(lbl.Text,lbl.Font) > lbl.Width Or stuti.MeasureMultilineTextHeight(lbl,lbl.Text) > lbl.Height
-	End If
-	
-End Sub
-Private Sub MeasureTextWidth(Text As String, Font1 As B4XFont) As Int
-	'https://www.b4x.com/android/forum/threads/b4x-xui-add-measuretextwidth-and-measuretextheight-to-b4xcanvas.91865/#content
-	Private bmp As Bitmap
-	bmp.InitializeMutable(1, 1)'ignore
-	Private cvs As Canvas
+	Dim cvs As Canvas ,  bmp As Bitmap
+	bmp.InitializeMutable(1%x,1%y)
 	cvs.Initialize2(bmp)
-	Return cvs.MeasureStringWidth(Text, Font1.ToNativeFont, Font1.Size)
+	mLbl.TextSize = size
+	If MultipleLines Then
+		Return su.MeasureMultilineTextHeight(mLbl, mLbl.Text) > mLbl.Height
+	Else
+		Return cvs.MeasureStringWidth(mLbl.Text, mLbl.Typeface, size) > mLbl.Width Or su.MeasureMultilineTextHeight(mLbl, mLbl.Text) > mLbl.Height
+	End If
+		
+	#if release	
+	Catch
+		Log(LastException)
+	End Try
+	#end if
+	Return True '--- just return true if error
+		
 End Sub
-'-----------------------------------------------------------------------------
-#end if
 
-Public Sub MeasureTextHeight(Text As String, Font1 As B4XFont) As Int 'ignore
-#If B4A    
-    Private bmp As Bitmap
-    bmp.InitializeMutable(2dip, 2dip)
-    Private cvs As Canvas
-    cvs.Initialize2(bmp)
-    Return cvs.MeasureStringHeight(Text, Font1.ToNativeFont, Font1.Size)
-#Else If B4i
-    Return Text.MeasureHeight(Font1.ToNativeFont)
-#Else If B4J
-	Dim jo As JavaObject
-	jo.InitializeNewInstance("javafx.scene.text.Text", Array(Text))
-	jo.RunMethod("setFont",Array(Font1.ToNativeFont))
-	jo.RunMethod("setLineSpacing",Array(0.0))
-	jo.RunMethod("setWrappingWidth",Array(0.0))
-	Dim Bounds As JavaObject = jo.RunMethod("getLayoutBounds",Null)
-	Return Bounds.RunMethod("getHeight",Null)
-#End If
+Public Sub ResizeText(value As String, mLbl As Label)
+	Dim HighValue As Float  = 2
+	Dim LowValue As Float = 1
+	Dim CurrentValue As Float
+
+	mLbl.Text = value
+	Dim multipleLines As Boolean = mLbl.Text.Contains(CRLF)
+	'need to set actual start values so find Gross Start/Stop values
+	'first is linear Growth with some arbitrary 'large' value 'going with 30
+	'this can be fine tuned based on size of the display that you are aiming for/have available vs size of your CustomViews
+
+	Do While Not(CheckSize(HighValue, multipleLines,mLbl))
+		LowValue = HighValue
+		HighValue = HighValue + 30
+	Loop
+
+	CurrentValue = (HighValue + LowValue)/2
+	'
+	'initial sizes set, now for binary approach
+	'
+	'adjust this to taste.  I like it at 1, and I think it looks very nice... can go a little larger for even faster times
+	'smaller for closer hit to actual optimum, but sacrificing a little speed
+	'
+	Dim ToleranceValue As Float = .5
+	'ToleranceValue = 1
+
+	Dim currentResult As Boolean
+	Do While (CurrentValue - LowValue) > ToleranceValue Or (HighValue - CurrentValue) > ToleranceValue
+		
+		currentResult = CheckSize(CurrentValue, multipleLines,mLbl)
+		
+		If currentResult Then 'this means currentvalue is too large
+			HighValue = CurrentValue
+		Else 'currentValue is too small
+			LowValue = CurrentValue
+		End If
+		CurrentValue = (HighValue + LowValue) / 2
+	Loop
+	Dim offset As Int = 0
+	mLbl.TextSize = ((CurrentValue - ToleranceValue) + offset)
+	'debugLog("size:"& mLbl.TextSize)
 End Sub
+
+'=========================================================================
+
+
+'Public Sub ResizeText2(value As Object, lbl As B4XView, maxSize As Float,Force As Boolean)
+'
+'	'--- B4J Only
+'	If (Force = False)  Then
+'		If (value.As(String) = lbl.Text) Then 
+'			'If Main.DebugLog Then Log("ResizeText2 exit") '--- txt wise string is the same size
+'			Return
+'		End If
+'	End If
+'	
+'	lbl.Text = value : lbl.Visible =False
+'	Sleep(0)
+'	Dim jo1 As JavaObject = lbl.As(Label)
+'	jo1.RunMethod("setEllipsisString", Array("/003"))
+'	For ts = maxSize To 15 Step -2
+'		lbl.TextSize = ts
+'		Sleep(10)
+'		Dim tvs As Object = (jo1.RunMethodjo("lookup", Array As Object(".text")).RunMethodjo("getText",Null).As(String))'ignore
+'		'Log(tvs)
+'		If Not (tvs.As(String).EndsWith("/003"))Then
+'			Exit '-- all done!
+'		End If
+'	Next
+'	'Log(lbl.TextSize)
+'	lbl.Visible =True
+'	Sleep(0)
+'End Sub
+'
 
 
 Public Sub SizeFontAdjust() As Float
-	#if b4j
-	Return 1
-	#elsE
 	Dim I As Int =  gWidth
 	If I > 760 And I < 900 Then
 		Return 1
@@ -301,10 +304,9 @@ Public Sub SizeFontAdjust() As Float
 		'LogWrite("Scrn Size Err 001:" & I,ID_LOG_ERR)
 		Return 1
 	End If
-	#End If
 End Sub
 
-'
+
 'Public Sub ResizeText3(Text As String,lbl As B4XView) 
 '	'https://www.b4x.com/android/forum/threads/label-resize-according-Text-size.151992/#post-955249
 '	'The porpuse is expand the label width according the text lenght
@@ -322,34 +324,9 @@ End Sub
 '	'Log(v)
 'End Sub
 
-'Public Sub ResizeText2( Text As String,lbl As B4XView) 
-'	Dim font As Font = lbl.Font
-'	Dim width As Double = lbl.Width
-'	Dim v As Double = jMeasureMultilineTextHeight2(font, width , Text)
-'	'Dim l As Int = fnct.CountChar(Text,CRLF)
-'	lbl.TextSize = v.As(Int)
-'	lbl.Text = Text
-'	'Log(v)
-'End Sub
 
-
-'
-'Private Sub jMeasureMultilineTextHeight2(Font As Font, Width As Double, Text As String) As Double
-'	' Erel --> https://www.b4x.com/android/forum/threads/measure-multiline-text-height.84331/
-'	Dim jo As JavaObject = Me
-'	Return jo.RunMethod("MeasureMultilineTextHeight", Array(Font, Text, Width))
-'End Sub
-'#if Java
-'import java.lang.reflect.InvocationTargetException;
-'import java.lang.reflect.Method;
-'import javafx.scene.text.Font;
-'import javafx.scene.text.TextBoundsType;
-'public static double MeasureMultilineTextHeight(Font f, String text, double width) throws Exception {
-'  Method m = Class.forName("com.sun.javafx.scene.control.skin.Utils").getDeclaredMethod("computeTextHeight",
-'  Font.class, String.class, double.class, TextBoundsType.class);
-'  m.setAccessible(true);
-'  return (Double)m.invoke(null, f, text, width, TextBoundsType.LOGICAL);
-'  }
-'#end if
-
-
+Public Sub SetTextShadow(pView As B4XView, pRadius As Float, pDx As Float, pDy As Float, pColor As Int)
+	Dim ref As Reflector
+	ref.Target = pView
+	ref.RunMethod4("setShadowLayer", Array As Object(pRadius, pDx, pDy, pColor), Array As String("java.lang.float", "java.lang.float", "java.lang.float", "java.lang.int"))
+End Sub

@@ -91,6 +91,7 @@ Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
 	lblTitle = XUIViewsUtils.CreateLabel
 	
 	pnlbackGround.addView(lblTitle,1dip,1dip,pnlbackGround.Width - 2dip, my - 6dip)
+	lblTitle.Font = XUI.CreateDefaultBoldFont(lblTitle.Font.Size)
 	'lblTitle.Typeface=Typeface.DEFAULT_BOLD	
 	
 	lblTitle.Color = XUI.Color_Transparent

@@ -194,11 +194,7 @@ End Sub
 '================== MAIN MENU ====================================
 #region MAIN_MENU
 '--- header menu btn show menu - or not?
-#if b4j
-Private Sub imgMenuButton_MouseClicked(EventData As MouseEvent)
-#Else
-Private Sub imgMenuButton_Clicked()
-#End If
+Private Sub imgMenuButton_Click
 	pnlSideMenu.SetVisibleAnimated(380, Not (pnlSideMenu.Visible))
 	If pnlSideMenu.Visible Then
 		pnlSideMenu.BringToFront
@@ -206,12 +202,6 @@ Private Sub imgMenuButton_Clicked()
 	End If
 End Sub
 
-#if b4j
-Private Sub imgSoundButton_MouseClicked(EventData As MouseEvent)	
-#Else
-Private Sub imgSoundButton_Clicked()
-#End If
-End Sub
 
 Private Sub segTabMenu_TabChanged(index As Int)
 	
@@ -298,7 +288,6 @@ End Sub
 
 
 
-
-
-
+Private Sub imgSoundButton_Click
 	
+End Sub

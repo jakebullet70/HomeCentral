@@ -14,9 +14,7 @@ Sub Class_Globals
 	
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
-	#if b4j
-	Private PageHasBeenResized As Boolean = True
-	#end if
+
 	Private pnlMain As B4XView
 	Private csCal As CustomCalendar
 	
@@ -79,21 +77,9 @@ Public Sub Initialize(p As B4XView)
 End Sub
 
 '-------------------------------
-#if b4j
-Public Sub resize_me (width As Double, height As Double)
-	If width <> 0 Then
-		pnlMain.width = width
-		pnlMain.height = height
-		Main.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus2(Me,"Render_Scrn",600,Null)
-		PageHasBeenResized = True
-	End If
-End Sub
-#end if
 
 Public Sub Set_focus()
-	#if b4j
-	resize_me(mpage.snapInWidth,mpage.snapInHeight)
-	#end if
+
 	Menus.SetHeader("Home","main_menu_home.png")
 	pnlMain.SetVisibleAnimated(500,True) : Sleep(0)
 	
@@ -130,7 +116,7 @@ Private Sub Build_Cal()
 	'--- show cal
 	pnlCal.RemoveAllViews
 	'If csCal.IsInitialized Then Return
-	csCal.Initialize(pnlCal.Width,pnlCal.Height,DateTime.Now,16dip * guiHelpers.SizeFontAdjust)
+	csCal.Initialize(pnlCal.Width,pnlCal.Height,DateTime.Now,16 * guiHelpers.SizeFontAdjust)
 	csCal.callback = Me
 	csCal.eventName = "Cal"
 '	If g.IsCalendarReadOn Then
@@ -167,53 +153,35 @@ Sub WeatherData_RefreshScrn
 			  "Sunrise: " & mpage.WeatherData.ForcastDays(0).Sunrise &  " - Sunset: " & mpage.WeatherData.ForcastDays(0).Sunset & CRLF & _
 			  "Last Updated At: " &  mpage.oClock.FormatTime(mpage.WeatherData.LastUpdatedAt)
 	
-	#if b4a
 	guiHelpers.ResizeText(mpage.WeatherData.qDescription, lblCurrDesc)
 	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
-	#else
-	guiHelpers.ResizeText2(mpage.WeatherData.qLocation ,lblLocation,50,PageHasBeenResized)
-	guiHelpers.ResizeText2(mpage.WeatherData.qDescription ,lblCurrDesc,36,PageHasBeenResized)
-	'lblLocation.TextSize = IIf(lblLocation.Text.Length < 20,38,24)
-	'lblCurrDesc.TextSize = IIf(lblCurrDesc.Text.Length < 24,38,22)
-	#end if
 	guiHelpers.ResizeText(details.Trim, lblCurrTXT)
 	guiHelpers.ResizeText("High " & highTemp   & "  /  Low " & lowTemp, lblCurrentHigh)
 	guiHelpers.ResizeText(TempCurr , btnCurrTemp)
 	guiHelpers.ResizeText("Feels like: " & FeelsLike , lblFeelsLike)
 	
-	#if b4a
 	lblCurrTXT.TextSize = lblCurrTXT.TextSize - 4
-	#else if b4j
-	lblCurrentHigh.TextSize = 20
-	lblCurrTXT.TextSize = 18		
-	#end if
+	btnCurrTemp.TextSize = btnCurrTemp.TextSize - 9
 	
 	mpage.WeatherData.LoadWeatherIcon(mpage.WeatherData.ForcastDays(0).IconID ,imgCurrent,mpage.WeatherData.qIsDay)
 	
-	'SetTextShadow(btnCurrTemp.As(Button). , 1, 1, 1,  XUI.Color_ARGB(255, 0, 0, 0))
+	'guiHelpers.SetTextShadow(btnCurrTemp ,  1, 1, 1,  XUI.Color_Cyan)
 	
 '	If mpage.WeatherData.lastUpdatedAt <> lastWeatherCall Then
 '		lastWeatherCall = mpage.WeatherData.lastUpdatedAt
 '	End If
-#if b4j
-	PageHasBeenResized = False
-	#end if
+
 End Sub
 
 Private Sub WeatherData_BeforeUpdated
-	#if b4a
 	guiHelpers.ResizeText("Updating weather...", lblCurrDesc)
-	#else
-	guiHelpers.ResizeText2("Updating weather..." ,lblLocation,50,False)
-	#end if
+
 End Sub
 
 Sub WeatherData_Fail
-	#if b4j
-	guiHelpers.ResizeText2( "Error, trying again in 1 minute",lblLocation,50,False)
-	#else
+
 	guiHelpers.ResizeText("Error, trying again in 1 minute", lblLocation)
-	#End If
+
 End Sub
 
 Private Sub btnCurrTemp_Click
