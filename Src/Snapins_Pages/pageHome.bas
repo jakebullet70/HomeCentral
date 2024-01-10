@@ -35,7 +35,6 @@ Sub Class_Globals
 
 	Private pnlCurrent As B4XView
 	
-	
 End Sub
 
 
@@ -83,10 +82,16 @@ Public Sub Set_focus()
 	Menus.SetHeader("Home","main_menu_home.png")
 	pnlMain.SetVisibleAnimated(500,True) 
 	
+	mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Side_Menu",250)
+	
 	If mpage.tmrTimerCallSub.Exists(Me,"Render_Scrn") = Null Then
 		mpage.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus2(Me,"Render_Scrn",250,Null)
 	End If
 
+End Sub
+
+Private Sub Build_Side_Menu
+	Menus.BuildSideMenu(Array As String("Refresh W"),Array As String("rf"))
 End Sub
 
 Public Sub Lost_focus()
@@ -177,16 +182,26 @@ End Sub
 
 Private Sub WeatherData_BeforeUpdated
 	guiHelpers.ResizeText("Updating weather...", lblCurrDesc)
-
 End Sub
 
 Sub WeatherData_Fail
-
 	guiHelpers.ResizeText("Error, trying again in 1 minute", lblLocation)
-
 End Sub
 
 Private Sub btnCurrTemp_Click
 	mpage.useCel = Not (mpage.useCel)
 	WeatherData_RefreshScrn	
 End Sub
+
+Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
+	Select Case  Value
+	End Select
+	mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu
+End Sub
+
+
+
+
+
+
+

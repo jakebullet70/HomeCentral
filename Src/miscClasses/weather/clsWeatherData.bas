@@ -95,7 +95,7 @@ Public Sub Try_Update
 		'If dtHelpers.HoursBetween(DateTime.now, LastUpdatedAt) >= 1 Then
 		B4XPages.MainPage.EventGbl.Raise(gblConst.EVENT_WEATHER_BEFORE_UPDATE)
 			If (LastUpdatedCity = "") Then
-			Update_Weather(Main.kvs.getdefault(gblConst.INI_WEATHER_DEFAULT_CITY,"seattle"))
+				Update_Weather(Main.kvs.getdefault(gblConst.INI_WEATHER_DEFAULT_CITY,"seattle"))
 			Else
 				Update_Weather(LastUpdatedCity)
 			End If
@@ -301,7 +301,7 @@ Private Sub Update_Weather(city As String) As ResumableSub
 	
 	Dim retVal As Boolean,  job As HttpJob
 	job.Initialize("", Me)
-	job.Download($"http://api.weatherapi.com/v1/forecast.json?key=${WeatherKey}&q=kherson&days=3&aqi=no&alerts=no"$)
+	job.Download($"http://api.weatherapi.com/v1/forecast.json?key=${WeatherKey}&q=${city}&days=3&aqi=no&alerts=no"$)
 	Wait For (job) JobDone(job As HttpJob)
 	retVal = job.Success
 	

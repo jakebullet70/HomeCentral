@@ -63,6 +63,7 @@ End Sub
 Public Sub Set_focus()
 	Menus.SetHeader("Weather","main_menu_weather.png")
 	pnlMain.SetVisibleAnimated(500,True)
+	mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Side_Menu",250)
 	WeatherData_RefreshScrn
 End Sub
 
@@ -70,6 +71,24 @@ Public Sub Lost_focus()
 	pnlMain.SetVisibleAnimated(500,False)
 End Sub
 
+Private Sub Build_Side_Menu()
+	
+	Dim ll() As String = Regex.Split(";;", Main.kvs.Get(gblConst.INI_WEATHER_CITY_LIST))
+	Dim DefCity As String  = Main.kvs.Get(gblConst.INI_WEATHER_DEFAULT_CITY)
+	
+	Dim mnus As List : 	mnus.Initialize
+	mnus.Add("Refresh") 
+	mnus.Add(DefCity)
+
+	For x = 0 To ll.Length - 1
+		If ll(x) <> DefCity Then
+			mnus.Add(ll(x))
+		End If
+	Next
+	
+	Menus.BuildSideMenu(mnus, objHelpers.CopyObject(mnus))
+	
+End Sub
 
 '=============================================================================================
 '=============================================================================================
@@ -135,14 +154,10 @@ Sub WeatherData_RefreshScrn
 
 End Sub
 
-
-
 Private Sub btnCurrTemp_Click
 	mpage.useCel = Not (mpage.useCel)
 	WeatherData_RefreshScrn
 End Sub
-
-
 
 Private Sub CreateListItemWeather(arrID As Int, Width As Int, Height As Int) As B4XView
 	
@@ -171,10 +186,24 @@ Private Sub CreateListItemWeather(arrID As Int, Width As Int, Height As Int) As 
 	Return p
 End Sub
 
-
-
 Private Sub Page_Setup
 	Dim o As dlgSetupWeather : o.Initialize(mpage.Dialog)
 	o.Show
+End Sub
+
+Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
+	Try
+		Select Case  Value
+			Case "Refresh"
+				guiHelpers.Show_toast("Refreshing Weather")
+				CallSubDelayed(mpage.WeatherData,"Try_Update")
+			Case Else
+				CallSubDelayed2(mpage.WeatherData,"Update_Weather",Value)
+		End Select
+		mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu
+	Catch
+		Log(LastException)
+	End Try
+	
 End Sub
 

@@ -239,8 +239,8 @@ Public Sub ResizeText(value As String, mLbl As Label)
 	'adjust this to taste.  I like it at 1, and I think it looks very nice... can go a little larger for even faster times
 	'smaller for closer hit to actual optimum, but sacrificing a little speed
 	'
-	Dim ToleranceValue As Float = .5
-	'ToleranceValue = 1
+	'Dim ToleranceValue As Float = .5
+	Dim ToleranceValue As Float = 1
 
 	Dim currentResult As Boolean
 	Do While (CurrentValue - LowValue) > ToleranceValue Or (HighValue - CurrentValue) > ToleranceValue
@@ -254,6 +254,7 @@ Public Sub ResizeText(value As String, mLbl As Label)
 		End If
 		CurrentValue = (HighValue + LowValue) / 2
 	Loop
+	
 	Dim offset As Int = 0
 	mLbl.TextSize = ((CurrentValue - ToleranceValue) + offset)
 	'debugLog("size:"& mLbl.TextSize)
@@ -329,4 +330,24 @@ Public Sub SetTextShadow(pView As B4XView, pRadius As Float, pDx As Float, pDy A
 	Dim ref As Reflector
 	ref.Target = pView
 	ref.RunMethod4("setShadowLayer", Array As Object(pRadius, pDx, pDy, pColor), Array As String("java.lang.float", "java.lang.float", "java.lang.float", "java.lang.int"))
+End Sub
+
+Public Sub SetViewShadow (View As B4XView, Offset As Double, Color As Int)
+    #if B4J
+    Dim DropShadow As JavaObject
+	'You might prefer to ignore panels as the shadow is different.
+	'If View Is Pane Then Return
+    DropShadow.InitializeNewInstance(IIf(View Is Pane, "javafx.scene.effect.InnerShadow", "javafx.scene.effect.DropShadow"), Null)
+    DropShadow.RunMethod("setOffsetX", Array(Offset))
+    DropShadow.RunMethod("setOffsetY", Array(Offset))
+    DropShadow.RunMethod("setRadius", Array(Offset))
+    Dim fx As JFX
+    DropShadow.RunMethod("setColor", Array(fx.Colors.From32Bit(Color)))
+    View.As(JavaObject).RunMethod("setEffect", Array(DropShadow))
+    #Else If B4A
+	Offset = Offset * 2
+	View.As(JavaObject).RunMethod("setElevation", Array(Offset.As(Float)))
+    #Else If B4i
+    View.As(View).SetShadow(Color, Offset, Offset, 0.5, False)
+    #End If
 End Sub

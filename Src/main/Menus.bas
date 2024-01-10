@@ -11,15 +11,10 @@ Version=9.5
 'Static code module
 Sub Process_Globals
 	Private XUI As XUI
-	'Private lvSM As CustomListView '--- menu scrollView
-	'Private lvHM As CustomListView '--- menu scrollView
 End Sub
 
 Public Sub Init()
-	'lvSM =  B4XPages.MainPage.lvSideMenu
-	'lvHM =  B4XPages.MainPage.lvHeaderMenu
 End Sub
-
 
 
 'Private Sub CreateListItemHdrMenu(Text As String, imgName As String, Width As Int, Height As Int) As B4XView
@@ -66,11 +61,12 @@ Public Sub BuildHeaderMenu(tb As ASSegmentedTab)
 End Sub
 
 
-Public Sub BuildSideMenu()
+Public Sub BuildSideMenu(lstMnus As List, lstRetVals As List)
 	
 	Dim lvSM As CustomListView = B4XPages.MainPage.lvSideMenu
 	lvSM.Clear
 	
+	lvSM.AsView.SetColorAndBorder(XUI.Color_Transparent,0dip,XUI.Color_Transparent,0dip)
 	lvSM.GetBase.Color = XUI.Color_Transparent
 	lvSM.sv.Color = XUI.Color_Transparent
 	lvSM.sv.ScrollViewInnerPanel.Color = XUI.Color_Transparent
@@ -79,42 +75,21 @@ Public Sub BuildSideMenu()
 	lvSM.DefaultTextBackgroundColor = XUI.Color_Transparent
 	lvSM.DefaultTextColor = clrTheme.txtNormal
 
-	lvSM.AddTextItem("plugin mnu 1","01")
-	lvSM.AddTextItem("plugin mnu 2","02")
-	lvSM.AddTextItem("plugin mnu 3","03")
-	lvSM.AddTextItem("plugin mnu 4","04")
-	lvSM.AddTextItem("plugin mnu 5","05")
-	
-	#if b4j
-	lvSM.sv.As(ScrollPane).Style="-fx-background:transparent;-fx-background-color:transparent;"
-	#End If
+	For x = 0 To lstMnus.size - 1
+		If lstRetVals.IsInitialized = False Then
+			lvSM.AddTextItem(lstMnus.Get(x),"")
+		Else
+			lvSM.AddTextItem(lstMnus.Get(x),lstRetVals.get(x))
+		End If
+	Next
 	
 	'lv.sv.As(ScrollPane).SetVScrollVisibility("NEVER")  scrollbar?
 	
 End Sub
 
-'Private Sub CreateListItemSideMenu(Text As String, imgName As String, Width As Int, Height As Int) As B4XView
-'	Dim p As B4XView = XUI.CreatePanel("")
-'	p.SetLayoutAnimated(0, 0, 0,Width, Height)
-'	p.LoadLayout("menuItems")
-'	'Note that we call DDD.CollectViewsData in CellItem designer script. This is required if we want to get views with dd.GetViewByName.
-'	'dUtils.GetViewByName(p, "lblMenuText").Text = Text === errors out and only works on base b4xviews
-'	For Each v As B4XView In p.GetAllViewsRecursive
-'		If v.Tag Is lmB4XImageViewX Then
-'			Dim iv  As lmB4XImageViewX  = v.Tag
-'			If "itm" = iv.Tag Then
-'				iv.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,imgName),clrTheme.txtNormal)
-'			End If
-'		Else if v.Tag = "txt" Then
-'			v.Text = Text
-'		End If
-'	Next
-'	Return p
-'End Sub
-
 Public Sub SetHeader(txt As String, imgName As String)
 	guiHelpers.ResizeText("  " & txt,B4XPages.MainPage.btnHdrTxt1)
-	B4XPages.MainPage.btnHdrTxt1.TextSize = B4XPages.MainPage.btnHdrTxt1.TextSize - 1
+	B4XPages.MainPage.btnHdrTxt1.TextSize = B4XPages.MainPage.btnHdrTxt1.TextSize - 4
 	'B4XPages.MainPage.imgHeader.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,imgName),clrTheme.txtNormal)
 End Sub
 

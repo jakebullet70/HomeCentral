@@ -66,9 +66,12 @@ Sub Class_Globals
 	Private pnlMenuFooter As B4XView
 	Private btnSetupMaster As Button
 	Private btnAboutMe As Button
-	Private pnlSideMenu As B4XView
+	Public pnlSideMenu As B4XView
 	
 	Private segTabMenu As ASSegmentedTab
+	Private lblMnuMenu As B4XView
+	Private pnlMenuHdrSpacer1 As B4XView
+	Private pnlMenuHdrSpacer2 As B4XView
 End Sub
 
 Public Sub Initialize
@@ -134,15 +137,20 @@ Private Sub BuildGUI
 	
 	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnSnapinSetup,btnAboutMe,btnSetupMaster,btnHdrTxt1))
 	
-	pnlBG.SetColorAndBorder(clrTheme.BackgroundHeader,0dip,xui.Color_Transparent,0dip)
+	pnlBG.SetColorAndBorder(clrTheme.Background,0dip,xui.Color_Transparent,0dip)
 	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0dip,xui.Color_Transparent,0dip)
-	pnlSideMenu.SetColorAndBorder(clrTheme.BackgroundHeader,2dip,clrTheme.BackgroundHeader,4dip)
-		
+	pnlSideMenu.SetColorAndBorder(clrTheme.BackgroundHeader,2dip,clrTheme.Background2,4dip)
+	
+	pnlMenuHdrSpacer1.SetColorAndBorder(clrTheme.Background,1dip,clrTheme.Background,3dip)
+	pnlMenuHdrSpacer2.SetColorAndBorder(clrTheme.Background,1dip,clrTheme.Background,3dip)
+	
+	guiHelpers.SetTextColor(Array As B4XView(lblMnuMenu),clrTheme.txtNormal)
+	
 	Menus.Init
-	Menus.BuildSideMenu()
 	Menus.BuildHeaderMenu(segTabMenu)
 	
 	pnlHeader.SetColorAndBorder(clrTheme.BackgroundHeader,0,xui.Color_Transparent,0)
+	
 	imgMenuButton.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(xui.LoadBitmap(File.DirAssets,"main_menu_menu.png"),clrTheme.txtNormal)
 	imgSoundButton.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(xui.LoadBitmap(File.DirAssets,"main_menu_volume.png"),clrTheme.txtNormal)
 	
@@ -252,8 +260,9 @@ Private Sub btnSnapinSetup_Click
 	End If
 End Sub
 
-
-
 Private Sub imgSoundButton_Click
-	
+End Sub
+
+Private Sub lvSideMenu_ItemClick (Index As Int, Value As Object)
+	CallSubDelayed3(oPageCurrent,"SideMenu_ItemClick",Index,Value)
 End Sub
