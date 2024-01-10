@@ -221,6 +221,17 @@ Public Sub SetThemeB4xListTemplate(l As B4XListTemplate)
 	
 End Sub
 
+Public Sub SetThemeCustomListView(lv As CustomListView)
+	lv.AsView.SetColorAndBorder(xui.Color_Transparent,0dip,xui.Color_Transparent,0dip)
+	lv.sv.ScrollViewInnerPanel.Color = xui.Color_Transparent
+	lv.GetBase.Color = xui.Color_Transparent
+	lv.sv.Color = xui.Color_Transparent
+	
+	lv.PressedColor = BackgroundHeader
+	lv.DefaultTextBackgroundColor = xui.Color_Transparent
+	lv.DefaultTextColor = txtNormal
+End Sub
+
 Public Sub SetThemeB4xInputTemplate(input As B4XInputTemplate)
 	
 	'--- TODO, needs to be set to theme colors

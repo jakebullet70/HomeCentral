@@ -141,30 +141,118 @@ Public Sub SetPanelsTranparent(Arr() As B4XView)
 	Next
 End Sub
 
-Public Sub SetEnableDisableColor(btnArr() As B4XView)
-	For Each btn As B4XView In btnArr
-		If btn.enabled Then
-			btn.TextColor = clrTheme.txtNormal
-			btn.SetColorAndBorder(xui.Color_Transparent,2dip,clrTheme.txtNormal,8dip)
-		Else
-			btn.TextColor = clrTheme.btnDisableText
-			btn.SetColorAndBorder(xui.Color_Transparent,2dip,clrTheme.btnDisableText,8dip)
-		End If
+'Public Sub SetEnableDisableColor(btnArr() As B4XView)
+'	For Each btn As B4XView In btnArr
+'		If btn.enabled Then
+'			btn.TextColor = clrTheme.txtNormal
+'			btn.SetColorAndBorder(xui.Color_Transparent,2dip,clrTheme.txtNormal,8dip)
+'		Else
+'			btn.TextColor = clrTheme.btnDisableText
+'			btn.SetColorAndBorder(xui.Color_Transparent,2dip,clrTheme.btnDisableText,8dip)
+'		End If
+'	Next
+'End Sub
+'Public Sub SetEnableDisableColorBtnNoBoarder(btnArr() As B4XView)
+'	For Each btn As B4XView In btnArr
+'		If btn.enabled Then
+'			btn.TextColor = clrTheme.txtNormal
+'			btn.SetColorAndBorder(xui.Color_Transparent,0,clrTheme.txtNormal,0)
+'		Else
+'			btn.TextColor =  clrTheme.btnDisableText
+'			btn.SetColorAndBorder(xui.Color_Transparent,0,clrTheme.btnDisableText,0)
+'		End If
+'	Next
+'End Sub
+
+Public Sub ReSkinB4XComboBox(cbo() As B4XComboBox)
+	
+	For Each cb As B4XComboBox In cbo
+		Try
+			
+			cb.cmbBox.TextColor = clrTheme.txtNormal
+			cb.cmbBox.Color = clrTheme.BackgroundHeader
+			cb.cmbBox.DropdownBackgroundColor = clrTheme.BackgroundHeader
+			cb.cmbBox.DropdownTextColor = clrTheme.txtNormal
+		Catch
+			Log(LastException)
+		End Try
 	Next
 End Sub
-Public Sub SetEnableDisableColorBtnNoBoarder(btnArr() As B4XView)
-	For Each btn As B4XView In btnArr
-		If btn.enabled Then
-			btn.TextColor = clrTheme.txtNormal
-			btn.SetColorAndBorder(xui.Color_Transparent,0,clrTheme.txtNormal,0)
-		Else
-			btn.TextColor =  clrTheme.btnDisableText
-			btn.SetColorAndBorder(xui.Color_Transparent,0,clrTheme.btnDisableText,0)
-		End If
+
+
+Public Sub SetTextColorB4XFloatTextField(views() As B4XFloatTextField)
+	
+	For Each o As B4XFloatTextField In views
+		o.TextField.TextColor = clrTheme.txtNormal
+		o.NonFocusedHintColor = clrTheme.txtAccent
+		o.HintColor = clrTheme.txtAccent
+		o.Update
+	Next
+	
+End Sub
+
+'=========================================================================================
+'=========================================================================================
+
+Public Sub SkinButtonNoBorder(obj() As Button)
+	Dim clrNormal ,clrPressed As Int
+	clrNormal = clrTheme.txtNormal
+	clrPressed = ChangeColorVisible(clrTheme.txtNormal)
+	For Each b As Button In obj
+		SetColorTextStateList(b,clrPressed,clrNormal,clrTheme.btnDisableText)
+		
+		Dim DefaultDrawable, PressedDrawable As ColorDrawable
+		DefaultDrawable.Initialize(xui.Color_Transparent,8dip)
+		PressedDrawable.Initialize2(clrPressed,8dip,2dip,clrNormal)
+		Dim sld1 As StateListDrawable :sld1.Initialize
+		sld1.AddState(sld1.State_Pressed, PressedDrawable)
+		sld1.AddCatchAllState(DefaultDrawable)
+		b.Background = sld1
 	Next
 End Sub
-'=========================================================================================
-'=========================================================================================
+Public Sub SkinButton(obj() As Button)
+	'--- sets the bg and frame color
+	Dim clrAccent, clrNormal ,clrPressed As Int
+	clrNormal = clrTheme.txtNormal
+	clrAccent = clrTheme.txtAccent
+	
+	clrPressed = ChangeColorVisible(clrTheme.txtNormal)
+	For Each btn As Button In obj
+		SetColorTextStateList(btn,clrPressed,clrNormal,clrTheme.btnDisableText)
+		
+		Dim DefaultDrawable, PressedDrawable,DisabledDrawable As ColorDrawable
+		DefaultDrawable.Initialize2(xui.Color_Transparent, 8dip,2dip,clrAccent)
+		PressedDrawable.Initialize2(clrPressed,8dip,2dip,clrNormal)
+		DisabledDrawable.Initialize2(xui.Color_Transparent,8dip,2dip,clrTheme.btnDisableText)
+		
+		Dim sld1 As StateListDrawable : sld1.Initialize
+		sld1.AddState(sld1.State_Pressed, PressedDrawable)
+		sld1.AddState(sld1.State_Disabled, DisabledDrawable)
+		sld1.AddCatchAllState(DefaultDrawable)
+		btn.Background = sld1
+	Next
+End Sub
+
+Private Sub SetColorTextStateList(Btn As Button,Pressed As Int,Enabled As Int,Disabled As Int)
+	'--- sets the text color
+	Dim States(3,1) As Int
+	States(0,0) = 16842919    'Pressed
+	States(1,0) = 16842910    'Enabled
+	States(2,0) = -16842910 'Disabled
+
+	Dim Color(3) As Int = Array As Int(Pressed,Enabled,Disabled)
+
+	Dim CSL As JavaObject
+	CSL.InitializeNewInstance("android.content.res.ColorStateList",Array As Object(States,Color))
+	Dim B1 As JavaObject = Btn
+	B1.RunMethod("setTextColor",Array As Object(CSL))
+End Sub
+Private Sub ChangeColorVisible(clr As Int) As Int
+	Dim argb() As Int = clrTheme.Int2ARGB(clr)
+	Return xui.Color_ARGB(90,argb(1),argb(2),argb(3))
+End Sub
+'========================================================================
+
 
 '--- just an easy wat to Toast!!!!
 Public Sub Show_toast(msg As String)
@@ -350,4 +438,60 @@ Public Sub SetViewShadow (View As B4XView, Offset As Double, Color As Int)
     #Else If B4i
     View.As(View).SetShadow(Color, Offset, Offset, 0.5, False)
     #End If
+End Sub
+
+'Change the size and color of a Checkbox graphic. Set the tick character and color, as well as the box size and color
+'and padding (distance from the box to the edge of the graphic) and a disabled fill color
+'Pass "Fill" as the TickChar to fill the box with TickColor when selected.
+Public Sub SetCBDrawable(CB As CheckBox,BoxColor As Int,BoxWidth As Int, _
+			TickColor As Int,TickChar As String,DisabledColor As Int,Size As Int,Padding As Int)
+			
+	Dim SLD As StateListDrawable
+	SLD.Initialize
+
+	Dim BMEnabled,BMChecked,BMDisabled As Bitmap
+	BMEnabled.InitializeMutable(Size,Size)
+	BMChecked.InitializeMutable(Size,Size)
+	BMDisabled.InitializeMutable(Size,Size)
+	'Draw Enabled State
+	Dim CNV As Canvas
+	CNV.Initialize2(BMEnabled)
+	Dim Rect1 As Rect
+	Rect1.Initialize(Padding ,Padding ,Size - Padding ,Size - Padding)
+	CNV.DrawRect(Rect1,BoxColor,False,BoxWidth)
+	Dim Enabled,Checked,Disabled As BitmapDrawable
+	Enabled.Initialize(BMEnabled)
+	'Draw Selected state
+	Dim CNV1 As Canvas
+	CNV1.Initialize2(BMChecked)
+	If TickChar = "Fill" Then
+		CNV1.DrawRect(Rect1,TickColor,True,BoxWidth)
+		CNV1.DrawRect(Rect1,BoxColor,False,BoxWidth)
+	Else
+		CNV1.DrawRect(Rect1,BoxColor,False,BoxWidth)
+		'Start small and find the largest font that allows the tick to fit in the box
+		Dim FontSize As Int = 6
+		Do While CNV.MeasureStringHeight(TickChar,Typeface.DEFAULT,FontSize) < Size - (BoxWidth * 2) - (Padding * 2)
+			FontSize = FontSize + 1
+		Loop
+		FontSize = FontSize - 1
+		'Draw the TickChar centered in the box
+		CNV1.DrawText(TickChar,Size/2,(Size + CNV.MeasureStringHeight(TickChar,Typeface.DEFAULT,FontSize))/2,Typeface.DEFAULT,FontSize,TickColor,"CENTER")
+	End If
+	Checked.Initialize(BMChecked)
+	'Draw disabled State
+	Dim CNV2 As Canvas
+	CNV2.Initialize2(BMDisabled)
+	CNV2.DrawRect(Rect1,DisabledColor,True,BoxWidth)
+	CNV2.DrawRect(Rect1,BoxColor,False,BoxWidth)
+	Disabled.Initialize(BMDisabled)
+
+	'Add to the StateList Drawable
+	SLD.AddState(SLD.State_Disabled,Disabled)
+	SLD.AddState(SLD.State_Checked,Checked)
+	SLD.AddState(SLD.State_Enabled,Enabled)
+	SLD.AddCatchAllState(Enabled)
+	'Add SLD to the Checkbox
+	Dim JO As JavaObject = CB
+	JO.RunMethod("setButtonDrawable",Array As Object(SLD))
 End Sub

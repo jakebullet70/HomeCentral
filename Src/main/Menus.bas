@@ -66,15 +66,8 @@ Public Sub BuildSideMenu(lstMnus As List, lstRetVals As List)
 	Dim lvSM As CustomListView = B4XPages.MainPage.lvSideMenu
 	lvSM.Clear
 	
-	lvSM.AsView.SetColorAndBorder(XUI.Color_Transparent,0dip,XUI.Color_Transparent,0dip)
-	lvSM.GetBase.Color = XUI.Color_Transparent
-	lvSM.sv.Color = XUI.Color_Transparent
-	lvSM.sv.ScrollViewInnerPanel.Color = XUI.Color_Transparent
+	clrTheme.SetThemeCustomListView(lvSM)
 	
-	lvSM.PressedColor = clrTheme.BackgroundHeader
-	lvSM.DefaultTextBackgroundColor = XUI.Color_Transparent
-	lvSM.DefaultTextColor = clrTheme.txtNormal
-
 	For x = 0 To lstMnus.size - 1
 		If lstRetVals.IsInitialized = False Then
 			lvSM.AddTextItem(lstMnus.Get(x),"")

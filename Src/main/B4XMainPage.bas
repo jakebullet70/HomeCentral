@@ -135,7 +135,7 @@ Private Sub BuildGUI
 	
 	guiHelpers.SetVisible(Array As B4XView(pnlTimers,pnlSideMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
 	
-	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnSnapinSetup,btnAboutMe,btnSetupMaster,btnHdrTxt1))
+	guiHelpers.SkinButtonNoBorder(Array As Button(btnSnapinSetup,btnAboutMe,btnSetupMaster,btnHdrTxt1))
 	
 	pnlBG.SetColorAndBorder(clrTheme.Background,0dip,xui.Color_Transparent,0dip)
 	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0dip,xui.Color_Transparent,0dip)

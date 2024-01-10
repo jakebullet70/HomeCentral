@@ -47,7 +47,7 @@ Public Sub Initialize(p As B4XView)
 	B4XPages.MainPage.EventGbl.Subscribe(gblConst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
 	
 	guiHelpers.SetPanelsTranparent(Array As B4XView(pnlCurrent))
-	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnCurrTemp))
+	guiHelpers.SkinButtonNoBorder(Array As Button(btnCurrTemp))
 	
 	'BuildSide_Menu
 	imgCurrent.Bitmap = XUI.LoadBitmap(File.DirAssets, "no weather.png")
