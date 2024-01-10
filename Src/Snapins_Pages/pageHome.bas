@@ -47,16 +47,16 @@ Public Sub Initialize(p As B4XView)
 	'pnlCurrent.SetLayoutAnimated(0,0,0,pnlCurrent.Width,pnlCurrent.Height-50dip)
 	
 	'--- weather stuff
-	B4XPages.MainPage.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
-	B4XPages.MainPage.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
-	B4XPages.MainPage.EventGbl.Subscribe(cnst.EVENT_CLOCK_CHANGE, Me,"clock_event")
+	B4XPages.MainPage.EventGbl.Subscribe(gblConst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
+	B4XPages.MainPage.EventGbl.Subscribe(gblConst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
+	B4XPages.MainPage.EventGbl.Subscribe(gblConst.EVENT_CLOCK_CHANGE, Me,"clock_event")
 	
 	guiHelpers.SetPanelsTranparent(Array As B4XView(pnlClock,pnlCal))
 	
 	'BuildSide_Menu
 	
 	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnCurrTemp))
-	guiHelpers.SetTextColor(Array As B4XView(lblCurrentHigh, lblLocation,lblCurrTXT,lblClock,lblFeelsLike),themes.clrTxtNormal)
+	guiHelpers.SetTextColor(Array As B4XView(lblCurrentHigh, lblLocation,lblCurrTXT,lblClock,lblFeelsLike),clrTheme.txtNormal)
 	
 	imgCurrent.Bitmap = XUI.LoadBitmap(File.DirAssets, "no weather.png")
 	guiHelpers.ResizeText("     Getting Weather Data...     ",lblCurrTXT)

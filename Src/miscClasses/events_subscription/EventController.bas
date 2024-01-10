@@ -25,6 +25,7 @@ Public Sub Subscribe(eventName As String, CallBackObj As Object, callbackSub As 
 	Dim oo As clsEvent : oo.Initialize
 	oo.Subscribe(CallBackObj,callbackSub)
 	'--- will replace it if it exists
+	Log("getHashCode-->"&GetHashCode(CallBackObj))
 	eg.Put(eventName & "_" & GetHashCode(CallBackObj).As(String) ,oo )
 
 End Sub

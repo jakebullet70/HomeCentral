@@ -23,11 +23,11 @@ Sub Class_Globals
 	Private dUtils As DDD
 	'--- globals -------
 	Public DebugLog As Boolean = False
-	Public kvs As KeyValueStore
+	
 	Public sql As SQL
 	Public isInterNetConnected As Boolean = True
 	Public EventGbl As EventController
-	Public tmrTimerCallSub As CallSubUtils
+	Public tmrTimerCallSub As sadCallSubUtils
 	'-------------------------------------------
 	
 	#if b4j
@@ -73,16 +73,13 @@ End Sub
 
 Public Sub Initialize
 '	B4XPages.GetManager.LogEvents = True
-	#if b4j
-	xui.SetDataFolder(cnst.APP_NAME)
-	#end if
 	tmrTimerCallSub.Initialize
 	EventGbl.Initialize
-	kvs.Initialize(xui.DefaultFolder,cnst.APP_NAME & "_settings.db3")
-	sql = kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
-	themes.Init '--- set colors
+	Main.kvs.Initialize(xui.DefaultFolder,gblConst.APP_NAME & "_settings.db3")
+	sql = Main.kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
+	clrTheme.Init(Main.kvs.GetDefault(gblConst.SELECTED_CLR_THEME,"blue"))
 	'Main.kvs.DeleteAll
-	If kvs.ContainsKey(cnst.INI_INSTALL_DATE) = False Then
+	If Main.kvs.ContainsKey(gblConst.INI_INSTALL_DATE) = False Then
 		Prep1stRun  '--- 1st run!
 	Else
 		'--- this will matter when a new version of the app is released as
@@ -92,18 +89,18 @@ Public Sub Initialize
 	End If
 	
 	WeatherData.Initialize
-	useCel = kvs.GetDefault(cnst.INI_WEATHER_USE_CELSIUS,True)
-	useMetric = kvs.GetDefault(cnst.INI_WEATHER_USE_METRIC,False)
+	useCel = Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_CELSIUS,True)
+	useMetric = Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_METRIC,False)
 	
 End Sub
 
 Private Sub Prep1stRun
-	B4XPages.MainPage.kvs.Put(cnst.INI_INSTALL_DATE,DateTime.Now)
-	B4XPages.MainPage.kvs.Put(cnst.INI_CURRENT_VER,cnst.APP_FILE_VERSION)
-	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_DEFAULT_CITY,"Kherson, Ukraine")
-	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_USE_CELSIUS,True)
-	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_USE_METRIC,False)
-	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_CITY_LIST,"Kherson, Ukraine;;Seattle, Wa;;Paris, France")
+	Main.kvs.Put(gblConst.INI_INSTALL_DATE,DateTime.Now)
+	Main.kvs.Put(gblConst.INI_CURRENT_VER,gblConst.APP_FILE_VERSION)
+	Main.kvs.Put(gblConst.INI_WEATHER_DEFAULT_CITY,"Kherson, Ukraine")
+	Main.kvs.Put(gblConst.INI_WEATHER_USE_CELSIUS,True)
+	Main.kvs.Put(gblConst.INI_WEATHER_USE_METRIC,False)
+	Main.kvs.Put(gblConst.INI_WEATHER_CITY_LIST,"Kherson, Ukraine;;Seattle, Wa;;Paris, France")
 End Sub
 
 'https://www.b4x.com/android/forum/threads/b4x-sd-customkeyboard.138438/
@@ -137,20 +134,20 @@ Private Sub BuildGUI
 	
 	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnSnapinSetup,btnAboutMe,btnSetupMaster,btnHdrTxt1))
 	
-	pnlBG.SetColorAndBorder(themes.clrPanelBGround,0dip,xui.Color_Transparent,0dip)
+	pnlBG.SetColorAndBorder(clrTheme.BackgroundHeader,0dip,xui.Color_Transparent,0dip)
 	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0dip,xui.Color_Transparent,0dip)
-	pnlSideMenu.SetColorAndBorder(themes.clrPanelBGround,2dip,themes.clrPanelBorderColor,4dip)
+	pnlSideMenu.SetColorAndBorder(clrTheme.BackgroundHeader,2dip,clrTheme.BackgroundHeader,4dip)
 		
 	Menus.Init
 	Menus.BuildSideMenu()
 	Menus.BuildHeaderMenu(segTabMenu)
 	
-	pnlHeader.SetColorAndBorder(themes.clrTitleBarBG,0,xui.Color_Transparent,0)
-	imgMenuButton.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(xui.LoadBitmap(File.DirAssets,"main_menu_menu.png"),themes.clrTxtNormal)
-	imgSoundButton.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(xui.LoadBitmap(File.DirAssets,"main_menu_volume.png"),themes.clrTxtNormal)
+	pnlHeader.SetColorAndBorder(clrTheme.BackgroundHeader,0,xui.Color_Transparent,0)
+	imgMenuButton.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(xui.LoadBitmap(File.DirAssets,"main_menu_menu.png"),clrTheme.txtNormal)
+	imgSoundButton.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(xui.LoadBitmap(File.DirAssets,"main_menu_volume.png"),clrTheme.txtNormal)
 	
-	Toast.pnl.Color = themes.clrTxtNormal
-	Toast.DefaultTextColor = themes.clrPanelBGround
+	Toast.pnl.Color = clrTheme.txtNormal
+	Toast.DefaultTextColor = clrTheme.BackgroundHeader
 	Toast.MaxHeight = 120dip
 	
 	Sleep(0)

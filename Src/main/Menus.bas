@@ -32,7 +32,7 @@ End Sub
 '		If v.Tag Is lmB4XImageViewX Then
 '			Dim iv  As lmB4XImageViewX  = v.Tag
 '			If "itm" = iv.Tag Then
-'				iv.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,imgName),themes.clrTxtNormal)
+'				iv.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,imgName),clrTheme.txtNormal)
 '				iv.Tag = Text
 '			End If
 '		End If
@@ -44,8 +44,8 @@ Public Sub BuildHeaderMenu(tb As ASSegmentedTab)
 	
 	tb.ShowSeperators = True
 	tb.ImageHeight = 46dip
-	tb.SelectionPanel.Color = themes.clrMenuSelected
-	tb.ItemTextProperties.TextColor = themes.clrTxtNormal
+	tb.SelectionPanel.Color = clrTheme.Background2
+	tb.ItemTextProperties.TextColor = clrTheme.txtNormal
 	'tb.ItemTextProperties.SelectedTextColor = themes.clrTxtBright
 	
 	'tb.CornerRadiusBackground = tb.Base.Height/2 'make the view rounded
@@ -75,9 +75,9 @@ Public Sub BuildSideMenu()
 	lvSM.sv.Color = XUI.Color_Transparent
 	lvSM.sv.ScrollViewInnerPanel.Color = XUI.Color_Transparent
 	
-	lvSM.PressedColor = themes.clrTitleBarBG
+	lvSM.PressedColor = clrTheme.BackgroundHeader
 	lvSM.DefaultTextBackgroundColor = XUI.Color_Transparent
-	lvSM.DefaultTextColor = themes.clrTxtNormal
+	lvSM.DefaultTextColor = clrTheme.txtNormal
 
 	lvSM.AddTextItem("plugin mnu 1","01")
 	lvSM.AddTextItem("plugin mnu 2","02")
@@ -103,7 +103,7 @@ End Sub
 '		If v.Tag Is lmB4XImageViewX Then
 '			Dim iv  As lmB4XImageViewX  = v.Tag
 '			If "itm" = iv.Tag Then
-'				iv.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,imgName),themes.clrTxtNormal)
+'				iv.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,imgName),clrTheme.txtNormal)
 '			End If
 '		Else if v.Tag = "txt" Then
 '			v.Text = Text
@@ -114,7 +114,7 @@ End Sub
 
 Public Sub SetHeader(txt As String, imgName As String)
 	guiHelpers.ResizeText("  " & txt,B4XPages.MainPage.btnHdrTxt1)
-	'B4XPages.MainPage.imgHeader.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,imgName),themes.clrTxtNormal)
+	'B4XPages.MainPage.imgHeader.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,imgName),clrTheme.txtNormal)
 End Sub
 
 

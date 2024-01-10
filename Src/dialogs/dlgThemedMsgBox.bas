@@ -18,6 +18,7 @@ Sub Class_Globals
 	'Private fx As JFX
 	Private XUI As XUI
 	Private dlg As B4XDialog
+	Private dlgHelper As sadB4XDialogHelper
 End Sub
 
 
@@ -30,7 +31,7 @@ End Sub
 
 Public Sub Show(msgText As String,title As String, _
 				yesBtn As String, noBtn As String, cancelBtn As String) As ResumableSub
-				
+								
 	Wait For (Show2(msgText,title,yesBtn,noBtn,cancelBtn,0)) Complete (i As Int)
 	Return i
 	
@@ -54,17 +55,11 @@ Public Sub Show2(msgText As String,title As String, _
 	
 		
 	dlg.Initialize(B4XPages.MainPage.Root)
+	dlgHelper.Initialize(dlg)
 	
-	dlg.Title = title
-	
-	'--- make everything pretty! Theme the 1st part of the controls
-	themes.SetThemeB4xDialog(dlg)
-	
-	'--- create the dialog
+	dlgHelper.ThemeDialogForm( title)
 	Dim rs As ResumableSub = dlg.Show(msgText, yesBtn, noBtn, cancelBtn)
-	
-	'--- now we have to theme buttons after the object is created as they do not exist yet
-	themes.SetThemeInputDialogBtns(dlg)
+	dlgHelper.ThemeInputDialogBtnsResize
 	
 	'--- call it!
 	Wait For (rs) Complete (i As Int)

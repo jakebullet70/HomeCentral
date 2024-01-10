@@ -43,7 +43,7 @@ Public Sub Update_Scrn
 	If DoNotShow Then Return
 	
 	'--- raise the clock event, any object subscribed to it will get it
-	B4XPages.MainPage.EventGbl.Raise2(cnst.EVENT_CLOCK_CHANGE,FormatTime(DateTime.Now))
+	B4XPages.MainPage.EventGbl.Raise2(gblConst.EVENT_CLOCK_CHANGE,FormatTime(DateTime.Now))
 	
 End Sub
 
@@ -51,7 +51,7 @@ End Sub
 Public Sub FormatTime(t As Long) As String
 	Dim fmtD As String = DateTime.DateFormat
 	Dim fmtT As String = DateTime.TimeFormat
-	DateTime.TimeFormat = cnst.LOCALE_CLOCK
+	DateTime.TimeFormat = gblConst.LOCALE_CLOCK
 	DateTime.DateFormat = ""
 	
 	Dim retMe As String = DateUtils.TicksToString(t)

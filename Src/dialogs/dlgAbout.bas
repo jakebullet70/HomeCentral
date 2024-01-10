@@ -14,6 +14,7 @@ Sub Class_Globals
 	Private XUI As XUI
 	Private dlg As B4XDialog
 	Private lblAbout As B4XView
+	Private dlgHelper As sadB4XDialogHelper
 End Sub
 
 
@@ -26,13 +27,16 @@ Public Sub Show()
 
 		
 	dlg.Initialize((B4XPages.MainPage.Root))
-	themes.SetThemeb4xDialog(dlg)
-	dlg.Title = "About"
+	dlgHelper.Initialize(dlg)
+	
+	
 	Dim p As B4XView = XUI.CreatePanel("")
 	p.SetLayoutAnimated(0, 0, 0,400dip,400dip)
 	p.LoadLayout("dlgAbout")
+	
+	dlgHelper.ThemeDialogForm( "About")
 	Dim rs As ResumableSub = dlg.ShowCustom(p, "", "", "OK")
-	themes.SetThemeInputDialogBtns(dlg)
+	dlgHelper.ThemeInputDialogBtnsResize
 		
 	'--- interesting text goes here
 	lblAbout.TextSize = 18

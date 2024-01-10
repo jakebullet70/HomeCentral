@@ -20,12 +20,13 @@ Sub Class_Globals
 	Private btnRemove As B4XView
 	Private btnSetDefaultCity As B4XView
 	Private chkCelsius As CheckBox
-	Private lstLocations As ListView
+	Private lstLocations As CustomListView
 	Private DefCity As String = ""
 	Private chkMetric As CheckBox
 	Private cboIconSets As Spinner
 	Private pnlBtns As B4XView
 	Private pnlCont As B4XView
+	Private dlgHelper As sadB4XDialogHelper
 	
 End Sub
 
@@ -39,21 +40,21 @@ Public Sub Show()
 
 		
 	dlg.Initialize((B4XPages.MainPage.Root))
-	themes.SetThemeb4xDialog(dlg)
-	dlg.Title = "Weather Setup"
+	dlgHelper.Initialize(dlg)
+	
 	Dim p As B4XView = XUI.CreatePanel("")
 	p.SetLayoutAnimated(0, 0, 0,  430dip, 400dip)
 	p.LoadLayout("viewSetupWeather")
 	
-	Dim j As DSE_Layout : j.Initialize
+	'Dim j As DSE_Layout : j.Initialize
 	'j.SpreadVertically2(pnlBtns,50dip,6dip,"left")
 	guiHelpers.SetEnableDisableColor(Array As B4XView(btnAdd,btnRemove,btnSetDefaultCity))
 	
 	LoadData
 	
+	dlgHelper.ThemeDialogForm("Weather Setup")
 	Dim rs As ResumableSub = dlg.ShowCustom(p, "SAVE", "", "CLOSE")
-	
-	themes.SetThemeInputDialogBtns(dlg)
+	dlgHelper.ThemeInputDialogBtnsResize
 		
 	Wait For (rs) Complete (Result As Int)
 	If Result = XUI.DialogResponse_Positive Then
@@ -66,34 +67,33 @@ End Sub
 
 Private Sub LoadData()
 	
-	Dim ll() As String = Regex.Split(";;", B4XPages.MainPage.kvs.Get(cnst.INI_WEATHER_CITY_LIST))
+	Dim ll() As String = Regex.Split(";;", Main.kvs.Get(gblConst.INI_WEATHER_CITY_LIST))
 	
-	lstLocations.SingleLineLayout.Label.TextColor= themes.clrTxtNormal
-	lstLocations.SingleLineLayout.Label.TextSize=22
-	lstLocations.SingleLineLayout.ItemHeight=60dip
+	lstLocations.Clear
+	lstLocations.DefaultTextColor = clrTheme.txtNormal
 	
 	'lstLocations.Items.Initialize
 	For Each city As String In ll
-		lstLocations.AddSingleLine(city)
+		lstLocations.AddTextItem(city,"")
 	Next
 	
-	DefCity = B4XPages.MainPage.kvs.Get(cnst.INI_WEATHER_DEFAULT_CITY)
-	chkCelsius.Checked = B4XPages.MainPage.kvs.Get(cnst.INI_WEATHER_USE_CELSIUS)
-	chkMetric.Checked = B4XPages.MainPage.kvs.Get(cnst.INI_WEATHER_USE_METRIC)
+	DefCity = Main.kvs.Get(gblConst.INI_WEATHER_DEFAULT_CITY)
+	chkCelsius.Checked = Main.kvs.Get(gblConst.INI_WEATHER_USE_CELSIUS)
+	chkMetric.Checked = Main.kvs.Get(gblConst.INI_WEATHER_USE_METRIC)
 	
 End Sub
 
 Private Sub SaveData()
 	
 	Dim dd As String
-'	For x = 0 To lstLocations.Items.Size -1
-'		dd = dd & lstLocations.Items.Get(x) & ";;"
-'	Next
+	For x = 0 To lstLocations.Size - 1
+		dd = dd & lstLocations.GetRawListItem(x).TextItem & ";;"
+	Next
 	dd = strHelpers.TrimLast(dd,";;")
-	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_CITY_LIST,dd)
-	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_DEFAULT_CITY,DefCity)
-	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_USE_CELSIUS,chkCelsius.Checked)
-	B4XPages.MainPage.kvs.Put(cnst.INI_WEATHER_USE_METRIC,chkMetric.Checked)
+	Main.kvs.Put(gblConst.INI_WEATHER_CITY_LIST,dd)
+	Main.kvs.Put(gblConst.INI_WEATHER_DEFAULT_CITY,DefCity)
+	Main.kvs.Put(gblConst.INI_WEATHER_USE_CELSIUS,chkCelsius.Checked)
+	Main.kvs.Put(gblConst.INI_WEATHER_USE_METRIC,chkMetric.Checked)
 	
 End Sub
 

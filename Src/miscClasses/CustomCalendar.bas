@@ -95,7 +95,7 @@ Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
 	'lblTitle.Typeface=Typeface.DEFAULT_BOLD	
 	
 	lblTitle.Color = XUI.Color_Transparent
-	lblTitle.TextColor =  themes.clrTxtNormal'  g.GetColorTheme(g.ehome_clrTheme,"themeColorText")
+	lblTitle.TextColor =  clrTheme.txtNormal'  g.GetColorTheme(g.ehome_clrTheme,"themeColorText")
 	lblTitle.SetTextAlignment("CENTER","CENTER")
 	
 	
@@ -106,7 +106,7 @@ Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
 		lblDayTitle(i) = XUIViewsUtils.CreateLabel
 		lblDayTitle(i).SetTextAlignment("CENTER","CENTER")
 		lblDayTitle(i).TextSize = (RelativTextSize)
-		lblDayTitle(i).TextColor = themes.clrTxtNormal
+		lblDayTitle(i).TextColor = clrTheme.txtNormal
 		pnlbackGround.AddView( lblDayTitle(i), (i * mx) + ((i + 1) * 1dip),  (1 * my) + 1dip, mx + 2dip, my)
 		guiHelpers.ResizeText(dayName(i),lblDayTitle(i))
 	Next
@@ -293,7 +293,7 @@ Private Sub PrintDate(dts As Long)
 	If nb = 0 Then nb = 7 'decal next line dim 1
 	
 	For i = 0 To 41 
-		btDays(i).TextColor = themes.clrTxtNormal
+		btDays(i).TextColor = clrTheme.txtNormal
 		'btDays(i).Typeface=Typeface.DEFAULT
 		btDays(i).Text = ""
 		btDays(i).Tag = 0
@@ -312,8 +312,8 @@ Private Sub PrintDate(dts As Long)
 		If (cmm = CalMonth) And (caa = CalYear) Then
 			If (z = cdd) Then
 				'--- shows the CURRENT day
-				btDays(i).TextColor = themes.clrTitleBarTXT
-				btDays(i).Color = themes.clrTitleBarBG
+				btDays(i).TextColor = clrTheme.txtNormal
+				btDays(i).Color = clrTheme.BackgroundHeader
 				'btDays(i).TextSize = btDays(i).TextSize + 6
 				
 			End If

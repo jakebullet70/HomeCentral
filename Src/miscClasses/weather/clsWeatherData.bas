@@ -54,7 +54,7 @@ Public Sub LoadWeatherIcon(iconID As Int, img As lmB4XImageViewX,isDay As Boolea
 '			img.Initialize(Null,"")
 '	End If
 	img.Bitmap =  xui.LoadBitmap(File.DirAssets, _ 
-						"weathericon/" & cnst.WEATHERicons & IIf(isDay,"/day/","/night/") & iconID & ".png")
+						"weathericon/" & gblConst.WEATHERicons & IIf(isDay,"/day/","/night/") & iconID & ".png")
 
 End Sub
 
@@ -63,10 +63,10 @@ Public Sub Initialize
 	IsInitialize = True
 	
 	LastUpdatedAt = 1
-	WeatherKey = cnst.WeatherAPIKey
+	WeatherKey = gblConst.WeatherAPIKey
 	ReadApiCodes
 	
-	B4XPages.MainPage.EventGbl.Subscribe(cnst.EVENT_INET_ON_CONNECT,Me, "Internet_OnConnected")
+	B4XPages.MainPage.EventGbl.Subscribe(gblConst.EVENT_INET_ON_CONNECT,Me, "Internet_OnConnected")
 	
 End Sub
 
@@ -93,9 +93,9 @@ End Sub
 Public Sub Try_Update
 	If LastUpdatedAt <> 0 Then
 		'If dtHelpers.HoursBetween(DateTime.now, LastUpdatedAt) >= 1 Then
-		B4XPages.MainPage.EventGbl.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
+		B4XPages.MainPage.EventGbl.Raise(gblConst.EVENT_WEATHER_BEFORE_UPDATE)
 			If (LastUpdatedCity = "") Then
-			Update_Weather(B4XPages.MainPage.kvs.getdefault(cnst.INI_WEATHER_DEFAULT_CITY,"seattle"))
+			Update_Weather(Main.kvs.getdefault(gblConst.INI_WEATHER_DEFAULT_CITY,"seattle"))
 			Else
 				Update_Weather(LastUpdatedCity)
 			End If
@@ -107,7 +107,7 @@ End Sub
 
 'Public Sub Try_UpdateBecauseOfError
 '	If dtHelpers.HoursBetween(DateTime.now, LastUpdatedAt) >= 1 Then
-'		Main.EventGbl.Raise(cnst.EVENT_WEATHER_BEFORE_UPDATE)
+'		Main.EventGbl.Raise(gblConst.EVENT_WEATHER_BEFORE_UPDATE)
 '		If (LastUpdatedCity = "") Then
 '			Update_Weather_Default_City
 '		Else
@@ -309,7 +309,7 @@ Private Sub Update_Weather(city As String) As ResumableSub
 		
 		'File.WriteString(xui.DefaultFolder,"1.txt",job.GetString)
 		ParseWeatherJob(job.GetString)   
-		B4XPages.MainPage.EventGbl.Raise(cnst.EVENT_WEATHER_UPDATED)
+		B4XPages.MainPage.EventGbl.Raise(gblConst.EVENT_WEATHER_UPDATED)
 		LastUpdatedAt = DateTime.Now
 		LastUpdatedCity = city
 		If B4XPages.MainPage.DebugLog Then Log(DateUtils.TicksToString(DateTime.Now) & "--> Weather Job-OK: Setting next update for 45 min")
@@ -318,7 +318,7 @@ Private Sub Update_Weather(city As String) As ResumableSub
 	Else
 		
 		Log("weather call failed - response code = " & job.Response.StatusCode)	
-		B4XPages.MainPage.EventGbl.Raise(cnst.EVENT_WEATHER_UPDATE_FAILED)
+		B4XPages.MainPage.EventGbl.Raise(gblConst.EVENT_WEATHER_UPDATE_FAILED)
 		B4XPages.MainPage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 3) '--- set the next call - 2min
 		
 	End If

@@ -1,5 +1,5 @@
 ﻿B4A=true
-Group=B4XforumCode
+Group=B4XcustomClasses
 ModulesStructureVersion=1
 Type=Class
 Version=5.5

@@ -43,8 +43,8 @@ Public Sub Initialize(p As B4XView)
 	pnlCurrent.LoadLayout("viewWeatherCurrent")
 	'pnlCurrent.SetLayoutAnimated(0,0,0,pnlCurrent.Width,)
 	
-	B4XPages.MainPage.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
-	B4XPages.MainPage.EventGbl.Subscribe(cnst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
+	B4XPages.MainPage.EventGbl.Subscribe(gblConst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
+	B4XPages.MainPage.EventGbl.Subscribe(gblConst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
 	
 	'guiHelpers.SetPanelsTranparent(Array As B4XView(pnlCurrentQuickInfo))
 	guiHelpers.SetEnableDisableColorBtnNoBoarder(Array As B4XView(btnCurrTemp))
@@ -52,7 +52,7 @@ Public Sub Initialize(p As B4XView)
 	'BuildSide_Menu
 	imgCurrent.Bitmap = XUI.LoadBitmap(File.DirAssets, "no weather.png")
 	
-	guiHelpers.SetTextColor(Array As B4XView(lblCurrentHigh,lblCurrTXT,lblCurrDesc,lblLocation,lblFeelsLike),themes.clrTxtNormal)
+	guiHelpers.SetTextColor(Array As B4XView(lblCurrentHigh,lblCurrTXT,lblCurrDesc,lblLocation,lblFeelsLike),clrTheme.txtNormal)
 
 	btnCurrTemp.TextSize = 54
 	
@@ -151,7 +151,7 @@ Private Sub CreateListItemWeather(arrID As Int, Width As Int, Height As Int) As 
 		Dim p As B4XView = XUI.CreatePanel("")
 		p.SetLayoutAnimated(0, 0, 0,Width, Height)
 		p.LoadLayout("viewWeatherForcast")
-		guiHelpers.SetTextColor(Array As B4XView(lblForecastLow1,lblForecastHigh1,lblForecastDay1,lblForecastDesc1),themes.clrTxtNormal)
+		guiHelpers.SetTextColor(Array As B4XView(lblForecastLow1,lblForecastHigh1,lblForecastDay1,lblForecastDesc1),clrTheme.txtNormal)
 	
 		Dim lowTemp,highTemp As String
 		highTemp  = "High " & IIf(mpage.useCel, mpage.WeatherData.ForcastDays(arrID).High_c & "°c",mpage.WeatherData.ForcastDays(arrID).High_f & "°f")
