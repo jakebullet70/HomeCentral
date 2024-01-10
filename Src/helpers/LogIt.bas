@@ -16,12 +16,6 @@ Public Sub Init
 End Sub
 
 
-Public Sub LogDebug1(s As String)
-	#If Debug 
-	Log(s) 
-	#End If
-End Sub
-
 Public Sub LogWrite(txt As String, msgType As Int)
 	
 	Log("TODO - " & txt)

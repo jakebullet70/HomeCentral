@@ -62,7 +62,7 @@ End Sub
 
 Public Sub Set_focus()
 	Menus.SetHeader("Weather","main_menu_weather.png")
-	pnlMain.SetVisibleAnimated(500,True): Sleep(0)
+	pnlMain.SetVisibleAnimated(500,True)
 	WeatherData_RefreshScrn
 End Sub
 
@@ -84,8 +84,10 @@ Sub WeatherData_Fail
 End Sub
 
 Sub WeatherData_RefreshScrn
+	
 	If pnlMain.Visible = False Then Return
 	If B4XPages.MainPage.DebugLog Then Log("WeatherData_RefreshScrn")
+	
 	Sleep(0)
 	Dim lowTemp,highTemp,TempCurr,Precipitation,WindSpeed,FeelsLike As String
 	TempCurr     = IIf(mpage.useCel, mpage.WeatherData.qTemp_c & "°c",mpage.WeatherData.qTemp_f & "°f")
@@ -130,8 +132,6 @@ Sub WeatherData_RefreshScrn
 	lvForecast.Add(CreateListItemWeather(1,lvForecast.AsView.Width,size),"1")
 	lvForecast.Add(CreateListItemWeather(2,lvForecast.AsView.Width,size),"2")
 	Sleep(0)
-	
-	
 
 End Sub
 
@@ -165,7 +165,6 @@ Private Sub CreateListItemWeather(arrID As Int, Width As Int, Height As Int) As 
 		lblForecastLow1.Text  = lowTemp
 		
 	Catch
-
 		Log(LastException)
 	End Try
 	

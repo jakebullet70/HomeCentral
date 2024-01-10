@@ -118,29 +118,11 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	
 	Root = Root1
 	Root.LoadLayout("MainPage")
-	#if b4j
-	MainForm = B4XPages.GetNativeParent(Me)
-	#end if
 	Toast.Initialize(Root) 
 	dUtils.Initialize '--- DDD desgner utils
 	oClock.Initialize
 	
 	BuildGUI
-	#region RaspPI
-	#if raspPiFullScrn	
-	'--- needs to be checked
-	'--- https://www.b4x.com/android/forum/threads/full-screen-form.130511/
-	MainForm = Form1
-	MainForm.SetFormStyle("TRANSPARENT")
-	Dim jform As JavaObject = MainForm
-	Dim jStage As JavaObject=jform.GetFieldJO("stage")
-	jStage.RunMethod("setMaximized", Array(True))
-	jStage.RunMethod("setAlwaysOnTop", Array(True))
-	MainForm.Resizable=False
-	MainForm.Show
-	#end if
-	#end region
-	
 	
 	#if debug
 	B4XPages.MainPage.DebugLog = True
@@ -176,20 +158,7 @@ Private Sub BuildGUI
 	
 End Sub
 
-#if b4j
-Private Sub B4XPage_Resize (Width As Int, Height As Int)
-	pnlBG.Width =  Width : snapInWidth =  Width
-	pnlBG.Height = Height : snapInHeight =  Height - pnlHeader.Height
-		
-	If Dialog.IsInitialized And Dialog.Visible Then Dialog.Resize(Width, Height)
-	
-	If SubExists(oPageCurrent,"Resize_Me") Then  
-		Sleep(0) 	'--- this is the size of the snapin page (full page - header)
-		CallSubDelayed3(oPageCurrent,"Resize_Me",snapInWidth , snapInHeight)
-	End If
-	
-End Sub
-#end if
+
 
 '================== MAIN MENU ====================================
 #region MAIN_MENU

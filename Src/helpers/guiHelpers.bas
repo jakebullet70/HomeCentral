@@ -144,7 +144,7 @@ End Sub
 Public Sub SetEnableDisableColor(btnArr() As B4XView)
 	For Each btn As B4XView In btnArr
 		If btn.enabled Then
-			btn.TextColor = themes.clrTxtNormal
+			btn.TextColor = themes.clrButtonsTextColor
 			btn.SetColorAndBorder(xui.Color_Transparent,2dip,themes.clrTxtNormal,8dip)
 		Else
 			btn.TextColor = themes.clrTxtDisabled
@@ -155,7 +155,7 @@ End Sub
 Public Sub SetEnableDisableColorBtnNoBoarder(btnArr() As B4XView)
 	For Each btn As B4XView In btnArr
 		If btn.enabled Then
-			btn.TextColor = themes.clrTxtNormal
+			btn.TextColor = themes.clrButtonsTextColor
 			btn.SetColorAndBorder(xui.Color_Transparent,0,themes.clrTxtNormal,0)
 		Else
 			btn.TextColor = themes.clrTxtDisabled

@@ -25,6 +25,8 @@ Sub Process_Globals
 	Public clrTxtPositive As Int '--- a go / postive color
 	Public clrTxtNegitive As Int '--- a NO go / negitive color
 	
+	Public clrButtonsTextColor As Int
+	
 	Public clrPanelBGround As Int
 	Public clrPanelBorderColor As Int
 	
@@ -67,6 +69,8 @@ Private Sub SetThemeColors
 			clrDlgButtonsColor = XUI.Color_Transparent
 			clrDlgBorderColor = XUI.Color_Transparent
 			clrDlgButtonsBorder = XUI.Color_Black
+
+			clrButtonsTextColor=clrDlgButtonsTextColor
 
 			clrTxtHint = XUI.Color_LightGray	
 			
@@ -154,9 +158,16 @@ Public Sub SetThemeB4xDialog(d As B4XDialog)
 	d.ButtonsTextColor = clrDlgButtonsTextColor
 	d.ButtonsColor = clrDlgButtonsColor
 	
+	
 	d.TitleBarColor = clrTitleBarBG
 	d.TitleBarTextColor = clrTitleBarTXT
-	d.BodyTextColor = clrTxtNormal
+	
+	d.ButtonsHeight = 54dip
+	d.ButtonsFont = XUI.CreateDefaultFont(18)
+	d.ButtonsTextColor =clrDlgButtonsTextColor
+	d.ButtonsColor =clrDlgButtonsColor
+	
+	
 	
 	'd.BorderCornersRadius = 4dip
 

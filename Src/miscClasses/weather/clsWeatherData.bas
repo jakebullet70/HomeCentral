@@ -291,13 +291,13 @@ Private Sub Update_Weather(city As String) As ResumableSub
 
 		Catch
 			'--- do nothing, --- should only error out the first time- STILLTRUE???
-			 LogIt.LogDebug1("GetWeather - only 1st time OK")
+			If B4XPages.MainPage.DebugLog Then Log("GetWeather - only 1st time OK")
 		End Try 'ignore
 	
 		Return False
 	End If
 
-	LogIt.LogDebug1("Requesting weather data")
+	If B4XPages.MainPage.DebugLog Then Log("Requesting weather data")
 	
 	Dim retVal As Boolean,  job As HttpJob
 	job.Initialize("", Me)
@@ -312,7 +312,7 @@ Private Sub Update_Weather(city As String) As ResumableSub
 		B4XPages.MainPage.EventGbl.Raise(cnst.EVENT_WEATHER_UPDATED)
 		LastUpdatedAt = DateTime.Now
 		LastUpdatedCity = city
-		LogIt.LogDebug1(DateUtils.TicksToString(DateTime.Now) & "--> Weather Job-OK: Setting next update for 61 min")
+		If B4XPages.MainPage.DebugLog Then Log(DateUtils.TicksToString(DateTime.Now) & "--> Weather Job-OK: Setting next update for 45 min")
 		B4XPages.MainPage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 45) '--- set the next call - 45min
 		
 	Else

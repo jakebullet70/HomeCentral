@@ -13,6 +13,7 @@ Version=10
 
 
 Sub Class_Globals
+	
 	Private XUI As XUI
 	Private dlg As B4XDialog
 	Private btnAdd As B4XView
@@ -23,6 +24,9 @@ Sub Class_Globals
 	Private DefCity As String = ""
 	Private chkMetric As CheckBox
 	Private cboIconSets As Spinner
+	Private pnlBtns As B4XView
+	Private pnlCont As B4XView
+	
 End Sub
 
 
@@ -38,12 +42,17 @@ Public Sub Show()
 	themes.SetThemeb4xDialog(dlg)
 	dlg.Title = "Weather Setup"
 	Dim p As B4XView = XUI.CreatePanel("")
-	p.SetLayoutAnimated(0, 0, 0,370dip,320dip)
+	p.SetLayoutAnimated(0, 0, 0,  430dip, 400dip)
 	p.LoadLayout("viewSetupWeather")
+	
+	Dim j As DSE_Layout : j.Initialize
+	'j.SpreadVertically2(pnlBtns,50dip,6dip,"left")
+	guiHelpers.SetEnableDisableColor(Array As B4XView(btnAdd,btnRemove,btnSetDefaultCity))
 	
 	LoadData
 	
 	Dim rs As ResumableSub = dlg.ShowCustom(p, "SAVE", "", "CLOSE")
+	
 	themes.SetThemeInputDialogBtns(dlg)
 		
 	Wait For (rs) Complete (Result As Int)
@@ -59,18 +68,18 @@ Private Sub LoadData()
 	
 	Dim ll() As String = Regex.Split(";;", B4XPages.MainPage.kvs.Get(cnst.INI_WEATHER_CITY_LIST))
 	
+	lstLocations.SingleLineLayout.Label.TextColor= themes.clrTxtNormal
+	lstLocations.SingleLineLayout.Label.TextSize=22
+	lstLocations.SingleLineLayout.ItemHeight=60dip
+	
 	'lstLocations.Items.Initialize
 	For Each city As String In ll
-		'lstLocations.Items.Add(city)
 		lstLocations.AddSingleLine(city)
 	Next
 	
 	DefCity = B4XPages.MainPage.kvs.Get(cnst.INI_WEATHER_DEFAULT_CITY)
 	chkCelsius.Checked = B4XPages.MainPage.kvs.Get(cnst.INI_WEATHER_USE_CELSIUS)
 	chkMetric.Checked = B4XPages.MainPage.kvs.Get(cnst.INI_WEATHER_USE_METRIC)
-	
-	'lstLocations.SelectedIndex = 0
-	'lstLocations.Items.
 	
 End Sub
 

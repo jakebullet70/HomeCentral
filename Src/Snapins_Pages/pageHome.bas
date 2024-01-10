@@ -81,10 +81,10 @@ End Sub
 Public Sub Set_focus()
 
 	Menus.SetHeader("Home","main_menu_home.png")
-	pnlMain.SetVisibleAnimated(500,True) : Sleep(0)
+	pnlMain.SetVisibleAnimated(500,True) 
 	
-	If B4XPages.MainPage.tmrTimerCallSub.Exists(Me,"Render_Scrn") = Null Then
-		B4XPages.MainPage.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus2(Me,"Render_Scrn",250,Null)
+	If mpage.tmrTimerCallSub.Exists(Me,"Render_Scrn") = Null Then
+		mpage.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus2(Me,"Render_Scrn",250,Null)
 	End If
 
 End Sub
@@ -113,9 +113,11 @@ Private Sub Render_Scrn()
 End Sub
 
 Private Sub Build_Cal()
+	
+	If pnlMain.Visible = False Then Return
+	
 	'--- show cal
 	pnlCal.RemoveAllViews
-	'If csCal.IsInitialized Then Return
 	csCal.Initialize(pnlCal.Width,pnlCal.Height,DateTime.Now,16 * guiHelpers.SizeFontAdjust)
 	csCal.callback = Me
 	csCal.eventName = "Cal"
@@ -125,8 +127,8 @@ Private Sub Build_Cal()
 '		End If
 '	End If
 	pnlCal.AddView(csCal.AsView.As(B4XView) ,0,0,pnlCal.Width,pnlCal.Height)
-	'pnlCal.AddView(csCal.,0,0,100%x,100%y)
 	csCal.ShowCalendar(True)
+	
 End Sub
 
 Sub WeatherData_RefreshScrn
