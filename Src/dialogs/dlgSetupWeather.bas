@@ -105,10 +105,11 @@ Private Sub SaveData()
 	
 	Dim dd As String
 	For x = 0 To lstLocations.Size - 1
-		dd = dd & lstLocations.GetRawListItem(x).TextItem & ";;"
+		dd = dd & lstLocations.GetValue(x)& ";;"
 	Next
 	dd = strHelpers.TrimLast(dd,";;")
 	Main.kvs.Put(gblConst.INI_WEATHER_CITY_LIST,dd)
+	'Main.kvs.Put(gblConst.INI_WEATHER_CITY_LIST,"Seattle;;Denver;;Kherson")
 	
 	Main.kvs.Put(gblConst.INI_WEATHER_DEFAULT_CITY,DefCity)
 	Main.kvs.Put(gblConst.INI_WEATHER_USE_CELSIUS,chkCelsius.Checked)
@@ -116,6 +117,8 @@ Private Sub SaveData()
 	
 	gblConst.WEATHERicons = SelectedIconsSet
 	Main.kvs.Put(gblConst.INI_WEATHER_ICONS_PATH,SelectedIconsSet)
+	
+	CallSubDelayed(mpage.oPageCurrent,"Build_Side_Menu")
 	
 End Sub
 

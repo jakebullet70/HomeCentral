@@ -77,7 +77,7 @@ End Sub
 public Sub TrimLast(s As String, trimchar As String) As String
 	
 	If s.EndsWith(trimchar) Then
-		Return s.SubString2(0,s.Length - 1)
+		Return s.SubString2(0,s.Length - trimchar.Length)
 	Else
 		Return s
 	End If

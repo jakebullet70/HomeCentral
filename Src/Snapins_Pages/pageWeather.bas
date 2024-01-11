@@ -6,7 +6,8 @@ Version=10
 @EndOfDesignText@
 ' Author:  sadLogic/JakeBullet
 #Region VERSIONS 
-' V. 1.0 	Dec/26/2023
+' V. 1.1 	Dec/26/2023
+
 #End Region
 
 
