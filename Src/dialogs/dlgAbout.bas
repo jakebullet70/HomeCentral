@@ -36,7 +36,7 @@ Public Sub Show()
 	
 	dlgHelper.ThemeDialogForm( "About")
 	Dim rs As ResumableSub = dlg.ShowCustom(p, "", "", "OK")
-	dlgHelper.ThemeInputDialogBtnsResize
+	dlgHelper.ThemeDialogBtnsResize
 		
 	'--- interesting text goes here
 	lblAbout.TextSize = 18

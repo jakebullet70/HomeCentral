@@ -16,6 +16,7 @@ Sub Class_Globals
 	
 	Private XUI As XUI
 	Private dlg As B4XDialog
+	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private btnSetDefaultCity,btnRemove,btnAdd As B4XView
 	Private chkMetric,chkCelsius As CheckBox
 	Private lstLocations As CustomListView
@@ -63,12 +64,10 @@ Public Sub Show()
 	chkMetric.TextColor = clrTheme.txtNormal
 	guiHelpers.SetCBDrawable(chkCelsius, clrTheme.txtNormal, 1, clrTheme.txtAccent, Chr(8730), Colors.LightGray, 32dip, 2dip)
 	guiHelpers.SetCBDrawable(chkMetric, clrTheme.txtNormal, 1,clrTheme.txtAccent, Chr(8730), Colors.LightGray, 32dip, 2dip)
-
-	
 		
 	dlgHelper.ThemeDialogForm("Weather Setup")
 	Dim rs As ResumableSub = dlg.ShowCustom(p, "SAVE", "", "CLOSE")
-	dlgHelper.ThemeInputDialogBtnsResize
+	dlgHelper.ThemeDialogBtnsResize
 	dlgHelper.NoCloseOn2ndDialog
 		
 	Wait For (rs) Complete (Result As Int)
@@ -121,6 +120,31 @@ Private Sub SaveData()
 End Sub
 
 Private Sub btnAdd_Click
+	
+	Dim t As B4XInputTemplate : t.Initialize
+	mpage.Dialog2.Initialize(mpage.Root)
+	
+	Try
+		Dim dlgHelper2 As sadB4XDialogHelper
+		dlgHelper2.Initialize(mpage.Dialog2)
+	
+		dlgHelper2.ThemeDialogForm("Enter city")
+		Dim rs As ResumableSub = mpage.Dialog2.ShowTemplate(t, "OK", "", "CANCEL")
+		dlgHelper2.ThemeDialogBtnsResize
+		clrTheme.SetThemeB4xInputTemplate(t,"City name")
+	
+		Wait For (rs) Complete (i As Int)
+		If i = XUI.DialogResponse_Cancel Then
+			Return
+		End If
+		
+		lstLocations.AddTextItem(t.Text,t.Text)
+		
+	Catch
+		Log(LastException)
+	End Try
+	
+	
 End Sub
 
 Private Sub btnRemove_Click
@@ -131,25 +155,23 @@ Private Sub btnRemove_Click
 	End If
 	
 	Dim o As dlgThemedMsgBox : o.Initialize
-	Wait For (o.Show("Are you sure you want to delete city?","Question?","YES", "", "CANCEL")) Complete (i As Int)
+	Wait For (o.Show("Are you sure you want to delete this city?","Question?","YES", "", "CANCEL")) Complete (i As Int)
 	If i = XUI.DialogResponse_Cancel Then 
 		Return
 	End If
 	
 	lstLocations.RemoveAt(lvs.SelectedItems.AsList.Get(0))
 	guiHelpers.Show_toast("City deleted")
-	lvs.SelectAndMakeVisible(0)
+	
+	lvs.SelectedItems.Clear
+	lvs.ItemClicked(0)
+	
 	
 End Sub
 
 Private Sub btnSetDefaultCity_Click
-	Try
-		DefCity = lstLocations.GetValue( lvs.SelectedItems.AsList.Get(0))
-		guiHelpers.Show_toast(DefCity & " - set as default city")
-	Catch
-		Log(LastException)
-	End Try
-	
+	DefCity = lstLocations.GetValue( lvs.SelectedItems.AsList.Get(0))
+	guiHelpers.Show_toast(DefCity & " - set as default city")
 End Sub
 
 '=====================================================

@@ -40,7 +40,7 @@ Sub Class_Globals
 	Public WeatherData As clsWeatherData
 	Public useMetric,useCel As Boolean
 	
-	Public Dialog, DialogMSGBOX As B4XDialog
+	Public Dialog2,Dialog,DialogMSGBOX As B4XDialog
 	Public oClock As Clock
 	
 	'--- this page - master --------------------

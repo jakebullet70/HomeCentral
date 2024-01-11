@@ -59,7 +59,7 @@ Public Sub Show2(msgText As String,title As String, _
 	
 	dlgHelper.ThemeDialogForm( title)
 	Dim rs As ResumableSub = dlg.Show(msgText, yesBtn, noBtn, cancelBtn)
-	dlgHelper.ThemeInputDialogBtnsResize
+	dlgHelper.ThemeDialogBtnsResize
 	
 	'--- call it!
 	Wait For (rs) Complete (i As Int)

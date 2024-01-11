@@ -232,14 +232,13 @@ Public Sub SetThemeCustomListView(lv As CustomListView)
 	lv.DefaultTextColor = txtNormal
 End Sub
 
-Public Sub SetThemeB4xInputTemplate(input As B4XInputTemplate)
-	
-	'--- TODO, needs to be set to theme colors
+Public Sub SetThemeB4xInputTemplate(input As B4XInputTemplate,prompt As String)
 
-	Dim TextColor As Int = xui.Color_ARGB(0xFF, 0x5B, 0x5B, 0x5B)
+	Dim TextColor As Int = txtNormal
+	input.lblTitle.Text = prompt
 	input.TextField1.TextColor = TextColor
 	input.lblTitle.TextColor = TextColor
-	input.SetBorderColor(TextColor, xui.Color_Red)
+	input.SetBorderColor(TextColor, Background2)
 
 	
 End Sub
