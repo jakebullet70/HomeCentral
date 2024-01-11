@@ -169,13 +169,28 @@ Public Sub ReSkinB4XComboBox(cbo() As B4XComboBox)
 	For Each cb As B4XComboBox In cbo
 		Try
 			
+			'--- change cbo down arrow color - not working Android 4
+			Dim jo1 As JavaObject = cb.cmbBox.Background
+			Dim p As Phone
+			If p.SdkVersion < 29 Then
+				jo1.RunMethod("setColorFilter", Array(clrTheme.txtNormal, "SRC_ATOP"))
+			Else
+				Dim jo2 As JavaObject
+				jo2 = jo2.InitializeNewInstance("android.graphics.BlendModeColorFilter", Array(clrTheme.txtNormal, "SRC_ATOP"))
+				jo1.RunMethod("setColorFilter", Array(jo2))
+			End If
+			'-----------
+			
 			cb.cmbBox.TextColor = clrTheme.txtNormal
 			cb.cmbBox.Color = clrTheme.BackgroundHeader
 			cb.cmbBox.DropdownBackgroundColor = clrTheme.BackgroundHeader
 			cb.cmbBox.DropdownTextColor = clrTheme.txtNormal
+		
 		Catch
 			Log(LastException)
 		End Try
+		
+		
 	Next
 End Sub
 
@@ -261,20 +276,6 @@ End Sub
 Public Sub Show_toast2(msg As String, ms As Int)
 	CallSubDelayed3(B4XPages.MainPage,"Show_Toast2", msg, ms)
 End Sub
-
-
-
-#if b4j
-Public Sub ToolTipOnNode(Nd As Node, msg As String, add As Boolean)
-	Dim joToolTip As JavaObject
-	Dim joToolTip2 As JavaObject = joToolTip.InitializeNewInstance("javafx.scene.control.Tooltip", Array(msg))
-	If add = True Then
-		joToolTip.RunMethod("install", Array(Nd, joToolTip2))
-	Else
-		joToolTip.RunMethod("uninstall", Array(Nd, joToolTip2))
-	End If
-End Sub
-#end if
 
 
 
