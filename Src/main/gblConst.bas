@@ -124,6 +124,11 @@ Sub Process_Globals
 	'--- android pre 4 action bar	
 	Public Const ACTIONBAR_OFF As Int = 1
 	Public Const ACTIONBAR_ON As Int = 0
+	
+	
+	Public Const TIMERS_IMG_STOP As String = "tmr_stop.png"
+	Public Const TIMERS_IMG_GO As String = "tmr_go.png"
+	Public Const TIMERS_IMG_PAUSE As String = "tmr_pause.png"
 
 	
 End Sub

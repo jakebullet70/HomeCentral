@@ -135,6 +135,12 @@ End Sub
 '	Next
 'End Sub
 
+Public Sub SetPanelsDividers(Arr() As B4XView,clr As Int)
+	For Each o As B4XView In Arr
+		o.SetColorAndBorder(clr,0dip,clr,0dip)
+	Next
+End Sub
+
 Public Sub SetPanelsTranparent(Arr() As B4XView)
 	For Each o As B4XView In Arr
 		o.SetColorAndBorder(xui.Color_Transparent,0dip,xui.Color_Transparent,0dip)

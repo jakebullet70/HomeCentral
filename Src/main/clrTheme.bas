@@ -18,7 +18,7 @@ Sub Process_Globals
 	
 	Public Background,BackgroundHeader,Background2 As Int
 	
-	Public txtAccent,txtNormal As Int
+	Public txtAccent,txtNormal,txtNormal2 As Int
 	Public btnDisableText As Int
 	Public DividerColor As Int
 	
@@ -41,6 +41,7 @@ Public Sub InitTheme(theme As String)
 	txtAccent = xui.Color_LightGray
 	btnDisableText = xui.Color_LightGray
 	DividerColor = xui.Color_LightGray
+	txtNormal2 = xui.Color_Yellow
 	
 	theme = theme.ToLowerCase
 	Log("Init Theme: " & theme)
@@ -55,6 +56,7 @@ Public Sub InitTheme(theme As String)
 			txtAccent = -395787
 			btnDisableText = 1715811894
 			DividerColor = -3355444
+			
 		
 		Case "custom"
 			Background = customcolors.bg
