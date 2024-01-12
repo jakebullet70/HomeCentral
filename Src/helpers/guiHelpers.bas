@@ -108,6 +108,11 @@ Public Sub SetTextSize(obj() As B4XView,size As Float)
 		o.TextSize = size
 	Next
 End Sub
+'Public Sub SetTextSizeBtns(obj() As B4XView,size As Float)
+'	For Each o As B4XView In obj
+'		o.TextSize = size
+'	Next
+'End Sub
 
 Public Sub EnableDisableViews(Arr() As B4XView,EnableDisable As Boolean)
 	For Each o As B4XView In Arr

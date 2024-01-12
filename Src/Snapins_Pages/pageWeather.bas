@@ -53,7 +53,8 @@ Public Sub Initialize(p As B4XView)
 	'BuildSide_Menu
 	imgCurrent.Bitmap = XUI.LoadBitmap(File.DirAssets, "no weather.png")
 	
-	guiHelpers.SetTextColor(Array As B4XView(lblCurrentHigh,lblCurrTXT,lblCurrDesc,lblLocation,lblFeelsLike),clrTheme.txtNormal)
+	guiHelpers.SetTextColor(Array As B4XView(lblCurrentHigh,lblCurrTXT,lblLocation,lblFeelsLike),clrTheme.txtNormal)
+	guiHelpers.SetTextColor(Array As B4XView(lblCurrDesc,btnCurrTemp),clrTheme.txtAccent)
 
 	btnCurrTemp.TextSize = 54
 	

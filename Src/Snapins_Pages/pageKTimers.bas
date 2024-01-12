@@ -39,8 +39,9 @@ Sub Class_Globals
 	Private TimerFont As Typeface
 	Private pnlSplitter,pnlSplitter1,pnlSplitter2,pnlSplitter3,pnlSplitter4 As B4XView
 	
-	Private pnlSplitter2 As B4XView
-	Private pnlSplitter3 As B4XView
+	Private btnDecrS5,btnDecrS1,btnDecrM5,btnDecrM1 ,btnDecrH5,btnDecrH1 As Button
+	Private BtnIncS5,BtnIncS1,btnIncrH5,btnIncrH1,BtnIncM5,BtnIncM1 As Button
+	Private btnReset,btnPause As Button
 End Sub
 
 Public Sub Initialize(p As B4XView) 
@@ -53,28 +54,33 @@ Public Sub Initialize(p As B4XView)
 End Sub
 
 Private Sub BuildGUI
+	
 	TimerFont = Typeface.LoadFromAssets("Digital.ttf")
 	lblHrs.Typeface = TimerFont :lblMin.Typeface = TimerFont :lblSec.Typeface = TimerFont
 	lblDots1.Typeface = TimerFont:lblDots2.Typeface = TimerFont
 	
-	guiHelpers.ResizeText("00",lblHrs) : guiHelpers.ResizeText("00",lblMin) : guiHelpers.ResizeText("00",lblSec)
+	guiHelpers.ResizeText("00",lblHrs) : 	lblHrs.TextSize = lblHrs.TextSize - 4
+	lblMin.TextSize = lblHrs.TextSize : lblSec.TextSize = lblHrs.TextSize
 	
 	guiHelpers.SetTextColor(Array As B4XView(lblListHdr,lblHrs,lblMin,lblSec),clrTheme.txtAccent)
 	guiHelpers.SetPanelsDividers(Array As B4XView(pnlSplitter,pnlSplitter1,pnlSplitter2,pnlSplitter3,pnlSplitter4) ,clrTheme.DividerColor)
 	
-	guiHelpers.SetTextColor(Array As B4XView(lblLabelSec,lblLabelMin,lblLabelHr,lblDots1,lblDots2),clrTheme.txtNormal)
-	guiHelpers.SetTextColor(Array As B4XView(lblTimersDesc1,lblTimersDesc2,lblTimersDesc3,lblTimersDesc4,lblTimersDesc5),clrTheme.txtNormal)
-	guiHelpers.SetTextColor(Array As B4XView(lblTimersTime1,lblTimersTime2,lblTimersTime3,lblTimersTime4,lblTimersTime5),clrTheme.txtNormal)
+	guiHelpers.SetTextColor(Array As B4XView(lblLabelSec,lblLabelMin,lblLabelHr,lblDots1,lblDots2, _
+																lblTimersDesc1,lblTimersDesc2,lblTimersDesc3,lblTimersDesc4,lblTimersDesc5, _
+																lblTimersTime1,lblTimersTime2,lblTimersTime3,lblTimersTime4,lblTimersTime5),clrTheme.txtNormal)
 	
-	guiHelpers.ResizeText(lblLabelHr.Text,lblLabelHr)
-	guiHelpers.ResizeText(lblLabelSec.Text,lblLabelSec)
-	guiHelpers.ResizeText(lblLabelMin.Text,lblLabelMin)
+	guiHelpers.ResizeText(lblLabelHr.Text,lblLabelHr) : lblLabelSec.TextSize = lblLabelHr.TextSize : lblLabelMin.TextSize = lblLabelHr.TextSize
 	
-	imgTimers1.Bitmap = XUI.LoadBitmap(File.DirAssets, gblConst.TIMERS_IMG_STOP)
-	imgTimers2.Bitmap = XUI.LoadBitmap(File.DirAssets, gblConst.TIMERS_IMG_STOP)
-	imgTimers3.Bitmap = XUI.LoadBitmap(File.DirAssets, gblConst.TIMERS_IMG_STOP)
-	imgTimers4.Bitmap = XUI.LoadBitmap(File.DirAssets, gblConst.TIMERS_IMG_STOP)
-	imgTimers5.Bitmap = XUI.LoadBitmap(File.DirAssets, gblConst.TIMERS_IMG_STOP)
+	guiHelpers.SkinButtonNoBorder(Array As Button(btnDecrS5,btnDecrS1,btnDecrM5,btnDecrM1 ,btnDecrH5,btnDecrH1, _
+																BtnIncS5,BtnIncS1,btnIncrH5,btnIncrH1,BtnIncM5,BtnIncM1,btnReset,btnPause))
+	
+	guiHelpers.ResizeText("+5",BtnIncS5)
+	guiHelpers.SetTextSize(Array As B4XView(BtnIncS5,btnDecrS5,btnDecrS1,btnDecrM1,btnDecrM5,btnDecrH1,btnDecrH5, _
+																BtnIncS1,BtnIncM1,BtnIncM5,btnIncrH1,btnIncrH5),BtnIncS5.TextSize-4)
+	
+	guiHelpers.ResizeText("Pause",btnPause)
+	guiHelpers.ResizeText("Reset",btnReset)
+	kt.SetImages(Array As lmB4XImageViewX(imgTimers1,imgTimers2,imgTimers3,imgTimers4,imgTimers5),gblConst.TIMERS_IMG_STOP)
 	
 End Sub
 '-------------------------------
@@ -97,4 +103,30 @@ End Sub
 
 
 
+Private Sub btnResetPause_Click
+	Dim o As B4XView = Sender
+	If o.Text = "Pause" Then
+	Else
+	End If
+	
+End Sub
 
+Private Sub btnIncr_Click
+	Dim o As B4XView = Sender
+	Dim txt As String = o.text
+	Select Case o.tag
+		Case "s"
+		Case "m"
+		Case "h"
+	End Select
+End Sub
+
+Private Sub btnDecr_Click
+	Dim o As B4XView = Sender
+	Dim txt As String = o.text
+	Select Case o.tag
+		Case "s"
+		Case "m"
+		Case "h"
+	End Select
+End Sub
