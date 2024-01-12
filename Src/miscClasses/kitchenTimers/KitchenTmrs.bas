@@ -50,14 +50,14 @@ Private Sub tmrTimers_Tick
 	tmrTimers.Enabled = True
 	Dim p As Period : p.Initialize : p.Seconds = 1
 	'Dim oneSecFromNow As Long = DateUtils.AddPeriod(DateTime.Now,p)
-	tmrTimersCheck
+	tmr_TimersCheck
 	'StartServiceAt("", oneSecFromNow, True)
 	
 End Sub
 
 
 
-Public Sub tmrTimersCheck
+Public Sub tmr_TimersCheck
 	
 	Dim xx As Int
 	Dim bIsActive As Boolean = False
@@ -67,7 +67,7 @@ Public Sub tmrTimersCheck
 		If timers(xx).active = True Then
 			
 			wait for (ProcessTimerCheck4Expire(xx)) Complete (i As Boolean)
-			If (i) = True Then
+			If i Then
 				timers(xx).active = False
 				bIsActive = IIf(bIsActive,True,False)
 				'If IsPaused(Main) Then StartActivity(Main)
@@ -91,7 +91,6 @@ Private Sub ProcessTimerCheck4Expire(x As Int) As ResumableSub
 	Dim P1 As Period = DateUtils.PeriodBetween(nNow,timers(x).endTime)
 	
 	Dim scrnOn As Boolean = Not (gblConst.IS0SCREEN0OFF)
-	
 	
 	If P1.Hours <= 0 And P1.Minutes <= 0 And P1.Seconds <= 0 Then
 		'--- timer expired
@@ -137,11 +136,11 @@ Private Sub ProcessTimerCheck4Expire(x As Int) As ResumableSub
 	
 	If scrnOn Then
 		If Not (IsPaused(Main)) Then
-			CallSubDelayed2(Main,"UpdateListOfTimers",x)
+			CallSubDelayed2(mpage.oPageTimers,"UpdateListOfTimers",x)
 		End If
 	End If
+	
 	'CallSub2(Main,"UpdateListOfTimers",x)
-	'UpdateListOfTimers(x)
 	Return ret
 	
 End Sub

@@ -178,15 +178,20 @@ End Sub
 
 Private Sub segTabMenu_TabChanged(index As Int)
 	
-	Dim value As String
-	If index < -1 Then 
-		pnlSideMenu.SetVisibleAnimated(380, False) '---  toggle side menu
-		value = segTabMenu.Getvalue(index)
-	Else if index = -3 Then
-		value = "tm" '--- this is called when a ktimer fires
-	Else '--->   -2
-		value = "hm" '--- 1st run
-	End If
+	Try
+		
+		Dim value As String
+		If index = -3 Then
+			value = "tm" '--- this is called when a ktimer fires
+		Else if index = -2 Then
+			value = "hm" '--- 1st run
+		Else '--- normal press
+			pnlSideMenu.SetVisibleAnimated(380, False) '---  toggle side menu
+			value = segTabMenu.Getvalue(index)
+		End If
+	Catch
+		Log(LastException)
+	End Try
 	
 	pnlSnapinSetup.Visible = False
 

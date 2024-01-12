@@ -56,7 +56,51 @@ Public Sub xIntsStr(n As Int) As String
 End Sub
 
 Public Sub PadZero(n As Int) As String
-	Return strHelpers.PadLeft(n,"0",1)
+	Return strHelpers.PadLeft(n,"0",2)
+End Sub
+
+Public Sub returnNegNum(num As Int) As Int
+	num = Abs(num)
+	Return (num - (num * 2))
 End Sub
 
 
+'==========================================================
+
+Public Sub Clear_Timer(x As Int)
+	
+	Dim o As KitchenTmrs = B4XPages.MainPage.oPageTimers.svrKTimers
+	o.timers(x).active = False
+	o.timers(x).nHr = 0
+	o.timers(x).nSec = 0
+	o.timers(x).nMin = 0
+	o.timers(x).txt= "Open"
+	o.timers(x).endTime = 0
+	o.timers(x).Firing = False
+	o.timers(x).paused = False
+	InitAlarmTypes(o,x)
+	
+End Sub
+
+
+Private Sub InitAlarmTypes(o As KitchenTmrs,x As Int)
+
+	'--- for now just default to 'PlayFile'
+	o.timers(x).alarmType.beepMe = False
+	o.timers(x).alarmType.playFile = True
+	o.timers(x).alarmType.ShowScreenBig = False
+	o.timers(x).alarmType.ShowScreenSmall = False
+	o.timers(x).alarmType.sendGrowl = False
+	o.timers(x).alarmType.sendTxtMSG = False
+	
+End Sub
+
+Public Sub AnyTimersFiring() As Boolean
+	Dim xx As Int
+	For xx = 1 To 5
+		If B4XPages.MainPage.oPageTimers.svrKTimers.timers(xx).Firing Then
+			Return True
+		End If
+	Next
+	Return False
+End Sub
