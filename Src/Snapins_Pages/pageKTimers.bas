@@ -15,6 +15,7 @@ Sub Class_Globals
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
+	Public svrKTimers As KitchenTmrs '--- RENAME after refactor
 	
 	Private mTmrAlarmFire As Timer
 	
@@ -42,13 +43,16 @@ Sub Class_Globals
 	Private btnDecrS5,btnDecrS1,btnDecrM5,btnDecrM1 ,btnDecrH5,btnDecrH1 As Button
 	Private BtnIncS5,BtnIncS1,btnIncrH5,btnIncrH1,BtnIncM5,BtnIncM1 As Button
 	Private btnReset,btnPause As Button
+	Private pnlSplitterTopBtn2,pnlSplitterBottomBtn1,pnlSplitterTopBtn1,pnlSplitterBottomBtn2 As B4XView
 End Sub
 
 Public Sub Initialize(p As B4XView) 
 	pnlMain = p
 	p.LoadLayout("pageKitchenTimersBase")
+	svrKTimers.Initialize
 	mTmrAlarmFire.Initialize("tmrAlarmFire",400)
 	mTmrAlarmFire.Enabled = False
+	
 	
 	BuildGUI
 End Sub
@@ -59,11 +63,18 @@ Private Sub BuildGUI
 	lblHrs.Typeface = TimerFont :lblMin.Typeface = TimerFont :lblSec.Typeface = TimerFont
 	lblDots1.Typeface = TimerFont:lblDots2.Typeface = TimerFont
 	
-	guiHelpers.ResizeText("00",lblHrs) : 	lblHrs.TextSize = lblHrs.TextSize - 4
+	guiHelpers.ResizeText("00",lblHrs) : 	lblHrs.TextSize = lblHrs.TextSize - 6
 	lblMin.TextSize = lblHrs.TextSize : lblSec.TextSize = lblHrs.TextSize
 	
 	guiHelpers.SetTextColor(Array As B4XView(lblListHdr,lblHrs,lblMin,lblSec),clrTheme.txtAccent)
-	guiHelpers.SetPanelsDividers(Array As B4XView(pnlSplitter,pnlSplitter1,pnlSplitter2,pnlSplitter3,pnlSplitter4) ,clrTheme.DividerColor)
+	
+	guiHelpers.SetPanelsDividers(Array As B4XView(pnlSplitterMnu,pnlSplitter,pnlSplitter1,pnlSplitter2,pnlSplitter3,pnlSplitter4, _
+										pnlSplitterTopBtn2,pnlSplitterBottomBtn1,pnlSplitterTopBtn1,pnlSplitterBottomBtn2) ,clrTheme.DividerColor)
+	
+'	pnlSplitterTopBtn2.BringToFront
+'	pnlSplitterTopBtn1.BringToFront
+'	pnlSplitterBottomBtn1.BringToFront
+'	pnlSplitterBottomBtn2.BringToFront
 	
 	guiHelpers.SetTextColor(Array As B4XView(lblLabelSec,lblLabelMin,lblLabelHr,lblDots1,lblDots2, _
 																lblTimersDesc1,lblTimersDesc2,lblTimersDesc3,lblTimersDesc4,lblTimersDesc5, _
@@ -118,6 +129,32 @@ Private Sub btnIncr_Click
 		Case "s"
 		Case "m"
 		Case "h"
+			Dim I As Int,  per As Period
+			'''''CallSubDelayed(svrMain,"ResetScrn_SleepCounter")
+			If txt.Contains("5") Then
+				'--- 5 has been pressed
+				I = kt.xStr2Int(lblHrs.Text) + 5
+				If I > 23 Then
+					Return
+				Else
+					lblHrs.Text = kt.xIntsStr(I)
+					If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+						per.Hours = 5
+						AdjustTime(per)
+					End If
+				End If
+			Else '--- 1 has been pressed
+				I = kt.xStr2Int(lblHrs.Text) + 1
+				If I > 23 Then 
+					Return
+				Else
+					lblHrs.Text = kt.xIntsStr(I)
+					If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+						per.Hours = 1
+						AdjustTime(per)
+					End If
+				End If
+			End If
 	End Select
 End Sub
 

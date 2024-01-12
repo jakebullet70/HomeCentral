@@ -73,23 +73,27 @@ Public Sub InitTheme(theme As String)
 			Background2 = xui.Color_ARGB(255,162, 30, 25)
 			btnDisableText = 1006303994
 			txtAccent = -1803140
+			DividerColor = txtAccent
 			
 		Case "green"
 			Background = xui.Color_ARGB(255,19, 62, 11)
 			BackgroundHeader = -16310780
 			Background2 = xui.Color_ARGB(255,10, 53, 2)
 			btnDisableText = 720959736
+			DividerColor = txtAccent
 	
 		Case "gray"
 			Background = xui.Color_ARGB(255,90, 90, 90)
 			BackgroundHeader =-13487823
 			Background2 = xui.Color_ARGB(255,60, 60, 60)
+			DividerColor = xui.Color_LightGray
 			
 		Case "dark"
 			Background = xui.Color_ARGB(255,2, 2, 2)
 			BackgroundHeader = xui.Color_ARGB(255,30, 30, 30)
 			Background2 = xui.Color_ARGB(255,43, 43, 43)
 			btnDisableText = 1404812219
+			DividerColor = xui.Color_LightGray
 			
 		Case "dark-blue"
 			Background = xui.Color_ARGB(255,2,2,2)
@@ -98,6 +102,7 @@ Public Sub InitTheme(theme As String)
 			txtNormal = -16739073
 			txtAccent = -8472605
 			btnDisableText = -12104360
+			DividerColor = xui.Color_Gray
 			
 		Case "dark-green"
 			Background = xui.Color_ARGB(255,2,2,2)
@@ -106,6 +111,7 @@ Public Sub InitTheme(theme As String)
 			txtNormal = -11276022
 			txtAccent = 0xFFB1E89A
 			btnDisableText =0xFF425845
+			DividerColor = txtAccent
 			
 		Case "prusa"
 			Background = -14672868

@@ -142,7 +142,8 @@ End Sub
 
 Public Sub SetPanelsDividers(Arr() As B4XView,clr As Int)
 	For Each o As B4XView In Arr
-		o.SetColorAndBorder(clr,0dip,clr,0dip)
+		o.SetColorAndBorder(clr,1dip,clr,3dip)
+		o.Color = clr
 	Next
 End Sub
 
@@ -340,7 +341,7 @@ Public Sub ResizeText(value As String, mLbl As Label)
 	'smaller for closer hit to actual optimum, but sacrificing a little speed
 	'
 	'Dim ToleranceValue As Float = .5
-	Dim ToleranceValue As Float = 1
+	Dim ToleranceValue As Float = 2
 
 	Dim currentResult As Boolean
 	Do While (CurrentValue - LowValue) > ToleranceValue Or (HighValue - CurrentValue) > ToleranceValue

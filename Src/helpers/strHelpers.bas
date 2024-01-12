@@ -13,16 +13,8 @@ Sub Process_Globals
 End Sub
 
 
+
 'Return PadLeft(n,"0",2)
-Public Sub PadZero(n As Int) As String
-	Dim s As String = n
-	If s.Length = 1 Then
-		Return "0" & s
-	End If
-	Return s
-End Sub
-
-
 Public Sub PadLeft(Source As String, PadChar As String, Length As Int) As String
 	'source = numberformat(source,length,0)
 	'Log("PadLeft0: " & Source)
