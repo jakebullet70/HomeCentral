@@ -42,11 +42,9 @@ Public Sub AlarmStop(alarmNum As Int)
 		AlarmSoundStop(alarmNum)
 	End If
 
-
-	CallSub(Main,"AlarmFired_PlayRadio")
+	'CallSub(Main,"AlarmFired_PlayRadio")
 	
 End Sub
-
 
 
 Public Sub AlarmStart(alarmNum As Int)
@@ -72,7 +70,7 @@ Public Sub AlarmStart(alarmNum As Int)
 	If mTimers(alarmNum).alarmType.playFile Then
 		If mpage.DebugLog Then Log("AlarmFired-playFile")
 		mMediaPlayer(alarmNum).Initialize2("mp")
-		AlarmSoundPlay(g.INIread(c.INI_CONST_SETUP,c.SOUND_ALARM_FILE),alarmNum)
+		AlarmSoundPlay(Main.kvs.Get(gblConst.INI_SOUND_ALARM_FILE),alarmNum)
 	End If
 	'---
 	If mTimers(alarmNum).alarmType.sendGrowl Then
@@ -85,11 +83,8 @@ Public Sub AlarmStart(alarmNum As Int)
 	'---
 	If mTimers(alarmNum).alarmType.ShowScreenSmall Then
 		If mpage.DebugLog Then Log("AlarmFired-ShowScreenSmall")
-		guiHelpers.Show_toast("Alarm #" & alarmNum & " Has fired: " & mTimers(alarmNum).txt,True)	
-		'ToastMessageShow("Alarm #" & alarmNum & " Has fired: " & mTimers(alarmNum).txt,True)	
+		guiHelpers.Show_toast("Alarm #" & alarmNum & " Has fired: " & mTimers(alarmNum).txt)	
 	End If	
-	
-	
 End Sub
 
 
@@ -110,13 +105,13 @@ Public Sub AlarmSoundStop(alarmNum As Int)
 	Log("AlarmSoundStop(alarmNum As Int)")
 	mMediaPlayer(alarmNum).Stop
 	mMediaPlayer(alarmNum).Release
-	g.ph.SetVolume(g.ph.VOLUME_MUSIC, mpOldVol, False)	'--- restore old volume
+	fnct.ph.SetVolume(fnct.ph.VOLUME_MUSIC, mpOldVol, False)	'--- restore old volume
 End Sub
 
 
 Public Sub AlarmSoundPlay(sfile As String,alarmNum As Int)
-	mpOldVol = g.ph.GetVolume(g.ph.VOLUME_MUSIC) '--- save old volume
-	g.ph.SetVolume(g.ph.VOLUME_MUSIC, kt.Str2Int( g.INIRead(c.INI_CONST_SETUP,c.SOUND_ALARM_VOLUME) ), False)
+	mpOldVol = fnct.ph.GetVolume(fnct.ph.VOLUME_MUSIC) '--- save old volume
+	fnct.ph.SetVolume(fnct.ph.VOLUME_MUSIC, kt.xStr2Int( Main.kvs.Get(gblConst.INI_SOUND_ALARM_VOLUME)), False)
 	mMediaPlayer(alarmNum).Initialize
 	mMediaPlayer(alarmNum).Load(File.DirAssets,sfile)
 	mMediaPlayer(alarmNum).Looping = True

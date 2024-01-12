@@ -30,13 +30,6 @@ Sub Class_Globals
 	Public tmrTimerCallSub As sadCallSubUtils
 	'-------------------------------------------
 	
-	#if b4j
-	Private MainForm As Form 'ignore
-	Public snapInHeight,snapInWidth As Int
-	#end If
-	
-	'------------------------------------------------------------
-	
 	Public WeatherData As clsWeatherData
 	Public useMetric,useCel As Boolean
 	
@@ -48,8 +41,8 @@ Sub Class_Globals
 	
 	Private pnlCalculator,pnlHome,pnlWeather,pnlConversions,pnlPhotos As B4XView
 	Public oPageCurrent As Object = Null
-	Private oPageConversion As pageConversions,oPagePhoto As pagePhotos,oPageTimers As pageKTimers
-	Private oPageCalculator As pageCalculator,  oPageHome As pageHome, oPageWeather As pageWeather
+	Public oPageConversion As pageConversions,oPagePhoto As pagePhotos,oPageTimers As pageKTimers
+	Public oPageCalculator As pageCalculator,  oPageHome As pageHome, oPageWeather As pageWeather
 	'-----------------------------------------
 	Private pnlTimers As B4XView
 	Private lblSnapinText As B4XView
@@ -81,7 +74,9 @@ Public Sub Initialize
 	Main.kvs.Initialize(xui.DefaultFolder,gblConst.APP_NAME & "_settings.db3")
 	sql = Main.kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
 	clrTheme.Init(Main.kvs.GetDefault(gblConst.SELECTED_CLR_THEME,"dark-blue"))
-	'Main.kvs.DeleteAll
+	
+	Main.kvs.DeleteAll
+	
 	If Main.kvs.ContainsKey(gblConst.INI_INSTALL_DATE) = False Then
 		Prep1stRun  '--- 1st run!
 	Else
@@ -104,6 +99,10 @@ Private Sub Prep1stRun
 	Main.kvs.Put(gblConst.INI_WEATHER_USE_CELSIUS,True)
 	Main.kvs.Put(gblConst.INI_WEATHER_USE_METRIC,False)
 	Main.kvs.Put(gblConst.INI_WEATHER_CITY_LIST,"Kherson, Ukraine;;Seattle, Wa;;Paris, France")
+	
+	Main.kvs.Put(gblConst.INI_SOUND_ALARM_VOLUME,75)
+	Main.kvs.Put(gblConst.INI_SOUND_ALARM_FILE,"ktimers_alarm05.ogg")
+	
 End Sub
 
 'https://www.b4x.com/android/forum/threads/b4x-sd-customkeyboard.138438/
@@ -180,11 +179,13 @@ End Sub
 Private Sub segTabMenu_TabChanged(index As Int)
 	
 	Dim value As String
-	If index <> -2 Then 
+	If index < -1 Then 
 		pnlSideMenu.SetVisibleAnimated(380, False) '---  toggle side menu
 		value = segTabMenu.Getvalue(index)
-	Else
-		value = "hm"
+	Else if index = -3 Then
+		value = "tm" '--- this is called when a ktimer fires
+	Else '--->   -2
+		value = "hm" '--- 1st run
 	End If
 	
 	pnlSnapinSetup.Visible = False
@@ -265,4 +266,15 @@ End Sub
 
 Private Sub lvSideMenu_ItemClick (Index As Int, Value As Object)
 	CallSubDelayed3(oPageCurrent,"SideMenu_ItemClick",Index,Value)
+End Sub
+
+Private Sub Alarm_Fired
+	Log("call this --->  pnlScrnOff_Click") '--- turn on screen i think
+	'pnlScrnOff_Click
+	'''AlarmFiredPauseRadio
+End Sub
+
+Public Sub Alarm_Start(x As Int)
+	'--- alarm fired, change to the ktimers snapin
+	oPageTimers.AlarmStart(x)
 End Sub

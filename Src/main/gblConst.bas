@@ -40,6 +40,12 @@ Sub Process_Globals
 	Public Const INI_WEATHER_CITY_LIST As String = "wtclist"
 	Public Const INI_WEATHER_ICONS_PATH As String = "wtipth"
 	
+	
+	Public Const INI_SOUND_ALARM_VOLUME As String = "savol"
+	Public Const INI_SOUND_ALARM_FILE As String = "calrmfle"
+	
+	Public IS0SCREEN0OFF As Boolean = False
+	
 	Public WeatherAPIKey As String = "b48d92cda3b045938a7174835233112 "
 	Public WEATHERicons As String = "cc01" '--- see puSetupWeather in old eHome - api,cc01,ms01,tv01,ww01
 			
