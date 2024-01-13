@@ -33,6 +33,7 @@ Sub Class_Globals
 	Public useMetric,useCel As Boolean
 	
 	Public Dialog2,Dialog,DialogMSGBOX As B4XDialog
+	Public PrefDlg As sadPreferencesDialog
 	Public oClock As Clock
 	
 	'--- this page - master --------------------
@@ -66,40 +67,20 @@ Sub Class_Globals
 End Sub
 
 Public Sub Initialize
-'	B4XPages.GetManager.LogEvents = True
+	
+	'B4XPages.GetManager.LogEvents = True
 	tmrTimerCallSub.Initialize
 	EventGbl.Initialize
 	Main.kvs.Initialize(xui.DefaultFolder,gblConst.APP_NAME & "_settings.db3")
 	sql = Main.kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
-	clrTheme.Init(Main.kvs.GetDefault(gblConst.SELECTED_CLR_THEME,"dark-blue"))
 	
-	'Main.kvs.DeleteAll
-	
-	If Main.kvs.ContainsKey(gblConst.INI_INSTALL_DATE) = False Then
-		Prep1stRun  '--- 1st run!
-	Else
-		'--- this will matter when a new version of the app is released as
-		'--- settings files and others things might also need to be updated
-		Dim vo As CheckVersions : vo.Initialize
-		vo.CheckAndUpgrade
-	End If
+	'Main.kvs.DeleteAll 
+	config.Init
+	clrTheme.Init(Main.kvs.Get(gblConst.SELECTED_CLR_THEME))
 	
 	WeatherData.Initialize
-	useCel = Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_CELSIUS,True)
+	useCel 		= Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_CELSIUS,True)
 	useMetric = Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_METRIC,False)
-	
-End Sub
-
-Private Sub Prep1stRun
-	Main.kvs.Put(gblConst.INI_INSTALL_DATE,DateTime.Now)
-	Main.kvs.Put(gblConst.INI_CURRENT_VER,gblConst.APP_FILE_VERSION)
-	Main.kvs.Put(gblConst.INI_WEATHER_DEFAULT_CITY,"Kherson, Ukraine")
-	Main.kvs.Put(gblConst.INI_WEATHER_USE_CELSIUS,True)
-	Main.kvs.Put(gblConst.INI_WEATHER_USE_METRIC,False)
-	Main.kvs.Put(gblConst.INI_WEATHER_CITY_LIST,"Kherson, Ukraine;;Seattle, Wa;;Paris, France")
-	
-	Main.kvs.Put(gblConst.INI_SOUND_ALARM_VOLUME,75)
-	Main.kvs.Put(gblConst.INI_SOUND_ALARM_FILE,"ktimers_alarm05.ogg")
 	
 End Sub
 
@@ -130,15 +111,20 @@ End Sub
 
 Private Sub B4XPage_CloseRequest As ResumableSub
 	
-	If Dialog.IsInitialized And Dialog.Visible Then
-		Dialog.Close(xui.DialogResponse_Cancel) : Return False
+	'-----------------------------------------------------------------
+	If PrefDlg.IsInitialized And PrefDlg.Dialog.Visible 	Then
+		PrefDlg.Dialog.Close(xui.DialogResponse_Cancel) : 	Return False
 	End If
-	If Dialog2.IsInitialized And Dialog2.Visible Then
-		Dialog2.Close(xui.DialogResponse_Cancel) : Return False
+	If Dialog.IsInitialized And Dialog.Visible 				Then
+		Dialog.Close(xui.DialogResponse_Cancel) : 			Return False
 	End If
-	If DialogMSGBOX.IsInitialized And DialogMSGBOX.Visible Then
-		DialogMSGBOX.Close(xui.DialogResponse_Cancel) : Return False
+	If Dialog2.IsInitialized And Dialog2.Visible 			Then
+		Dialog2.Close(xui.DialogResponse_Cancel) : 			Return False
 	End If
+	If DialogMSGBOX.IsInitialized And DialogMSGBOX.Visible 	Then
+		DialogMSGBOX.Close(xui.DialogResponse_Cancel) : 	Return False
+	End If
+	'-----------------------------------------------------------------
 	
 	If pnlSideMenu.Visible Then
 		pnlSideMenu.SetVisibleAnimated(380, False)

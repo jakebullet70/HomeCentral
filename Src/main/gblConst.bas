@@ -12,16 +12,29 @@ Version=11.5
 Sub Process_Globals
 		
 	Private DEBUG_TEST_INSTALL As Boolean = False
+	'--- Have added the '2' to the end
 	
-	Public Const API_ANDROID_4_0 As Int = 14
-	Public Const API_ANDROID_4_4 As Int = 19
-		
 	Public APK_FILE_INFO, APK_NAME As String
-	'===============================================================
-	
+	Private Const WEB_ADDR As String = "http://sadlogic.com/homecentral/"
+	If DEBUG_TEST_INSTALL Then
+		APK_NAME      = WEB_ADDR & "HomeCentral_testing.apk"
+		APK_FILE_INFO = WEB_ADDR & "HomeCentral_testing.txt"
+	Else
+		#if not (FOSS)
+		'--- pre android 4.4
+		APK_NAME      = WEB_ADDR & "HomeCentral.apk"
+		APK_FILE_INFO = WEB_ADDR & "HomeCentral.txt"
+		#else
+		'--- does not include any google crap! 100% open source.
+		APK_FILE_INFO = WEB_ADDR & "HomeCentral_foss.txt"
+		APK_NAME      = WEB_ADDR & "HomeCentral_foss.apk"
+		#end if
+	End If
+
 	Public Const APP_NAME As String = "Home Central"
-	Public Const APP_DISPLAY_VERSION As String = "0.5.0" '--- what the user see's
-	Public Const APP_FILE_VERSION As Int = 1
+	Public Const APP_DISPLAY_VERSION As String = Application.VersionName '--- what the user see's
+	Public Const APP_FILE_VERSION As Int = Application.VersionCode
+	'===============================================================
 	
 	'--- Locale crap! --- need to get these from somewhere
 	Public LOCALE_DATE As String = ""
@@ -80,31 +93,11 @@ Sub Process_Globals
 	Public Const EVENT_WEATHER_UPDATED As String = "wudt"
 	Public Const EVENT_WEATHER_BEFORE_UPDATE As String = "bwudt"
 
-	
-	Public Const API_ANDROID_4_0 As Int = 14
-	Public Const API_ANDROID_4_4 As Int = 19
 
+
+	'=================================================================================================
+	Public Const GENERAL_OPTIONS_FILE As String = ""
 	
-	
-	
-	
-	'--- Have added the '2' to the end 	
-	
-	Private Const WEB_ADDR As String = "http://sadlogic.com/octotouchcontroller2/"
-	If DEBUG_TEST_INSTALL Then
-		APK_NAME      = WEB_ADDR & "OctoTouchController_testing.apk"
-		APK_FILE_INFO = WEB_ADDR & "OctoTouchController_testing.txt"
-	Else
-		#if not (FOSS)
-		'--- pre android 4.4
-		APK_NAME      = WEB_ADDR & "OctoTouchController.apk"
-		APK_FILE_INFO = WEB_ADDR & "OctoTouchController.txt"
-		#else
-		'--- does not include any google crap! 100% open source.
-		APK_FILE_INFO = WEB_ADDR & "OctoTouchController_foss.txt"
-		APK_NAME      = WEB_ADDR & "OctoTouchController_foss.apk"
-		#end if
-	End If
 	
 	'===============================================================
 
@@ -141,6 +134,12 @@ Sub Process_Globals
 	Public Const TIMERS_IMG_STOP As String = "tmr_stop.png"
 	Public Const TIMERS_IMG_GO As String = "tmr_go.png"
 	Public Const TIMERS_IMG_PAUSE As String = "tmr_pause.png"
+	
+	
+	
+	Public Const API_ANDROID_4_0 As Int = 14
+	Public Const API_ANDROID_4_4 As Int = 19
+		
 
 	
 End Sub

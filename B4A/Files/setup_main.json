@@ -1,0 +1,59 @@
+{
+    "Version": 1.66,
+    "Theme": "Light Theme",
+    "Items": [
+        {
+            "title": "Start At Boot",
+            "type": "Boolean",
+            "key": "saboot",
+            "required": false
+        },
+        {
+            "title": "Power",
+            "type": "Separator",
+            "key": "",
+            "required": false
+        },
+        {
+            "title": "Take Over Power",
+            "type": "Boolean",
+            "key": "pwrtop",
+            "required": false
+        },
+        {
+            "title": "Screen Time",
+            "type": "Separator",
+            "key": "pwrtop",
+            "required": false
+        },
+        {
+            "options": [
+                "5",
+                "360",
+                "5"
+            ],
+            "title": "Turn Off (Min)",
+            "type": "Numeric Range",
+            "key": "pwroff",
+            "required": false
+        },
+        {
+            "title": "Screen On - Morning",
+            "type": "Time",
+            "key": "pwrmt",
+            "required": false
+        },
+        {
+            "title": "Screen Off - Evening",
+            "type": "Time",
+            "key": "pwret",
+            "required": false
+        },
+        {
+            "title": "Misc",
+            "type": "Separator",
+            "key": "",
+            "required": false
+        }
+    ]
+}

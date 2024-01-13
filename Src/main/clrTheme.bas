@@ -240,14 +240,23 @@ Public Sub SetThemeCustomListView(lv As CustomListView)
 	lv.DefaultTextColor = txtNormal
 End Sub
 
-Public Sub SetThemeB4xInputTemplate(input As B4XInputTemplate,prompt As String)
+'Public Sub SetThemeB4xInputTemplate(input As B4XInputTemplate,prompt As String)
+'
+'	Dim TextColor As Int = txtNormal
+'	input.lblTitle.Text = prompt
+'	input.TextField1.TextColor = TextColor
+'	input.lblTitle.TextColor = TextColor
+'	input.SetBorderColor(TextColor, Background2)
+'
+'	
+'End Sub
+Public Sub SetThemeSadB4xInputTemplate(input As sadB4XInputTemplate,prompt As String)
 
 	Dim TextColor As Int = txtNormal
 	input.lblTitle.Text = prompt
 	input.TextField1.TextColor = TextColor
 	input.lblTitle.TextColor = TextColor
 	input.SetBorderColor(TextColor, Background2)
-
 	
 End Sub
 
