@@ -456,11 +456,9 @@ Public Sub Update_ListOfTimersIMG(xx As Int, sPic As String)
 	Select Case sPic
 		Case gblConst.TIMERS_IMG_STOP,gblConst.TIMERS_IMG_PAUSE
 			btnPause.Text = "Start"
-			'mnuBtnsMenu.SetText(btnPlayPause,"Start",-1,-1)
 			'BuildSideMenu(False)
 		Case gblConst.TIMERS_IMG_GO
 			btnPause.Text = "Pause"
-			'mnuBtnsMenu.SetText(btnPlayPause,"Pause",-1,-1)
 			'BuildSideMenu(True)
 	End Select
 	
@@ -482,8 +480,7 @@ Public Sub AlarmStart(xx As Int)
 	mTmrAlarmFire.Enabled = True
 	
 	'DoEvents
-	CallSubDelayed2(mpage,"segTabMenu_TabChanged",-3)
-	'CallSubDelayed2(Main,"Change_Snapin",c.SNAPIN_MENU_TIMERS_NDX)
+	CallSubDelayed2(mpage,"segTabMenu_TabChanged",-3) '--- show kitchen timers gui
 	
 	UpdateListOfTimers(xx)
 	lblHrs.Text = "00" : lblSec.Text = "00" : 	lblMin.Text = "00"
@@ -508,7 +505,6 @@ Private Sub BuildTimerStr4List(hr As String,nnMin As String,sec As String) As St
 End Sub
 
 Private Sub pnlTimers_Click
-	Dim P As Panel = Sender
-	Dim n As Int = (P.Tag)
-	TimerSelect(n)
+	'Dim P As Panel = Sender
+	TimerSelect(Sender.As(Panel).Tag.As(Int))
 End Sub
