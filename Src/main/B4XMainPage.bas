@@ -168,7 +168,20 @@ End Sub
 #region MAIN_MENU
 '--- header menu btn show menu - or not?
 Private Sub imgMenuButton_Click
-	pnlSideMenu.SetVisibleAnimated(380, Not (pnlSideMenu.Visible))
+	'Log(pnlSideMenu.Left)
+	Log(pnlSideMenu.Width)
+	
+	If pnlSideMenu.Visible = False Then
+		guiHelpers.AnimateB4xView("RIGHT",pnlSideMenu)
+	Else
+		pnlSideMenu.SetVisibleAnimated(380, False)
+'		pnlSideMenu.SetLayoutAnimated(190, 1065dip, pnlSideMenu.top, 1065dip+216dip, pnlSideMenu.Height)
+'		Sleep(190)
+'		pnlSideMenu.Visible = False
+'		pnlSideMenu.Left = 1065dip
+'		pnlSideMenu.width = 215dip
+	End If
+	Sleep(0)
 	If pnlSideMenu.Visible Then
 		pnlSideMenu.BringToFront
 		pnlHeader.BringToFront

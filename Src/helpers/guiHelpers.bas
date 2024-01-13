@@ -508,3 +508,23 @@ Public Sub SetCBDrawable(CB As CheckBox,BoxColor As Int,BoxWidth As Int, _
 	Dim JO As JavaObject = CB
 	JO.RunMethod("setButtonDrawable",Array As Object(SLD))
 End Sub
+
+
+
+Public Sub AnimateB4xView (FromEdge As String,base As B4XView)
+	Dim top As Int = base.Top
+	Dim left As Int = base.Left
+	Select FromEdge.ToLowerCase
+		Case "bottom"
+			base.Top = base.Parent.Height
+		Case "top"
+			base.Top = -base.Height
+		Case "left"
+			base.Left = -base.Width
+		Case "right"
+			base.Left = base.Parent.Width
+	End Select
+	base.Visible = True
+	base.SetLayoutAnimated(220, left, top, base.Width, base.Height)
+End Sub
+
