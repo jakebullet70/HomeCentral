@@ -81,10 +81,10 @@ Private Sub BuildGUI
 '	pnlSplitterTopBtn1.BringToFront
 '	pnlSplitterBottomBtn1.BringToFront
 '	pnlSplitterBottomBtn2.BringToFront
-	pnlSplitter1.BringToFront
-	pnlSplitter2.BringToFront
-	pnlSplitter3.BringToFront
-	pnlSplitter4.BringToFront
+'	pnlSplitter1.BringToFront
+'	pnlSplitter2.BringToFront
+'	pnlSplitter3.BringToFront
+'	pnlSplitter4.BringToFront
 	
 	guiHelpers.SetTextColor(Array As B4XView(lblLabelSec,lblLabelMin,lblLabelHr,lblDots1,lblDots2, _
 																lblTimersDesc1,lblTimersDesc2,lblTimersDesc3,lblTimersDesc4,lblTimersDesc5, _
@@ -100,7 +100,7 @@ Private Sub BuildGUI
 																BtnIncS1,BtnIncM1,BtnIncM5,btnIncrH1,btnIncrH5),BtnIncS5.TextSize-4)
 	
 	guiHelpers.ResizeText("Pause",btnPause)
-	guiHelpers.ResizeText("Reset",btnReset)
+	btnReset.Text = "Reset" : btnReset.TextSize = btnPause.TextSize
 	kt.SetImages(Array As lmB4XImageViewX(imgTimers1,imgTimers2,imgTimers3,imgTimers4,imgTimers5),gblConst.TIMERS_IMG_STOP)
 	
 End Sub

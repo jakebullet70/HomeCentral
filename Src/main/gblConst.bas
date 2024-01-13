@@ -34,19 +34,23 @@ Sub Process_Globals
 	Public Const INI_INSTALL_DATE As String = "instdt"
 	Public Const INI_CURRENT_VER As String = "appver"
 	
-	Public Const INI_WEATHER_DEFAULT_CITY As String = "wtdtcty"
-	Public Const INI_WEATHER_USE_METRIC As String = "wtmtrc"
-	Public Const INI_WEATHER_USE_CELSIUS As String = "wtcels"
-	Public Const INI_WEATHER_CITY_LIST As String = "wtclist"
-	Public Const INI_WEATHER_ICONS_PATH As String = "wtipth"
+	Public Const INI_WEATHER As String = "WEA-"
+	Public Const INI_WEATHER_DEFAULT_CITY As String = INI_WEATHER & "dtcty"
+	Public Const INI_WEATHER_USE_METRIC As String = INI_WEATHER & "mtrc"
+	Public Const INI_WEATHER_USE_CELSIUS As String = INI_WEATHER & "cels"
+	Public Const INI_WEATHER_CITY_LIST As String = INI_WEATHER & "clist"
+	Public Const INI_WEATHER_ICONS_PATH As String = INI_WEATHER & "ipth"
+	
+	Public Const INI_SOUND As String = "SND-"
+	Public Const INI_SOUND_ALARM_VOLUME As String = INI_SOUND & "savol"
+	Public Const INI_SOUND_ALARM_FILE As String = INI_SOUND & "calrmfle"
 	
 	
-	Public Const INI_SOUND_ALARM_VOLUME As String = "savol"
-	Public Const INI_SOUND_ALARM_FILE As String = "calrmfle"
+	
 	
 	Public IS0SCREEN0OFF As Boolean = False
 	
-	Public WeatherAPIKey As String = "b48d92cda3b045938a7174835233112 "
+	Public WeatherAPIKey As String = "b48d92cda3b045938a7174835233112"
 	Public WEATHERicons As String = "cc01" '--- see puSetupWeather in old eHome - api,cc01,ms01,tv01,ww01
 			
 	

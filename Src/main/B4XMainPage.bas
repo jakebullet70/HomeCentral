@@ -23,6 +23,8 @@ Sub Class_Globals
 	Private dUtils As DDD
 	'--- globals -------
 	Public DebugLog As Boolean = False
+	Private PromptExitTwice As Boolean = False
+	Private QuietExitNow As Short = 0
 	
 	Public sql As SQL
 	Public isInterNetConnected As Boolean = True
@@ -122,11 +124,46 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	oClock.Initialize
 	
 	BuildGUI
+	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
 	
 	#if debug
 	B4XPages.MainPage.DebugLog = True
 	#End If
 	
+End Sub
+
+Private Sub B4XPage_CloseRequest As ResumableSub
+	
+	If Dialog.IsInitialized And Dialog.Visible Then
+		Dialog.Close(xui.DialogResponse_Cancel) : Return False
+	End If
+	If Dialog2.IsInitialized And Dialog2.Visible Then
+		Dialog2.Close(xui.DialogResponse_Cancel) : Return False
+	End If
+	If DialogMSGBOX.IsInitialized And DialogMSGBOX.Visible Then
+		DialogMSGBOX.Close(xui.DialogResponse_Cancel) : Return False
+	End If
+	
+	If pnlSideMenu.Visible Then
+		pnlSideMenu.SetVisibleAnimated(380, False)
+		Return False
+	End If
+	
+	If PromptExitTwice = False Then
+		Show_Toast2("Tap again to exit",2200)
+		tmrTimerCallSub.CallSubDelayedPlus(Me,"Prompt_Exit_Reset",2200)
+		PromptExitTwice = True
+		Return False
+	End If
+	
+	'powerHelpers.ReleaseLocks
+	
+	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_ON)
+	
+	'--- Needed to turn on 'UserClosed' var in Main.Activity_Pause
+	'--- as 'back button' should turn it on but is not
+	B4XPages.GetNativeParent(Me).Finish
+	Return True
 End Sub
 
 
@@ -169,7 +206,7 @@ End Sub
 '--- header menu btn show menu - or not?
 Private Sub imgMenuButton_Click
 	'Log(pnlSideMenu.Left)
-	Log(pnlSideMenu.Width)
+	'Log(pnlSideMenu.Width)
 	
 	If pnlSideMenu.Visible = False Then
 		guiHelpers.AnimateB4xView("RIGHT",pnlSideMenu)
@@ -191,20 +228,16 @@ End Sub
 
 Private Sub segTabMenu_TabChanged(index As Int)
 	
-	Try
-		
-		Dim value As String
-		If index = -3 Then
-			value = "tm" '--- this is called when a ktimer fires
-		Else if index = -2 Then
-			value = "hm" '--- 1st run
-		Else '--- normal press
-			pnlSideMenu.SetVisibleAnimated(380, False) '---  toggle side menu
-			value = segTabMenu.Getvalue(index)
-		End If
-	Catch
-		Log(LastException)
-	End Try
+	Dim value As String
+	If index = -3 Then  '--- this is called when a ktimer fires
+		value = "tm"
+	Else if index = -2 Then  '--- 1st run
+		value = "hm"
+	Else '--- normal press
+		pnlSideMenu.SetVisibleAnimated(380, False) '---  toggle side menu
+		value = segTabMenu.Getvalue(index)
+	End If
+	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
 	
 	pnlSnapinSetup.Visible = False
 
@@ -257,9 +290,30 @@ End Sub
 Public Sub Show_Toast2(msg As String, ms As Int)
 	'--- TODO, needs to be themed!!!
 	Toast.DurationMs = ms
-	Toast.Show($"[TextSize=24][b][FontAwesome=0xF05A/]  ${msg}[/b][/TextSize]"$)
+	Toast.Show($"[TextSize=30][b][FontAwesome=0xF05A/]  ${msg}[/b][/TextSize]"$)
+End Sub
+Private Sub Prompt_Exit_Reset
+	'--- user has to tap 'back' button twice to exit in 2 seconds
+	'--- this resets the var if they do not do it in 2 seconds
+	PromptExitTwice = False
+	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
+End Sub
+Private Sub Prompt_Exit_Quiet
+	'--- user has tapped the title button 4 times
+	'--- this resets the var if they do not do it in 2 seconds
+	QuietExitNow = 0
 End Sub
 
+Private Sub btnHdrTxt1_Click
+	QuietExitNow = QuietExitNow + 1
+	If QuietExitNow > 3 Then
+		B4XPages.ClosePage(Me)
+		Return
+	End If
+	If tmrTimerCallSub.Exists(Me,"Prompt_Exit_Quiet") = Null Then
+		tmrTimerCallSub.CallSubDelayedPlus(Me,"Prompt_Exit_Quiet",2200)
+	End If
+End Sub
 
 Private Sub btnSetupMaster_Click
 	pnlSideMenu.SetVisibleAnimated(380, False)
