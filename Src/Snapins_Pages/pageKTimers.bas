@@ -77,14 +77,6 @@ Private Sub BuildGUI
 	guiHelpers.SetPanelsDividers(Array As B4XView(pnlSplitterMnu,pnlSplitter,pnlSplitter1,pnlSplitter2,pnlSplitter3,pnlSplitter4, _
 										pnlSplitterTopBtn2,pnlSplitterBottomBtn1,pnlSplitterTopBtn1,pnlSplitterBottomBtn2) ,clrTheme.DividerColor)
 	
-'	pnlSplitterTopBtn2.BringToFront
-'	pnlSplitterTopBtn1.BringToFront
-'	pnlSplitterBottomBtn1.BringToFront
-'	pnlSplitterBottomBtn2.BringToFront
-'	pnlSplitter1.BringToFront
-'	pnlSplitter2.BringToFront
-'	pnlSplitter3.BringToFront
-'	pnlSplitter4.BringToFront
 	
 	guiHelpers.SetTextColor(Array As B4XView(lblLabelSec,lblLabelMin,lblLabelHr,lblDots1,lblDots2, _
 																lblTimersDesc1,lblTimersDesc2,lblTimersDesc3,lblTimersDesc4,lblTimersDesc5, _
