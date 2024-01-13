@@ -124,7 +124,7 @@ End Sub
 
 Private Sub btnAdd_Click
 	
-	Dim t As B4XInputTemplate : t.Initialize
+	Dim t As sadB4XInputTemplate : t.Initialize
 	mpage.Dialog2.Initialize(mpage.Root)
 	
 	Try
@@ -138,7 +138,7 @@ Private Sub btnAdd_Click
 		
 		Dim rs As ResumableSub = mpage.Dialog2.ShowTemplate(t, "OK", "", "CANCEL")
 		dlgHelper2.ThemeDialogBtnsResize
-		clrTheme.SetThemeB4xInputTemplate(t,"City name")
+		clrTheme.SetThemesadB4xInputTemplate(t,"City name")
 	
 		Wait For (rs) Complete (i As Int)
 		If i = XUI.DialogResponse_Cancel Then
