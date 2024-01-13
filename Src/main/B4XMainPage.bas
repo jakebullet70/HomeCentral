@@ -247,12 +247,10 @@ Private Sub segTabMenu_TabChanged(index As Int)
 		Case "hm" '--- home
 			If oPageHome.IsInitialized = False Then oPageHome.Initialize(pnlHome)
 			oPageCurrent = oPageHome
-			'pnlSnapinSetup.Visible = True :	guiHelpers.ResizeText("Home Setup", lblSnapinText)
 			
 		Case "wt" '--- weather	
 			If oPageWeather.IsInitialized = False Then oPageWeather.Initialize(pnlWeather)
 			oPageCurrent = oPageWeather
-			'pnlSnapinSetup.Visible = True : 	guiHelpers.ResizeText("Weather Setup", lblSnapinText)
 			
 		Case "ca" '--- calculator
 			If oPageCalculator.IsInitialized = False Then oPageCalculator.Initialize(pnlCalculator)
@@ -261,12 +259,10 @@ Private Sub segTabMenu_TabChanged(index As Int)
 		Case "ph" '--- photo albumn
 			If oPagePhoto.IsInitialized = False Then oPagePhoto.Initialize(pnlPhotos)
 			oPageCurrent = oPagePhoto
-			'pnlSnapinSetup.Visible = True : guiHelpers.ResizeText("Photos Setup", lblSnapinText)
 			
 		Case "tm" '--- timers
 			If oPageTimers.IsInitialized = False Then oPageTimers.Initialize(pnlTimers)
 			oPageCurrent = oPageTimers
-			'pnlSnapinSetup.Visible = True : guiHelpers.ResizeText("Timers Setup", lblSnapinText)
 		
 	End Select
 

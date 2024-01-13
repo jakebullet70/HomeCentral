@@ -15,29 +15,27 @@ Sub Class_Globals
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
 	
+	Private img As lmB4XImageViewX
+	Private pnlBtns As B4XView
+	Private btnStart,btnFullScrn,btnNext,btnPrev As Button
 	
 End Sub
 
 Public Sub Initialize(p As B4XView) 
 	pnlMain = p
+	pnlMain.LoadLayout("pagePhotosBase")
+	
+	guiHelpers.SkinButton(Array As Button(btnStart,btnFullScrn,btnNext,btnPrev))
+	LoadFrame
+	
 End Sub
 
 
 '-------------------------------
-#if b4j
-public Sub resize_me (width As Int, height As Int)
-	pnlMain.width = width
-	pnlMain.height = height
-End Sub
-#end if
 Public Sub Set_focus()
 	Menus.SetHeader("Photo Albunm","main_menu_pics.png")
 	pnlMain.SetVisibleAnimated(500,True)
 End Sub
-Private Sub Page_Setup
-	guiHelpers.Show_toast2("TODO",3500)
-End Sub
-
 Public Sub Lost_focus()
 	pnlMain.SetVisibleAnimated(500,False)
 End Sub
@@ -47,6 +45,18 @@ End Sub
 '=============================================================================================
 '=============================================================================================
 
+Private Sub LoadFrame
+	img.Bitmap = LoadBitmapResize(File.DirAssets,"pframe.png",img.Width,img.Height,True)
+End Sub
 
-
-
+Private Sub btnPressed_Click
+	Dim o As Button = Sender
+	
+	Select Case o.Tag
+		Case "ss" '--- start show
+		Case "n" '--- next
+		Case "p" '--- prev
+		Case "f" '--- full screen
+	End Select
+	
+End Sub
