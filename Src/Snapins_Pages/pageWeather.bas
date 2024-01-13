@@ -188,10 +188,6 @@ Private Sub CreateListItemWeather(arrID As Int, Width As Int, Height As Int) As 
 	Return p
 End Sub
 
-Private Sub Page_Setup
-	Dim o As dlgSetupWeather : o.Initialize(mpage.Dialog)
-	o.Show
-End Sub
 
 Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
 	Try

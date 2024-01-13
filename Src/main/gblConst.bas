@@ -45,13 +45,15 @@ Sub Process_Globals
 	Public Const INI_SOUND_ALARM_VOLUME As String = INI_SOUND & "savol"
 	Public Const INI_SOUND_ALARM_FILE As String = INI_SOUND & "calrmfle"
 	
-	
+	Public Const INI_SCREEN_BRIGHTNESS_VALUE As String = "scrnbrt"
+	Public Const INI_SCREEN_TAKEOVER_POWER As String = "scrntop"
 	
 	
 	Public IS0SCREEN0OFF As Boolean = False
 	
 	Public WeatherAPIKey As String = "b48d92cda3b045938a7174835233112"
 	Public WEATHERicons As String = "cc01" '--- see puSetupWeather in old eHome - api,cc01,ms01,tv01,ww01
+	Public AndroidTakeOverSleepFLAG As Boolean = False
 			
 	
 	'--- String constants (not really...) these are left as string for multi language support

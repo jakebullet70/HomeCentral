@@ -201,7 +201,6 @@ Private Sub cboIconSets_SelectedIndexChanged (Index As Int)
 End Sub
 
 Private Sub SetIconSet(i As Int)
-	Log(i)
 	Select Case i
 		Case 0 : SelectedIconsSet = "cc01"
 		Case 1 : SelectedIconsSet = "ww01"

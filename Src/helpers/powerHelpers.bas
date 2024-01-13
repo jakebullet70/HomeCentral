@@ -6,7 +6,10 @@ Version=9.5
 @EndOfDesignText@
 ' Author:  sadLogic
 #Region VERSIONS 
+' V. 1.1 	Jan/11/2024
+'			Refactor for KVS storage
 ' V. 1.0 	Aug/15/2022
+'			1st run
 #End Region
 'Static code module
 
@@ -15,11 +18,9 @@ Version=9.5
 '--- Code to turn on / off CPU - Screen - brightness
 
 Sub Process_Globals
-	Private Const mModule As String = "powerHelpers" 'ignore
 	Private xui As XUI
 	
-	Private pws As PhoneWakeState
-	Private ph As Phone
+	Private pws As PhoneWakeState, ph As Phone
 	
 	Public pScreenBrightness As Float = -1
 	Private Const AUTO_BRIGHTNESS As Float = -1
@@ -27,7 +28,6 @@ Sub Process_Globals
 End Sub
 
 Public Sub Init(takeOverPower As Boolean)
-	
 	
 	'TODO  brightness needs to be seperated from takeoverpower
 	'If config.ChangeBrightnessSettingsFLAG = False Then Return

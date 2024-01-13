@@ -4,11 +4,7 @@ ModulesStructureVersion=1
 Type=Class
 Version=9.85
 @EndOfDesignText@
-#Region Shared Files
-#CustomBuildAction: folders ready, %WINDIR%\System32\Robocopy.exe,"..\..\Shared Files" "..\Files"
-'Ctrl + click to sync files: ide://run?file=%WINDIR%\System32\Robocopy.exe&args=..\..\Shared+Files&args=..\Files&FilesSync=True
-#End Region
-
+#Region Project Actions
 'Ctrl + click to export as zip: ide://run?File=%B4X%\Zipper.jar&Args=Project.zip
 
 ' Project folder: ide://run?file=%WINDIR%\SysWOW64\explorer.exe&Args=%PROJECT%
@@ -17,6 +13,7 @@ Version=9.85
 'B4A ide://run?file=%WINDIR%\System32\cmd.exe&Args=/c&Args=start&Args=..\..\B4A\%PROJECT_NAME%.b4a
 'B4i ide://run?file=%WINDIR%\System32\cmd.exe&Args=/c&Args=start&Args=..\..\B4i\%PROJECT_NAME%.b4i
 'B4J ide://run?file=%WINDIR%\System32\cmd.exe&Args=/c&Args=start&Args=..\..\B4J\%PROJECT_NAME%.b4j
+#end region
 
 Sub Class_Globals
 	Public Root As B4XView, xui As XUI, Toast As BCToast
@@ -47,9 +44,9 @@ Sub Class_Globals
 	Public oPageCalculator As pageCalculator,  oPageHome As pageHome, oPageWeather As pageWeather
 	'-----------------------------------------
 	Private pnlTimers As B4XView
-	Private lblSnapinText As B4XView
-	Private btnSnapinSetup As B4XView
-	Private pnlSnapinSetup As B4XView
+	'Private lblSnapinText As B4XView
+	'Private btnSnapinSetup As B4XView
+	'Private pnlSnapinSetup As B4XView
 	'-----------------------------------------
 	
 	'--- header crap -  menu buttons
@@ -65,8 +62,7 @@ Sub Class_Globals
 	
 	Private segTabMenu As ASSegmentedTab
 	Private lblMnuMenu As B4XView
-	Private pnlMenuHdrSpacer1 As B4XView
-	Private pnlMenuHdrSpacer2 As B4XView
+	Private pnlMenuHdrSpacer2,pnlMenuHdrSpacer1 As B4XView
 End Sub
 
 Public Sub Initialize
@@ -77,7 +73,7 @@ Public Sub Initialize
 	sql = Main.kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
 	clrTheme.Init(Main.kvs.GetDefault(gblConst.SELECTED_CLR_THEME,"dark-blue"))
 	
-	Main.kvs.DeleteAll
+	'Main.kvs.DeleteAll
 	
 	If Main.kvs.ContainsKey(gblConst.INI_INSTALL_DATE) = False Then
 		Prep1stRun  '--- 1st run!
@@ -113,8 +109,7 @@ End Sub
 'https://www.b4x.com/android/forum/threads/b4x-sd-customkeyboard.138438/
 
 
-'You can see the list of page related events in the B4XPagesManager object. The event name is B4XPage.
-'This event will be called once, before the page becomes visible.
+#region PAGE EVENTS
 Private Sub B4XPage_Created (Root1 As B4XView)
 	
 	Root = Root1
@@ -129,6 +124,7 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	#if debug
 	B4XPages.MainPage.DebugLog = True
 	#End If
+	CfgAndroidPowerOptions
 	
 End Sub
 
@@ -165,13 +161,13 @@ Private Sub B4XPage_CloseRequest As ResumableSub
 	B4XPages.GetNativeParent(Me).Finish
 	Return True
 End Sub
-
+#end region
 
 Private Sub BuildGUI
 	
 	guiHelpers.SetVisible(Array As B4XView(pnlTimers,pnlSideMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
 	
-	guiHelpers.SkinButtonNoBorder(Array As Button(btnSnapinSetup,btnAboutMe,btnSetupMaster,btnHdrTxt1))
+	guiHelpers.SkinButtonNoBorder(Array As Button(btnAboutMe,btnSetupMaster,btnHdrTxt1))
 	
 	pnlBG.SetColorAndBorder(clrTheme.Background,0dip,xui.Color_Transparent,0dip)
 	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0dip,xui.Color_Transparent,0dip)
@@ -198,8 +194,6 @@ Private Sub BuildGUI
 	segTabMenu_TabChanged(-2)
 	
 End Sub
-
-
 
 '================== MAIN MENU ====================================
 #region MAIN_MENU
@@ -239,8 +233,6 @@ Private Sub segTabMenu_TabChanged(index As Int)
 	End If
 	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
 	
-	pnlSnapinSetup.Visible = False
-
 	'--- fire the lost focus event
 	If oPageCurrent <> Null Then
 		CallSub(oPageCurrent,"Lost_Focus")
@@ -255,12 +247,12 @@ Private Sub segTabMenu_TabChanged(index As Int)
 		Case "hm" '--- home
 			If oPageHome.IsInitialized = False Then oPageHome.Initialize(pnlHome)
 			oPageCurrent = oPageHome
-			pnlSnapinSetup.Visible = True :	guiHelpers.ResizeText("Home Setup", lblSnapinText)
+			'pnlSnapinSetup.Visible = True :	guiHelpers.ResizeText("Home Setup", lblSnapinText)
 			
 		Case "wt" '--- weather	
 			If oPageWeather.IsInitialized = False Then oPageWeather.Initialize(pnlWeather)
 			oPageCurrent = oPageWeather
-			pnlSnapinSetup.Visible = True : 	guiHelpers.ResizeText("Weather Setup", lblSnapinText)
+			'pnlSnapinSetup.Visible = True : 	guiHelpers.ResizeText("Weather Setup", lblSnapinText)
 			
 		Case "ca" '--- calculator
 			If oPageCalculator.IsInitialized = False Then oPageCalculator.Initialize(pnlCalculator)
@@ -269,12 +261,12 @@ Private Sub segTabMenu_TabChanged(index As Int)
 		Case "ph" '--- photo albumn
 			If oPagePhoto.IsInitialized = False Then oPagePhoto.Initialize(pnlPhotos)
 			oPageCurrent = oPagePhoto
-			pnlSnapinSetup.Visible = True : guiHelpers.ResizeText("Photos Setup", lblSnapinText)
+			'pnlSnapinSetup.Visible = True : guiHelpers.ResizeText("Photos Setup", lblSnapinText)
 			
 		Case "tm" '--- timers
 			If oPageTimers.IsInitialized = False Then oPageTimers.Initialize(pnlTimers)
 			oPageCurrent = oPageTimers
-			pnlSnapinSetup.Visible = True : guiHelpers.ResizeText("Timers Setup", lblSnapinText)
+			'pnlSnapinSetup.Visible = True : guiHelpers.ResizeText("Timers Setup", lblSnapinText)
 		
 	End Select
 
@@ -283,6 +275,9 @@ Private Sub segTabMenu_TabChanged(index As Int)
 	
 End Sub
 #end region
+
+'============================ MISC ===============================
+#region MISC
 
 Public Sub Show_Toast(Message As String)
 	Show_Toast2(Message,2500)
@@ -300,10 +295,9 @@ Private Sub Prompt_Exit_Reset
 End Sub
 Private Sub Prompt_Exit_Quiet
 	'--- user has tapped the title button 4 times
-	'--- this resets the var if they do not do it in 2 seconds
+	'--- this resets the var if they do not do it in 2.4 seconds
 	QuietExitNow = 0
 End Sub
-
 Private Sub btnHdrTxt1_Click
 	QuietExitNow = QuietExitNow + 1
 	If QuietExitNow > 3 Then
@@ -314,11 +308,9 @@ Private Sub btnHdrTxt1_Click
 		tmrTimerCallSub.CallSubDelayedPlus(Me,"Prompt_Exit_Quiet",2200)
 	End If
 End Sub
+#end region
 
-Private Sub btnSetupMaster_Click
-	pnlSideMenu.SetVisibleAnimated(380, False)
-	guiHelpers.Show_toast2("TODO",3500)
-End Sub
+'==============================================================
 
 Private Sub btnAboutMe_Click
 	pnlSideMenu.SetVisibleAnimated(380, False)
@@ -326,20 +318,37 @@ Private Sub btnAboutMe_Click
 	o.Show
 End Sub
 
-Private Sub btnSnapinSetup_Click
-	pnlSideMenu.SetVisibleAnimated(380, False)
-	If SubExists(oPageCurrent,"Page_Setup") Then
-		CallSub(oPageCurrent,"Page_Setup")
-	End If
-End Sub
-
 Private Sub imgSoundButton_Click
 End Sub
 
 Private Sub lvSideMenu_ItemClick (Index As Int, Value As Object)
+	'CallSub(Main,"Set_ScreenTmr") '--- reset the power / screen on-off
 	CallSubDelayed3(oPageCurrent,"SideMenu_ItemClick",Index,Value)
 End Sub
 
+
+Private Sub btnSetupMaster_Click
+	pnlSideMenu.SetVisibleAnimated(380, False)
+	'CallSub(Main,"Set_ScreenTmr") '--- reset the power / screen on-off
+
+	Dim gui As guiMsgs : gui.Initialize
+	Dim o1 As dlgListbox
+	
+	o1.Initialize("Setup Menu",Me,"SetupMainMenu_Event",Dialog)
+	o1.IsMenu = True
+	o1.Show(440dip,380dip,gui.BuildMainSetup())
+	
+End Sub
+
+Private Sub SetupMainMenu_Event(t As String,o As Object)
+	Select Case t
+		Case "wth"
+			Dim o1 As dlgSetupWeather : o1.Initialize(Dialog) : o1.Show
+			
+	End Select
+End Sub
+
+'--------------------  kTimers stuff. Needed here?
 Private Sub Alarm_Fired
 	Log("call this --->  pnlScrnOff_Click") '--- turn on screen i think
 	'pnlScrnOff_Click
@@ -350,3 +359,34 @@ Public Sub Alarm_Start(x As Int)
 	'--- alarm fired, change to the ktimers snapin
 	oPageTimers.AlarmStart(x)
 End Sub
+
+
+#Region "ANDROID POWER-BRIGHTNESS SUPPORT"
+Private Sub CfgAndroidPowerOptions
+	
+	gblConst.AndroidTakeOverSleepFLAG = Main.kvs.GetDefault(gblConst.INI_SCREEN_TAKEOVER_POWER,False)
+	If gblConst.AndroidTakeOverSleepFLAG = False Then
+		powerHelpers.ScreenON(False) '--- power options not configured
+		Return
+	End If
+		
+	'fnc.ProcessPowerFlags
+	
+End Sub
+Public Sub DoBrightnessDlg
+	
+'	Dim o1 As dlgBrightness
+'	B4XPages.MainPage.pObjCurrentDlg1 = o1.Initialize("Screen Brightness",Me,"Brightness_Change")
+'	o1.Show(IIf(powerHelpers.pScreenBrightness < 0.05,0.1,powerHelpers.pScreenBrightness) * 100)
+	
+End Sub
+Private Sub Brightness_Change(value As Float)
+	
+	'--- callback for btnBrightness_Click
+	Dim v As Float = value / 100
+	powerHelpers.SetScreenBrightnessAndSave(v,True)
+	powerHelpers.pScreenBrightness = v
+	
+End Sub
+
+#end region

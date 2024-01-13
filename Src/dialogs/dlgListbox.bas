@@ -64,7 +64,7 @@ Public Sub Show(height As Float, width As Float, data As Map)
 	
 	
 	Dim l As B4XView = ListTemplate.CustomListView1.DesignerLabel
-	l.Font = xui.CreateDefaultFont(NumberFormat2(26 / guiHelpers.gFscale,1,0,0,False))
+	l.Font = xui.CreateDefaultFont(NumberFormat2(30 / guiHelpers.gFscale,1,0,0,False))
 	
 	dlgHelper.ThemeDialogForm( mTitle)
 	Dim rs As ResumableSub = mDialog.ShowTemplate(ListTemplate, "", "",IIf(IsMenu,"CLOSE","CANCEL"))
