@@ -33,7 +33,7 @@ End Sub
 
 '-------------------------------
 Public Sub Set_focus()
-	Menus.SetHeader("Photo Albunm","main_menu_pics.png")
+	Menus.SetHeader("Photo Album","main_menu_pics.png")
 	pnlMain.SetVisibleAnimated(500,True)
 End Sub
 Public Sub Lost_focus()
@@ -46,7 +46,7 @@ End Sub
 '=============================================================================================
 
 Private Sub LoadFrame
-	img.Bitmap = LoadBitmapResize(File.DirAssets,"pframe.png",img.Width,img.Height,True)
+	img.Bitmap = LoadBitmapResize(File.DirAssets,"pframe.png",img.Width,img.Height,False)
 End Sub
 
 Private Sub btnPressed_Click
