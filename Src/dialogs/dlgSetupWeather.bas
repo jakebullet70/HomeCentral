@@ -132,6 +132,10 @@ Private Sub btnAdd_Click
 		dlgHelper2.Initialize(mpage.Dialog2)
 	
 		dlgHelper2.ThemeDialogForm("Enter city")
+		
+		't.ConfigureForNumbers(False, False)
+		't.TextField1.As(EditText).SingleLine = True
+		
 		Dim rs As ResumableSub = mpage.Dialog2.ShowTemplate(t, "OK", "", "CANCEL")
 		dlgHelper2.ThemeDialogBtnsResize
 		clrTheme.SetThemeB4xInputTemplate(t,"City name")
