@@ -36,7 +36,7 @@ End Sub
 '	lst.DefaultTextSize = 20
 'End Sub
 
-'
+
 'Public Sub SetTextShadow(pView As B4XView, pRadius As Float, pDx As Float, pDy As Float, pColor As Int)
 '	'--- Seems to be Android only???????
 '	Dim ref As Reflector
@@ -147,6 +147,12 @@ Public Sub SetPanelsDividers(Arr() As B4XView,clr As Int)
 	Next
 End Sub
 
+Public Sub SetPanelsBorder(Arr() As B4XView,clr As Int)
+	For Each o As B4XView In Arr
+		o.SetColorAndBorder(xui.Color_Transparent,1dip,clr,3dip)
+	Next
+End Sub
+
 Public Sub SetPanelsTranparent(Arr() As B4XView)
 	For Each o As B4XView In Arr
 		o.SetColorAndBorder(xui.Color_Transparent,0dip,xui.Color_Transparent,0dip)
@@ -176,6 +182,14 @@ End Sub
 '	Next
 'End Sub
 
+Public Sub ReSkinB4XSeekBar(sb() As B4XSeekBar)
+	For Each b As B4XSeekBar In sb
+		b.ThumbColor = clrTheme.txtNormal
+		b.Color1 = clrTheme.txtAccent
+		b.Color2 = clrTheme.txtNormal
+	Next
+End Sub
+
 Public Sub ReSkinB4XComboBox(cbo() As B4XComboBox)
 	
 	For Each cb As B4XComboBox In cbo
@@ -201,7 +215,6 @@ Public Sub ReSkinB4XComboBox(cbo() As B4XComboBox)
 		Catch
 			Log(LastException)
 		End Try
-		
 		
 	Next
 End Sub
@@ -363,37 +376,6 @@ End Sub
 
 '=========================================================================
 
-
-'Public Sub ResizeText2(value As Object, lbl As B4XView, maxSize As Float,Force As Boolean)
-'
-'	'--- B4J Only
-'	If (Force = False)  Then
-'		If (value.As(String) = lbl.Text) Then 
-'			'If Main.DebugLog Then Log("ResizeText2 exit") '--- txt wise string is the same size
-'			Return
-'		End If
-'	End If
-'	
-'	lbl.Text = value : lbl.Visible =False
-'	Sleep(0)
-'	Dim jo1 As JavaObject = lbl.As(Label)
-'	jo1.RunMethod("setEllipsisString", Array("/003"))
-'	For ts = maxSize To 15 Step -2
-'		lbl.TextSize = ts
-'		Sleep(10)
-'		Dim tvs As Object = (jo1.RunMethodjo("lookup", Array As Object(".text")).RunMethodjo("getText",Null).As(String))'ignore
-'		'Log(tvs)
-'		If Not (tvs.As(String).EndsWith("/003"))Then
-'			Exit '-- all done!
-'		End If
-'	Next
-'	'Log(lbl.TextSize)
-'	lbl.Visible =True
-'	Sleep(0)
-'End Sub
-'
-
-
 Public Sub SizeFontAdjust() As Float
 	Dim I As Int =  gWidth
 	If I > 760 And I < 900 Then
@@ -409,22 +391,6 @@ Public Sub SizeFontAdjust() As Float
 End Sub
 
 
-'Public Sub ResizeText3(Text As String,lbl As B4XView) 
-'	'https://www.b4x.com/android/forum/threads/label-resize-according-Text-size.151992/#post-955249
-'	'The porpuse is expand the label width according the text lenght
-'	Dim cvs1 As B4XCanvas
-'	Dim Panel1 As Pane : Panel1.Initialize("")
-'	Panel1.prefHeight = lbl.Height
-'	Panel1.PrefWidth = lbl.Width
-'	cvs1.Initialize ( Panel1)
-'	
-'	Dim font As Font = lbl.Font
-'	Dim r As B4XRect = cvs1.MeasureText(Text, font)
-'		
-'	lbl.TextSize = r.Width + 14
-'	lbl.Text = Text
-'	'Log(v)
-'End Sub
 
 
 Public Sub SetTextShadow(pView As B4XView, pRadius As Float, pDx As Float, pDy As Float, pColor As Int)

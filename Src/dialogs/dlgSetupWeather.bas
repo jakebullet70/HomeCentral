@@ -191,7 +191,7 @@ Private Sub InitIconSets
 	
 	Select Case gblConst.WEATHERicons
 		Case "cc01"    : cboIconSets.SelectedIndex = 0
-		Case "ww01"  : cboIconSets.SelectedIndex = 1
+		Case "ww01"   : cboIconSets.SelectedIndex = 1
 		Case "ms01"   : cboIconSets.SelectedIndex = 2
 		Case "tv03"	   : cboIconSets.SelectedIndex = 3
 		Case "api"	   : cboIconSets.SelectedIndex = 4

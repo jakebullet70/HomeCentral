@@ -29,8 +29,10 @@ End Sub
 
 Public Sub Init(theme As String)
 	
-	If Main.kvs.ContainsKey(gblConst.CUSTOM_THEME_COLORS) = False Then SeedCustomClrs
-	customcolors = Main.kvs.Get(gblConst.CUSTOM_THEME_COLORS)
+	If Main.kvs.ContainsKey(gblConst.INI_CUSTOM_THEME_COLORS) = False Then
+		SeedCustomClrs
+	End If
+	customcolors = Main.kvs.Get(gblConst.INI_CUSTOM_THEME_COLORS)
 	InitTheme(theme)
 	
 End Sub
@@ -154,7 +156,7 @@ Private Sub SeedCustomClrs
 	customcolors.txtAcc = xui.Color_LightGray
 	customcolors.Disabled = xui.Color_ARGB(50,192,192,192)
 	customcolors.Divider = xui.Color_LightGray
-	Main.kvs.Put(gblConst.CUSTOM_THEME_COLORS,customcolors)
+	Main.kvs.Put(gblConst.INI_CUSTOM_THEME_COLORS,customcolors)
 	
 End Sub
 

@@ -61,6 +61,10 @@ Sub Process_Globals
 	Public Const INI_SCREEN_BRIGHTNESS_VALUE As String = "scrnbrt"
 	Public Const INI_SCREEN_TAKEOVER_POWER As String = "scrntop"
 	
+	Public Const INI_THEME_COLOR As String = "themeclr" '--- selected theme color
+	Public Const INI_CUSTOM_THEME_COLORS As String = "customClrs" '--- users custom colors
+	
+	'-------------------------------------------------------------------
 	
 	Public IS0SCREEN0OFF As Boolean = False
 	
@@ -79,16 +83,12 @@ Sub Process_Globals
 	'Public INI_CONST_SNAPINS As String = "snapins"
 	'Public INI_CONST_WEATHER As String = "weather"
 	
-	Public const WeatherAPIKey As String = "b48d92cda3b045938a7174835233112 "
-	
-	Public WEATHERicons As String = "cc01" '--- see puSetupWeather in old eHome - api,cc01,ms01,tv01,ww01
-	
 	'=================================================================================================
 	Public Const EVENT_CLOCK_CHANGE As String = "clckch"
 	Public Const EVENT_INET_ON_CONNECT As String = "inetonc"
 	
-	Public Const EVENT_WEATHER_GEO_FAILED As String = "geoBAD"
-	Public Const EVENT_WEATHER_GEO_OK As String = "geoOK"
+'	Public Const EVENT_WEATHER_GEO_FAILED As String = "geoBAD"
+'	Public Const EVENT_WEATHER_GEO_OK As String = "geoOK"
 	Public Const EVENT_WEATHER_UPDATE_FAILED As String = "wufailed"
 	Public Const EVENT_WEATHER_UPDATED As String = "wudt"
 	Public Const EVENT_WEATHER_BEFORE_UPDATE As String = "bwudt"
@@ -101,8 +101,7 @@ Sub Process_Globals
 	
 	'===============================================================
 
-	Public Const SELECTED_CLR_THEME As String = "themeclr" '--- selected theme color
-	Public Const CUSTOM_THEME_COLORS As String = "customClrs" '--- users custom colors
+
 	
 	
 '	'---------------------------------------------------------------------------------------------------------------------
@@ -134,8 +133,6 @@ Sub Process_Globals
 	Public Const TIMERS_IMG_STOP As String = "tmr_stop.png"
 	Public Const TIMERS_IMG_GO As String = "tmr_go.png"
 	Public Const TIMERS_IMG_PAUSE As String = "tmr_pause.png"
-	
-	
 	
 	Public Const API_ANDROID_4_0 As Int = 14
 	Public Const API_ANDROID_4_4 As Int = 19

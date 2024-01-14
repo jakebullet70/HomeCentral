@@ -13,13 +13,13 @@ Sub Class_Globals
 	
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private xui As XUI
-	Private mGeneralDlg As sadPreferencesDialog
+	Private pf As sadPreferencesDialog
 	Private prefHelper As sadPreferencesDialogHelper
 	
 End Sub
 
-Public Sub Initialize(pf As sadPreferencesDialog) 
-	mGeneralDlg = pf
+Public Sub Initialize(pfdlg As sadPreferencesDialog) 
+	pf = pfdlg
 End Sub
 
 
@@ -38,26 +38,20 @@ Public Sub Show
 	
 	Dim Data As Map = File.ReadMap(xui.DefaultFolder,gblConst.GENERAL_OPTIONS_FILE)
 	
-	Dim h,w As Float '--- TODO - needs refactor
-	h = 440dip
-	w = 400dip
-	
-	
-	mGeneralDlg.Initialize(mpage.root, "General Settings", w, h)
+		
+	pf.Initialize(mpage.root, "General Settings", 400, 440)
 	
 	Dim s As String = File.ReadString(File.DirAssets,"dlggeneral.json")
-	If guiHelpers.gIsPortrait Then 
-		s = s.Replace("Movement ","Move ") '--- portrait screen GUI fix
-	End If
-	mGeneralDlg.LoadFromJson(s)
-	mGeneralDlg.SetEventsListener(Me,"dlgGeneral")
+
+	pf.LoadFromJson(s)
+	pf.SetEventsListener(Me,"dlgGeneral")
 	
 	
-	prefHelper.Initialize(mGeneralDlg)
+	prefHelper.Initialize(pf)
 	'If guiHelpers.gIsPortrait Then prefHelper.pDefaultFontSize = 17
 	prefHelper.ThemePrefDialogForm
-	mGeneralDlg.PutAtTop = False
-	Dim RS As ResumableSub = mGeneralDlg.ShowDialog(Data, "OK", "CANCEL")
+	pf.PutAtTop = False
+	Dim RS As ResumableSub = pf.ShowDialog(Data, "OK", "CANCEL")
 	prefHelper.dlgHelper.ThemeDialogBtnsResize
 	
 	Wait For (RS) Complete (Result As Int)
@@ -70,7 +64,7 @@ Public Sub Show
 		'CallSubDelayed(B4XPages.MainPage,"Build_RightSideMenu")
 	End If
 	
-	Main.tmrTimerCallSub.CallSubDelayedPlus(Main,"Dim_ActionBar_Off",300)
+	mpage.tmrTimerCallSub.CallSubDelayedPlus(Main,"Dim_ActionBar_Off",300)
 	
 End Sub
 
@@ -99,10 +93,10 @@ End Sub
 Private Sub dlgGeneral_BeforeDialogDisplayed (Template As Object)
 	prefHelper.SkinDialog(Template)
 	
-	For i = 0 To mGeneralDlg.PrefItems.Size - 1
-		Dim pi As B4XPrefItem = mGeneralDlg.PrefItems.Get(i)
-		If pi.ItemType = mGeneralDlg.TYPE_BOOLEAN Then
-'			Dim ft As B4XFloatTextField = mGeneralDlg.CustomListView1.GetPanel(i).GetView(0).Tag
+	For i = 0 To pf.PrefItems.Size - 1
+		Dim pi As B4XPrefItem = pf.PrefItems.Get(i)
+		If pi.ItemType = pf.TYPE_BOOLEAN Then
+'			Dim ft As B4XFloatTextField = pf.CustomListView1.GetPanel(i).GetView(0).Tag
 '			ft.TextField.Font = xui.CreateDefaultBoldFont(14)    'or whatever you want
 '			'rest
 		End If
@@ -118,7 +112,7 @@ Private Sub ProcessAutoBootFlag(Enabled As Boolean)
 		If File.Exists(xui.DefaultFolder,fname) Then Return
 		File.WriteString(xui.DefaultFolder,fname,"boot")
 	Else
-		fileHelpers.SafeKill(fname)
+		fileHelpers.SafeKill(xui.DefaultFolder,fname)
 	End If
 	
 End Sub
