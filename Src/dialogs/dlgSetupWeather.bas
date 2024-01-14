@@ -50,6 +50,8 @@ Public Sub Show()
 	'j.SpreadVertically2(pnlBtns,50dip,6dip,"left")
 	guiHelpers.SkinButton(Array As Button(btnAdd,btnRemove,btnSetDefaultCity))
 	guiHelpers.ReSkinB4XComboBox(Array As B4XComboBox( cboIconSets))
+	guiHelpers.SetCBDrawable(chkCelsius, clrTheme.txtNormal, 1,clrTheme.txtNormal, Chr(8730), Colors.LightGray, 32dip, 2dip)
+	guiHelpers.SetCBDrawable(chkMetric, clrTheme.txtNormal, 1,clrTheme.txtNormal, Chr(8730), Colors.LightGray, 32dip, 2dip)
 	
 	LoadData
 	InitIconSets
