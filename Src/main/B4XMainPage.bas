@@ -74,13 +74,14 @@ Public Sub Initialize
 	Main.kvs.Initialize(xui.DefaultFolder,gblConst.APP_NAME & "_settings.db3")
 	sql = Main.kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
 	
+	Log("--------------->  Runnung !!!!!!!!!!!!!!!!!!!!!!!!!")
 	'Main.kvs.DeleteAll 
 	config.Init
-	clrTheme.Init(Main.kvs.Get(gblConst.SELECTED_CLR_THEME))
+	clrTheme.Init(Main.kvs.Get(gblConst.INI_THEME_COLOR))
 	
 	WeatherData.Initialize
 	useCel 		= Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_CELSIUS,True)
-	useMetric = Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_METRIC,False)
+	useMetric 	= Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_METRIC,False)
 	
 End Sub
 
@@ -301,6 +302,9 @@ Private Sub btnAboutMe_Click
 End Sub
 
 Private Sub imgSoundButton_Click
+	Dim o1 As dlgVolume
+	o1.Initialize(Dialog)
+	o1.Show
 End Sub
 
 Private Sub lvSideMenu_ItemClick (Index As Int, Value As Object)
