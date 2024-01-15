@@ -11,7 +11,6 @@ Version=9.5
 #End Region
 'Static code module
 Sub Process_Globals
-	Public ph As Phone
 End Sub
 
 Public Sub Init

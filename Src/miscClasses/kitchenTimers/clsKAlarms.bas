@@ -16,6 +16,7 @@ Sub Class_Globals
 	Private mTmrAlarmFire As Timer
 	Private bpr As Beeper
 	Private mMediaPlayer(6) As MediaPlayer
+	Private ph As Phone
 	
 	Public mbActive As Boolean
 	
@@ -101,20 +102,33 @@ End Sub
 
 
 Public Sub AlarmSoundStop(alarmNum As Int)
-	'CallSub(Main,"FireKAlarm_stop")
-	Log("AlarmSoundStop(alarmNum As Int)")
-	mMediaPlayer(alarmNum).Stop
-	mMediaPlayer(alarmNum).Release
-	fnct.ph.SetVolume(fnct.ph.VOLUME_MUSIC, mpOldVol, False)	'--- restore old volume
+
+	Try
+		'CallSub(Main,"FireKAlarm_stop")
+		Log("AlarmSoundStop(alarmNum As Int)")
+		mMediaPlayer(alarmNum).Stop
+		mMediaPlayer(alarmNum).Release
+		ph.SetVolume(ph.VOLUME_MUSIC, mpOldVol, False)	'--- restore old volume
+	Catch
+		guiHelpers.Show_toast2(gblConst.VOLUME_ERR,4500)
+		Log(LastException)
+	End Try
+	
 End Sub
 
 
 Public Sub AlarmSoundPlay(sfile As String,alarmNum As Int)
-	mpOldVol = fnct.ph.GetVolume(fnct.ph.VOLUME_MUSIC) '--- save old volume
-	fnct.ph.SetVolume(fnct.ph.VOLUME_MUSIC, kt.xStr2Int( Main.kvs.Get(gblConst.INI_SOUND_ALARM_VOLUME)), False)
-	mMediaPlayer(alarmNum).Initialize
-	mMediaPlayer(alarmNum).Load(File.DirAssets,sfile)
-	mMediaPlayer(alarmNum).Looping = True
-	mMediaPlayer(alarmNum).Play
+	Try
+		mpOldVol = ph.GetVolume(ph.VOLUME_MUSIC) '--- save old volume
+		ph.SetVolume(ph.VOLUME_MUSIC, kt.xStr2Int( Main.kvs.Get(gblConst.INI_SOUND_ALARM_VOLUME)), False)
+		mMediaPlayer(alarmNum).Initialize
+		mMediaPlayer(alarmNum).Load(File.DirAssets,sfile)
+		mMediaPlayer(alarmNum).Looping = True
+		mMediaPlayer(alarmNum).Play
+	Catch
+		guiHelpers.Show_toast2(gblConst.VOLUME_ERR,4500)
+		Log(LastException)
+	End Try
+	
 End Sub
 

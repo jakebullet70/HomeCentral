@@ -74,7 +74,7 @@ Public Sub Initialize
 	Main.kvs.Initialize(xui.DefaultFolder,gblConst.APP_NAME & "_settings.db3")
 	sql = Main.kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
 	
-	Log("--------------->  Runnung !!!!!!!!!!!!!!!!!!!!!!!!!")
+	Log("-------------------->  Runnung  <-----------------------")
 	'Main.kvs.DeleteAll 
 	config.Init
 	clrTheme.Init(Main.kvs.Get(gblConst.INI_THEME_COLOR))
