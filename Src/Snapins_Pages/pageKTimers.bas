@@ -105,6 +105,7 @@ End Sub
 '-------------------------------
 
 Public Sub Set_focus()
+	mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Side_Menu",250)
 	Menus.SetHeader("Timers","main_menu_timers.png")
 	pnlMain.SetVisibleAnimated(500,True)
 End Sub
@@ -514,3 +515,16 @@ Private Sub pnlTimers_Click
 	'Dim P As Panel = Sender
 	TimerSelect(Sender.As(Panel).Tag.As(Int))
 End Sub
+
+
+Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
+	guiHelpers.Show_toast("TODO")
+	Select Case  Value
+	End Select
+	mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu
+End Sub
+
+Private Sub Build_Side_Menu
+	Menus.BuildSideMenu(Array As String("Presets"),Array As String("pr"))
+End Sub
+

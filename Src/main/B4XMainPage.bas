@@ -325,12 +325,17 @@ Private Sub imgSoundButton_Click
 End Sub
 
 Private Sub lvSideMenu_ItemClick (Index As Int, Value As Object)
+	
 	'CallSub(Main,"Set_ScreenTmr") '--- reset the power / screen on-off
-	CallSubDelayed3(oPageCurrent,"SideMenu_ItemClick",Index,Value)
+	If SubExists(oPageCurrent,"SideMenu_ItemClick") Then
+		CallSubDelayed3(oPageCurrent,"SideMenu_ItemClick",Index,Value)
+	End If
+	
 End Sub
 
 
 Private Sub btnSetupMaster_Click
+	
 	pnlSideMenu.SetVisibleAnimated(380, False)
 	'CallSub(Main,"Set_ScreenTmr") '--- reset the power / screen on-off
 
