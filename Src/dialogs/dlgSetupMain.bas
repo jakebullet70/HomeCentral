@@ -32,7 +32,8 @@ public Sub CreateDefaultFile
 		
 		Dim ser As B4XSerializator '--- in the RandomAccessFile jar
 		File.WriteBytes(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, _
-		ser.ConvertObjectToBytes(CreateMap( "saboot": "false", "pwroff": 45,  "pwrmt": d1, "pwret": d2,"scrnday":False)))
+		ser.ConvertObjectToBytes( _
+				CreateMap( "saboot": "false", "pwroff": 45,  "pwrmt": d1, "pwret": d2,"scrnday":False)))
 		
 	End If
 	
@@ -44,17 +45,17 @@ Public Sub Show
 	Dim ser As B4XSerializator '--- in the RandomAccessFile jar
 	Dim data As Map = ser.ConvertBytesToObject(File.ReadBytes(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP))
 			
-	pf.Initialize(mpage.root, "General Settings", 400, 440)
+	pf.Initialize(mpage.root, "General Settings", 460, 440)
 	
 	pf.LoadFromJson(File.ReadString(File.DirAssets,"setup_main.json"))
 	pf.SetEventsListener(Me,"dlgGeneral")
 	
 	
 	prefHelper.Initialize(pf)
-	'If guiHelpers.gIsPortrait Then prefHelper.pDefaultFontSize = 17
+	prefHelper.pDefaultFontSize = 18
 	prefHelper.ThemePrefDialogForm
 	pf.PutAtTop = False
-	Dim RS As ResumableSub = pf.ShowDialog(data, "OK", "CANCEL")
+	Dim RS As ResumableSub = pf.ShowDialog(data, "SAVE", "CANCEL")
 	prefHelper.dlgHelper.ThemeDialogBtnsResize
 	
 	Wait For (RS) Complete (Result As Int)
