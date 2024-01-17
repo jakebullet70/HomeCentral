@@ -479,6 +479,7 @@ Public Sub AlarmStart(xx As Int)
 	
 End Sub
 
+
 Public Sub UpdateListOfTimers(x As Int)
 	Dim s As String = BuildTimerStr4List( _
 			kt.PadZero(svrKTimers.timers(x).nHr),kt.PadZero(svrKTimers.timers(x).nMin),kt.PadZero(svrKTimers.timers(x).nSec))

@@ -105,7 +105,7 @@ Public Sub AlarmSoundStop(alarmNum As Int)
 
 	Try
 		'CallSub(Main,"FireKAlarm_stop")
-		Log("AlarmSoundStop(alarmNum As Int)")
+		Log("AlarmSoundStop (alarmNum As Int)-->" & alarmNum)
 		mMediaPlayer(alarmNum).Stop
 		mMediaPlayer(alarmNum).Release
 		ph.SetVolume(ph.VOLUME_MUSIC, mpOldVol, False)	'--- restore old volume
@@ -119,8 +119,9 @@ End Sub
 
 Public Sub AlarmSoundPlay(sfile As String,alarmNum As Int)
 	Try
+		Dim vol As Int = Main.kvs.Get(gblConst.INI_SOUND_ALARM_VOLUME) * ("0." & ph.GetMaxVolume(ph.VOLUME_MUSIC))
 		mpOldVol = ph.GetVolume(ph.VOLUME_MUSIC) '--- save old volume
-		ph.SetVolume(ph.VOLUME_MUSIC, kt.xStr2Int( Main.kvs.Get(gblConst.INI_SOUND_ALARM_VOLUME)), False)
+		ph.SetVolume(ph.VOLUME_MUSIC, vol, False)
 		mMediaPlayer(alarmNum).Initialize
 		mMediaPlayer(alarmNum).Load(File.DirAssets,sfile)
 		mMediaPlayer(alarmNum).Looping = True
