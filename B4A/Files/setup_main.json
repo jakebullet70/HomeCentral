@@ -1,23 +1,11 @@
 {
     "Version": 1.66,
-    "Theme": "Light Theme",
+    "Theme": "Dark Theme",
     "Items": [
         {
             "title": "Start At Boot",
             "type": "Boolean",
             "key": "saboot",
-            "required": false
-        },
-        {
-            "title": "Power",
-            "type": "Separator",
-            "key": "",
-            "required": false
-        },
-        {
-            "title": "Take Over Power",
-            "type": "Boolean",
-            "key": "pwrtop",
             "required": false
         },
         {
@@ -32,7 +20,7 @@
                 "360",
                 "5"
             ],
-            "title": "Turn Off (Min)",
+            "title": "Dim Screen After  (Min)",
             "type": "Numeric Range",
             "key": "pwroff",
             "required": false

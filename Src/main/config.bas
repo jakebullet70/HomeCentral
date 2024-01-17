@@ -65,13 +65,13 @@ Private Sub ConfigMe()
 	
 	'======================================================================
 	
-	'fileHelpers.SafeKill2(xui.DefaultFolder,gblConst.GENERAL_OPTIONS_FILE) '--- Dev
-	If File.Exists(xui.DefaultFolder,gblConst.GENERAL_OPTIONS_FILE) = False Then
+	'fileHelpers.SafeKill(xui.DefaultFolder,gblConst.FILE_MAIN_SETUP) '--- Dev
+	If File.Exists(xui.DefaultFolder,gblConst.FILE_MAIN_SETUP) = False Then
 		Dim o3 As dlgSetupMain
 		o3.initialize(Null)
 		o3.createdefaultfile
 	End If
-	'ReadGeneralCFG
+	'ReadMainSetup
 	
 	'======================================================================
 	
@@ -79,23 +79,10 @@ End Sub
 	
 '=========================================================================
 
-
-'Public Sub ReadManualBedScrewLevelFLAG As Boolean
-'	Dim Data As Map = File.ReadMap(xui.DefaultFolder,gblConst.BED_MANUAL_LEVEL_FILE)
-'	Return Data.Get(gblConst.bedManualShow).As(Boolean)
-'End Sub
-
-
-Public Sub ReadGeneralCFG
+Public Sub ReadMainSetup
 	
-	Dim Data As Map = File.ReadMap(xui.DefaultFolder,gblConst.GENERAL_OPTIONS_FILE)
+	Dim Data As Map = File.ReadMap(xui.DefaultFolder,gblConst.FILE_MAIN_SETUP)
 	
-'	'--- these used to come from Octoprint but now we get them locally as the camera view 
-'	'--- in Octoprint might be different from your eyeball view in front of your printer
-'	oc.PrinterProfileInvertedX = Data.GetDefault("axesx",False)
-'	oc.PrinterProfileInvertedY = Data.GetDefault("axesy",False)
-'	oc.PrinterProfileInvertedZ = Data.GetDefault("axesz",False)
-'		
 '	If Data.Get("logall").As(Boolean) Then
 '		logPOWER_EVENTS = True
 '		logFILE_EVENTS = True

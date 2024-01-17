@@ -352,7 +352,11 @@ Private Sub SetupMainMenu_Event(t As String,o As Object)
 	Select Case t
 		Case "wth"
 			Dim o1 As dlgSetupWeather : o1.Initialize(Dialog) : o1.Show
-			
+		Case "gn"
+			Dim o2 As dlgSetupMain
+			o2.Initialize(PrefDlg)
+			o2.Show
+				
 	End Select
 End Sub
 

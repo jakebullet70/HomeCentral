@@ -25,25 +25,28 @@ End Sub
 
 public Sub CreateDefaultFile
 	
-	If File.Exists(xui.DefaultFolder,gblConst.GENERAL_OPTIONS_FILE) = False Then
-		File.WriteMap(xui.DefaultFolder,gblConst.GENERAL_OPTIONS_FILE,  _
-						CreateMap( "logall": "false", "logpwr": "false",  "logfiles": "false", "logoctokey": "false", "logrest": "false", _
-						"syscmds": "false", "axesx": "false",  "axesy": "false", "axesz": "false","sboot":"false","syscmds":"false", _
-						 "m600":"false","prpwr":"false","mpsd":"true","ort":"Autodetect"))					 
+	If File.Exists(xui.DefaultFolder,gblConst.FILE_MAIN_SETUP) = False Then
+		Dim d1,d2 As Period
+		d1.Hours = 6 : d1.Minutes = 30
+		d2.Hours = 18 : d2.Minutes = 30
+		
+		Dim ser As B4XSerializator '--- in the RandomAccessFile jar
+		File.WriteBytes(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, _
+					ser.ConvertObjectToBytes(CreateMap( "saboot": "false", "pwroff": 45,  "pwrmt": d1, "pwret": d2)))
+		
 	End If
+	
 End Sub
 
 
 Public Sub Show
 	
-	Dim Data As Map = File.ReadMap(xui.DefaultFolder,gblConst.GENERAL_OPTIONS_FILE)
-	
-		
+	Dim ser As B4XSerializator '--- in the RandomAccessFile jar
+	Dim data As Map = ser.ConvertBytesToObject(File.ReadBytes(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP))
+			
 	pf.Initialize(mpage.root, "General Settings", 400, 440)
 	
-	Dim s As String = File.ReadString(File.DirAssets,"dlggeneral.json")
-
-	pf.LoadFromJson(s)
+	pf.LoadFromJson(File.ReadString(File.DirAssets,"setup_main.json"))
 	pf.SetEventsListener(Me,"dlgGeneral")
 	
 	
@@ -51,15 +54,18 @@ Public Sub Show
 	'If guiHelpers.gIsPortrait Then prefHelper.pDefaultFontSize = 17
 	prefHelper.ThemePrefDialogForm
 	pf.PutAtTop = False
-	Dim RS As ResumableSub = pf.ShowDialog(Data, "OK", "CANCEL")
+	Dim RS As ResumableSub = pf.ShowDialog(data, "OK", "CANCEL")
 	prefHelper.dlgHelper.ThemeDialogBtnsResize
 	
 	Wait For (RS) Complete (Result As Int)
 	If Result = xui.DialogResponse_Positive Then
 		guiHelpers.Show_toast("Data Saved")
-		File.WriteMap(xui.DefaultFolder,gblConst.GENERAL_OPTIONS_FILE,Data)
-		ProcessAutoBootFlag(Data.Get("sboot").As(Boolean))
-		config.ReadGeneralCFG
+		
+		File.WriteBytes(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, ser.ConvertObjectToBytes(data))
+		
+		ProcessAutoBootFlag(data.Get("saboot").As(Boolean))
+		
+		config.ReadMainSetup
 		CallSub(mpage.oPageCurrent,"Set_focus")
 		'CallSubDelayed(B4XPages.MainPage,"Build_RightSideMenu")
 	End If

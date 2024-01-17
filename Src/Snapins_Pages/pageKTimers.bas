@@ -488,8 +488,7 @@ Public Sub AlarmStart(xx As Int)
 	End If
 	
 	UpdateListOfTimers(xx)
-	lblHrs.Text = "00" : lblSec.Text = "00" : 	lblMin.Text = "00"
-	
+	ClearLarge_TimerTxt
 	
 End Sub
 
@@ -519,7 +518,7 @@ End Sub
 
 Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
 	guiHelpers.Show_toast("TODO")
-	Select Case  Value
+	Select Case Value
 	End Select
 	mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu
 End Sub

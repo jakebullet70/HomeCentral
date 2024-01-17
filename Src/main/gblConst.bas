@@ -77,11 +77,6 @@ Sub Process_Globals
 	'--- will need a refactor if multi language support is to be supported, but for now...
 	
 	'Public INI_CONST_SETUP_COLORS As String = "colors"
-	'Public INI_CONST_SETUP As String = "setup"
-	'Public INI_CONST_MAIN As String = "main"
-	'Public INI_CONST_MENUKEYS As String = "menu"
-	'Public INI_CONST_SNAPINS As String = "snapins"
-	'Public INI_CONST_WEATHER As String = "weather"
 	
 	'=================================================================================================
 	Public Const EVENT_CLOCK_CHANGE As String = "clckch"
@@ -96,7 +91,7 @@ Sub Process_Globals
 
 
 	'=================================================================================================
-	Public Const GENERAL_OPTIONS_FILE As String = ""
+	Public Const FILE_MAIN_SETUP As String = "main_settings.bin"
 	
 	
 	'===============================================================
@@ -107,14 +102,8 @@ Sub Process_Globals
 '	'---------------------------------------------------------------------------------------------------------------------
 '	'--- saved data for pref dialogs
 '	Public Const ANDROID_POWER_OPTIONS_FILE As String = "power_options.map"
-'	Public Const GENERAL_OPTIONS_FILE As String = "general_options.map"
+'	Public Const FILE_MAIN_SETUP As String = "general_options.map"
 '	Public Const FILAMENT_CHANGE_FILE As String = "fil_loadunload.map"
-'	Public Const BED_MANUAL_LEVEL_FILE As String = "bed_level.map"
-'	Public Const PRINTER_SETUP_FILE As String = "printer_setup.map"
-'	'Public Const PSU_KLIPPER_SETUP_FILE As String = "psu_setup.map"
-'	Public Const HTTP_ONOFF_SETUP_FILE As String = "onoff_setup.map"
-'	Public Const GCODE_CUSTOM_SETUP_FILE As String = "gcode_setup.map"
-'	Public Const BLCR_TOUCH_FILE As String = "blcr_touch_setup.map"
 '	'---------------------------------------------------------------------------------------------------------------------
 	
 	'--- pages
