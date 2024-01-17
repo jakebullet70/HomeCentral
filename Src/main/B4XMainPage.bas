@@ -113,16 +113,16 @@ End Sub
 Private Sub B4XPage_CloseRequest As ResumableSub
 	
 	'-----------------------------------------------------------------
-	If PrefDlg.IsInitialized And PrefDlg.Dialog.Visible 	Then
+	If PrefDlg.IsInitialized And PrefDlg.Dialog.Visible Then
 		PrefDlg.Dialog.Close(xui.DialogResponse_Cancel) : 	Return False
 	End If
-	If Dialog.IsInitialized And Dialog.Visible 				Then
+	If Dialog.IsInitialized And Dialog.Visible Then
 		Dialog.Close(xui.DialogResponse_Cancel) : 			Return False
 	End If
-	If Dialog2.IsInitialized And Dialog2.Visible 			Then
+	If Dialog2.IsInitialized And Dialog2.Visible Then
 		Dialog2.Close(xui.DialogResponse_Cancel) : 			Return False
 	End If
-	If DialogMSGBOX.IsInitialized And DialogMSGBOX.Visible 	Then
+	If DialogMSGBOX.IsInitialized And DialogMSGBOX.Visible Then
 		DialogMSGBOX.Close(xui.DialogResponse_Cancel) : 	Return False
 	End If
 	'-----------------------------------------------------------------
@@ -302,9 +302,19 @@ Private Sub btnAboutMe_Click
 End Sub
 
 Private Sub imgSoundButton_Click
-	Dim o1 As dlgVolume
-	o1.Initialize(Dialog)
-	o1.Show
+	Try
+		If oPageCurrent <> oPageTimers Then
+			Dim ph As Phone
+			ph.SetVolume(ph.VOLUME_SYSTEM,ph.GetMaxVolume(ph.VOLUME_SYSTEM),True)
+			Return
+		End If
+		
+		Dim o1 As dlgVolume : o1.Initialize(Dialog) '--- kitchen timers
+		o1.Show("kt")
+	Catch
+		guiHelpers.Show_toast2(gblConst.VOLUME_ERR,4500)
+		Log(LastException)
+	End Try
 End Sub
 
 Private Sub lvSideMenu_ItemClick (Index As Int, Value As Object)

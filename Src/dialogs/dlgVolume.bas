@@ -18,25 +18,43 @@ Sub Class_Globals
 	Private mDialog As B4XDialog
 	Private pnlMain As B4XView
 	
-	Private Label2,Label3,Label1 As B4XView
+	Private Label3,Label1 As B4XView
 	Private cboSounds As B4XComboBox
 	Private sbTimerVol As B4XSeekBar
-	Private sbSystemVol As B4XSeekBar
 	
-	Private chkMute As CheckBox
 	Private btnTest As Button
-	Private lblSysVol As B4XView
 	Private lblTmrVol As B4XView
 	Private pnlTimerVol As B4XView
-	Private pnlSystemVol As B4XView
+	
+	'--- for SOUND check
+	Private MP_Test As MediaPlayer
+	Private mpVol As Int  'ignore
+	'--- END
+	
+	Private MaxVolumeMusic,MaxVolumeNotifaction,MaxVolumeSys As Int 'ignore
+	
 End Sub
 
 Public Sub Initialize(dlg As B4XDialog) 
 	mDialog = dlg
+	
+'	If mpage.DebugLog Then
+'		Log("music vol max: " & ph.GetMaxVolume(ph.VOLUME_MUSIC))
+'		Log("sys vol max: " & ph.GetMaxVolume(ph.VOLUME_SYSTEM))
+'		Log("notifaction vol max: " & ph.GetMaxVolume(ph.VOLUME_NOTIFICATION))
+'	End If
+
+	MaxVolumeMusic = 		ph.GetMaxVolume(ph.VOLUME_MUSIC)
+	MaxVolumeNotifaction = 	ph.GetMaxVolume(ph.VOLUME_NOTIFICATION)
+	MaxVolumeSys = 			ph.GetMaxVolume(ph.VOLUME_SYSTEM)
+	
+	
+	
 End Sub
 
 
-Public Sub Show()
+' 'kt' = timers
+Public Sub Show(VolType As String)
 	
 	'--- init
 	mDialog.Initialize(mpage.Root)
@@ -44,38 +62,45 @@ Public Sub Show()
 	dlgHelper.Initialize(mDialog)
 	
 	Dim p As B4XView = xui.CreatePanel("")
-	p.SetLayoutAnimated(0, 0, 0, 640dip,390dip)
+	p.SetLayoutAnimated(0, 0, 0, 640dip,290dip)
 	p.LoadLayout("dlgVolumeSettings")
 	
 	pnlMain.Color = clrTheme.Background
-	guiHelpers.SetTextColor(Array As B4XView(Label2,Label3,Label1,lblTmrVol,lblSysVol),clrTheme.txtNormal)
+	guiHelpers.SetTextColor(Array As B4XView(Label3,Label1,lblTmrVol),clrTheme.txtNormal)
 	guiHelpers.SkinButton(Array As Button(btnTest))
 
-	'guiHelpers.ResizeText("Test",btnTest) : btnTest.textsize = btnTest.textsize -4
+	
 	btnTest.Text = "Test"
 	'guiHelpers.SetCBDrawable(chkMute, clrTheme.txtNormal, 1,clrTheme.txtNormal, Chr(8730), Colors.LightGray, 32dip, 2dip)
 	guiHelpers.ReSkinB4XComboBox(Array As B4XComboBox(cboSounds))
-	guiHelpers.SetPanelsBorder(Array As B4XView(pnlTimerVol,pnlSystemVol),clrTheme.txtAccent)
+	guiHelpers.SetPanelsBorder(Array As B4XView(pnlTimerVol),clrTheme.txtAccent)
 	
-	guiHelpers.ResizeText("100%",lblSysVol)
-	lblTmrVol.TextSize = lblSysVol.TextSize
+	guiHelpers.ResizeText("100%",lblTmrVol)
 	
 	cboSounds.cmbBox.AddAll(Array As String( _
 				"ktimers_alarm01.ogg","ktimers_alarm02,ogg","ktimers_alarm03.ogg","ktimers_alarm04.ogg","ktimers_alarm05.ogg"))
-	guiHelpers.ReSkinB4XSeekBar(Array As B4XSeekBar(sbTimerVol,sbSystemVol))
+	guiHelpers.ReSkinB4XSeekBar(Array As B4XSeekBar(sbTimerVol))
 	
-	dlgHelper.ThemeDialogForm("System Volumes")
+	If VolType = "kt" Then
+		dlgHelper.ThemeDialogForm("Timer Volume") '--- kitchen timers
+	Else
+		dlgHelper.ThemeDialogForm("Volume ?") '--- kitchen timers
+	End If
+	
 	Dim rs As ResumableSub = mDialog.ShowCustom(p, "SAVE", "", "CANCEL")
 	dlgHelper.ThemeDialogBtnsResize
 	
 	Try
-		sbSystemVol.Value 	= ph.GetVolume(ph.VOLUME_MUSIC)
+		'--- check and see if we can access the vol
+		'https://www.b4x.com/android/forum/threads/set-volume-error.92938/
+		Log("current sys vol: " & ph.GetVolume(ph.VOLUME_SYSTEM))
+		Dim tmp As Int = ph.GetVolume(ph.VOLUME_MUSIC)'ignore
 	Catch
 		guiHelpers.Show_toast2(gblConst.VOLUME_ERR,4500)
 		Log(LastException)
 	End Try
+	
 	sbTimerVol.Value 	= Main.kvs.Get(gblConst.INI_SOUND_ALARM_VOLUME)
-	sbSystemVol_ValueChanged(sbSystemVol.Value)
 	sbTimerVol_ValueChanged(sbTimerVol.Value)
 	'cboSounds.cmbBox.te
 	
@@ -83,17 +108,21 @@ Public Sub Show()
 	If i = xui.DialogResponse_Positive Then '--- save
 		Main.kvs.Put(gblConst.INI_SOUND_ALARM_VOLUME,sbTimerVol.Value)
 		Main.kvs.Put(gblConst.INI_SOUND_ALARM_FILE,cboSounds.SelectedItem)
-		ph.SetVolume(
 	End If
 	
 End Sub
 
 
-
-Private Sub sbSystemVol_ValueChanged (Value As Int)
-	lblSysVol.Text = Value & "%"
-End Sub
-
 Private Sub sbTimerVol_ValueChanged (Value As Int)
 	lblTmrVol.Text = Value & "%"
 End Sub
+
+Private Sub btnTest_Click
+	Dim vol As Int = sbTimerVol.Value * ("0." & MaxVolumeMusic)
+	mpVol = ph.GetVolume(ph.VOLUME_MUSIC) '--- save old volume
+	ph.SetVolume(ph.VOLUME_MUSIC, vol, False)
+	MP_Test.Initialize()
+	MP_Test.Load(File.DirAssets,cboSounds.SelectedItem)
+	MP_Test.Play
+End Sub
+
