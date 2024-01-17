@@ -26,6 +26,12 @@
             "required": false
         },
         {
+            "title": "Daily Screen On\/Off",
+            "type": "Boolean",
+            "key": "scrnday",
+            "required": false
+        },
+        {
             "title": "Screen On - Morning",
             "type": "Time",
             "key": "pwrmt",
