@@ -472,6 +472,8 @@ End Sub
 
 Public Sub AlarmStart(xx As Int)
 	
+	TimerSelect(xx)
+	
 	clsKTimers.timers(xx).Firing = True
 	clsKTimers.moAlarm(xx).Initialize(clsKTimers.timers)
 	clsKTimers.moAlarm(xx).AlarmStart(xx)
@@ -486,6 +488,7 @@ Public Sub AlarmStart(xx As Int)
 	
 	UpdateListOfTimers(xx)
 	lblHrs.Text = "00" : lblSec.Text = "00" : 	lblMin.Text = "00"
+	
 	
 End Sub
 
