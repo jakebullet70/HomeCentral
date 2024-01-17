@@ -49,13 +49,19 @@ End Sub
 
 
 Public Sub AlarmStart(alarmNum As Int)
-
+	
+	'
+	' most of these are not used, this is a carry over from the original
+	' ehome project from 2014
+	'
+	
 	mbActive = True
 	CallSub(Main,"Alarm_Fired")
 	
-	'--- sed out the UDP notice
+	
+	'--- send out the UDP notice
 	'Dim sParams As String = "ALARMFIRED"
-'	CallSub3(Main,"UDP_SendMsg",sParams,c.UDP_2ALL)
+	'CallSub3(Main,"UDP_SendMsg",sParams,c.UDP_2ALL)
 	
 	If mTimers(alarmNum).alarmType.sendTxtMSG Then
 		If mpage.DebugLog Then Log("AlarmFired-sendTxtMSG")
@@ -104,8 +110,7 @@ End Sub
 Public Sub AlarmSoundStop(alarmNum As Int)
 
 	Try
-		'CallSub(Main,"FireKAlarm_stop")
-		Log("AlarmSoundStop (alarmNum As Int)-->" & alarmNum)
+		If mpage.DebugLog Then Log("AlarmSoundStop (alarmNum As Int)-->" & alarmNum)
 		mMediaPlayer(alarmNum).Stop
 		mMediaPlayer(alarmNum).Release
 		ph.SetVolume(ph.VOLUME_MUSIC, mpOldVol, False)	'--- restore old volume
