@@ -7,7 +7,7 @@ Version=10
 ' Author:  sadLogic/JakeBullet
 #Region VERSIONS 
 ' V. 1.1 	Jan/12/2024
-' V. 1.0 Sometime in 2015 - as a b4a service
+' V. 1.0 	Sometime in 2015 - as a b4a service - now just a class
 #End Region
 
 
@@ -147,18 +147,16 @@ End Sub
 
 
 
-
-
-'--- called from puSetVolume
-Public Sub FireKAlarmTEST()
-'	Log("FireKAlarm **********************")
-'	MP_KTimers.Initialize2("FireKAlarm")
-'	MP_KTimers.Load(File.DirAssets,c.ALARM_SOUND_FILE)
-'	MP_KTimers.Looping = False
-'	MP_KTimers.Play
-End Sub
-
-Private Sub FireKAlarm_Complete
-	'Log("FireKAlarm_complete **********************")
-	'MP_KTimers.Release
-End Sub
+''--- called from puSetVolume
+'Public Sub FireKAlarmTEST()
+''	Log("FireKAlarm **********************")
+''	MP_KTimers.Initialize2("FireKAlarm")
+''	MP_KTimers.Load(File.DirAssets,c.ALARM_SOUND_FILE)
+''	MP_KTimers.Looping = False
+''	MP_KTimers.Play
+'End Sub
+'
+'Private Sub FireKAlarm_Complete
+'	'Log("FireKAlarm_complete **********************")
+'	'MP_KTimers.Release
+'End Sub
