@@ -32,7 +32,7 @@ public Sub CreateDefaultFile
 		
 		Dim ser As B4XSerializator '--- in the RandomAccessFile jar
 		File.WriteBytes(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, _
-					ser.ConvertObjectToBytes(CreateMap( "saboot": "false", "pwroff": 45,  "pwrmt": d1, "pwret": d2)))
+		ser.ConvertObjectToBytes(CreateMap( "saboot": "false", "pwroff": 45,  "pwrmt": d1, "pwret": d2,"scrnday":False)))
 		
 	End If
 	
