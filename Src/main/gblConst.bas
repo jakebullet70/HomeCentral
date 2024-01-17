@@ -137,6 +137,6 @@ Sub Process_Globals
 	Public Const API_ANDROID_4_0 As Int = 14
 	Public Const API_ANDROID_4_4 As Int = 19
 		
-	Public Const VOLUME_ERR As String = "Problem setting volume. Is device set to Do Not Disturb?"
+	Public Const VOLUME_ERR As String = "Problem setting volume. Is device set to 'Do Not Disturb?'"
 	
 End Sub
