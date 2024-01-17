@@ -97,7 +97,24 @@ Public Sub SkinDialog(Template As Object)
 					'plmi.Base_Resize(plmi.mBase.Width,plmi.mBase.Height)
 					'plmi.lblMinus.Font =xui.CreateDefaultFont(40)
 					
+				Case prefdlg.TYPE_TIME
+					'Dim pmHours As B4XPlusMinus = prefdlg.CustomListView1.GetPanel(i).GetView(0).Tag
+					'Dim pmMinutes As B4XPlusMinus = prefdlg.CustomListView1.GetPanel(i).GetView(1).Tag
+					'Dim pmAMPM As B4XPlusMinus = prefdlg.CustomListView1.GetPanel(i).GetView(2).Tag
+					'pmHours.ArrowsSize = 14
+					'pmMinutes.ArrowsSize = 14
+					prefdlg.CustomListView1.GetPanel(i).GetView(3).Font = fnt0
+					'pmHours.MainLabel.Font = fnt0
 					
+'					pmHours.ArrowsSize = 40dip
+'					pmHours.Base_Resize(pmHours.mBase.Width, pmHours.mBase.Height)
+'					pmHours.lblPlus.TextSize = 40
+'					pmHours.lblMinus.TextSize = 40
+					
+					'pmHours.mBase.
+					
+					Log("adsad")
+						
 			End Select
 	
 		'Log(pit.Key)
