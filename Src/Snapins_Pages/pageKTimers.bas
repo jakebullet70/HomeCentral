@@ -472,7 +472,9 @@ Public Sub AlarmStart(xx As Int)
 	mTmrAlarmFire.Enabled = True
 	
 	'DoEvents
-	CallSubDelayed2(mpage,"segTabMenu_TabChanged",-3) '--- show kitchen timers gui
+	If mpage.oPageCurrent <> mpage.oPageTimers Then 
+		CallSubDelayed2(mpage,"Change_Pages2","tm") '--- switch pages
+	End If
 	
 	UpdateListOfTimers(xx)
 	lblHrs.Text = "00" : lblSec.Text = "00" : 	lblMin.Text = "00"

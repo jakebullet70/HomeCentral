@@ -206,19 +206,26 @@ Private Sub imgMenuButton_Click
 	End If
 End Sub
 
+Private Sub Change_Pages2(value As String)
+	For x = 0 To segTabMenu.Size - 1
+		If segTabMenu.GetValue(x) = value Then
+			segTabMenu.SelectedIndex(x,500)
+		End If
+	Next
+End Sub
+
 
 Private Sub segTabMenu_TabChanged(index As Int)
 	
+	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
+	
 	Dim value As String
-	If index = -3 Then  '--- this is called when a ktimer fires
-		value = "tm"
-	Else if index = -2 Then  '--- 1st run
+	If index = -2 Then  '--- 1st run
 		value = "hm"
 	Else '--- normal press
 		pnlSideMenu.SetVisibleAnimated(380, False) '---  toggle side menu
 		value = segTabMenu.Getvalue(index)
 	End If
-	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
 	
 	'--- fire the lost focus event
 	If oPageCurrent <> Null Then
