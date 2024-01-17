@@ -40,7 +40,7 @@ End Sub
 Public Sub InitTheme(theme As String)
 	
 	txtNormal = xui.Color_white
-	txtAccent = xui.Color_LightGray
+	txtAccent = 0xFF74C8C8
 	btnDisableText = xui.Color_LightGray
 	DividerColor = xui.Color_LightGray
 	txtNormal2 = xui.Color_Yellow

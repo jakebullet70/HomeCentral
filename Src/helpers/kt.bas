@@ -69,7 +69,7 @@ End Sub
 
 Public Sub Clear_Timer(x As Int)
 	
-	Dim o As KitchenTmrs = B4XPages.MainPage.oPageTimers.svrKTimers
+	Dim o As KitchenTmrs = B4XPages.MainPage.oPageTimers.clsKTimers
 	o.timers(x).active = False
 	o.timers(x).nHr = 0
 	o.timers(x).nSec = 0
@@ -98,7 +98,7 @@ End Sub
 Public Sub AnyTimersFiring() As Boolean
 	Dim xx As Int
 	For xx = 1 To 5
-		If B4XPages.MainPage.oPageTimers.svrKTimers.timers(xx).Firing Then
+		If B4XPages.MainPage.oPageTimers.clsKTimers.timers(xx).Firing Then
 			Return True
 		End If
 	Next

@@ -16,7 +16,7 @@ Sub Class_Globals
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
 	
-	Public svrKTimers As KitchenTmrs '--- RENAME after refactor
+	Public clsKTimers As KitchenTmrs '--- RENAME after refactor
 	Private msAlarmFireRollover As String
 	Private mTmrAlarmFire As Timer
 	
@@ -48,14 +48,14 @@ Public Sub Initialize(p As B4XView)
 	
 	pnlMain = p
 	p.LoadLayout("pageKitchenTimersBase")
-	svrKTimers.Initialize
+	clsKTimers.Initialize
 	mTmrAlarmFire.Initialize("tmrAlarmFire",400)
 	mTmrAlarmFire.Enabled = False
 	
 	BuildGUI
 	
 	For x = 1 To 5 '--- init the timers
-		svrKTimers.timers(x).Initialize
+		clsKTimers.timers(x).Initialize
 		kt.Clear_Timer(x)
 		TimerUnSelect(x)
 	Next
@@ -79,22 +79,28 @@ Private Sub BuildGUI
 	
 	
 	guiHelpers.SetTextColor(Array As B4XView(lblLabelSec,lblLabelMin,lblLabelHr,lblDots1,lblDots2, _
-																lblTimersDesc1,lblTimersDesc2,lblTimersDesc3,lblTimersDesc4,lblTimersDesc5, _
-																lblTimersTime1,lblTimersTime2,lblTimersTime3,lblTimersTime4,lblTimersTime5),clrTheme.txtNormal)
+										lblTimersDesc1,lblTimersDesc2,lblTimersDesc3,lblTimersDesc4,lblTimersDesc5, _
+										lblTimersTime1,lblTimersTime2,lblTimersTime3,lblTimersTime4,lblTimersTime5),clrTheme.txtNormal)
+										
+	guiHelpers.ResizeText("Open",lblTimersDesc3)
+	guiHelpers.SetTextSize(Array As B4XView(lblTimersDesc1,lblTimersDesc2,lblTimersDesc3,lblTimersDesc4,lblTimersDesc5, _
+										lblTimersTime1,lblTimersTime2,lblTimersTime3,lblTimersTime4,lblTimersTime5),lblTimersDesc3.TextSize)
 	
 	guiHelpers.ResizeText(lblLabelHr.Text,lblLabelHr) : lblLabelSec.TextSize = lblLabelHr.TextSize : lblLabelMin.TextSize = lblLabelHr.TextSize
 	
 	guiHelpers.SkinButtonNoBorder(Array As Button(btnDecrS5,btnDecrS1,btnDecrM5,btnDecrM1 ,btnDecrH5,btnDecrH1, _
-																BtnIncS5,BtnIncS1,btnIncrH5,btnIncrH1,BtnIncM5,BtnIncM1,btnReset,btnPause))
+										BtnIncS5,BtnIncS1,btnIncrH5,btnIncrH1,BtnIncM5,BtnIncM1,btnReset,btnPause))
 	
 	guiHelpers.ResizeText("+5",BtnIncS5)
 	guiHelpers.SetTextSize(Array As B4XView(BtnIncS5,btnDecrS5,btnDecrS1,btnDecrM1,btnDecrM5,btnDecrH1,btnDecrH5, _
-																BtnIncS1,BtnIncM1,BtnIncM5,btnIncrH1,btnIncrH5),BtnIncS5.TextSize-4)
+										BtnIncS1,BtnIncM1,BtnIncM5,btnIncrH1,btnIncrH5),BtnIncS5.TextSize-4)
 	
 	guiHelpers.ResizeText("Pause",btnPause)
 	btnReset.Text = "Reset" : btnReset.TextSize = btnPause.TextSize
 	kt.SetImages(Array As lmB4XImageViewX(imgTimers1,imgTimers2,imgTimers3,imgTimers4,imgTimers5),gblConst.TIMERS_IMG_STOP)
 	
+	clsKTimers.CurrentTimer = 0
+	TimerSelect(0)
 End Sub
 '-------------------------------
 
@@ -148,24 +154,24 @@ Private Sub StartTimer(txt As String)
 	If IsTimerBlank Then Return
 	
 	If txt <> "" Then
-		svrKTimers.timers(svrKTimers.CurrentTimer).txt = txt
+		clsKTimers.timers(clsKTimers.CurrentTimer).txt = txt
 	Else
-		txt = svrKTimers.timers(svrKTimers.CurrentTimer).txt
+		txt = clsKTimers.timers(clsKTimers.CurrentTimer).txt
 	End If
 	
-	svrKTimers.timers(svrKTimers.CurrentTimer).active = True
-	svrKTimers.timers(svrKTimers.CurrentTimer).nHr = lblHrs.Text
-	svrKTimers.timers(svrKTimers.CurrentTimer).nSec = lblSec.Text
-	svrKTimers.timers(svrKTimers.CurrentTimer).nMin = lblMin.Text
-	svrKTimers.timers(svrKTimers.CurrentTimer).endTime = GetEndTime
-	svrKTimers.timers(svrKTimers.CurrentTimer).Firing = False
-	svrKTimers.timers(svrKTimers.CurrentTimer).paused = False
+	clsKTimers.timers(clsKTimers.CurrentTimer).active = True
+	clsKTimers.timers(clsKTimers.CurrentTimer).nHr = lblHrs.Text
+	clsKTimers.timers(clsKTimers.CurrentTimer).nSec = lblSec.Text
+	clsKTimers.timers(clsKTimers.CurrentTimer).nMin = lblMin.Text
+	clsKTimers.timers(clsKTimers.CurrentTimer).endTime = GetEndTime
+	clsKTimers.timers(clsKTimers.CurrentTimer).Firing = False
+	clsKTimers.timers(clsKTimers.CurrentTimer).paused = False
 	
-	UpdateListOfTimersDesc(svrKTimers.CurrentTimer,txt)
-	UpdateListOfTimers(svrKTimers.CurrentTimer)
-	Update_ListOfTimersIMG(svrKTimers.CurrentTimer,gblConst.TIMERS_IMG_GO)
+	UpdateListOfTimersDesc(clsKTimers.CurrentTimer,txt)
+	UpdateListOfTimers(clsKTimers.CurrentTimer)
+	Update_ListOfTimersIMG(clsKTimers.CurrentTimer,gblConst.TIMERS_IMG_GO)
 	'tmrTimers_Tick
-	CallSub(svrKTimers,"tmr_TimersCheck")
+	CallSub(clsKTimers,"tmr_TimersCheck")
 
 	btnPause.Text = "Pause"
 	'BuildSideMenu(True)
@@ -178,20 +184,20 @@ Private Sub btnResetPause_Click
 	
 	Select Case  o.Text
 		Case "Reset"
-			If svrKTimers.moAlarm(svrKTimers.CurrentTimer).mbActive  Then
+			If clsKTimers.moAlarm(clsKTimers.CurrentTimer).mbActive  Then
 				'--- stop the BEEPING!!!
-				TimerSelect(svrKTimers.CurrentTimer)
+				TimerSelect(clsKTimers.CurrentTimer)
 			End If
-			kt.Clear_Timer(svrKTimers.CurrentTimer)
-			'CallSubDelayed3(Me,"clear_timer",svrKTimers.CurrentTimer)
-			'CallSub2(svrKTimers,"ClearTimer",svrKTimers.CurrentTimer)
+			kt.Clear_Timer(clsKTimers.CurrentTimer)
+			'CallSubDelayed3(Me,"clear_timer",clsKTimers.CurrentTimer)
+			'CallSub2(clsKTimers,"ClearTimer",clsKTimers.CurrentTimer)
 			ClearLarge_TimerTxt
-			Update_ListOfTimersIMG(svrKTimers.CurrentTimer,gblConst.TIMERS_IMG_STOP)
-			UpdateListOfTimers(svrKTimers.CurrentTimer)
+			Update_ListOfTimersIMG(clsKTimers.CurrentTimer,gblConst.TIMERS_IMG_STOP)
+			UpdateListOfTimers(clsKTimers.CurrentTimer)
 			'If g.IsVoiceOn_KTimers Then Main.TTS1.Speak("Timer reset",True)
 		
 		Case "Start"
-			If svrKTimers.timers(svrKTimers.CurrentTimer).paused = False Then
+			If clsKTimers.timers(clsKTimers.CurrentTimer).paused = False Then
 				If IsTimerBlank Then
 					guiHelpers.Show_toast("Cannot start timer. Timer is blank")
 					Return
@@ -203,9 +209,9 @@ Private Sub btnResetPause_Click
 			End If
 		
 		Case "Pause"
-			svrKTimers.timers(svrKTimers.CurrentTimer).active = False
-			svrKTimers.timers(svrKTimers.CurrentTimer).paused = True
-			Update_ListOfTimersIMG(svrKTimers.CurrentTimer,gblConst.TIMERS_IMG_PAUSE)
+			clsKTimers.timers(clsKTimers.CurrentTimer).active = False
+			clsKTimers.timers(clsKTimers.CurrentTimer).paused = True
+			Update_ListOfTimersIMG(clsKTimers.CurrentTimer,gblConst.TIMERS_IMG_PAUSE)
 			btnPause.Text = "Start"
 			'BuildSideMenu(False)
 		
@@ -233,14 +239,16 @@ End Sub
 
 Private Sub TimerSelect(x As Int)
 	'''''''CallSubDelayed(svrMain,"ResetScrn_SleepCounter")
-	TimerSetColor(svrKTimers.CurrentTimer,clrTheme.txtAccent)
-	TimerSetColor(x,clrTheme.txtNormal)
-	svrKTimers.CurrentTimer = x
-	lblHrs.Text = kt.PadZero(svrKTimers.timers(x).nHr)
-	lblMin.Text = kt.PadZero(svrKTimers.timers(x).nMin)
-	lblSec.Text = kt.PadZero(svrKTimers.timers(x).nSec)
 	
-	If svrKTimers.timers(x).active Then
+	TimerSetColor(clsKTimers.CurrentTimer,clrTheme.txtNormal)
+	TimerSetColor(x,clrTheme.txtAccent)
+	
+	clsKTimers.CurrentTimer = x
+	lblHrs.Text = kt.PadZero(clsKTimers.timers(x).nHr)
+	lblMin.Text = kt.PadZero(clsKTimers.timers(x).nMin)
+	lblSec.Text = kt.PadZero(clsKTimers.timers(x).nSec)
+	
+	If clsKTimers.timers(x).active Then
 	
 		btnPause.Text = "Pause"
 		'BuildSideMenu(True)
@@ -250,11 +258,11 @@ Private Sub TimerSelect(x As Int)
 		'BuildSideMenu(False)
 	End If
 	
-	If svrKTimers.moAlarm(x).IsInitialized Then
-		If svrKTimers.moAlarm(x).mbActive Then
-			svrKTimers.timers(x).Firing = False
-			svrKTimers.moAlarm(x).AlarmStop(x)
-			'svrKTimers.ClearTimer(x)
+	If clsKTimers.moAlarm(x).IsInitialized Then
+		If clsKTimers.moAlarm(x).mbActive Then
+			clsKTimers.timers(x).Firing = False
+			clsKTimers.moAlarm(x).AlarmStop(x)
+			'clsKTimers.ClearTimer(x)
 			CallSubDelayed2(Me,"Clear_Timer",x)
 			Update_ListOfTimersIMG(x,gblConst.TIMERS_IMG_STOP)
 		End If
@@ -280,14 +288,14 @@ Private Sub btnIncr_Click
 				I = kt.xStr2Int(lblSec.Text) + 5
 				If I > 59 Then Return
 				lblSec.Text = kt.xIntsStr(I)
-				If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+				If clsKTimers.timers(clsKTimers.CurrentTimer).active Then
 					per.Seconds = 5 : AdjustTime(per)
 				End If
 			Else '--- 1 has been pressed
 				I = kt.xStr2Int(lblSec.Text) + 1
 				If I > 59 Then Return
 				lblSec.Text = kt.xIntsStr(I)
-				If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+				If clsKTimers.timers(clsKTimers.CurrentTimer).active Then
 					per.Seconds = 1 : AdjustTime(per)
 				End If
 			End If
@@ -297,14 +305,14 @@ Private Sub btnIncr_Click
 				I = kt.xStr2Int(lblMin.Text) + 5
 				If I > 59 Then Return
 				lblMin.Text = kt.xIntsStr(I)
-				If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+				If clsKTimers.timers(clsKTimers.CurrentTimer).active Then
 					per.Minutes = 5 : AdjustTime(per)
 				End If
 			Else '--- 1 has been pressed
 				I = kt.xStr2Int(lblMin.Text) + 1
 				If I > 59 Then Return
 				lblMin.Text = kt.xIntsStr(I)
-				If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+				If clsKTimers.timers(clsKTimers.CurrentTimer).active Then
 					per.Minutes = 1 : AdjustTime(per)
 				End If
 			End If
@@ -314,14 +322,14 @@ Private Sub btnIncr_Click
 				I = kt.xStr2Int(lblHrs.Text) + 5
 				If I > 23 Then Return
 				lblHrs.Text = kt.xIntsStr(I)
-				If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+				If clsKTimers.timers(clsKTimers.CurrentTimer).active Then
 					per.Hours = 5 : AdjustTime(per)
 				End If
 			Else '--- 1 has been pressed
 				I = kt.xStr2Int(lblHrs.Text) + 1
 				If I > 23 Then Return
 				lblHrs.Text = kt.xIntsStr(I)
-				If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+				If clsKTimers.timers(clsKTimers.CurrentTimer).active Then
 					per.Hours = 1 : AdjustTime(per)
 				End If
 			End If
@@ -341,7 +349,7 @@ Private Sub btnDecr_Click
 					lblSec.Text = "00" : Return
 				Else
 					lblSec.Text = kt.xIntsStr(I)
-					If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+					If clsKTimers.timers(clsKTimers.CurrentTimer).active Then
 						per.Seconds = -5 : 	AdjustTime(per)
 					End If
 				End If
@@ -351,7 +359,7 @@ Private Sub btnDecr_Click
 					lblSec.Text = "00" : Return
 				Else
 					lblSec.Text = kt.xIntsStr(I)
-					If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+					If clsKTimers.timers(clsKTimers.CurrentTimer).active Then
 						per.Seconds = -1 : AdjustTime(per)
 					End If
 				End If
@@ -362,12 +370,12 @@ Private Sub btnDecr_Click
 				i = kt.xStr2Int(lblMin.Text) - 5
 				If i <= 0 Then
 					lblMin.Text = "00"
-					If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+					If clsKTimers.timers(clsKTimers.CurrentTimer).active Then
 						per.Minutes = kt.returnNegNum(5 - Abs(i)) : AdjustTime(per)
 					End If
 				Else
 					lblMin.Text = kt.xIntsStr(i)
-					If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+					If clsKTimers.timers(clsKTimers.CurrentTimer).active Then
 						per.Minutes = -5 : AdjustTime(per)
 					End If
 				End If
@@ -377,7 +385,7 @@ Private Sub btnDecr_Click
 					lblMin.Text = "00"
 				Else
 					lblMin.Text = kt.xIntsStr(i)
-					If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+					If clsKTimers.timers(clsKTimers.CurrentTimer).active Then
 						per.Minutes = -1 : AdjustTime(per)
 					End If
 				End If
@@ -388,12 +396,12 @@ Private Sub btnDecr_Click
 				I = kt.xStr2Int(lblHrs.Text) - 5
 				If I <= 0 Then
 					lblHrs.Text = "00"
-					If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+					If clsKTimers.timers(clsKTimers.CurrentTimer).active Then
 						per.Hours = kt.returnNegNum(5 - Abs(I)) : AdjustTime(per)
 					End If
 				Else '--- 1 has been pressed
 					lblHrs.Text = kt.xIntsStr(I)
-					If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+					If clsKTimers.timers(clsKTimers.CurrentTimer).active Then
 						per.Hours = -5 : AdjustTime(per)
 					End If
 				End If
@@ -403,7 +411,7 @@ Private Sub btnDecr_Click
 					lblHrs.Text = "00" 
 				Else
 					lblHrs.Text = kt.xIntsStr(I)
-					If svrKTimers.timers(svrKTimers.CurrentTimer).active Then
+					If clsKTimers.timers(clsKTimers.CurrentTimer).active Then
 						per.Hours = -1 : AdjustTime(per)
 					End If
 				End If
@@ -458,15 +466,15 @@ End Sub
 
 Private Sub AdjustTime(per As Period)
 
-	svrKTimers.timers(svrKTimers.CurrentTimer).endTime = _
-				      DateUtils.AddPeriod(svrKTimers.timers(svrKTimers.CurrentTimer).endTime,per)
+	clsKTimers.timers(clsKTimers.CurrentTimer).endTime = _
+				      DateUtils.AddPeriod(clsKTimers.timers(clsKTimers.CurrentTimer).endTime,per)
 End Sub
 
 Public Sub AlarmStart(xx As Int)
 	
-	svrKTimers.timers(xx).Firing = True
-	svrKTimers.moAlarm(xx).Initialize(svrKTimers.timers)
-	svrKTimers.moAlarm(xx).AlarmStart(xx)
+	clsKTimers.timers(xx).Firing = True
+	clsKTimers.moAlarm(xx).Initialize(clsKTimers.timers)
+	clsKTimers.moAlarm(xx).AlarmStart(xx)
 	
 	msAlarmFireRollover = gblConst.TIMERS_IMG_STOP
 	mTmrAlarmFire.Enabled = True
@@ -484,7 +492,7 @@ End Sub
 
 Public Sub UpdateListOfTimers(x As Int)
 	Dim s As String = BuildTimerStr4List( _
-			kt.PadZero(svrKTimers.timers(x).nHr),kt.PadZero(svrKTimers.timers(x).nMin),kt.PadZero(svrKTimers.timers(x).nSec))
+			kt.PadZero(clsKTimers.timers(x).nHr),kt.PadZero(clsKTimers.timers(x).nMin),kt.PadZero(clsKTimers.timers(x).nSec))
 		
 	Select Case x
 		Case 1 : lblTimersTime1.Text = s

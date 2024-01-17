@@ -6,7 +6,7 @@ Version=10
 @EndOfDesignText@
 ' Author:  sadLogic/JakeBullet
 #Region VERSIONS 
-' V. 1.1 	Jan/12/2024
+' V. 1.1 	Jan/12/2024 
 ' V. 1.0 	Sometime in 2015 - as a b4a service - now just a class
 #End Region
 
@@ -24,7 +24,7 @@ Sub Class_Globals
 End Sub
 
 Public Sub Initialize()
-	'g.LogWrite("svrKTimers service start... ",g.ID_LOG_MSG)
+	'g.LogWrite("clsKTimers service start... ",g.ID_LOG_MSG)
 	'---
 	
 	tmrTimers.Initialize("tmrTimers",1000)
