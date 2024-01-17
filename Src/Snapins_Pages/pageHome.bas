@@ -92,7 +92,7 @@ Public Sub Set_focus()
 End Sub
 
 Private Sub Build_Side_Menu
-	Menus.BuildSideMenu(Array As String("Refresh W"),Array As String("rf"))
+	Menus.BuildSideMenu(Array As String("Refresh Weather"),Array As String("rf"))
 End Sub
 
 Public Sub Lost_focus()
