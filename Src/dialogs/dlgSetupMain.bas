@@ -30,10 +30,12 @@ public Sub CreateDefaultFile
 		d1.Hours = 6 : d1.Minutes = 30
 		d2.Hours = 18 : d2.Minutes = 30
 		
-		Dim ser As B4XSerializator '--- in the RandomAccessFile jar
-		File.WriteBytes(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, _
-		ser.ConvertObjectToBytes( _
-				CreateMap( "saboot": "false", "pwroff": 45,  "pwrmt": d1, "pwret": d2,"scrnday":False)))
+		objHelpers.Map2Disk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, _
+					CreateMap( "saboot": "false", "pwroff": 120,  "pwrmt": d1, "pwret": d2,"scrnday":False))
+'		Dim ser As B4XSerializator '--- in the RandomAccessFile jar
+'		File.WriteBytes(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, _
+'		ser.ConvertObjectToBytes( _
+'				CreateMap( "saboot": "false", "pwroff": 120,  "pwrmt": d1, "pwret": d2,"scrnday":False)))
 		
 	End If
 	
@@ -42,27 +44,26 @@ End Sub
 
 Public Sub Show
 	
-	Dim ser As B4XSerializator '--- in the RandomAccessFile jar
-	Dim data As Map = ser.ConvertBytesToObject(File.ReadBytes(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP))
-			
+
 	pf.Initialize(mpage.root, "General Settings", 460, 440)
 	
 	pf.LoadFromJson(File.ReadString(File.DirAssets,"setup_main.json"))
 	pf.SetEventsListener(Me,"dlgGeneral")
-	
-	
+		
 	prefHelper.Initialize(pf)
+	Dim data As Map = prefHelper.MapFromDisk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP)
+	
 	prefHelper.pDefaultFontSize = 18
 	prefHelper.ThemePrefDialogForm
 	pf.PutAtTop = False
 	Dim RS As ResumableSub = pf.ShowDialog(data, "SAVE", "CANCEL")
-	prefHelper.dlgHelper.ThemeDialogBtnsResize
+	'prefHelper.dlgHelper.ThemeDialogBtnsResize
 	
 	Wait For (RS) Complete (Result As Int)
 	If Result = xui.DialogResponse_Positive Then
 		guiHelpers.Show_toast("Data Saved")
 		
-		File.WriteBytes(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, ser.ConvertObjectToBytes(data))
+		prefHelper.Map2Disk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, data)
 		
 		ProcessAutoBootFlag(data.Get("saboot").As(Boolean))
 		
@@ -99,16 +100,6 @@ End Sub
 
 Private Sub dlgGeneral_BeforeDialogDisplayed (Template As Object)
 	prefHelper.SkinDialog(Template)
-	
-	For i = 0 To pf.PrefItems.Size - 1
-		Dim pi As B4XPrefItem = pf.PrefItems.Get(i)
-		If pi.ItemType = pf.TYPE_BOOLEAN Then
-'			Dim ft As B4XFloatTextField = pf.CustomListView1.GetPanel(i).GetView(0).Tag
-'			ft.TextField.Font = xui.CreateDefaultBoldFont(14)    'or whatever you want
-'			'rest
-		End If
-	Next
-	
 End Sub
 
 
