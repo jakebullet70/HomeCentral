@@ -30,12 +30,10 @@ public Sub CreateDefaultFile
 		d1.Hours = 6 : d1.Minutes = 30
 		d2.Hours = 18 : d2.Minutes = 30
 		
+		'--- DO NOT USE	File.ReadMap Or File.WriteMap
+		'--- DO NOT USE	File.ReadMap Or File.WriteMap
 		objHelpers.Map2Disk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, _
 					CreateMap( "saboot": "false", "pwroff": 120,  "pwrmt": d1, "pwret": d2,"scrnday":False))
-'		Dim ser As B4XSerializator '--- in the RandomAccessFile jar
-'		File.WriteBytes(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, _
-'		ser.ConvertObjectToBytes( _
-'				CreateMap( "saboot": "false", "pwroff": 120,  "pwrmt": d1, "pwret": d2,"scrnday":False)))
 		
 	End If
 	
@@ -51,7 +49,7 @@ Public Sub Show
 	pf.SetEventsListener(Me,"dlgGeneral")
 		
 	prefHelper.Initialize(pf)
-	Dim data As Map = prefHelper.MapFromDisk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP)
+	Dim data As Map = prefHelper.MapFromDisk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP) '--- DO NOT USE	File.ReadMap Or File.WriteMap
 	
 	prefHelper.pDefaultFontSize = 18
 	prefHelper.ThemePrefDialogForm
@@ -63,7 +61,7 @@ Public Sub Show
 	If Result = xui.DialogResponse_Positive Then
 		guiHelpers.Show_toast("Data Saved")
 		
-		prefHelper.Map2Disk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, data)
+		prefHelper.Map2Disk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, data) '--- DO NOT USE	File.ReadMap Or File.WriteMap
 		
 		ProcessAutoBootFlag(data.Get("saboot").As(Boolean))
 		
