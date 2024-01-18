@@ -16,6 +16,18 @@ Sub Process_Globals
 End Sub
 
 
+'--- uses B4XSerializator
+Public Sub Map2Disk2(folder As String, filename As String,m As Map)
+	Dim ser As B4XSerializator '--- in the RandomAccessFile jar
+	File.WriteBytes(folder, filename, ser.ConvertObjectToBytes(m))
+End Sub
+'--- uses B4XSerializator
+Public Sub MapFromDisk2(folder As String, filename As String) As Map
+	Dim ser As B4XSerializator '--- in the RandomAccessFile jar
+	Return ser.ConvertBytesToObject(File.ReadBytes(folder, filename))
+End Sub
+
+
 Public Sub List2StrArray(lst As List) As String()
 	
 	Dim ret(lst.Size) As String
