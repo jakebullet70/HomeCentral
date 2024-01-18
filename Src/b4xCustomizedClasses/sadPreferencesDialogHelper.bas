@@ -7,7 +7,10 @@ Version=9.5
 ' Author:  sadLogic
 ' Helper class for sadB4XPrefDialog V11.8
 #Region VERSIONS 
-' V1.0  Nov/9/2022	1st run.
+' V1.1	Jan/18/2024
+'		Added load and save, TYPE_TIME and call to dlgHelper.ThemeDialogBtnsResize
+' V1.0  Nov/9/2022	
+'		1st run.
 #End Region
 
 Sub Class_Globals
@@ -23,6 +26,18 @@ Public Sub Initialize(oPrefDlg As sadPreferencesDialog)
 	dlg = prefdlg.Dialog
 	dlgHelper.Initialize(dlg)
 End Sub
+
+'--- uses B4XSerializator
+Public Sub Map2Disk2(folder As String, filename As String,m As Map)
+	Dim ser As B4XSerializator '--- in the RandomAccessFile lib
+	File.WriteBytes(folder, filename, ser.ConvertObjectToBytes(m))
+End Sub
+'--- uses B4XSerializator
+Public Sub MapFromDisk2(folder As String, filename As String) As Map
+	Dim ser As B4XSerializator '--- in the RandomAccessFile lib
+	Return ser.ConvertBytesToObject(File.ReadBytes(folder, filename))
+End Sub
+
 
 
 Public Sub ThemePrefDialogForm
@@ -71,6 +86,8 @@ End Sub
 
 Public Sub SkinDialog(Template As Object)
 	
+	dlgHelper.ThemeDialogBtnsResize
+	
 	Dim fnt0 As B4XFont = xui.CreateDefaultFont(pDefaultFontSize)
 	'Dim mDlg As sadPreferencesDialog = prefdlg
 	Try
@@ -93,7 +110,8 @@ Public Sub SkinDialog(Template As Object)
 					plmi.MainLabel.Font = xui.CreateDefaultFont(22) '--- numeric spin label
 					Dim p1 As B4XView = prefdlg.CustomListView1.GetPanel(i).GetView(1) '--- description lbl
 					p1.Font = fnt0
-					'plmi.ArrowsSize = 42  ''  NOT WORKING, search for 'ARROWSIZE'
+					'https://www.b4x.com/android/forum/threads/b4xplusminus-arrow-size-change-not-working.134726/#content
+					'plmi.ArrowsSize = 42  ''  NOT WORKING, 
 					'plmi.Base_Resize(plmi.mBase.Width,plmi.mBase.Height)
 					'plmi.lblMinus.Font =xui.CreateDefaultFont(40)
 					
@@ -105,12 +123,11 @@ Public Sub SkinDialog(Template As Object)
 					'pmHours.MainLabel.Font = fnt0
 					
 					'--- change arrow size	'ARROWSIZE'
+					'https://www.b4x.com/android/forum/threads/b4xplusminus-arrow-size-change-not-working.134726/#content
 '					pmHours.ArrowsSize = 40dip
 '					pmHours.Base_Resize(pmHours.mBase.Width, pmHours.mBase.Height)
 '					pmHours.lblPlus.TextSize = 40
 '					pmHours.lblMinus.TextSize = 40
-					
-					'pmHours.mBase.
 					
 			End Select
 	
