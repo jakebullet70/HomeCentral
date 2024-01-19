@@ -46,9 +46,9 @@ Public Sub Initialize(p As B4XView)
 	'pnlCurrent.SetLayoutAnimated(0,0,0,pnlCurrent.Width,pnlCurrent.Height-50dip)
 	
 	'--- weather stuff
-	B4XPages.MainPage.EventGbl.Subscribe(gblConst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
-	B4XPages.MainPage.EventGbl.Subscribe(gblConst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
-	B4XPages.MainPage.EventGbl.Subscribe(gblConst.EVENT_CLOCK_CHANGE, Me,"clock_event")
+	mpage.EventGbl.Subscribe(gblConst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
+	mpage.EventGbl.Subscribe(gblConst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
+	mpage.EventGbl.Subscribe(gblConst.EVENT_CLOCK_CHANGE, Me,"clock_event")
 	
 	guiHelpers.SetPanelsTranparent(Array As B4XView(pnlClock,pnlCal))
 	
