@@ -19,6 +19,9 @@ Sub Class_Globals
 	Private pnlBtns As B4XView
 	Private btnStart,btnFullScrn,btnNext,btnPrev As Button
 	
+
+	
+	Private lvPics As CustomListView
 End Sub
 
 Public Sub Initialize(p As B4XView) 
