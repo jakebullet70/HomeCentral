@@ -7,8 +7,8 @@
  Status.  
  Home Screen - Done  
  Weather Screen - Done  
- Kitchen Timers - 75%  
- Picture Albumn - 10%  
+ Kitchen Timers - Done  
+ Picture Albumn - 80%  
  Conversion - Not started  
  
  
