@@ -251,7 +251,9 @@ Private Sub segTabMenu_TabChanged(index As Int)
 			oPageCurrent = oPageCalculator
 			
 		Case "ph" '--- photo albumn
-			If oPagePhoto.IsInitialized = False Then oPagePhoto.Initialize(pnlPhotos)
+			If oPagePhoto.IsInitialized = False Then 
+				oPagePhoto.Initialize(pnlPhotos)
+			End If
 			oPageCurrent = oPagePhoto
 			
 		Case "tm" '--- timers

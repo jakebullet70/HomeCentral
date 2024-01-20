@@ -22,19 +22,21 @@ File27=pageHomeBase.bal
 File28=pageKitchenTimersBase.bal
 File29=pagePhotosBase.bal
 File3=divider.png
-File30=pageWeatherBase.bal
-File31=PCLVSeekBar.bal
-File32=pframe.png
-File33=setup_main.json
-File34=tmr_go.png
-File35=tmr_pause.png
-File36=tmr_stop.png
-File37=viewroundslider.bal
-File38=viewSetupWeather.bal
-File39=viewWeatherCurrent.bal
+File30=pagePhotosBase1.bal
+File31=pageWeatherBase.bal
+File32=PCLVSeekBar.bal
+File33=pframe.png
+File34=setup_main.json
+File35=tmr_go.png
+File36=tmr_pause.png
+File37=tmr_stop.png
+File38=viewPhotoItem.bal
+File39=viewroundslider.bal
 File4=dividerh.png
-File40=viewWeatherForcast.bal
-File41=weatherAPI_codes.json
+File40=viewSetupWeather.bal
+File41=viewWeatherCurrent.bal
+File42=viewWeatherForcast.bal
+File43=weatherAPI_codes.json
 File5=dlgAbout.bal
 File6=dlgVolumeSettings.bal
 File7=ktimers_alarm01.ogg
@@ -63,19 +65,21 @@ FileGroup27=Pages-Snapins-Views\Home
 FileGroup28=Pages-Snapins-Views\KitchenTimers
 FileGroup29=Pages-Snapins-Views\PicViewer
 FileGroup3=Default Group
-FileGroup30=Pages-Snapins-Views\Weather
-FileGroup31=Default Group
-FileGroup32=Pages-Snapins-Views\PicViewer
-FileGroup33=Default Group
-FileGroup34=Pages-Snapins-Views\KitchenTimers
+FileGroup30=Default Group
+FileGroup31=Pages-Snapins-Views\Weather
+FileGroup32=Default Group
+FileGroup33=Pages-Snapins-Views\PicViewer
+FileGroup34=Default Group
 FileGroup35=Pages-Snapins-Views\KitchenTimers
 FileGroup36=Pages-Snapins-Views\KitchenTimers
-FileGroup37=Default Group
-FileGroup38=Pages-Snapins-Views\Weather
-FileGroup39=Pages-Snapins-Views\Weather
+FileGroup37=Pages-Snapins-Views\KitchenTimers
+FileGroup38=Pages-Snapins-Views\PicViewer
+FileGroup39=Default Group
 FileGroup4=Default Group
 FileGroup40=Pages-Snapins-Views\Weather
 FileGroup41=Pages-Snapins-Views\Weather
+FileGroup42=Pages-Snapins-Views\Weather
+FileGroup43=Pages-Snapins-Views\Weather
 FileGroup5=Dialogs
 FileGroup6=Dialogs
 FileGroup7=Default Group
@@ -90,6 +94,7 @@ Library13=sql
 Library14=stringutils
 Library15=xui
 Library16=xui views
+Library17=contentresolver
 Library2=audio
 Library3=b4xpages
 Library4=b4xpreferencesdialog
@@ -98,7 +103,7 @@ Library6=core
 Library7=designerutils
 Library8=json
 Library9=phone
-ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="33"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~~\n~SetApplicationAttribute(android:largeHeap,"true")~\n~~\n~'--- https://www.b4x.com/android/forum/threads/android-jar-targetsdkversion-minsdkversion.87610/~\n~'--- Non-ssl (non-https) communication is not permitted by default. It can be enabled in B4A v9+ by adding this line to the manifest editor:~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~~\n~'--- Take over power functions~\n~AddPermission(android.permission.WAKE_LOCK)~\n~AddPermission(android.permission.WRITE_SETTINGS)~\n~AddPermission(android.permission.ACCESS_NOTIFICATION_POLICY)~\n~AddPermission(android.permission.READ_EXTERNAL_STORAGE)~\n~~\n~AddPermission(android.permission.INTERNET)~\n~~\n~'--- app update crap~\n~AddManifestText(<uses-permission~\n~	android:name="android.permission.WRITE_EXTERNAL_STORAGE"~\n~	android:maxSdkVersion="18" />~\n~)~\n~~\n~AddApplicationText(~\n~  <provider~\n~  android:name="android.support.v4.content.FileProvider"~\n~  android:authorities="$PACKAGE$.provider"~\n~  android:exported="false"~\n~  android:grantUriPermissions="true">~\n~  <meta-data~\n~  android:name="android.support.FILE_PROVIDER_PATHS"~\n~  android:resource="@xml/provider_paths"/>~\n~  </provider>~\n~)~\n~CreateResource(xml, provider_paths,~\n~   <files-path name="name" path="shared" />~\n~)~\n~AddPermission(android.permission.REQUEST_INSTALL_PACKAGES)~\n~~\n~'AddManifestText(<uses-permission~\n~'	android:name="android.permission.WRITE_EXTERNAL_STORAGE"~\n~'	android:maxSdkVersion="18" />~\n~')~\n~~\n~~\n~~\n~~\n~'===============================================================================~\n~~\n~''''https://www.b4x.com/android/forum/threads/android-jar-targetsdkversion-minsdkversion.87610/~\n~''''Non-ssl (non-https) communication is not permitted by default. It can be enabled in B4A v9+ by adding this line to the manifest editor:~\n~'''CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~'''~\n~'''AddManifestText(~\n~'''~\n~'''	<Activity android:launchMode="singleInstance" />~\n~'''	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="18"/>~\n~'''	~\n~'''	<supports-screens android:largeScreens="true" ~\n~'''	    android:xlargeScreens="true"~\n~'''    	android:normalScreens="false" ~\n~'''    	android:smallScreens="false" ~\n~'''		android:requiresSmallestWidthDp="800"~\n~'''    	android:anyDensity="true"/>~\n~'''~\n~'''		~\n~'''	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>~\n~'''	<uses-permission android:name="android.permission.GET_ACCOUNTS" />~\n~'''	~\n~''')~\n~'''~\n~'''SetActivityAttribute(main, android:windowSoftInputMode, adjustPan|stateHidden)~\n~'''~\n~'''SetApplicationAttribute(android:hardwareAccelerated, "true")~\n~'''SetApplicationAttribute(android:theme, "@android:style/Theme.Holo.Light")~\n~'''SetApplicationAttribute(android:icon, "@drawable/icon")~\n~'''SetApplicationAttribute(android:label, "$LABEL$")~\n~'''~\n~'''AddPermission(android.permission.REBOOT)~\n~'''AddPermission(android.permission.WAKE_LOCK)~\n~'''AddPermission(android.permission.ACCESS_NETWORK_STATE)~\n~'''~\n~'''#if not (KE)~\n~'''AddPermission(android.permission.MEDIA_UNMOUNTED)~\n~'''AddPermission(android.permission.MEDIA_MOUNTED)~\n~'''~\n~'''AddReceiverText(svrMediaHelper,~\n~'''<intent-filter>~\n~'''    <action android:name="android.intent.action.MEDIA_MOUNTED" />~\n~'''	<data android:scheme="file"/>~\n~'''</intent-filter>)~\n~'''~\n~'''AddReceiverText(svrMediaHelper,~\n~'''<intent-filter>~\n~'''    <action android:name="android.intent.action.MEDIA_UNMOUNTED" />~\n~'''	<data android:scheme="file"/>~\n~'''</intent-filter>)~\n~'''#end if~\n~'''~\n~'''#if not (KE)~\n~'''AddReceiverText(eu.dgconsulting.appupdating.newinst2,~\n~'''  <intent-filter>~\n~'''  <action android:name="android.intent.action.PACKAGE_REPLACED" />~\n~'''    <data android:scheme="package" />~\n~'''  </intent-filter>)~\n~''' #end if~\n~~\n~
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="29"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~~\n~'--- only works if --> android:targetSdkVersion="29"~\n~SetApplicationAttribute(android:requestLegacyExternalStorage, true)~\n~'--------------------------------------------------------~\n~~\n~'--- needed for pics out of mem error~\n~SetApplicationAttribute(android:largeHeap,"true")~\n~'--------------------------------------------------------~\n~~\n~'--- https://www.b4x.com/android/forum/threads/android-jar-targetsdkversion-minsdkversion.87610/~\n~'--- Non-ssl (non-https) communication is not permitted by default. It can be enabled in B4A v9+ by adding this line to the manifest editor:~\n~CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~~\n~'--- Take over power functions~\n~AddPermission(android.permission.WAKE_LOCK)~\n~AddPermission(android.permission.WRITE_SETTINGS)~\n~AddPermission(android.permission.ACCESS_NOTIFICATION_POLICY)~\n~AddPermission(android.permission.READ_EXTERNAL_STORAGE)~\n~~\n~AddPermission(android.permission.INTERNET)~\n~~\n~'--- app update crap~\n~AddManifestText(<uses-permission~\n~	android:name="android.permission.WRITE_EXTERNAL_STORAGE"~\n~	android:maxSdkVersion="18" />~\n~)~\n~~\n~AddApplicationText(~\n~  <provider~\n~  android:name="android.support.v4.content.FileProvider"~\n~  android:authorities="$PACKAGE$.provider"~\n~  android:exported="false"~\n~  android:grantUriPermissions="true">~\n~  <meta-data~\n~  android:name="android.support.FILE_PROVIDER_PATHS"~\n~  android:resource="@xml/provider_paths"/>~\n~  </provider>~\n~)~\n~CreateResource(xml, provider_paths,~\n~   <files-path name="name" path="shared" />~\n~)~\n~AddPermission(android.permission.REQUEST_INSTALL_PACKAGES)~\n~~\n~'AddManifestText(<uses-permission~\n~'	android:name="android.permission.WRITE_EXTERNAL_STORAGE"~\n~'	android:maxSdkVersion="18" />~\n~')~\n~~\n~~\n~~\n~~\n~'===============================================================================~\n~~\n~''''https://www.b4x.com/android/forum/threads/android-jar-targetsdkversion-minsdkversion.87610/~\n~''''Non-ssl (non-https) communication is not permitted by default. It can be enabled in B4A v9+ by adding this line to the manifest editor:~\n~'''CreateResourceFromFile(Macro, Core.NetworkClearText)~\n~'''~\n~'''AddManifestText(~\n~'''~\n~'''	<Activity android:launchMode="singleInstance" />~\n~'''	<uses-sdk android:minSdkVersion="16" android:targetSdkVersion="18"/>~\n~'''	~\n~'''	<supports-screens android:largeScreens="true" ~\n~'''	    android:xlargeScreens="true"~\n~'''    	android:normalScreens="false" ~\n~'''    	android:smallScreens="false" ~\n~'''		android:requiresSmallestWidthDp="800"~\n~'''    	android:anyDensity="true"/>~\n~'''~\n~'''		~\n~'''	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>~\n~'''	<uses-permission android:name="android.permission.GET_ACCOUNTS" />~\n~'''	~\n~''')~\n~'''~\n~'''SetActivityAttribute(main, android:windowSoftInputMode, adjustPan|stateHidden)~\n~'''~\n~'''SetApplicationAttribute(android:hardwareAccelerated, "true")~\n~'''SetApplicationAttribute(android:theme, "@android:style/Theme.Holo.Light")~\n~'''SetApplicationAttribute(android:icon, "@drawable/icon")~\n~'''SetApplicationAttribute(android:label, "$LABEL$")~\n~'''~\n~'''AddPermission(android.permission.REBOOT)~\n~'''AddPermission(android.permission.WAKE_LOCK)~\n~'''AddPermission(android.permission.ACCESS_NETWORK_STATE)~\n~'''~\n~'''#if not (KE)~\n~'''AddPermission(android.permission.MEDIA_UNMOUNTED)~\n~'''AddPermission(android.permission.MEDIA_MOUNTED)~\n~'''~\n~'''AddReceiverText(svrMediaHelper,~\n~'''<intent-filter>~\n~'''    <action android:name="android.intent.action.MEDIA_MOUNTED" />~\n~'''	<data android:scheme="file"/>~\n~'''</intent-filter>)~\n~'''~\n~'''AddReceiverText(svrMediaHelper,~\n~'''<intent-filter>~\n~'''    <action android:name="android.intent.action.MEDIA_UNMOUNTED" />~\n~'''	<data android:scheme="file"/>~\n~'''</intent-filter>)~\n~'''#end if~\n~'''~\n~'''#if not (KE)~\n~'''AddReceiverText(eu.dgconsulting.appupdating.newinst2,~\n~'''  <intent-filter>~\n~'''  <action android:name="android.intent.action.PACKAGE_REPLACED" />~\n~'''    <data android:scheme="package" />~\n~'''  </intent-filter>)~\n~''' #end if~\n~~\n~
 Module1=|relative|..\Src\customCtrls\ASSegmentedTab
 Module10=|relative|..\Src\main\config
 Module11=|relative|..\Src\miscClasses\ConversionMod
@@ -114,48 +119,50 @@ Module2=|relative|..\Src\main\B4XMainPage
 Module20=|relative|..\Src\miscClasses\DSE_Layout
 Module21=|relative|..\Src\helpers\dtHelpers
 Module22=|relative|..\Src\miscClasses\events_subscription\EventController
-Module23=|relative|..\Src\helpers\fileHelpers
-Module24=|relative|..\Src\helpers\fnct
-Module25=|relative|..\Src\main\gblConst
-Module26=|relative|..\Src\helpers\guiHelpers
-Module27=|relative|..\Src\miscClasses\guiMsgs
-Module28=|relative|..\Src\miscClasses\InetCheck
-Module29=|relative|..\Src\miscClasses\kitchenTimers\KitchenTmrs
+Module23=|relative|..\Src\b4xForumCode\ExternalStorage
+Module24=|relative|..\Src\helpers\fileHelpers
+Module25=|relative|..\Src\helpers\fnct
+Module26=|relative|..\Src\main\gblConst
+Module27=|relative|..\Src\helpers\guiHelpers
+Module28=|relative|..\Src\miscClasses\guiMsgs
+Module29=|relative|..\Src\miscClasses\InetCheck
 Module3=|relative|..\Src\miscClasses\CheckVersions
-Module30=|relative|..\Src\helpers\kt
-Module31=|relative|..\Src\customCtrls\lmB4XImageViewX
-Module32=|relative|..\Src\helpers\LogIt
-Module33=|relative|..\Src\main\Menus
-Module34=|relative|..\Src\helpers\objHelpers
-Module35=|relative|..\Src\Snapins_Pages\pageCalculator
-Module36=|relative|..\Src\Snapins_Pages\pageConversions
-Module37=|relative|..\Src\Snapins_Pages\pageHome
-Module38=|relative|..\Src\Snapins_Pages\pageKTimers
-Module39=|relative|..\Src\Snapins_Pages\pagePhotos
+Module30=|relative|..\Src\miscClasses\kitchenTimers\KitchenTmrs
+Module31=|relative|..\Src\helpers\kt
+Module32=|relative|..\Src\customCtrls\lmB4XImageViewX
+Module33=|relative|..\Src\helpers\LogIt
+Module34=|relative|..\Src\main\Menus
+Module35=|relative|..\Src\helpers\objHelpers
+Module36=|relative|..\Src\Snapins_Pages\pageCalculator
+Module37=|relative|..\Src\Snapins_Pages\pageConversions
+Module38=|relative|..\Src\Snapins_Pages\pageHome
+Module39=|relative|..\Src\Snapins_Pages\pageKTimers
 Module4=|relative|..\Src\miscClasses\Clock
-Module40=|relative|..\Src\Snapins_Pages\pageWeather
-Module41=|relative|..\Src\helpers\powerHelpers
-Module42=|relative|..\Src\b4xForumCode\PreoptimizedCLV
-Module43=|relative|..\Src\b4xCustomizedClasses\sadAS_FloatingPanel
-Module44=|relative|..\Src\b4xCustomizedClasses\sadB4XColorTemplate
-Module45=|relative|..\Src\b4xCustomizedClasses\sadB4XDialogHelper
-Module46=|relative|..\Src\b4xCustomizedClasses\sadB4XInputTemplate
-Module47=|relative|..\Src\b4xCustomizedClasses\sadCallSubUtils
-Module48=|relative|..\Src\b4xCustomizedClasses\sadClvSelections
-Module49=|relative|..\Src\b4xCustomizedClasses\sadKeyValueStore
+Module40=|relative|..\Src\Snapins_Pages\pagePhotos
+Module41=|relative|..\Src\Snapins_Pages\pageWeather
+Module42=|relative|..\Src\helpers\powerHelpers
+Module43=|relative|..\Src\b4xForumCode\PreoptimizedCLV
+Module44=|relative|..\Src\miscClasses\Promt4Folder
+Module45=|relative|..\Src\b4xCustomizedClasses\sadAS_FloatingPanel
+Module46=|relative|..\Src\b4xCustomizedClasses\sadB4XColorTemplate
+Module47=|relative|..\Src\b4xCustomizedClasses\sadB4XDialogHelper
+Module48=|relative|..\Src\b4xCustomizedClasses\sadB4XInputTemplate
+Module49=|relative|..\Src\b4xCustomizedClasses\sadCallSubUtils
 Module5=|relative|..\Src\main\clrTheme
-Module50=|relative|..\Src\b4xCustomizedClasses\sadPreferencesDialog
-Module51=|relative|..\Src\b4xCustomizedClasses\sadPreferencesDialogHelper
-Module52=|relative|..\Src\customCtrls\sadRoundSlider
-Module53=Starter
-Module54=|relative|..\Src\helpers\strHelpers
+Module50=|relative|..\Src\b4xCustomizedClasses\sadClvSelections
+Module51=|relative|..\Src\b4xCustomizedClasses\sadKeyValueStore
+Module52=|relative|..\Src\b4xCustomizedClasses\sadPreferencesDialog
+Module53=|relative|..\Src\b4xCustomizedClasses\sadPreferencesDialogHelper
+Module54=|relative|..\Src\customCtrls\sadRoundSlider
+Module55=Starter
+Module56=|relative|..\Src\helpers\strHelpers
 Module6=|relative|..\Src\miscClasses\events_subscription\clsEvent
 Module7=|relative|..\Src\miscClasses\kitchenTimers\clsKAlarms
 Module8=|relative|..\Src\miscClasses\weather\clsWeatherData
 Module9=|relative|..\Src\miscClasses\weather\clsWeatherDataDay
-NumberOfFiles=41
-NumberOfLibraries=16
-NumberOfModules=54
+NumberOfFiles=43
+NumberOfLibraries=17
+NumberOfModules=56
 Version=12.5
 @EndOfDesignText@
 #Region  Project Attributes 
@@ -165,7 +172,13 @@ Version=12.5
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: landscape
 	#CanInstallToExternalStorage: False
+	
+	'--- is this needed for picking path?
+	#AdditionalJar: com.android.support:support-core-utils
+	 
 #End Region
+
+
 
 #Region  Activity Attributes 
 	#FullScreen: True
@@ -173,6 +186,9 @@ Version=12.5
 #End Region
 
 #BridgeLogger: True
+
+'--- ignore android target version
+#Ignorewarnings: 31 
 
 Sub Process_Globals
 	Public ActionBarHomeClicked As Boolean
