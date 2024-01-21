@@ -79,12 +79,13 @@ Public Sub Show(VolType As String)
 	
 	cboSounds.cmbBox.AddAll(Array As String( _
 				"ktimers_alarm01.ogg","ktimers_alarm02,ogg","ktimers_alarm03.ogg","ktimers_alarm04.ogg","ktimers_alarm05.ogg"))
+
 	guiHelpers.ReSkinB4XSeekBar(Array As B4XSeekBar(sbTimerVol))
 	
 	If VolType = "kt" Then
 		dlgHelper.ThemeDialogForm("Timer Volume") '--- kitchen timers
 	Else
-		dlgHelper.ThemeDialogForm("Volume ?") '--- kitchen timers
+		dlgHelper.ThemeDialogForm("Volume ?") 
 	End If
 	
 	Dim rs As ResumableSub = mDialog.ShowCustom(p, "SAVE", "", "CANCEL")
@@ -102,7 +103,6 @@ Public Sub Show(VolType As String)
 	
 	sbTimerVol.Value 	= Main.kvs.Get(gblConst.INI_SOUND_ALARM_VOLUME)
 	sbTimerVol_ValueChanged(sbTimerVol.Value)
-	'cboSounds.cmbBox.te
 	
 	Wait For (rs) Complete (i As Int)
 	If i = xui.DialogResponse_Positive Then '--- save
@@ -125,4 +125,5 @@ Private Sub btnTest_Click
 	MP_Test.Load(File.DirAssets,cboSounds.SelectedItem)
 	MP_Test.Play
 End Sub
+
 
