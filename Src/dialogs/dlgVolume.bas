@@ -85,7 +85,7 @@ Public Sub Show(VolType As String)
 	If VolType = "kt" Then
 		dlgHelper.ThemeDialogForm("Timer Volume") '--- kitchen timers
 	Else
-		dlgHelper.ThemeDialogForm("Volume ?") 
+		dlgHelper.ThemeDialogForm("Volume ?") '--- ONLY ktimers is calling this at the moment.
 	End If
 	
 	Dim rs As ResumableSub = mDialog.ShowCustom(p, "SAVE", "", "CANCEL")

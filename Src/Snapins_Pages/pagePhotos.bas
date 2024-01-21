@@ -25,15 +25,16 @@ Sub Class_Globals
 	Private tmrPicShow  As Timer
 
 	Private lstPics As List
-	Private picPath As String = "/Removable/MicroSD/pics"
+	'Private picPath As String = "/Removable/MicroSD/pics"
+	Private picPath As String = "/storage/D409-BC20/pics"
 	Private picPointer As Int = 1
 	Private lvPointerHigh,lvPointerLow As Int 'ignore
 	
 	Private img As lmB4XImageViewX
 	Private lmB4XImageViewX1 As lmB4XImageViewX
-	
-	
 	Private pnlSplitter As B4XView
+	
+	
 End Sub
 
 Public Sub Initialize(p As B4XView) 
