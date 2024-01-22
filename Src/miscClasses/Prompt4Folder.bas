@@ -9,10 +9,13 @@ Version=10
 ' V. 1.0 	Jan/20/2024
 #End Region
 
+#Event: SelectedFolder(f as string)
 
 Sub Class_Globals
 	Private XUI As XUI
 	Private Ion As Object
+	Private callback As Object
+	Public pSelectedFolder As String = ""
 End Sub
 
 Public Sub Initialize()
@@ -42,12 +45,16 @@ End Sub
 'Sub folder_ExternalFolderAvailable
 'End Sub
 
-Public Sub SelectExtFolder
+Public Sub SelectExtFolder(callbackOBJ As Object)
 	'Do not forget to load the layout file created with the visual designer. For example:
 	'Activity.LoadLayout("Layout1")
+	callback = callbackOBJ
 	Dim i As Intent
 	i.Initialize("android.intent.action.OPEN_DOCUMENT_TREE", "")
 	StartActivityForResult(i)
+	Log("dddddddddddddd!!!!!!!!!!!!!!!!")
+	Wait For Stump
+	Log("ddddddddddddddddddddddddddddddd")
 End Sub
 
 
@@ -59,36 +66,39 @@ End Sub
 
 
 Private Sub GetBA As Object
-	Dim jo As JavaObject
-	Dim cls As String = Me
-	cls = cls.SubString("class ".Length)
-	jo.InitializeStatic(cls)
-	Return jo.GetField("processBA")
+    Dim jo As JavaObject = Me
+    Return jo.RunMethod("getBA", Null)
 End Sub
 
 
 Private Sub ion_Event(MethodName As String, Args() As Object) As Object
+	Dim TreeDirectory As String = ""
 	If -1 = Args(0) Then 'resultCode = RESULT_OK
 		Dim i As Intent = Args(1)
-		Dim TreeDirectory As String = i.GetData
-		HandleTreeDirectoryString(TreeDirectory)
-		Log(TreeDirectory)
+		TreeDirectory = i.GetData
+		pSelectedFolder = HandleTreeDirectoryString(TreeDirectory)
+		'Log(TreeDirectory)
 	Else
-		Log(Args(0))
+		'Log(Args(0))
 	End If
+	Stump
 	Return Null
 End Sub
 
+Private Sub Stump
+End Sub
 
-Private Sub HandleTreeDirectoryString(Tree As String)
+
+Private Sub HandleTreeDirectoryString(Tree As String) As String
 	Dim StoragePath As String = Tree.SubString2(0,Tree.IndexOf("%3A"))
 	StoragePath = StoragePath.Replace("content://com.android.externalstorage.documents/tree","") & "/"
 	Dim RealPath As String = Tree.SubString2(Tree.IndexOf("%3A"), Tree.Length)
 	RealPath = RealPath.Replace("%3A", "") 'StartSlashStorage
 	RealPath = RealPath.Replace("%2F","/") 'NormalSlash
 	Dim FullPath As String = "/storage" & StoragePath & RealPath
-	ToastMessageShow(FullPath, True)
-	Log(FullPath)
+	Return FullPath
+	'ToastMessageShow(FullPath, True)
+	'Log(FullPath)
 End Sub
 
 
