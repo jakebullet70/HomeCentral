@@ -25,8 +25,8 @@ Sub Class_Globals
 	Private tmrPicShow  As Timer
 
 	Private lstPics As List
-	'Private picPath As String = "/Removable/MicroSD/pics"
-	Private picPath As String = "/storage/D409-BC20/pics"
+	Private picPath As String = "/Removable/MicroSD/pics"
+	'Private picPath As String = "/storage/D409-BC20/pics"
 	Private picPointer As Int = 1
 	Private lvPointerHigh,lvPointerLow As Int 'ignore
 	
@@ -202,10 +202,21 @@ Private Sub btnPressed_Click
 			ShowPic(picPointer,lstPics.Get(picPointer))
 			
 		Case "f" '--- full screen
+			
+			guiHelpers.Show_toast("TODO")
+			Return
+			
+			Dim oo As Prompt4Folder'ignore
+			oo.Initialize
+			oo.SelectExtFolder(Me)
+			Wait For Selected_Folder(f As String)
+			Log("OK --> " & oo.pSelectedFolder)
 	
 	End Select
 	
 End Sub
+
+
 
 
 
