@@ -71,6 +71,7 @@ Public Sub Set_focus()
 	pnlMain.SetVisibleAnimated(500,True)
 End Sub
 Public Sub Lost_focus()
+	tmrPicShow.Enabled = False
 	pnlMain.SetVisibleAnimated(500,False)
 End Sub
 
