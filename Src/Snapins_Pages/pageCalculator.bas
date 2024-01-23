@@ -41,6 +41,7 @@ Sub Class_Globals
 	Private scvPaperRoll As ScrollView
 	
 	
+	Private imgPaperTape As lmB4XImageViewX
 End Sub
 
 Public Sub Initialize(p As B4XView) 
@@ -50,20 +51,26 @@ Public Sub Initialize(p As B4XView)
 	ScaleAuto = 1 + 0.5 * ((100%x + 100%y) / (320dip + 430dip) - 1)
 	
 	lblPaperRoll.Initialize("lblPaperRoll")
-	scvPaperRoll.Panel.AddView(lblPaperRoll, 0, 0, 100%x, scvPaperRoll.Height)
+	scvPaperRoll.Panel.AddView(lblPaperRoll, 0, 0, imgPaperTape.Width, scvPaperRoll.Height)
+	
 	scvPaperRoll.Panel.Height = scvPaperRoll.Height
 	lblPaperRoll.TextSize = 24 * ScaleAuto
-	lblPaperRoll.Color = Colors.White
-	lblPaperRoll.TextColor = Colors.Black
+	lblPaperRoll.Color = XUI.Color_Transparent'Colors.White
+	lblPaperRoll.TextColor = XUI.Color_Black
 	
+	imgPaperTape.Bitmap = XUI.LoadBitmap(File.DirAssets,"paper-tape.png")
+	'scvPaperRoll.Color = XUI.Color_Transparent
+	
+	scvPaperRoll.BringToFront
 	
 	guiHelpers.SkinButton(Array As Button(btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, _
 									btna, btnb, btnc, btnd, btne, btnp,btnBack, btnClr, btnExit))
 	
 	guiHelpers.ResizeText("0",btn0)
 	guiHelpers.SetTextSize(Array As B4XView(btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, _
-									btna, btnb, btnc, btnd, btne, btnp,btnBack, btnExit),(btn0.TextSize - 10))
+									btna, btnb, btnc, btnd, btne, btnp, btnExit),(btn0.TextSize - 10))
 	btnClr.Text = "Clear Tape"
+	btnBack.TextSize = btna.TextSize - 16
 End Sub
 
 '-------------------------------
@@ -269,6 +276,8 @@ End Sub
 Private Sub UpdateTape
 	Dim h As Float
 	
+	Log(Txt)
+	
 	lblPaperRoll.Text = Txt
 
 	h = stu.MeasureMultilineTextHeight(lblPaperRoll, Txt)
@@ -281,8 +290,8 @@ Private Sub UpdateTape
 End Sub
 
 Private Sub btnClr_Click
-	Dim sf As Object = XUI.Msgbox2Async("Do you really want To clear the calculation","A T T E N T I O N","Yes","","No",Null)
-	Wait For (sf) Msgbox_Result (i As Int)
+	Dim o As dlgThemedMsgBox : o.Initialize
+	Wait For (o.Show("Do you really want To clear the calculation?","A T T E N T I O N","YES", "", "CANCEL")) Complete (i As Int)
 	If i = XUI.DialogResponse_Positive Then
 		Val = 0
 		sVal = ""
