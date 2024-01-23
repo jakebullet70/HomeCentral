@@ -34,17 +34,17 @@ Sub Class_Globals
 	
 	Public Dialog2,Dialog,DialogMSGBOX As B4XDialog
 	Public PrefDlg As sadPreferencesDialog
+	
 	Public oClock As Clock
 	
 	'--- this page - master --------------------
 	Private pnlBG As B4XView
 	
-	Private pnlCalculator,pnlHome,pnlWeather,pnlConversions,pnlPhotos As B4XView
+	Private pnlTimers,pnlCalculator,pnlHome,pnlWeather,pnlConversions,pnlPhotos As B4XView
 	Public oPageCurrent As Object = Null
 	Public oPageConversion As pageConversions,oPagePhoto As pagePhotos,oPageTimers As pageKTimers
 	Public oPageCalculator As pageCalculator,  oPageHome As pageHome, oPageWeather As pageWeather
 	'-----------------------------------------
-	Private pnlTimers As B4XView
 	'Private lblSnapinText As B4XView
 	'Private btnSnapinSetup As B4XView
 	'Private pnlSnapinSetup As B4XView
@@ -55,15 +55,16 @@ Sub Class_Globals
 	Private imgSoundButton,imgMenuButton As lmB4XImageViewX
 	Public btnHdrTxt1 As B4XView
 	
+	'--- side menu
 	Public lvSideMenu As CustomListView
 	Private pnlMenuFooter As B4XView
 	Private btnSetupMaster As Button
 	Private btnAboutMe As Button
 	Public pnlSideMenu As B4XView
-	
 	Private segTabMenu As ASSegmentedTab
 	Private lblMnuMenu As B4XView
 	Private pnlMenuHdrSpacer2,pnlMenuHdrSpacer1 As B4XView
+	
 End Sub
 
 Public Sub Initialize
@@ -293,7 +294,18 @@ End Sub
 Private Sub btnHdrTxt1_Click
 	QuietExitNow = QuietExitNow + 1
 	If QuietExitNow > 3 Then
-		B4XPages.ClosePage(Me)
+		'B4XPages.ClosePage(Me) '--- if the pic timer is firing its still running???
+		tmrTimerCallSub.Destroy '--- should not need this but oh well...  :)
+		B4XPages.GetNativeParent(Me).Finish
+'		Dim ph As Phone
+'		If ph.SdkVersion > 15 Then 'android 4.1 and above
+'			Dim jo As JavaObject
+'			jo.InitializeContext
+'			jo.RunMethod("finishAffinity", Null)
+'		Else
+'			B4XPages.GetNativeParent(Me).Finish
+'			'ExitApplication
+'		End If
 		Return
 	End If
 	If tmrTimerCallSub.Exists(Me,"Prompt_Exit_Quiet") = Null Then
