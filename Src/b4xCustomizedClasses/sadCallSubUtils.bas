@@ -4,8 +4,10 @@ ModulesStructureVersion=1
 Type=Class
 Version=5.5
 @EndOfDesignText@
-' Author:  B4X 
+' Author:  B4X / Tweaked by sadLogic
 #Region VERSIONS 
+' V. 1.3	Jan/23/2024
+'			Added destroy method, really should not be needed but hey, nuke the obj it just to be sure.  :)
 ' V. 1.2	Jan/08/2024
 '			Added ExistsRemoveAdd_DelayedPlus2, ExistsRemoveAdd_DelayedPlus methods
 ' V. 1.1	Aug/20/2023
@@ -20,6 +22,12 @@ Sub Class_Globals
 End Sub
 
 Public Sub Initialize
+	RunDelayed.Initialize
+End Sub
+
+Public Sub Destroy
+	'--- remove any timers if they are there
+	RunDelayed.Initialize
 End Sub
 
 
@@ -91,7 +99,7 @@ Public Sub CallSubPlus2(Module As Object, SubName As String, Delay As Int, Arg()
 End Sub
 
 Private Sub PlusImpl(Module As Object, SubName As String, Delay As Int, Arg() As Object, delayed As Boolean)
-	If RunDelayed.IsInitialized = False Then RunDelayed.Initialize
+	'If RunDelayed.IsInitialized = False Then RunDelayed.Initialize
 	Dim tmr As Timer
 	tmr.Initialize("tmr", Delay)
 	Dim rdd As RunDelayedData
@@ -122,3 +130,4 @@ Private Sub tmr_Tick
 		End If
 	End If
 End Sub
+
