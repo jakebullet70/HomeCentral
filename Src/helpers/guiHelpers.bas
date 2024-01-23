@@ -109,6 +109,7 @@ Public Sub SetTextSize(obj() As B4XView,size As Float)
 	Next
 End Sub
 'Public Sub SetTextSizeBtns(obj() As B4XView,size As Float)
+' ---> use method above, just pass in btns as b4xview
 '	For Each o As B4XView In obj
 '		o.TextSize = size
 '	Next
