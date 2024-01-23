@@ -19,26 +19,33 @@ File24=menu_finger01.dn.png
 File25=menu-selected.png
 File26=no weather.png
 File27=pageCalculatorBase.bal
-File28=pageHomeBase.bal
-File29=pageKitchenTimersBase.bal
+File28=pageConversionsBase.bal
+File29=pageHomeBase.bal
 File3=divider.png
-File30=pagePhotosBase.bal
-File31=pageWeatherBase.bal
-File32=paper-tape.png
-File33=PCLVSeekBar.bal
-File34=pframe.png
-File35=setup_main.json
-File36=tmr_go.png
-File37=tmr_pause.png
-File38=tmr_stop.png
-File39=viewPhotoItem.bal
+File30=pageKitchenTimersBase.bal
+File31=pagePhotosBase.bal
+File32=pageWeatherBase.bal
+File33=paper-tape.png
+File34=PCLVSeekBar.bal
+File35=pframe.png
+File36=scrnconvbutter.bal
+File37=scrnconversions.bal
+File38=scrnconvlength.bal
+File39=scrnconvtemp.bal
 File4=dividerh.png
-File40=viewroundslider.bal
-File41=viewSetupWeather.bal
-File42=viewWeatherCurrent.bal
-File43=viewWeatherForcast.bal
-File44=weatherAPI_codes.json
+File40=scrnconvvolume.bal
+File41=scrnconvweight.bal
+File42=setup_main.json
+File43=tmr_go.png
+File44=tmr_pause.png
+File45=tmr_stop.png
+File46=viewPhotoItem.bal
+File47=viewroundslider.bal
+File48=viewSetupWeather.bal
+File49=viewWeatherCurrent.bal
 File5=dlgAbout.bal
+File50=viewWeatherForcast.bal
+File51=weatherAPI_codes.json
 File6=dlgVolumeSettings.bal
 File7=ktimers_alarm01.ogg
 File8=ktimers_alarm02.ogg
@@ -49,13 +56,13 @@ FileGroup11=Default Group
 FileGroup12=Default Group
 FileGroup13=Default Group
 FileGroup14=Pages-Snapins-Views\Calculator
-FileGroup15=Page-Snapin-Icons
+FileGroup15=Pages-Snapins-Views\Conversions
 FileGroup16=Pages-Snapins-Views\Home
-FileGroup17=Page-Snapin-Icons
+FileGroup17=Header-Stuff
 FileGroup18=Pages-Snapins-Views\PicViewer
 FileGroup19=Pages-Snapins-Views\KitchenTimers
 FileGroup2=Default Group
-FileGroup20=Page-Snapin-Icons
+FileGroup20=Header-Stuff
 FileGroup21=Pages-Snapins-Views\Weather
 FileGroup22=Main
 FileGroup23=Default Group
@@ -63,26 +70,33 @@ FileGroup24=Default Group
 FileGroup25=Default Group
 FileGroup26=Pages-Snapins-Views\KitchenTimers
 FileGroup27=Pages-Snapins-Views\Calculator
-FileGroup28=Pages-Snapins-Views\Home
-FileGroup29=Pages-Snapins-Views\KitchenTimers
+FileGroup28=Pages-Snapins-Views\Conversions
+FileGroup29=Pages-Snapins-Views\Home
 FileGroup3=Default Group
-FileGroup30=Pages-Snapins-Views\PicViewer
-FileGroup31=Pages-Snapins-Views\Weather
-FileGroup32=Pages-Snapins-Views\Calculator
-FileGroup33=CustomCtrlViews
-FileGroup34=Pages-Snapins-Views\PicViewer
-FileGroup35=Default Group
-FileGroup36=Pages-Snapins-Views\KitchenTimers
-FileGroup37=Pages-Snapins-Views\KitchenTimers
-FileGroup38=Pages-Snapins-Views\KitchenTimers
-FileGroup39=Pages-Snapins-Views\PicViewer
+FileGroup30=Pages-Snapins-Views\KitchenTimers
+FileGroup31=Pages-Snapins-Views\PicViewer
+FileGroup32=Pages-Snapins-Views\Weather
+FileGroup33=Pages-Snapins-Views\Calculator
+FileGroup34=CustomCtrlViews
+FileGroup35=Pages-Snapins-Views\PicViewer
+FileGroup36=Pages-Snapins-Views\Conversions
+FileGroup37=Pages-Snapins-Views\Conversions
+FileGroup38=Pages-Snapins-Views\Conversions
+FileGroup39=Pages-Snapins-Views\Conversions
 FileGroup4=Default Group
-FileGroup40=CustomCtrlViews
-FileGroup41=Pages-Snapins-Views\Weather
-FileGroup42=Pages-Snapins-Views\Weather
-FileGroup43=Pages-Snapins-Views\Weather
-FileGroup44=Pages-Snapins-Views\Weather
+FileGroup40=Pages-Snapins-Views\Conversions
+FileGroup41=Pages-Snapins-Views\Conversions
+FileGroup42=Default Group
+FileGroup43=Pages-Snapins-Views\KitchenTimers
+FileGroup44=Pages-Snapins-Views\KitchenTimers
+FileGroup45=Pages-Snapins-Views\KitchenTimers
+FileGroup46=Pages-Snapins-Views\PicViewer
+FileGroup47=CustomCtrlViews
+FileGroup48=Pages-Snapins-Views\Weather
+FileGroup49=Pages-Snapins-Views\Weather
 FileGroup5=Dialogs
+FileGroup50=Pages-Snapins-Views\Weather
+FileGroup51=Pages-Snapins-Views\Weather
 FileGroup6=Dialogs
 FileGroup7=Default Group
 FileGroup8=Default Group
@@ -163,7 +177,7 @@ Module6=|relative|..\Src\miscClasses\events_subscription\clsEvent
 Module7=|relative|..\Src\miscClasses\kitchenTimers\clsKAlarms
 Module8=|relative|..\Src\miscClasses\weather\clsWeatherData
 Module9=|relative|..\Src\miscClasses\weather\clsWeatherDataDay
-NumberOfFiles=44
+NumberOfFiles=51
 NumberOfLibraries=18
 NumberOfModules=56
 Version=12.5
@@ -176,7 +190,7 @@ Version=12.5
 	#SupportedOrientations: landscape
 	#CanInstallToExternalStorage: False
 	
-	'--- is this needed for picking path?
+	'--- is this needed for picking path? -- Android 5.1
 	#AdditionalJar: com.android.support:support-core-utils
 	 
 #End Region
@@ -186,12 +200,14 @@ Version=12.5
 #Region  Activity Attributes 
 	#FullScreen: True
 	#IncludeTitle: False
+	
+	#BridgeLogger: True 	
+
+	'--- ignore android target version
+	#Ignorewarnings: 31
 #End Region
 
-#BridgeLogger: True
 
-'--- ignore android target version
-#Ignorewarnings: 31 
 
 Sub Process_Globals
 	Public ActionBarHomeClicked As Boolean
