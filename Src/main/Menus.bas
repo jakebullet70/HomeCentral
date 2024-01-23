@@ -66,6 +66,10 @@ Public Sub BuildSideMenu(lstMnus As List, lstRetVals As List)
 	Dim lvSM As CustomListView = B4XPages.MainPage.lvSideMenu
 	lvSM.Clear
 	
+	If lstMnus.Size = 1 And lstMnus.Get(0) = "" Then 
+		Return '--- no menus for this page
+	End If
+	
 	clrTheme.SetThemeCustomListView(lvSM)
 	
 	For x = 0 To lstMnus.size - 1

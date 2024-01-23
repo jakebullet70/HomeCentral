@@ -69,6 +69,7 @@ End Sub
 '-------------------------------
 
 Public Sub Set_focus()
+	mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Side_Menu",250)
 	Menus.SetHeader("Calculator","main_menu_calc.png")
 	pnlMain.SetVisibleAnimated(500,True)
 End Sub
@@ -79,6 +80,9 @@ Private Sub Page_Setup
 	guiHelpers.Show_toast2("No setup for this page",3500)
 End Sub
 
+Private Sub Build_Side_Menu
+	Menus.BuildSideMenu(Array As String(""),Array As String(""))
+End Sub
 
 '=============================================================================================
 '=============================================================================================
