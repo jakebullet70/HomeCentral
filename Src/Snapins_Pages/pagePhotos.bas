@@ -98,6 +98,7 @@ Sub  lvPics_VisibleRangeChanged (FirstIndex As Int, LastIndex As Int)
 	Next
 	lvPointerLow  = FirstIndex
 	lvPointerHigh = LastIndex
+	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 End Sub
 
 'https://www.b4x.com/android/forum/threads/view-utils.39347/#post-233788
@@ -136,6 +137,7 @@ Private Sub lvPics_ItemClick (Index As Int, Value As Object)
 	img.mBase.Visible = True
 	'picPointer = Index
 	ShowPic(Index,Regex.Split("::",Value)(1))
+	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 End Sub
 
 Private Sub lmB4XImageViewX1_Click
@@ -144,6 +146,7 @@ Private Sub lmB4XImageViewX1_Click
 	img.mBase.Visible = True
 	tmrPicShow.Enabled = False
 	ShowPic(Regex.Split("::",o.Tag)(0),Regex.Split("::",o.Tag)(1))
+	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 End Sub
 
 Private Sub ScanPics
@@ -172,6 +175,7 @@ Private Sub img_Click
 	lvPics.AsView.Visible = True
 	img.mBase.Visible = False
 	lvPics.JumpToItem(picPointer) '--- keep the ListView in sync
+	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 End Sub
 
 Private Sub NextPic
@@ -214,6 +218,7 @@ Private Sub btnPressed_Click
 			Log("OK --> " & oo.pSelectedFolder)
 	
 	End Select
+	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 	
 End Sub
 

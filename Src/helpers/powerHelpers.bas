@@ -19,7 +19,7 @@ Version=9.5
 
 Sub Process_Globals
 	Private xui As XUI
-	
+
 	Private pws As PhoneWakeState, ph As Phone
 	
 	Public pScreenBrightness As Float = -1
@@ -29,18 +29,14 @@ End Sub
 
 Public Sub Init(takeOverPower As Boolean)
 	
-	'TODO  brightness needs to be seperated from takeoverpower
-	'If config.ChangeBrightnessSettingsFLAG = False Then Return
-	
 	If takeOverPower = False Then Return
+	pScreenBrightness = Main.kvs.GetDefault(gblConst.INI_SCREEN_BRIGHTNESS_VALUE,.5)
 	
-	If LoadBrightnesFromfile = False Then
-		pScreenBrightness = GetScreenBrightness
-		If pScreenBrightness = AUTO_BRIGHTNESS Then
-			pScreenBrightness = 0.5
-			SetScreenBrightnessAndSave(pScreenBrightness,True)
-			Return
-		End If
+	pScreenBrightness = GetScreenBrightness
+	If pScreenBrightness = AUTO_BRIGHTNESS Then
+		pScreenBrightness = 0.5
+		SetScreenBrightnessAndSave(pScreenBrightness,True)
+		Return
 	End If
 	SetScreenBrightnessAndSave(pScreenBrightness,False)
 	
@@ -78,6 +74,7 @@ End Sub
 '=================================================================================
 '=================================================================================
 
+
 ' 0 to 1 - so 0.5 is valid
 Public Sub SetScreenBrightnessAndSave(value As Float, SaveMe As Boolean)
 	
@@ -107,11 +104,6 @@ Public Sub SetScreenBrightness2
 	
 End Sub
 
-
-Private Sub LoadBrightnesFromfile() As Boolean
-	pScreenBrightness = Main.kvs.GetDefault(gblConst.INI_SCREEN_BRIGHTNESS_VALUE,.5)
-	Return True
-End Sub
 
 
 ' 0 to 1  - so 0.5 is valid

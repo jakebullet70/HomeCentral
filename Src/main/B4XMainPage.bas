@@ -83,6 +83,7 @@ Public Sub Initialize
 	WeatherData.Initialize
 	useCel 		= Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_CELSIUS,True)
 	useMetric 	= Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_METRIC,False)
+	StartPowerCrap
 	
 End Sub
 
@@ -107,7 +108,6 @@ Private Sub B4XPage_Created (Root1 As B4XView)
 	#if debug
 	B4XPages.MainPage.DebugLog = True
 	#End If
-	CfgAndroidPowerOptions
 	
 End Sub
 
@@ -219,7 +219,7 @@ End Sub
 Private Sub segTabMenu_TabChanged(index As Int)
 	
 	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
-	
+		
 	Dim value As String
 	If index = -2 Then  '--- 1st run
 		value = "hm"
@@ -265,6 +265,7 @@ Private Sub segTabMenu_TabChanged(index As Int)
 
 	'--- set focus to page object
 	CallSub(oPageCurrent,"Set_Focus")
+	ResetScrn_SleepCounter
 	
 End Sub
 #end region
@@ -386,17 +387,19 @@ End Sub
 
 
 #Region "ANDROID POWER-BRIGHTNESS SUPPORT"
-Private Sub CfgAndroidPowerOptions
-	
-	gblConst.AndroidTakeOverSleepFLAG = Main.kvs.GetDefault(gblConst.INI_SCREEN_TAKEOVER_POWER,False)
-	If gblConst.AndroidTakeOverSleepFLAG = False Then
-		powerHelpers.ScreenON(False) '--- power options not configured
-		Return
-	End If
-		
-	'fnc.ProcessPowerFlags
-	
+Private Sub StartPowerCrap
+	powerHelpers.Init(True)
+	powerHelpers.ScreenON(True)
+	ResetScrn_SleepCounter
 End Sub
+Private Sub TurnScrn_Off
+	powerHelpers.ScreenOff
+	'TODO - Put panel over screen to eat touch
+End Sub
+Public Sub ResetScrn_SleepCounter
+	tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"TurnScrn_Off",60000 * config.getDimScreenTime)
+End Sub
+
 Public Sub DoBrightnessDlg
 	
 '	Dim o1 As dlgBrightness

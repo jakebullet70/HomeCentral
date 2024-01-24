@@ -202,6 +202,6 @@ Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
 	Catch
 		Log(LastException)
 	End Try
-	
+	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 End Sub
 

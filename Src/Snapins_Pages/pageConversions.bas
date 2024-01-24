@@ -194,8 +194,8 @@ Private Sub ActiveScrnLoad(scrn As Int)
 		Case scrnWeight
 			guiHelpers.ResizeText("Weight",lblWhat)
 			pnlInput.LoadLayout("scrnConvWeight")
-			pnlWeight.Color  = Colors.Transparent
-			pnlWeightF.Color = Colors.Transparent
+			pnlWeight.Color  = Colors.Transparent : pnlWeightF.Color = Colors.Transparent
+			
 			txtOZ_FocusChanged(True)
 			
 			guiHelpers.SetTextSize(Array As B4XView(txtOZ,txtPounds,txtKG,txtGrams),24)
@@ -217,7 +217,7 @@ End Sub
 
 
 Private Sub cvMenu_ItemClick(Position As Int, Value As Object)
-'	CallSubDelayed(svrMain,"ResetScrn_SleepCounter")
+	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 '	Select Case Value
 '		Case "Weight" : 
 '			ActiveScrnLoad(scrnWeight)
@@ -264,7 +264,7 @@ Private Sub btnNums_Click
 	Log(txt)
 	'setCurrText(txt)
 	curTxt.Text = curTxt.Text & txt
-	'CallSubDelayed(svrMain,"ResetScrn_SleepCounter")
+	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 End Sub
 
 

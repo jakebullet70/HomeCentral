@@ -88,7 +88,7 @@ Public Sub Set_focus()
 	If mpage.tmrTimerCallSub.Exists(Me,"Render_Scrn") = Null Then
 		mpage.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus2(Me,"Render_Scrn",250,Null)
 	End If
-
+	
 End Sub
 
 Private Sub Build_Side_Menu

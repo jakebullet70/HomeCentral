@@ -16,6 +16,7 @@ Sub Process_Globals
 	Private xui As XUI
 	Private Const LICENSE_FILE As String = "LICENSE.txt"
 	Public IsInit As Boolean = False
+	Private MainSetupData As Map
 
 	'--- android power dlg
 '	Public AndroidTakeOverSleepFLAG As Boolean = False
@@ -71,44 +72,26 @@ Private Sub ConfigMe()
 		o3.initialize(Null)
 		o3.createdefaultfile
 	End If
-	'ReadMainSetup
+	ReadMainSetup
 	
 	'======================================================================
 	
 End Sub	
 	
 '=========================================================================
+'====================  Get's for the Main Setup Map file =================
+'=========================================================================
+
+Public Sub getDimScreenTime() As Int
+	Return MainSetupData.Get("pwroff")
+End Sub
 
 Public Sub ReadMainSetup
-	
-	Dim Data As Map = File.ReadMap(xui.DefaultFolder,gblConst.FILE_MAIN_SETUP)
-	
-'	If Data.Get("logall").As(Boolean) Then
-'		logPOWER_EVENTS = True
-'		logFILE_EVENTS = True
-'		logREQUEST_OCTO_KEY = True
-'		logREST_API = True
-'	Else
-'		logPOWER_EVENTS = Data.Get("logpwr").As(Boolean)
-'		logFILE_EVENTS = Data.Get("logfiles").As(Boolean)
-'		logREQUEST_OCTO_KEY = Data.Get("logoctokey").As(Boolean)
-'		logREST_API = Data.Get("logrest").As(Boolean)
-'	End If
-	
+	'--- DO NOT USE	File.ReadMap Or File.WriteMap
+	MainSetupData = objHelpers.MapFromDisk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP) 
 End Sub
 
-Public Sub ReadAndroidPowerCFG
-	
-'	Dim Data As Map = File.ReadMap(xui.DefaultFolder,gblConst.ANDROID_POWER_OPTIONS_FILE)
-'	
-'	AndroidTakeOverSleepFLAG = Data.Get("TakePwr")
-'	AndroidNotPrintingScrnOffFLAG = Data.Get("NotPrintingScrnOff")
-'	AndroidNotPrintingMinTill  = Data.Get("NotPrintingMinTill")
-'	AndroidPrintingScrnOffFLAG  = Data.Get("PrintingScrnOff")
-'	AndroidPrintingMinTill  = Data.Get("PrintingMinTill")
-
-End Sub
-
+'=========================================================================
 
 
 

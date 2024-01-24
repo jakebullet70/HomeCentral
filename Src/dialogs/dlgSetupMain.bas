@@ -55,7 +55,7 @@ Public Sub Show
 	prefHelper.ThemePrefDialogForm
 	pf.PutAtTop = False
 	Dim RS As ResumableSub = pf.ShowDialog(data, "SAVE", "CANCEL")
-	'prefHelper.dlgHelper.ThemeDialogBtnsResize
+	'prefHelper.dlgHelper.ThemeDialogBtnsResize '--- now done in dlgGeneral_BeforeDialogDisplayed
 	
 	Wait For (RS) Complete (Result As Int)
 	If Result = xui.DialogResponse_Positive Then
@@ -71,6 +71,7 @@ Public Sub Show
 	End If
 	
 	mpage.tmrTimerCallSub.CallSubDelayedPlus(Main,"Dim_ActionBar_Off",300)
+	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 	
 End Sub
 

@@ -276,7 +276,7 @@ End Sub
 Private Sub UpdateTape
 	Dim h As Float
 	
-	Log(Txt)
+	'/Log(Txt)
 	
 	lblPaperRoll.Text = Txt
 
@@ -287,6 +287,7 @@ Private Sub UpdateTape
 		Sleep(0)
 		scvPaperRoll.ScrollPosition = h
 	End If
+	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 End Sub
 
 Private Sub btnClr_Click

@@ -239,7 +239,6 @@ Private Sub TimerSetColor(n As Int,clr As Int)
 End Sub
 
 Private Sub TimerSelect(x As Int)
-	'''''''CallSubDelayed(svrMain,"ResetScrn_SleepCounter")
 	
 	TimerSetColor(clsKTimers.CurrentTimer,clrTheme.txtNormal)
 	TimerSetColor(x,clrTheme.txtAccent)
@@ -270,6 +269,7 @@ Private Sub TimerSelect(x As Int)
 	End If
 	 
 	If kt.AnyTimersFiring() = False Then mTmrAlarmFire.Enabled = False
+	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 	
 End Sub
 
@@ -282,7 +282,7 @@ Private Sub btnIncr_Click
 	Dim o As B4XView = Sender
 	Dim txt As String = o.text
 	Dim I As Int,  per As Period
-	'''''CallSubDelayed(svrMain,"ResetScrn_SleepCounter")
+	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 	Select Case o.tag
 		Case "s"
 			If txt.Contains("5") Then '--- 5 has been pressed
