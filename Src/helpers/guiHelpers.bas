@@ -495,3 +495,56 @@ Public Sub AnimateB4xView (FromEdge As String,base As B4XView)
 	base.SetLayoutAnimated(220, left, top, base.Width, base.Height)
 End Sub
 
+
+
+'Sets up the colors of the buttons
+Public Sub SkinTextEdit2(et() As EditText ,brd_r As Int)    
+    
+	Dim cd As ColorDrawable
+	Dim sd As StateListDrawable
+	sd.Initialize
+	
+	For Each v As EditText In et
+	
+		cd.Initialize2(clrTheme.btnDisableText,brd_r,2dip,clrTheme.btnDisableText)
+		sd.AddState(sd.State_Disabled, cd)
+
+		cd.Initialize2(clrTheme.txtAccent,brd_r,2dip,clrTheme.txtAccent)
+		sd.AddState(sd.State_Focused, cd)
+
+		'--- must be the last one
+		cd.Initialize2(clrTheme.txtNormal,brd_r,2dip,clrTheme.txtNormal)
+		sd.AddCatchAllState(cd)
+	
+		v.Background = sd
+	Next
+	
+End Sub
+Public Sub SkinTextEdit(et() As EditText ,brd_r As Int,NoPopupKB As Boolean)    
+    
+	Dim cd As ColorDrawable
+	Dim sd As StateListDrawable
+	sd.Initialize
+	
+	For Each v As EditText In et
+	
+		cd.Initialize2(clrTheme.btnDisableText,brd_r,2dip,clrTheme.btnDisableText)
+		sd.AddState(sd.State_Disabled, cd)
+
+		cd.Initialize2(clrTheme.txtAccent,brd_r,2dip,clrTheme.txtAccent)
+		sd.AddState(sd.State_Focused, cd)
+
+		'--- must be the last one
+		cd.Initialize2(clrTheme.txtNormal,brd_r,2dip,clrTheme.txtNormal)
+		sd.AddCatchAllState(cd)
+	
+		v.Background = sd
+		
+		If NoPopupKB Then
+			v.InputType = v.INPUT_TYPE_NONE
+		End If
+		
+	Next
+	
+End Sub
+

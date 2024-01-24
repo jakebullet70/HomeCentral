@@ -73,17 +73,13 @@ Public Sub Initialize(p As B4XView)
 	pnlInput.Color= Colors.Transparent
 	lblWhat.TextColor =clrTheme.txtNormal
 	
-	guiHelpers.SkinButton(Array As B4XView(Button1,Button2,Button3,Button4,Button5,Button6,Button7, _
+	guiHelpers.SkinButton(Array As Button(Button1,Button2,Button3,Button4,Button5,Button6,Button7, _
 							Button8,Button9,Button10,Button11,Button12))
-'	For Each v As View In pnlNumPad.GetAllViewsRecursive
-'		If(v Is Button) Then
-'			Dim btn As Button = v
-'			btn.TextColor = g.GetColorTheme(g.ehome_clrTheme,"highlightText")
-'			g.SetColorList(btn,g.GetColorTheme(g.ehome_clrTheme,"btnNormal"), _
-'		    g.GetColorTheme(g.ehome_clrTheme,"btnPressed"), _
-'		    g.GetColorTheme(g.ehome_clrTheme,"btnNormal"), g.GetColorTheme(g.ehome_clrTheme,"btnDisabled"),35dip)
-'		End If
-'	Next
+							
+	guiHelpers.ResizeText("1",Button1)
+	guiHelpers.SetTextSize(Array As B4XView(Button1,Button2,Button3,Button4,Button5,Button6,Button7, _
+							Button8,Button9,Button10,Button11),(Button1.TextSize - 10))							
+
 	
 	oConversion.Initialize
 	BuildSideMenu
@@ -127,22 +123,15 @@ Private Sub ActiveScrnLoad(scrn As Int)
 		Case scrnButter
 			guiHelpers.ResizeText("Butter",lblWhat)
 			pnlInput.LoadLayout("scrnConvButter")
-			pnlButter.Color = Colors.Transparent
-			Panel1.Color = Colors.Transparent : Panel2.Color = Colors.Transparent: Panel3.Color = Colors.Transparent
-			Panel4.Color = Colors.Transparent : Panel5.Color = Colors.Transparent: Panel0.Color = Colors.Transparent
+			
+			guiHelpers.SetTextColor(Array As B4XView(pnlButter,Panel1,Panel2,Panel3,Panel4,Panel5,Panel0),XUI.Color_Transparent)
+
 			txtGramsB_FocusChanged(True)
-			txtGramsB.InputType = txtGramsB.INPUT_TYPE_NONE
-			txtStick.InputType  = txtStick.INPUT_TYPE_NONE
-			txtOZb.InputType    = txtOZb.INPUT_TYPE_NONE
-			txtTBSP.InputType   = txtTBSP.INPUT_TYPE_NONE
-			txtCUP.InputType    = txtCUP.INPUT_TYPE_NONE
 			
-			
+			guiHelpers.SkinTextEdit(Array As EditText(txtGramsB,txtTBSP,txtStick,txtCUP,txtOZb),0,True)
+					
 			guiHelpers.ResizeText(lblGramsB.Text,lblGramsB)
-			guiHelpers.ResizeText(lblCUP.Text,lblCUP)
-			guiHelpers.ResizeText(lblStick.Text,lblStick)
-			guiHelpers.ResizeText(lblTBSP.Text,lblTBSP)
-			guiHelpers.ResizeText(lblOZb.Text,lblOZb)
+			guiHelpers.SetTextSize(Array As B4XView(lblCUP,lblTBSP,lblStick,lblOZb),lblGramsB.TextSize)
 			
 			guiHelpers.SetTextSize(Array As B4XView(txtCUP,txtTBSP,txtGramsB,txtStick,txtOZb),24)
 			guiHelpers.SetTextColor(Array As B4XView(txtCUP,txtTBSP,txtGramsB,txtStick,txtOZb),clrTheme.txtNormal)
@@ -154,74 +143,39 @@ Private Sub ActiveScrnLoad(scrn As Int)
 			pnlInput.LoadLayout("scrnConvLength")
 			pnlLength.Color= Colors.Transparent	: pnlLenFrame.Color= Colors.Transparent
 			txtMM_FocusChanged(True)
-			txtMM.InputType     = txtMM.INPUT_TYPE_NONE
-			txtCM.InputType     = txtCM.INPUT_TYPE_NONE
-			txtInches.InputType = txtInches.INPUT_TYPE_NONE
 			
-'			g.SetColorList(txtMM,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			g.SetColorList(txtCM,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			g.SetColorList(txtInches,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
+			guiHelpers.SkinTextEdit(Array As EditText(txtMM,txtInches,txtCM),0,True)
 			
 			guiHelpers.SetTextColor(Array As B4XView(txtInches,txtCM,txtMM),clrTheme.txtNormal)
 			guiHelpers.SetTextSize(Array As B4XView(txtInches,txtCM,txtMM),24)
 			guiHelpers.SetTextColor(Array As B4XView(lblInches,lblCM,lblMM),clrTheme.txtNormal)
 			
 			guiHelpers.ResizeText(lblMM.Text,lblMM) 
-			guiHelpers.ResizeText(lblCM.Text,lblCM)  
-			guiHelpers.ResizeText(lblInches.Text,lblInches)
+			guiHelpers.SetTextSize(Array As B4XView(lblCM,lblInches),lblMM.TextSize)
 			
 		Case scrnTemp
 			guiHelpers.ResizeText("Temperature",lblWhat)
 			pnlInput.LoadLayout("scrnConvTemp")
 			pnlTemp.Color = Colors.Transparent
 			txtF_FocusChanged(True)
-			txtF.InputType = txtF.INPUT_TYPE_NONE
-			txtC.InputType = txtC.INPUT_TYPE_NONE
 			
-'			g.SetColorList(txtF,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			g.SetColorList(txtC,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),00)
+			guiHelpers.SkinTextEdit(Array As EditText(txtF,txtC),0,True)
 			
 			txtF.TextColor = clrTheme.txtNormal : txtC.TextColor = clrTheme.txtNormal
 			guiHelpers.SetTextSize(Array As B4XView(txtC,txtF),24)
 			lblF.TextColor = clrTheme.txtNormal : lblC.TextColor = clrTheme.txtNormal
 			
-			guiHelpers.ResizeText(lblF.Text,lblF) 
-			guiHelpers.ResizeText(lblC.Text,lblC)
+			guiHelpers.ResizeText(lblF.Text,lblF) : lblC.TextSize = lblF.TextSize
 			
 		Case scrnVolume
 			guiHelpers.ResizeText("Volume",lblWhat)
 			pnlInput.LoadLayout("scrnConvVolume")
-			pnlVolume0.Color= Colors.Transparent:pnlVolume1.Color=Colors.Transparent:pnlVolume2.Color=Colors.Transparent
+			guiHelpers.SetTextColor(Array As B4XView(pnlVolume0,pnlVolume1,pnlVolume2),XUI.Color_Transparent)
 			txtML_FocusChanged(True)
-			txtGAL.InputType = txtGAL.INPUT_TYPE_NONE
-			txtLiters.InputType  = txtLiters.INPUT_TYPE_NONE
-			txtQuarts.InputType    = txtQuarts.INPUT_TYPE_NONE
-			txtTBSPb.InputType   = txtTBSPb.INPUT_TYPE_NONE
-			txtCUPSb.InputType    = txtCUPSb.INPUT_TYPE_NONE
-			txtTSP.InputType    = txtTSP.INPUT_TYPE_NONE
-			txtML.InputType    = txtML.INPUT_TYPE_NONE
-			txtPINTS.InputType    = txtPINTS.INPUT_TYPE_NONE
-			txtFlOZ.InputType    = txtFlOZ.INPUT_TYPE_NONE
-			
-			txtGAL.TextSize = 24
-			txtLiters.TextSize = 24
-			txtQuarts.TextSize = 24
-			txtTBSPb.TextSize = 24
-			txtCUPSb.TextSize = 24
-			txtTSP.TextSize = 24
-			txtML.TextSize = 24
-			txtPINTS.TextSize = 24
-			txtFlOZ.TextSize = 24
-			
-'			g.SetColorList(txtGAL,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			g.SetColorList(txtLiters,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			g.SetColorList(txtQuarts,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			g.SetColorList(txtTBSPb,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			g.SetColorList(txtCUPSb,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			g.SetColorList(txtTSP,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			g.SetColorList(txtML,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			g.SetColorList(txtPINTS,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			g.SetColorList(txtFlOZ,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
+	
+			guiHelpers.SetTextSize(Array As B4XView(txtPINTS,txtML,txtTSP,txtTBSPb,txtFlOZ,txtCUPSb,txtQuarts,txtLiters,txtGAL),24)
+			guiHelpers.SkinTextEdit(Array As EditText(txtPINTS,txtML,txtTSP,txtTBSPb,txtFlOZ,txtCUPSb,txtQuarts,txtLiters,txtGAL),0,True)
+			guiHelpers.SetTextColor(Array As B4XView(lblPINTS,lblML,lblTSP,lblTBSPb,lblFLOZ,lblCUPSb,lblQuarts,lblLiters,lblGAL),clrTheme.txtNormal)
 '			
 '			txtGAL.TextColor = g.GetColorTheme(g.ehome_clrTheme,"darkText")
 '			txtLiters.TextColor = g.GetColorTheme(g.ehome_clrTheme,"darkText")
@@ -233,15 +187,8 @@ Private Sub ActiveScrnLoad(scrn As Int)
 '			txtPINTS.TextColor = g.GetColorTheme(g.ehome_clrTheme,"darkText")
 '			txtFlOZ.TextColor = g.GetColorTheme(g.ehome_clrTheme,"darkText")
 '			
-'			lblML.TextColor =  g.GetColorTheme(g.ehome_clrTheme,"themeColorText") : lblTSP.TextColor =  g.GetColorTheme(g.ehome_clrTheme,"themeColorText")
-'			lblTBSPb.TextColor =  g.GetColorTheme(g.ehome_clrTheme,"themeColorText") : lblFLOZ.TextColor = g.GetColorTheme(g.ehome_clrTheme,"themeColorText")
-'			lblCUPSb.TextColor = g.GetColorTheme(g.ehome_clrTheme,"themeColorText") : lblGAL.TextColor =  g.GetColorTheme(g.ehome_clrTheme,"themeColorText")
-'			lblLiters.TextColor =  g.GetColorTheme(g.ehome_clrTheme,"themeColorText") : lblQuarts.TextColor =  g.GetColorTheme(g.ehome_clrTheme,"themeColorText"): lblPINTS.TextColor =  g.GetColorTheme(g.ehome_clrTheme,"themeColorText")
-			guiHelpers.ResizeText(lblML.Text,lblML) : guiHelpers.ResizeText(lblTSP.Text,lblTSP)
-			guiHelpers.ResizeText(lblTBSPb.Text,lblTBSPb) : guiHelpers.ResizeText(lblFLOZ.Text,lblFLOZ)
-			guiHelpers.ResizeText(lblCUPSb.Text,lblCUPSb)
-			guiHelpers.ResizeText(lblGAL.Text,lblGAL) : guiHelpers.ResizeText(lblQuarts.Text,lblQuarts)
-			guiHelpers.ResizeText(lblLiters.Text,lblLiters) : guiHelpers.ResizeText(lblPINTS.Text,lblPINTS)
+			guiHelpers.ResizeText(lblML.Text,lblML)
+			guiHelpers.SetTextSize(Array As B4XView(lblPINTS,lblTSP,lblTBSPb,lblFLOZ,lblCUPSb,lblQuarts,lblLiters,lblGAL),lblML.TextSize)
 			
 			
 		Case scrnWeight
@@ -250,30 +197,13 @@ Private Sub ActiveScrnLoad(scrn As Int)
 			pnlWeight.Color  = Colors.Transparent
 			pnlWeightF.Color = Colors.Transparent
 			txtOZ_FocusChanged(True)
-			txtOZ.InputType     = txtOZ.INPUT_TYPE_NONE
-			txtKG.InputType     = txtKG.INPUT_TYPE_NONE
-			txtPounds.InputType = txtPounds.INPUT_TYPE_NONE
-			txtGrams.InputType  = txtGrams.INPUT_TYPE_NONE
 			
-			txtOZ.TextSize = 24
-			txtKG.TextSize = 24
-			txtPounds.TextSize = 24
-			txtGrams.TextSize = 24
+			guiHelpers.SetTextSize(Array As B4XView(txtOZ,txtPounds,txtKG,txtGrams),24)
+			guiHelpers.SkinTextEdit(Array As EditText(txtOZ,txtPounds,txtKG,txtGrams),0,True)
+			guiHelpers.SetTextColor(Array As B4XView(lblKG,lblGrams,lblPounds,lblOZ),clrTheme.txtNormal)
 			
-'			g.SetColorList(txtOZ,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			g.SetColorList(txtKG,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			g.SetColorList(txtPounds,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			g.SetColorList(txtGrams,colorHighlightText,Null,colorHighlightText,g.GetColorTheme(g.ehome_clrTheme,"lstItemPressed"),0)
-'			
-'			txtOZ.TextColor = g.GetColorTheme(g.ehome_clrTheme,"darkText")
-'			txtKG.TextColor = g.GetColorTheme(g.ehome_clrTheme,"darkText")
-'			txtPounds.TextColor = g.GetColorTheme(g.ehome_clrTheme,"darkText")
-'			txtGrams.TextColor = g.GetColorTheme(g.ehome_clrTheme,"darkText")
-'			
-'			lblOZ.TextColor     =  g.GetColorTheme(g.ehome_clrTheme,"themeColorText") : lblKG.TextColor =  g.GetColorTheme(g.ehome_clrTheme,"themeColorText")
-'			lblPounds.TextColor =  g.GetColorTheme(g.ehome_clrTheme,"themeColorText") : lblGrams.TextColor =  g.GetColorTheme(g.ehome_clrTheme,"themeColorText")
-			guiHelpers.ResizeText(lblOZ.Text,lblOZ) : guiHelpers.ResizeText(lblPounds.Text,lblPounds)
-			guiHelpers.ResizeText(lblKG.Text,lblKG) : guiHelpers.ResizeText(lblGrams.Text,lblGrams)
+			guiHelpers.ResizeText(lblOZ.Text,lblOZ) 
+			guiHelpers.SetTextSize(Array As B4XView(lblKG,lblGrams,lblPounds),lblOZ.TextSize)
 			
 	End Select
 	
