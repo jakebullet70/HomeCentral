@@ -27,6 +27,7 @@ Sub Class_Globals
 	Public isInterNetConnected As Boolean = True
 	Public EventGbl As EventController
 	Public tmrTimerCallSub As sadCallSubUtils
+	Public PowerCtrl As PowerControl
 	'-------------------------------------------
 	
 	Public WeatherData As clsWeatherData
@@ -140,7 +141,7 @@ Private Sub B4XPage_CloseRequest As ResumableSub
 		Return False
 	End If
 	
-	'powerHelpers.ReleaseLocks
+	'PowerCtrl.ReleaseLocks
 	
 	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_ON)
 	
@@ -388,32 +389,12 @@ End Sub
 
 #Region "ANDROID POWER-BRIGHTNESS SUPPORT"
 Private Sub StartPowerCrap
-	powerHelpers.Init(True)
-	powerHelpers.ScreenON(True)
+	PowerCtrl.Initialize(True)
 	ResetScrn_SleepCounter
 End Sub
-Private Sub TurnScrn_Off
-	powerHelpers.ScreenOff
-	'TODO - Put panel over screen to eat touch
-End Sub
 Public Sub ResetScrn_SleepCounter
-	tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"TurnScrn_Off",60000 * config.getDimScreenTime)
+	tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(B4XPages.MainPage.PowerCtrl,"Screen_Off",60000 * config.getScreenOffTime)
 End Sub
 
-Public Sub DoBrightnessDlg
-	
-'	Dim o1 As dlgBrightness
-'	B4XPages.MainPage.pObjCurrentDlg1 = o1.Initialize("Screen Brightness",Me,"Brightness_Change")
-'	o1.Show(IIf(powerHelpers.pScreenBrightness < 0.05,0.1,powerHelpers.pScreenBrightness) * 100)
-	
-End Sub
-Private Sub Brightness_Change(value As Float)
-	
-	'--- callback for btnBrightness_Click
-	Dim v As Float = value / 100
-	powerHelpers.SetScreenBrightnessAndSave(v,True)
-	powerHelpers.pScreenBrightness = v
-	
-End Sub
 
 #end region

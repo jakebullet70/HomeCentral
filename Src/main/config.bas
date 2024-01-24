@@ -82,7 +82,7 @@ End Sub
 '====================  Get's for the Main Setup Map file =================
 '=========================================================================
 
-Public Sub getDimScreenTime() As Int
+Public Sub getScreenOffTime() As Int
 	Return MainSetupData.Get("pwroff")
 End Sub
 
