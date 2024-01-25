@@ -4,7 +4,11 @@ ModulesStructureVersion=1
 Type=Class
 Version=7.3
 @EndOfDesignText@
-'Class module
+' Author:  sadLogic/JakeBullet
+#Region VERSIONS 
+' V. 1.0 	Dec/26/2023
+'			Based off of code by Thraka from 2016
+#End Region
 Sub Class_Globals
 	Private eg As Map
 End Sub
@@ -20,6 +24,9 @@ End Sub
 'target: The object hosting the sub to call
 'callback: The string of the sub to call when this event is raised
 Public Sub Subscribe(eventName As String, CallBackObj As Object, callbackSub As String)
+	
+	'--- remove it if it exists
+	Unsubscribe(eventName,CallBackObj)
 	
 	'--- create callback obj
 	Dim oo As clsEvent : oo.Initialize
