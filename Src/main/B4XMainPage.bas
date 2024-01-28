@@ -66,6 +66,7 @@ Sub Class_Globals
 	Private lblMnuMenu As B4XView
 	Private pnlMenuHdrSpacer2,pnlMenuHdrSpacer1 As B4XView
 	
+	Private pnlScrnOff As B4XView
 End Sub
 
 Public Sub Initialize
@@ -85,6 +86,7 @@ Public Sub Initialize
 	useCel 		= Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_CELSIUS,True)
 	useMetric 	= Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_METRIC,False)
 	StartPowerCrap
+	
 	
 End Sub
 
@@ -155,6 +157,9 @@ End Sub
 Private Sub BuildGUI
 	
 	guiHelpers.SetVisible(Array As B4XView(pnlTimers,pnlSideMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
+	pnlScrnOff.SetLayoutAnimated(0,0,0,100%x,100%y) '--- covers the whole screen and eats the touch when screen blanked
+	pnlScrnOff.Color = Colors.ARGB(255,0,0,0) '--- scrn is black
+	pnlScrnOff_Click
 	
 	guiHelpers.SkinButtonNoBorder(Array As Button(btnAboutMe,btnSetupMaster,btnHdrTxt1))
 	
@@ -215,7 +220,6 @@ Private Sub Change_Pages2(value As String)
 		End If
 	Next
 End Sub
-
 
 Private Sub segTabMenu_TabChanged(index As Int)
 	
@@ -342,7 +346,7 @@ End Sub
 
 Private Sub lvSideMenu_ItemClick (Index As Int, Value As Object)
 	
-	'CallSub(Main,"Set_ScreenTmr") '--- reset the power / screen on-off
+	ResetScrn_SleepCounter '--- reset the power / screen on-off
 	If SubExists(oPageCurrent,"SideMenu_ItemClick") Then
 		CallSubDelayed3(oPageCurrent,"SideMenu_ItemClick",Index,Value)
 	End If
@@ -374,7 +378,7 @@ Private Sub SetupMainMenu_Event(t As String,o As Object)
 	End Select
 End Sub
 
-'--------------------  kTimers stuff. Needed here?
+'--------------------  kTimers stuff. Needed here????
 Private Sub Alarm_Fired
 	Log("call this --->  pnlScrnOff_Click") '--- turn on screen i think
 	'pnlScrnOff_Click
@@ -385,16 +389,55 @@ Public Sub Alarm_Start(x As Int)
 	'--- alarm fired, change to the ktimers snapin
 	oPageTimers.AlarmStart(x)
 End Sub
+'-----------------------------------------
 
-
-#Region "ANDROID POWER-BRIGHTNESS SUPPORT"
+#Region "ANDROID POWER-BRIGHTNESS-SLEEP SUPPORT"
 Private Sub StartPowerCrap
 	PowerCtrl.Initialize(True)
 	ResetScrn_SleepCounter
+	setup_on_off_scrn_event(True)
 End Sub
 Public Sub ResetScrn_SleepCounter
 	tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(B4XPages.MainPage.PowerCtrl,"Screen_Off",60000 * config.getScreenOffTime)
 End Sub
+Private Sub setup_on_off_scrn_event(DoIt As Boolean)
+	If DoIt Then
+		'EventGbl.Subscribe(gblConst.EVENT_CLOCK_CHANGE, Me,"event_screenOnOff_clock")
+	Else
+		'EventGbl.Unsubscribe(gblConst.EVENT_CLOCK_CHANGE, Me)
+	End If
+End Sub
 
+Private Sub clock_event_screenOnOff
+	'--- wedge into the clock event so this will fire ever minute
+	
+	'--- check for screen off in the evening time
+	
+End Sub
+
+Private Sub pnlScrnOff_Click
+	pnlScrnOff.SendToBack
+	pnlScrnOff.Visible = False '--- this is the WHOLE PANEL covering the screen
+	PowerCtrl.Screen_On(True)
+	If WeatherData.LastUpdatedAt = 1 Then
+		WeatherData.Try_Update
+	End If
+End Sub
+Public Sub TurnScreen_Off
+
+	PowerCtrl.Screen_Off
+	pnlScrnOff.BringToFront
+	pnlScrnOff.Visible = True
+	
+	'--- if pframe then pause the pframe timer
+	If oPagePhoto.IsInitialized And oPageCurrent = oPagePhoto Then
+		If oPagePhoto.tmrPicShow.Enabled Then 
+			oPagePhoto.tmrPicShow.Enabled = False
+		End If
+	End If
+	
+	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
+End Sub
 
 #end region
+

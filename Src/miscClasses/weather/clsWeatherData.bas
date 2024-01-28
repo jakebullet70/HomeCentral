@@ -36,10 +36,12 @@ Sub Class_Globals
 	Public qLocalTime As String, qLocalTime_Epoch As Long
 		
 	Public ForcastDays(3) As clsWeatherDataDay 
+	Private MinutesBetweenCalls As Int = 5
+	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	
 End Sub
 
-Sub getIsWeatherUpToDate As Boolean
+Public Sub getIsWeatherUpToDate As Boolean
 	If LastUpdatedAt <> 0 And dtHelpers.HoursBetween(DateTime.now, LastUpdatedAt) >= 1 Then
 		Return False
 	Else
@@ -66,7 +68,7 @@ Public Sub Initialize
 	WeatherKey = gblConst.WeatherAPIKey
 	ReadApiCodes
 	
-	B4XPages.MainPage.EventGbl.Subscribe(gblConst.EVENT_INET_ON_CONNECT,Me, "Internet_OnConnected")
+	mpage.EventGbl.Subscribe(gblConst.EVENT_INET_ON_CONNECT,Me, "Internet_OnConnected")
 	
 End Sub
 
@@ -86,14 +88,22 @@ Private Sub ReadApiCodes()
 End Sub
 
 Sub Internet_OnConnected
+	Log("Internet_OnConnected")
 	Try_Update
 End Sub
 
 
 Public Sub Try_Update
+	If mpage.PowerCtrl.IsScreenOff Then
+		LastUpdatedAt = 1
+		mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * MinutesBetweenCalls) '--- set the next call - 45min
+		If mpage.DebugLog Then Log("GetWeather - screen off!")
+		Return
+	End If
+		
 	If LastUpdatedAt <> 0 Then
 		'If dtHelpers.HoursBetween(DateTime.now, LastUpdatedAt) >= 1 Then
-		B4XPages.MainPage.EventGbl.Raise(gblConst.EVENT_WEATHER_BEFORE_UPDATE)
+		mpage.EventGbl.Raise(gblConst.EVENT_WEATHER_BEFORE_UPDATE)
 			If (LastUpdatedCity = "") Then
 				Update_Weather(Main.kvs.getdefault(gblConst.INI_WEATHER_DEFAULT_CITY,"seattle"))
 			Else
@@ -284,20 +294,20 @@ Private Sub Update_Weather(city As String) As ResumableSub
 	
 	LastUpdatedAt = 1 '--- reset lastUpdated dateTime
 
-	If  B4XPages.MainPage.isInterNetConnected = False Then
+	If mpage.isInterNetConnected = False Then
 		Try
 			'--- log to disk?
 			Log("Internet is not connected. Cannot update weather.")
 
 		Catch
 			'--- do nothing, --- should only error out the first time- STILLTRUE???
-			If B4XPages.MainPage.DebugLog Then Log("GetWeather - only 1st time OK")
+			If mpage.DebugLog Then Log("GetWeather - only 1st time OK")
 		End Try 'ignore
 	
 		Return False
 	End If
 
-	If B4XPages.MainPage.DebugLog Then Log("Requesting weather data")
+	If mpage.DebugLog Then Log("Requesting weather data")
 	
 	Dim retVal As Boolean,  job As HttpJob
 	job.Initialize("", Me)
@@ -309,17 +319,17 @@ Private Sub Update_Weather(city As String) As ResumableSub
 		
 		'File.WriteString(xui.DefaultFolder,"1.txt",job.GetString)
 		ParseWeatherJob(job.GetString)   
-		B4XPages.MainPage.EventGbl.Raise(gblConst.EVENT_WEATHER_UPDATED)
+		mpage.EventGbl.Raise(gblConst.EVENT_WEATHER_UPDATED)
 		LastUpdatedAt = DateTime.Now
 		LastUpdatedCity = city
-		If B4XPages.MainPage.DebugLog Then Log(DateUtils.TicksToString(DateTime.Now) & "--> Weather Job-OK: Setting next update for 45 min")
-		B4XPages.MainPage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 45) '--- set the next call - 45min
+		If mpage.DebugLog Then Log(DateUtils.TicksToString(DateTime.Now) & $"--> Weather Job-OK: Setting next update for ${MinutesBetweenCalls} min"$)
+		mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * MinutesBetweenCalls) '--- set the next call 
 		
 	Else
 		
 		Log("weather call failed - response code = " & job.Response.StatusCode)	
-		B4XPages.MainPage.EventGbl.Raise(gblConst.EVENT_WEATHER_UPDATE_FAILED)
-		B4XPages.MainPage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 3) '--- set the next call - 2min
+		mpage.EventGbl.Raise(gblConst.EVENT_WEATHER_UPDATE_FAILED)
+		mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 3) '--- set the next call - 3min
 		
 	End If
 	

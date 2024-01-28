@@ -61,11 +61,6 @@ Public Sub Initialize(p As B4XView)
 	imgCurrent.Bitmap = XUI.LoadBitmap(File.DirAssets, "no weather.png")
 	guiHelpers.ResizeText("     Getting Weather Data...     ",lblCurrTXT)
 	
-	If (mpage.WeatherData.IsWeatherUpToDate = True) Then
-		WeatherData_RefreshScrn
-	Else
-		mpage.WeatherData.Try_Update
-	End If
 	btnCurrTemp.TextSize = 50
 	
 	#if b4j
@@ -92,7 +87,7 @@ Public Sub Set_focus()
 End Sub
 
 Private Sub Build_Side_Menu
-	Menus.BuildSideMenu(Array As String("Refresh Weather"),Array As String("rf"))
+	Menus.BuildSideMenu(Array As String("Screen Off"),Array As String("soff"))
 End Sub
 
 Public Sub Lost_focus()
@@ -195,7 +190,9 @@ Private Sub btnCurrTemp_Click
 End Sub
 
 Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
-	Select Case  Value
+	Select Case Value
+		Case "soff"
+			mpage.TurnScreen_Off
 	End Select
 	mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu
 End Sub

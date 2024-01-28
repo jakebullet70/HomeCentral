@@ -22,7 +22,7 @@ Sub Class_Globals
 	
 	Private lvPics As CustomListView
 	Private PCLV As PreoptimizedCLV
-	Private tmrPicShow  As Timer
+	Public tmrPicShow As Timer
 
 	Private lstPics As List
 	Private picPath As String = "/Removable/MicroSD/pics"
