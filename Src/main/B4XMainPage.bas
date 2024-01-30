@@ -159,6 +159,7 @@ Private Sub BuildGUI
 	guiHelpers.SetVisible(Array As B4XView(pnlTimers,pnlSideMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
 	pnlScrnOff.SetLayoutAnimated(0,0,0,100%x,100%y) '--- covers the whole screen and eats the touch when screen blanked
 	pnlScrnOff.Color = Colors.ARGB(255,0,0,0) '--- scrn is black
+	pnlScrnOff.As(Panel).Elevation = 8dip
 	pnlScrnOff_Click
 	
 	guiHelpers.SkinButtonNoBorder(Array As Button(btnAboutMe,btnSetupMaster,btnHdrTxt1))
@@ -398,7 +399,7 @@ Private Sub StartPowerCrap
 	setup_on_off_scrn_event(True)
 End Sub
 Public Sub ResetScrn_SleepCounter
-	tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(B4XPages.MainPage.PowerCtrl,"Screen_Off",60000 * config.getScreenOffTime)
+	tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"TurnScreen_Off",60000 * config.getScreenOffTime)
 End Sub
 Private Sub setup_on_off_scrn_event(DoIt As Boolean)
 	If DoIt Then
@@ -425,9 +426,10 @@ Private Sub pnlScrnOff_Click
 End Sub
 Public Sub TurnScreen_Off
 
+	pnlScrnOff.Visible = True
 	PowerCtrl.Screen_Off
 	pnlScrnOff.BringToFront
-	pnlScrnOff.Visible = True
+	
 	
 	'--- if pframe then pause the pframe timer
 	If oPagePhoto.IsInitialized And oPageCurrent = oPagePhoto Then

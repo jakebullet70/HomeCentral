@@ -55,6 +55,9 @@ Public Sub Screen_ON(takeOverPower As Boolean)
 	ReleaseLocks
 	
 	If takeOverPower Then
+		#if debug
+		Log("pws.KeepAlive(True)")
+		#End If
 		pws.KeepAlive(True)
 	Else
 		'---("KeepAlive - OFF")
@@ -68,9 +71,12 @@ End Sub
 
 Public Sub Screen_Off
 	
+	#if debug
+	Log("Screen_Off called")
+	#End If
 	pws.ReleaseKeepAlive
 	pws.PartialLock
-	ph.SetScreenBrightness(0)
+	ph.SetScreenBrightness(.01)
 	IsScreenOff = True
 	
 End Sub

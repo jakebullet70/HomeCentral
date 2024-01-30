@@ -121,7 +121,9 @@ Private Sub Build_Cal()
 	If pnlMain.Visible = False Then Return
 	
 	'--- show cal
+	#if debug
 	Log("building CAL")
+	#end if
 	pnlCal.RemoveAllViews
 	csCal.Initialize(pnlCal.Width,pnlCal.Height,DateTime.Now,16 * guiHelpers.SizeFontAdjust)
 	csCal.callback = Me
