@@ -261,7 +261,7 @@ End Sub
 
 Private Sub btnNums_Click
 	Dim txt As String = Sender.As(Button).Text
-	Log(txt)
+	'Log(txt)
 	'setCurrText(txt)
 	curTxt.Text = curTxt.Text & txt
 	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
