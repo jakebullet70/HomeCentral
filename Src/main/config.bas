@@ -16,7 +16,7 @@ Sub Process_Globals
 	Private xui As XUI
 	Private Const LICENSE_FILE As String = "LICENSE.txt"
 	Public IsInit As Boolean = False
-	Private MainSetupData As Map
+	Public MainSetupData As Map
 
 	'--- android power dlg
 '	Public AndroidTakeOverSleepFLAG As Boolean = False
