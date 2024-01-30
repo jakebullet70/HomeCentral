@@ -36,7 +36,7 @@ Sub Class_Globals
 	Public qLocalTime As String, qLocalTime_Epoch As Long
 		
 	Public ForcastDays(3) As clsWeatherDataDay 
-	Private MinutesBetweenCalls As Int = 5
+	Private MinutesBetweenCalls As Int = 45
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	
 End Sub
