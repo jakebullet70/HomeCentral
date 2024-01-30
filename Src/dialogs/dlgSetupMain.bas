@@ -48,10 +48,20 @@ public Sub CreateDefaultFile
 	
 End Sub
 
+Private Sub DoesMenuNeedRebuild(newData as Map, OldData as map) as Boolean
+	
+	Return _
+		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_WEATHER) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_WEATHER)) or _
+		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO)) or _
+		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CALC) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CALC)) or _
+		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CONV) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CONV)) or _
+		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_TIMERS) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_TIMERS))
+		
+End Sub
+
 
 Public Sub Show
 	
-
 	pf.Initialize(mpage.root, "General Settings", 460, 440)
 	
 	pf.LoadFromJson(File.ReadString(File.DirAssets,"setup_main.json"))
@@ -59,6 +69,7 @@ Public Sub Show
 		
 	prefHelper.Initialize(pf)
 	Dim data As Map = prefHelper.MapFromDisk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP) '--- DO NOT USE	File.ReadMap Or File.WriteMap
+	Dim PrevData As Map = objHelpers.CopyObject(data)
 	
 	prefHelper.pDefaultFontSize = 18
 	prefHelper.ThemePrefDialogForm
@@ -68,13 +79,25 @@ Public Sub Show
 	
 	Wait For (RS) Complete (Result As Int)
 	If Result = xui.DialogResponse_Positive Then
+
 		guiHelpers.Show_toast("Data Saved")
-		
 		prefHelper.Map2Disk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, data) '--- DO NOT USE	File.ReadMap Or File.WriteMap
 		
 		ProcessAutoBootFlag(data.Get(gblConst.KEYS_MAIN_SETUP_AUTO_BOOT).As(Boolean))
 		
 		config.ReadMainSetup
+		
+		If DoesMenuNeedRebuild(data,PrevData) Then
+			'Log("rebild menu")
+			Dim Const GoHome As Int = -2 
+			guiHelpers.Show_toast2("Rebulding Menu's",3000)
+			CallSubDelayed2(mpage,"segTabMenu_TabChanged",GoHome)
+			mpage.segTabMenu.Index = 0
+			Sleep(1500)
+			Menus.BuildHeaderMenu(mpage.segTabMenu,mpage,"segTabMenu")
+			Sleep(0)
+		End If
+		
 		CallSub(mpage.oPageCurrent,"Set_focus")
 		'CallSubDelayed(B4XPages.MainPage,"Build_RightSideMenu")
 	End If
@@ -83,6 +106,7 @@ Public Sub Show
 	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 	
 End Sub
+
 
 
 Private Sub dlgGeneral_IsValid (TempData As Map) As Boolean 'ignore

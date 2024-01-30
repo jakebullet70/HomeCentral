@@ -62,7 +62,7 @@ Sub Class_Globals
 	Private btnSetupMaster As Button
 	Private btnAboutMe As Button
 	Public pnlSideMenu As B4XView
-	Private segTabMenu As ASSegmentedTab
+	Public segTabMenu As ASSegmentedTab
 	Private lblMnuMenu As B4XView
 	Private pnlMenuHdrSpacer2,pnlMenuHdrSpacer1 As B4XView
 	
@@ -97,7 +97,7 @@ End Sub
 
 
 #region PAGE EVENTS
-Private Sub B4XPage_Created (Root1 As B4XView)
+Private Sub B4XPage_Created(Root1 As B4XView)
 	
 	Root = Root1
 	Root.LoadLayout("MainPage")
@@ -174,7 +174,7 @@ Private Sub BuildGUI
 	guiHelpers.SetTextColor(Array As B4XView(lblMnuMenu),clrTheme.txtNormal)
 	
 	Menus.Init
-	Menus.BuildHeaderMenu(segTabMenu)
+	Menus.BuildHeaderMenu(segTabMenu,Me,"segTabMenu")
 	
 	pnlHeader.SetColorAndBorder(clrTheme.BackgroundHeader,0,xui.Color_Transparent,0)
 	

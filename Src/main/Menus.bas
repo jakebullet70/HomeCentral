@@ -35,8 +35,9 @@ End Sub
 '	Return p
 'End Sub
 
-Public Sub BuildHeaderMenu(tb As ASSegmentedTab)
+Public Sub BuildHeaderMenu(tb As ASSegmentedTab,CallBack As Object,Event As String)
 	
+	tb.Clear
 	tb.ShowSeperators = True
 	tb.ImageHeight = 46dip
 	tb.SelectionPanel.Color = clrTheme.Background2
@@ -46,16 +47,32 @@ Public Sub BuildHeaderMenu(tb As ASSegmentedTab)
 	'tb.CornerRadiusBackground = tb.Base.Height/2 'make the view rounded
 	'tb.CornerRadiusBackground = 10dip 'make the view rounded
 	Sleep(0)
-	
+
+	Dim ttl As Int = 1	
 	tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_home.png"),"hm")
-	tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_weather.png"),"wt")
-	tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_timers.png"),"tm")
-	tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_calc.png"),"ca")
-	tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_conversions.png"),"cv")
-	tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_pics.png"),"ph")
 	
-	Dim NumOfItems As Int = 6
-	tb.mBase.Width = (NumOfItems * 70dip) + (NumOfItems * 4dip)
+	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_WEATHER) Then
+		tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_weather.png"),"wt")
+		ttl = ttl + 1
+	End If
+	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_TIMERS) Then
+		tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_timers.png"),"tm")
+		ttl = ttl + 1
+	End If
+	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CALC) Then
+		tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_calc.png"),"ca")
+		ttl = ttl + 1
+	End If
+	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CONV) Then
+		tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_conversions.png"),"cv")
+		ttl = ttl + 1
+	End If
+	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO) Then
+		tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_pics.png"),"ph")
+		ttl = ttl + 1
+	End If
+	
+	tb.mBase.Width = (ttl * 70dip) + (ttl * 4dip)
 	tb.Base_Resize2
 
 End Sub

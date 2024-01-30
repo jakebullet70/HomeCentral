@@ -53,6 +53,7 @@ Private Sub ConfigMe()
 			File.Copy(File.DirAssets,LICENSE_FILE,xui.DefaultFolder,LICENSE_FILE)
 		End If
 	
+		fileHelpers.SafeKill(xui.DefaultFolder,gblConst.FILE_MAIN_SETUP) '--- Dev
 		
 	Else
 		
