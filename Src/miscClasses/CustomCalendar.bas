@@ -35,7 +35,9 @@ Sub Class_Globals
 	Public NmFullMonth() As String 
 	
 		
-	Private CalDay, CalMonth, CalYear As Int
+	Private CalMonth, CalYear As Int
+	Public CalDay As Int
+	
 	Private RelativTextSize As Int
 	Private SomeTime As Long
 
@@ -315,7 +317,7 @@ Private Sub PrintDate(dts As Long)
 				btDays(i).TextColor = clrTheme.txtAccent
 				btDays(i).Color = clrTheme.Background2
 				'btDays(i).TextSize = btDays(i).TextSize + 6
-				
+				'Log("day? -"&cdd)
 			End If
 		End If
 	Next

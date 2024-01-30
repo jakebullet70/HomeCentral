@@ -100,6 +100,9 @@ End Sub
 
 Public Sub clock_event(s As String)
 	If pnlMain.Visible = False Then Return
+	If csCal.CalDay <> DateTime.GetDayOfMonth(DateTime.Now) Then
+		Build_Cal
+	End If
 	guiHelpers.ResizeText(s,lblClock)
 End Sub
 
@@ -118,6 +121,7 @@ Private Sub Build_Cal()
 	If pnlMain.Visible = False Then Return
 	
 	'--- show cal
+	Log("building CAL")
 	pnlCal.RemoveAllViews
 	csCal.Initialize(pnlCal.Width,pnlCal.Height,DateTime.Now,16 * guiHelpers.SizeFontAdjust)
 	csCal.callback = Me
