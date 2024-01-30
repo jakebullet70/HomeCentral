@@ -75,6 +75,7 @@ Updates
 			-If 0, then the width of the tab is calculated automatically
 			-Default: 0
 #End If
+'https://www.b4x.com/android/forum/threads/b4x-xui-as-segmentedtab.126563/#content
 
 #DesignerProperty: Key: CornerRadiusBackground, DisplayName: Corner Radius Background, FieldType: Int, DefaultValue: 0, MinRange: 0
 #DesignerProperty: Key: CornerRadiusSelectionPanel, DisplayName: Corner Radius Selection Panel, FieldType: Int, DefaultValue: 0, MinRange: 0
