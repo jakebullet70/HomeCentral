@@ -31,9 +31,12 @@ public Sub CreateDefaultFile
 		d2.Hours = 18 : d2.Minutes = 30
 		
 		'--- DO NOT USE	File.ReadMap Or File.WriteMap
-		'--- DO NOT USE	File.ReadMap Or File.WriteMap
-		objHelpers.Map2Disk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, _
-					CreateMap( "saboot": "false", "pwroff": 120,  "pwrmt": d1, "pwret": d2,"scrnday":False))
+		objHelpers.Map2Disk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, CreateMap( _
+					gblConst.KEYS_MAIN_SETUP_AUTO_BOOT: False, _
+					gblConst.KEYS_MAIN_SETUP_SCRN_BLANK_TIME : 120, _
+					gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_MORNING_TIME : d1, _
+					gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME: d2, _
+					gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_ON: False))
 		
 	End If
 	
@@ -63,7 +66,7 @@ Public Sub Show
 		
 		prefHelper.Map2Disk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, data) '--- DO NOT USE	File.ReadMap Or File.WriteMap
 		
-		ProcessAutoBootFlag(data.Get("saboot").As(Boolean))
+		ProcessAutoBootFlag(data.Get(gblConst.KEYS_MAIN_SETUP_AUTO_BOOT).As(Boolean))
 		
 		config.ReadMainSetup
 		CallSub(mpage.oPageCurrent,"Set_focus")

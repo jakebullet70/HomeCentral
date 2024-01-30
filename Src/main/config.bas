@@ -83,7 +83,7 @@ End Sub
 '=========================================================================
 
 Public Sub getScreenOffTime() As Int
-	Return MainSetupData.Get("pwroff")
+	Return MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_BLANK_TIME)
 End Sub
 
 Public Sub ReadMainSetup

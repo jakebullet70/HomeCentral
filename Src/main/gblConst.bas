@@ -64,6 +64,15 @@ Sub Process_Globals
 	Public Const INI_THEME_COLOR As String = "themeclr" '--- selected theme color
 	Public Const INI_CUSTOM_THEME_COLORS As String = "customClrs" '--- users custom colors
 	
+	'---
+	Public Const KEYS_MAIN_SETUP_AUTO_BOOT As String = "saboot"
+	Public Const KEYS_MAIN_SETUP_SCRN_BLANK_TIME As String = "pwroff"
+	Public Const KEYS_MAIN_SETUP_SCRN_CTRL_MORNING_TIME As String = "pwrmt"
+	Public Const KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME As String = "pwret"
+	Public Const KEYS_MAIN_SETUP_SCRN_CTRL_ON As String = "scrnday"
+	
+	
+	
 	'-------------------------------------------------------------------
 	
 	Public IS0SCREEN0OFF As Boolean = False
@@ -118,14 +127,16 @@ Sub Process_Globals
 	Public Const ACTIONBAR_OFF As Int = 1
 	Public Const ACTIONBAR_ON As Int = 0
 	
-	
+	'--- kitchen timer images
 	Public Const TIMERS_IMG_STOP As String = "tmr_stop.png"
 	Public Const TIMERS_IMG_GO As String = "tmr_go.png"
 	Public Const TIMERS_IMG_PAUSE As String = "tmr_pause.png"
 	
-	Public Const API_ANDROID_4_0 As Int = 14
-	Public Const API_ANDROID_4_4 As Int = 19
+	
 		
 	Public Const VOLUME_ERR As String = "Problem setting volume. Is device set to 'Do Not Disturb?'"
+	Public Const API_ANDROID_4_0 As Int = 14
+	Public Const API_ANDROID_4_4 As Int = 19
+	
 	
 End Sub
