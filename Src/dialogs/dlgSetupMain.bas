@@ -48,13 +48,13 @@ public Sub CreateDefaultFile
 	
 End Sub
 
-Private Sub DoesMenuNeedRebuild(newData as Map, OldData as map) as Boolean
+Private Sub DoesMenuNeedRebuild(newData As Map, OldData As Map) As Boolean
 	
 	Return _
-		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_WEATHER) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_WEATHER)) or _
-		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO)) or _
-		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CALC) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CALC)) or _
-		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CONV) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CONV)) or _
+		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_WEATHER) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_WEATHER)) Or _
+		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO)) Or _
+		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CALC) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CALC)) Or _
+		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CONV) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CONV)) Or _
 		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_TIMERS) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_TIMERS))
 		
 End Sub
