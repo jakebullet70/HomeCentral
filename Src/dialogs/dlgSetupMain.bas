@@ -36,7 +36,13 @@ public Sub CreateDefaultFile
 					gblConst.KEYS_MAIN_SETUP_SCRN_BLANK_TIME : 120, _
 					gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_MORNING_TIME : d1, _
 					gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME: d2, _
-					gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_ON: False))
+					gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_ON: False, _
+					gblConst.KEYS_MAIN_SETUP_PAGE_WEATHER: True, _
+					gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO: True, _
+					gblConst.KEYS_MAIN_SETUP_PAGE_CALC: True, _
+					gblConst.KEYS_MAIN_SETUP_PAGE_CONV: True, _
+					gblConst.KEYS_MAIN_SETUP_PAGE_TIMERS: True _
+					))
 		
 	End If
 	

@@ -44,9 +44,39 @@
             "required": false
         },
         {
-            "title": "Misc",
+            "title": "Optional Pages",
             "type": "Separator",
             "key": "",
+            "required": false
+        },
+        {
+            "title": "Weather",
+            "type": "Boolean",
+            "key": "pWthr",
+            "required": false
+        },
+        {
+            "title": "Timers",
+            "type": "Boolean",
+            "key": "pTmrs",
+            "required": false
+        },
+        {
+            "title": "Calculator",
+            "type": "Boolean",
+            "key": "pCalc",
+            "required": false
+        },
+        {
+            "title": "Photo Album",
+            "type": "Boolean",
+            "key": "pPhoto",
+            "required": false
+        },
+        {
+            "title": "Conversions",
+            "type": "Boolean",
+            "key": "pConv",
             "required": false
         }
     ]

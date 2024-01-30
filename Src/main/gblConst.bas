@@ -71,6 +71,15 @@ Sub Process_Globals
 	Public Const KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME As String = "pwret"
 	Public Const KEYS_MAIN_SETUP_SCRN_CTRL_ON As String = "scrnday"
 	
+	Public Const KEYS_MAIN_SETUP_PAGE_WEATHER As String = "pWthr"
+	Public Const KEYS_MAIN_SETUP_PAGE_PHOTO As String = "pPhoto"
+	Public Const KEYS_MAIN_SETUP_PAGE_CALC As String = "pCalc"
+	Public Const KEYS_MAIN_SETUP_PAGE_CONV As String = "pConv"
+	Public Const KEYS_MAIN_SETUP_PAGE_TIMERS As String = "pTmrs"
+	
+	
+	
+	
 	
 	
 	'-------------------------------------------------------------------
