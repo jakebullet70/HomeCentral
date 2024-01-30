@@ -186,6 +186,7 @@ Private Sub BuildGUI
 	
 	Sleep(0)
 	segTabMenu_TabChanged(-2)
+	tmrTimerCallSub.CallSubDelayedPlus(Main,"Dim_ActionBar_Off",300)
 	
 End Sub
 
@@ -223,8 +224,6 @@ End Sub
 
 Private Sub segTabMenu_TabChanged(index As Int)
 	
-	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
-		
 	Dim value As String
 	If index = -2 Then  '--- 1st run
 		value = "hm"
@@ -271,6 +270,7 @@ Private Sub segTabMenu_TabChanged(index As Int)
 	'--- set focus to page object
 	CallSub(oPageCurrent,"Set_Focus")
 	ResetScrn_SleepCounter
+	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
 	
 End Sub
 #end region
