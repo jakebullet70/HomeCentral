@@ -118,6 +118,13 @@ Sub Class_Globals
 	Private xpnl_selector As B4XView
 End Sub
 
+Public Sub Clear
+	xpnl_selector.RemoveAllViews
+	xpnl_background.RemoveAllViews
+	xpnl_seperators_background.RemoveAllViews
+	Sleep(0)
+End Sub
+
 Public Sub Initialize (Callback As Object, EventName As String)
 	mEventName = EventName
 	mCallBack = Callback
