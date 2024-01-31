@@ -8,6 +8,7 @@ Version=10.5
 Updates
 	------------------------------------------------
 	Search for 'sadLogic' to see what I have changed
+	sadLogic/JakeBullet70, Kherson Ukraine - Jan/2024
 	------------------------------------------------
 
 	V1.01
