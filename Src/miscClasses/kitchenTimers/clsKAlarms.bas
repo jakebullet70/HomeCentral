@@ -56,7 +56,7 @@ Public Sub AlarmStart(alarmNum As Int)
 	'
 	
 	mbActive = True
-	CallSub(Main,"Alarm_Fired")
+	CallSub(mpage,"Alarm_Fired")
 	
 	
 	'--- send out the UDP notice

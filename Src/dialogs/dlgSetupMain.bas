@@ -90,7 +90,7 @@ Public Sub Show
 		If DoesMenuNeedRebuild(data,PrevData) Then
 			'Log("rebild menu")
 			Dim Const GoHome As Int = -2 
-			guiHelpers.Show_toast2("Rebulding Menu's",3000)
+			guiHelpers.Show_toast2("Rebulding Menu",3000)
 			CallSubDelayed2(mpage,"segTabMenu_TabChanged",GoHome)
 			mpage.segTabMenu.Index = 0
 			Sleep(1500)

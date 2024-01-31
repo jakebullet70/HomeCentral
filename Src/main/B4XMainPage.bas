@@ -379,15 +379,20 @@ Private Sub SetupMainMenu_Event(t As String,o As Object)
 	End Select
 End Sub
 
-'--------------------  kTimers stuff. Needed here????
+'--------------------  kTimers stuff
 Private Sub Alarm_Fired
-	Log("call this --->  pnlScrnOff_Click") '--- turn on screen i think
-	'pnlScrnOff_Click
+	Log("Alarm_Fired")
+	If PowerCtrl.IsScreenOff Then
+		pnlScrnOff_Click
+	End If
+	
+	IfPhotoShow_TurnOff
+	
 	'''AlarmFiredPauseRadio
 End Sub
 
 Public Sub Alarm_Start(x As Int)
-	'--- alarm fired, change to the ktimers snapin
+	'--- alarm fired, will change to the ktimers page
 	oPageTimers.AlarmStart(x)
 End Sub
 '-----------------------------------------
@@ -430,15 +435,20 @@ Public Sub TurnScreen_Off
 	PowerCtrl.Screen_Off
 	pnlScrnOff.BringToFront
 	
+	IfPhotoShow_TurnOff
 	
-	'--- if pframe then pause the pframe timer
-	If oPagePhoto.IsInitialized And oPageCurrent = oPagePhoto Then
-		If oPagePhoto.tmrPicShow.Enabled Then 
-			oPagePhoto.tmrPicShow.Enabled = False
-		End If
-	End If
 	
 	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
+End Sub
+
+Private Sub IfPhotoShow_TurnOff
+	'--- if pframe then pause the pframe timer
+	If oPagePhoto.IsInitialized And oPageCurrent = oPagePhoto Then
+		'If oPagePhoto.tmrPicShow.Enabled Then
+		'--- just turn it off
+			oPagePhoto.tmrPicShow.Enabled = False
+		'End If
+	End If
 End Sub
 
 #end region
