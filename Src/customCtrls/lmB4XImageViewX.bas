@@ -5,7 +5,7 @@ Type=Class
 Version=8.5
 @EndOfDesignText@
 ' lmB4XImageView
-
+'https://www.b4x.com/android/forum/threads/b4x-b4xlib-lmb4ximageview.128133/#content
 #Region VERSIONS 
 '	2.1.5		11/06/2022   - sadLogic, Kherson Ukraine
 '				Added click animation color
@@ -30,6 +30,7 @@ Version=8.5
 '				My version based on Erel's version in XUI Views v2.44.
 '				Added 
 #End Region
+
 
 #Region DESIGNER PROPERTIES 
 
