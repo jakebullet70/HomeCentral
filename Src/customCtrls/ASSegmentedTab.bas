@@ -6,6 +6,10 @@ Version=10.5
 @EndOfDesignText@
 #If Documentation
 Updates
+	------------------------------------------------
+	Search for 'sadLogic' to see what I have changed
+	------------------------------------------------
+
 	V1.01
 		-BugFix the selected tab is now keeping if the view is resizing
 	V1.02
@@ -76,6 +80,7 @@ Updates
 			-Default: 0
 #End If
 'https://www.b4x.com/android/forum/threads/b4x-xui-as-segmentedtab.126563/#content
+'https://github.com/StolteX/AS_SegmentedTab
 
 #DesignerProperty: Key: CornerRadiusBackground, DisplayName: Corner Radius Background, FieldType: Int, DefaultValue: 0, MinRange: 0
 #DesignerProperty: Key: CornerRadiusSelectionPanel, DisplayName: Corner Radius Selection Panel, FieldType: Int, DefaultValue: 0, MinRange: 0
@@ -119,12 +124,15 @@ Sub Class_Globals
 	Private xpnl_selector As B4XView
 End Sub
 
+'---- Added - sadLogic --------------
 Public Sub Clear
 	xpnl_selector.RemoveAllViews
 	xpnl_background.RemoveAllViews
 	xpnl_seperators_background.RemoveAllViews
 	Sleep(0)
 End Sub
+'-----------------------------------
+
 
 Public Sub Initialize (Callback As Object, EventName As String)
 	mEventName = EventName
