@@ -109,6 +109,11 @@ Private Sub PlusImpl(Module As Object, SubName As String, Delay As Int, Arg() As
 	rdd.delayed = delayed
 	RunDelayed.Put(tmr, rdd)
 	tmr.Enabled = True
+	
+	#if debug
+	WhatEvents("Added")
+	#End If
+	
 End Sub
 
 Private Sub tmr_Tick
@@ -116,6 +121,11 @@ Private Sub tmr_Tick
 	t.Enabled = False
 	Dim rdd As RunDelayedData = RunDelayed.Get(t)
 	RunDelayed.Remove(t)
+	
+	#if debug
+	Log("calSubDelayed subs fired! --> " & rdd.SubName)
+	#End If
+	
 	If rdd.Delayed Then
 		If rdd.Arg = Null Then
 			CallSubDelayed(rdd.Module, rdd.SubName)
@@ -129,5 +139,21 @@ Private Sub tmr_Tick
 			CallSub2(rdd.Module, rdd.SubName, rdd.Arg)
 		End If
 	End If
+	
+	#if debug
+	WhatEvents("left in queue")
+	#End If
+		
 End Sub
+
+#if debug
+Private Sub WhatEvents(what As String)
+	Log("------------------ " & what)
+	For Each t As Timer In RunDelayed.Keys
+		Dim dt As RunDelayedData = RunDelayed.Get(t)
+		Log("calSubDelayed subs still alive --> " & dt.SubName)
+	Next
+	Log("------------------------------------")
+End Sub
+#End If
 
