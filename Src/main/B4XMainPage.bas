@@ -428,6 +428,7 @@ Private Sub pnlScrnOff_Click
 	If WeatherData.LastUpdatedAt = 1 Then
 		WeatherData.Try_Update
 	End If
+	ResetScrn_SleepCounter
 End Sub
 Public Sub TurnScreen_Off
 

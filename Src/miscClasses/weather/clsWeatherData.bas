@@ -323,13 +323,13 @@ Private Sub Update_Weather(city As String) As ResumableSub
 		LastUpdatedAt = DateTime.Now
 		LastUpdatedCity = city
 		If mpage.DebugLog Then Log(DateUtils.TicksToString(DateTime.Now) & $"--> Weather Job-OK: Setting next update for ${MinutesBetweenCalls} min"$)
-		mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * MinutesBetweenCalls) '--- set the next call 
+		mpage.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"Try_Update",60000 * MinutesBetweenCalls) '--- set the next call
 		
 	Else
 		
 		Log("weather call failed - response code = " & job.Response.StatusCode)	
 		mpage.EventGbl.Raise(gblConst.EVENT_WEATHER_UPDATE_FAILED)
-		mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Update",60000 * 3) '--- set the next call - 3min
+		mpage.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"Try_Update",60000 * 3) '--- set the next call - 3min
 		
 	End If
 	
