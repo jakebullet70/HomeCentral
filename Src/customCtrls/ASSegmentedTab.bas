@@ -559,11 +559,13 @@ End If
 jo.RunMethod("setClip", Array(shape))
 #else if B4A
 	Dim jo As JavaObject = pnl
+	'--- sadLogic
 	Try
 		jo.RunMethod("setClipToOutline", Array(True))
 	Catch
 		'Log("Only supported on Android 5 and above")
 	End Try'ignore
+	'---
 	pnl.SetColorAndBorder(pnl.Color,0,0,radius)
 	#Else If B4I
 	Dim NaObj As NativeObject = pnl
