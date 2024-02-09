@@ -75,3 +75,16 @@ End Sub
 '	Return File.Exists(File.GetFile  Parent(PathAndFile),File.GetName(PathAndFile))
 'End Sub
 
+Public Sub GetFilenameFromPath(pathAndfname As String) As String
+	
+	Dim PathSepChar As String  = "/"
+	
+	Try
+		Dim tt As Int = pathAndfname.LastIndexOf(PathSepChar)
+		Return pathAndfname.SubString2(tt + 1,pathAndfname.Length)
+	Catch
+		Return pathAndfname
+	End Try
+	
+	
+End Sub
