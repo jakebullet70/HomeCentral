@@ -3,6 +3,7 @@
  Reclaim old Android Tablets! (Android 4.X and above)  
 
  Still working on it! Mar 2024  
+ Revising it. Jan 2025
 
  Status.  
  Home Screen - Done  
