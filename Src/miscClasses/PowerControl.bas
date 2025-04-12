@@ -40,10 +40,10 @@ Public Sub Initialize(takeOverPower As Boolean)
 	pScreenBrightness = GetScreenBrightness
 	If pScreenBrightness = AUTO_BRIGHTNESS Then
 		pScreenBrightness = 0.5
-		SetScreenBrightnessAndSave(pScreenBrightness,True)
+		SetScreenBrightnessAndOptionalSave(pScreenBrightness,True)
 		Return
 	End If
-	SetScreenBrightnessAndSave(pScreenBrightness,False)
+	SetScreenBrightnessAndOptionalSave(pScreenBrightness,False)
 	
 	Screen_ON(True)
 	
@@ -91,7 +91,7 @@ End Sub
 
 
 ' 0 to 1 - so 0.5 is valid
-Public Sub SetScreenBrightnessAndSave(value As Float, SaveMe As Boolean)
+Public Sub SetScreenBrightnessAndOptionalSave(value As Float, SaveMe As Boolean)
 	
 	'If config.ChangeBrightnessSettingsFLAG = False Then Return
 	
@@ -115,7 +115,7 @@ End Sub
 Public Sub SetScreenBrightness2
 	
 	'If config.ChangeBrightnessSettingsFLAG = False Then Return
-	SetScreenBrightnessAndSave(pScreenBrightness,False)
+	SetScreenBrightnessAndOptionalSave(pScreenBrightness,False)
 	
 End Sub
 
@@ -166,7 +166,7 @@ Private Sub Brightness_Change(value As Float)
 	
 	'--- callback for btnBrightness_Click
 	Dim v As Float = value / 100
-	SetScreenBrightnessAndSave(v,True)
+	SetScreenBrightnessAndOptionalSave(v,True)
 	pScreenBrightness = v
 	
 End Sub
