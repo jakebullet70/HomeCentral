@@ -87,7 +87,7 @@ Public Sub Set_focus()
 End Sub
 
 Private Sub Build_Side_Menu
-	Menus.BuildSideMenu(Array As String("No Menus"),Array As String(""))
+	Menus.BuildSideMenu(Array As String(""),Array As String(""))
 End Sub
 
 Public Sub Lost_focus()
