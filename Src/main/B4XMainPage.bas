@@ -190,6 +190,8 @@ Private Sub BuildGUI
 	imgMenuButton.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(xui.LoadBitmap(File.DirAssets,"main_menu_menu.png"),clrTheme.txtNormal)
 	imgSoundButton.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(xui.LoadBitmap(File.DirAssets,"main_menu_volume.png"),clrTheme.txtNormal)
 	
+	pnlSideMenuTouchOverlay.Width = pnlHome.Width - pnlSideMenu.Width
+	
 	Toast.pnl.Color = clrTheme.txtNormal
 	Toast.DefaultTextColor = clrTheme.BackgroundHeader
 	Toast.MaxHeight = 120dip
@@ -358,6 +360,7 @@ End Sub
 
 Private Sub lvSideMenu_ItemClick (Index As Int, Value As Object)
 	
+	pnlSideMenuTouchOverlay.Visible = False
 	ResetScrn_SleepCounter '--- reset the power / screen on-off
 	If SubExists(oPageCurrent,"SideMenu_ItemClick") Then
 		CallSubDelayed3(oPageCurrent,"SideMenu_ItemClick",Index,Value)
@@ -476,4 +479,5 @@ Private Sub pnlSideMenuTouchOverlay_Click
 		pnlSideMenu.SetVisibleAnimated(380, False)
 		pnlSideMenuTouchOverlay.Visible = False
 	End If
+	CallSubDelayed(Me,"ResetScrn_SleepCounter")
 End Sub
