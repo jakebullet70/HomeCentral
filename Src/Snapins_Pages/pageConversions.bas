@@ -15,12 +15,10 @@ Sub Class_Globals
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
-	'Private cvMenu As CustomListView
 	Private pnlBG,pnlNumPad,pnlInput As Panel
 	Private oConversion As ConversionMod
 	Private curTxt As EditText
 
-	
 	'--- number pad buttons
 	Private Button1,Button2,Button3,Button4,Button5,Button6,Button7 As Button
 	Private Button8,Button9,Button10,Button11,Button12 As Button
@@ -68,9 +66,7 @@ Public Sub Initialize(p As B4XView)
 	pnlMain = p
 	p.LoadLayout("pageConversionsBase")
 	
-	pnlBG.Color = Colors.Transparent
-	pnlNumPad.Color= Colors.Transparent
-	pnlInput.Color= Colors.Transparent
+	guiHelpers.SetPanelsTranparent(Array As B4XView(pnlBG,pnlNumPad,pnlInput))
 	lblWhat.TextColor =clrTheme.txtNormal
 	
 	guiHelpers.SkinButton(Array As Button(Button1,Button2,Button3,Button4,Button5,Button6,Button7, _
@@ -79,7 +75,6 @@ Public Sub Initialize(p As B4XView)
 	guiHelpers.ResizeText("1",Button1)
 	guiHelpers.SetTextSize(Array As B4XView(Button1,Button2,Button3,Button4,Button5,Button6,Button7, _
 							Button8,Button9,Button10,Button11),(Button1.TextSize - 10))							
-
 	
 	oConversion.Initialize
 	BuildSideMenu
@@ -106,9 +101,6 @@ End Sub
 '=============================================================================================
 
 
-
-
-
 Private Sub ActiveScrnLoad(scrn As Int)
 
 	If currScrn = scrn Then Return
@@ -121,27 +113,23 @@ Private Sub ActiveScrnLoad(scrn As Int)
 	pnlInput.Visible = False
 	Select Case scrn
 		Case scrnButter
-			Try
-				guiHelpers.ResizeText("Butter",lblWhat)
-				pnlInput.LoadLayout("scrnConvButter")
-			
-				guiHelpers.SetPanelsTranparent(Array As B4XView(pnlButter,Panel1,Panel2,Panel3,Panel4,Panel5,Panel0))
 
-				txtGramsB_FocusChanged(True)
-			
-				guiHelpers.SkinTextEdit(Array As EditText(txtGramsB,txtTBSP,txtStick,txtCUP,txtOZb),0,True)
-					
-				guiHelpers.ResizeText(lblGramsB.Text,lblGramsB)
-				guiHelpers.SetTextSize(Array As B4XView(lblCUP,lblTBSP,lblStick,lblOZb),lblGramsB.TextSize)
-			
-				guiHelpers.SetTextSize(Array As B4XView(txtCUP,txtTBSP,txtGramsB,txtStick,txtOZb),24)
-				guiHelpers.SetTextColor(Array As B4XView(txtCUP,txtTBSP,txtGramsB,txtStick,txtOZb),clrTheme.txtNormal)
-				guiHelpers.SetTextColor(Array As B4XView(lblCUP,lblTBSP,lblGramsB,lblStick,lblOZb),clrTheme.txtNormal)
-			
+			guiHelpers.ResizeText("Butter",lblWhat)
+			pnlInput.LoadLayout("scrnConvButter")
+		
+			guiHelpers.SetPanelsTranparent(Array As B4XView(pnlButter,Panel1,Panel2,Panel3,Panel4,Panel5,Panel0))
+
+			txtGramsB_FocusChanged(True)
+		
+			guiHelpers.SkinTextEdit(Array As EditText(txtGramsB,txtTBSP,txtStick,txtCUP,txtOZb),0,True)
 				
-			Catch
-				Log(LastException)
-			End Try
+			guiHelpers.ResizeText(lblGramsB.Text,lblGramsB)
+			guiHelpers.SetTextSize(Array As B4XView(lblCUP,lblTBSP,lblStick,lblOZb),lblGramsB.TextSize)
+		
+			guiHelpers.SetTextSize(Array As B4XView(txtCUP,txtTBSP,txtGramsB,txtStick,txtOZb),24)
+			guiHelpers.SetTextColor(Array As B4XView(txtCUP,txtTBSP,txtGramsB,txtStick,txtOZb),clrTheme.txtNormal)
+			guiHelpers.SetTextColor(Array As B4XView(lblCUP,lblTBSP,lblGramsB,lblStick,lblOZb),clrTheme.txtNormal)
+			
 			
 		Case scrnLength
 			guiHelpers.ResizeText("Length",lblWhat)
