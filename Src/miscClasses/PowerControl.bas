@@ -28,6 +28,9 @@ Sub Class_Globals
 	Public IsScreenOff As Boolean = False
 	Public pScreenBrightness As Float = -1
 	Private Const AUTO_BRIGHTNESS As Float = -1
+	Private Const SCRN_BRIGHTNESS_NO_SAVE As Boolean = False
+	Private Const SCRN_BRIGHTNESS_SAVE As Boolean = True
+	
 	
 End Sub
 
@@ -40,10 +43,10 @@ Public Sub Initialize(takeOverPower As Boolean)
 	pScreenBrightness = GetScreenBrightness
 	If pScreenBrightness = AUTO_BRIGHTNESS Then
 		pScreenBrightness = 0.5
-		SetScreenBrightnessAndOptionalSave(pScreenBrightness,True)
+		SetScreenBrightnessAndOptionalSave(pScreenBrightness,SCRN_BRIGHTNESS_SAVE)
 		Return
 	End If
-	SetScreenBrightnessAndOptionalSave(pScreenBrightness,False)
+	SetScreenBrightnessAndOptionalSave(pScreenBrightness,SCRN_BRIGHTNESS_NO_SAVE)
 	
 	Screen_ON(True)
 	
@@ -59,6 +62,7 @@ Public Sub Screen_ON(takeOverPower As Boolean)
 		Log("pws.KeepAlive(True)")
 		#End If
 		pws.KeepAlive(True)
+		SetScreenBrightnessAndOptionalSave(pScreenBrightness,SCRN_BRIGHTNESS_NO_SAVE)
 	Else
 		'---("KeepAlive - OFF")
 	End If
@@ -115,7 +119,7 @@ End Sub
 Public Sub SetScreenBrightness2
 	
 	'If config.ChangeBrightnessSettingsFLAG = False Then Return
-	SetScreenBrightnessAndOptionalSave(pScreenBrightness,False)
+	SetScreenBrightnessAndOptionalSave(pScreenBrightness,SCRN_BRIGHTNESS_NO_SAVE)
 	
 End Sub
 
@@ -166,7 +170,7 @@ Private Sub Brightness_Change(value As Float)
 	
 	'--- callback for btnBrightness_Click
 	Dim v As Float = value / 100
-	SetScreenBrightnessAndOptionalSave(v,True)
+	SetScreenBrightnessAndOptionalSave(v,SCRN_BRIGHTNESS_SAVE)
 	pScreenBrightness = v
 	
 End Sub
