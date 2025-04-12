@@ -443,6 +443,7 @@ Private Sub pnlScrnOff_Click
 		WeatherData.Try_Update
 	End If
 	ResetScrn_SleepCounter
+	CallSubDelayed2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
 End Sub
 Public Sub TurnScreen_Off
 
