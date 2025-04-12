@@ -15,7 +15,7 @@ Sub Class_Globals
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
-	Private cvMenu As CustomListView
+	'Private cvMenu As CustomListView
 	Private pnlBG,pnlNumPad,pnlInput As Panel
 	Private oConversion As ConversionMod
 	Private curTxt As EditText
@@ -52,7 +52,7 @@ Sub Class_Globals
 	Private pnlButter As Panel
 	Private txtGramsB,txtTBSP,txtStick,txtCUP,txtOZb As EditText
 	Private lblGramsB,lblTBSP,lblStick,lblCUP,lblOZb As Label
-	Private Panel1,Panel2,Panel3,Panel4,Panel5,Panel0 As Panel
+	Private Panel1,Panel2,Panel3,Panel4,Panel5,Panel0 As B4XView
 	
 	'--- screen volume
 	Private lblML,lblTSP,lblTBSPb,lblFLOZ,lblCUPSb As Label
@@ -121,22 +121,27 @@ Private Sub ActiveScrnLoad(scrn As Int)
 	pnlInput.Visible = False
 	Select Case scrn
 		Case scrnButter
-			guiHelpers.ResizeText("Butter",lblWhat)
-			pnlInput.LoadLayout("scrnConvButter")
+			Try
+				guiHelpers.ResizeText("Butter",lblWhat)
+				pnlInput.LoadLayout("scrnConvButter")
 			
-			guiHelpers.SetTextColor(Array As B4XView(pnlButter,Panel1,Panel2,Panel3,Panel4,Panel5,Panel0),XUI.Color_Transparent)
+				guiHelpers.SetPanelsTranparent(Array As B4XView(pnlButter,Panel1,Panel2,Panel3,Panel4,Panel5,Panel0))
 
-			txtGramsB_FocusChanged(True)
+				txtGramsB_FocusChanged(True)
 			
-			guiHelpers.SkinTextEdit(Array As EditText(txtGramsB,txtTBSP,txtStick,txtCUP,txtOZb),0,True)
+				guiHelpers.SkinTextEdit(Array As EditText(txtGramsB,txtTBSP,txtStick,txtCUP,txtOZb),0,True)
 					
-			guiHelpers.ResizeText(lblGramsB.Text,lblGramsB)
-			guiHelpers.SetTextSize(Array As B4XView(lblCUP,lblTBSP,lblStick,lblOZb),lblGramsB.TextSize)
+				guiHelpers.ResizeText(lblGramsB.Text,lblGramsB)
+				guiHelpers.SetTextSize(Array As B4XView(lblCUP,lblTBSP,lblStick,lblOZb),lblGramsB.TextSize)
 			
-			guiHelpers.SetTextSize(Array As B4XView(txtCUP,txtTBSP,txtGramsB,txtStick,txtOZb),24)
-			guiHelpers.SetTextColor(Array As B4XView(txtCUP,txtTBSP,txtGramsB,txtStick,txtOZb),clrTheme.txtNormal)
-			guiHelpers.SetTextColor(Array As B4XView(lblCUP,lblTBSP,lblGramsB,lblStick,lblOZb),clrTheme.txtNormal)
+				guiHelpers.SetTextSize(Array As B4XView(txtCUP,txtTBSP,txtGramsB,txtStick,txtOZb),24)
+				guiHelpers.SetTextColor(Array As B4XView(txtCUP,txtTBSP,txtGramsB,txtStick,txtOZb),clrTheme.txtNormal)
+				guiHelpers.SetTextColor(Array As B4XView(lblCUP,lblTBSP,lblGramsB,lblStick,lblOZb),clrTheme.txtNormal)
 			
+				
+			Catch
+				Log(LastException)
+			End Try
 			
 		Case scrnLength
 			guiHelpers.ResizeText("Length",lblWhat)
@@ -170,7 +175,7 @@ Private Sub ActiveScrnLoad(scrn As Int)
 		Case scrnVolume
 			guiHelpers.ResizeText("Volume",lblWhat)
 			pnlInput.LoadLayout("scrnConvVolume")
-			guiHelpers.SetTextColor(Array As B4XView(pnlVolume0,pnlVolume1,pnlVolume2),XUI.Color_Transparent)
+			guiHelpers.SetPanelsTranparent(Array As B4XView(pnlVolume0,pnlVolume1,pnlVolume2))
 			txtML_FocusChanged(True)
 	
 			guiHelpers.SetTextSize(Array As B4XView(txtPINTS,txtML,txtTSP,txtTBSPb,txtFlOZ,txtCUPSb,txtQuarts,txtLiters,txtGAL),24)
@@ -215,45 +220,22 @@ End Sub
 
 #Region SIDE_MENU
 
-
-Private Sub cvMenu_ItemClick(Position As Int, Value As Object)
+Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
 	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
-'	Select Case Value
-'		Case "Weight" : 
-'			ActiveScrnLoad(scrnWeight)
-'		Case "Volume" : ActiveScrnLoad(scrnVolume)
-'		Case "Temp"	  : ActiveScrnLoad(scrnTemp)
-'		Case "Butter" : ActiveScrnLoad(scrnButter)
-'		Case "Length" : ActiveScrnLoad(scrnLength)
-'		Case "howto"  : g.ShowWebHelp(act,"conversions")
-'	End Select
-	
+	Select Case Value
+		Case "we" : ActiveScrnLoad(scrnWeight)
+		Case "vo" : ActiveScrnLoad(scrnVolume	)
+		Case "te" : ActiveScrnLoad(scrnTemp)
+		Case "bu" : ActiveScrnLoad(scrnButter)
+		Case "le" : ActiveScrnLoad(scrnLength)
+	End Select
+	mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu
 End Sub
-
-
-
 
 Public Sub BuildSideMenu
 	
-'	cvMenu.CallBack = Me
-'	cvMenu.Clear
-'	cvMenu.ChangeItemPressedColor(g.GetLstItemPressedCD(9dip))
-'
-'	g.MenuCreateItem(cvMenu, "Weight", "Weight")
-'	g.MenuCreateItem(cvMenu, "Volume", "Volume")
-'	g.MenuCreateItem(cvMenu, "Temp", "Temp")
-'	g.MenuCreateItem(cvMenu, "Butter", "Butter")
-'	g.MenuCreateItem(cvMenu, "Length", "Length")
-'	
-'	
-'	g.MenuCreateItemSeparator(cvMenu)
-'	g.MenuCreateItem(cvMenu, "How to", "howto")
-'
-'	' Fill in any space we can
-'	Dim neededAmount As Int = g.MenuGetBlankItemsNeeded(cvMenu)
-'	For x = 0 To neededAmount - 1
-'		g.MenuCreateItemAt(cvMenu, "", "", cvMenu.count)
-'	Next
+	Menus.BuildSideMenu(Array As String("Weight","Volume","Temp","Butter","Length"), _
+							            Array As String("we","vo","te","bu","le"))
 	
 End Sub
 #End Region
