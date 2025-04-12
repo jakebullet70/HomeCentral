@@ -67,6 +67,7 @@ Sub Class_Globals
 	Private pnlMenuHdrSpacer2,pnlMenuHdrSpacer1 As B4XView
 	
 	Private pnlScrnOff As B4XView
+	Private btnScreenOff As Button
 End Sub
 
 Public Sub Initialize
@@ -162,8 +163,16 @@ Private Sub BuildGUI
 	pnlScrnOff.As(Panel).Elevation = 8dip
 	pnlScrnOff_Click
 	
-	guiHelpers.SkinButtonNoBorder(Array As Button(btnAboutMe,btnSetupMaster,btnHdrTxt1))
+	guiHelpers.SkinButtonNoBorder(Array As Button(btnAboutMe,btnSetupMaster,btnHdrTxt1,btnScreenOff))
 	
+	Try
+		guiHelpers.ResizeText("<  Screen Off  >",btnScreenOff.As(B4XView))
+	Catch
+		Log(LastException)
+	End Try
+	
+	
+	'guiHelpers.SkinButton(Array As Button(btnScreenOff))
 	pnlBG.SetColorAndBorder(clrTheme.Background,0dip,xui.Color_Transparent,0dip)
 	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0dip,xui.Color_Transparent,0dip)
 	pnlSideMenu.SetColorAndBorder(clrTheme.BackgroundHeader,2dip,clrTheme.Background2,4dip)
@@ -355,6 +364,11 @@ Private Sub lvSideMenu_ItemClick (Index As Int, Value As Object)
 End Sub
 
 
+Private Sub btnScreenOff_Click
+	pnlSideMenu.SetVisibleAnimated(380, False)
+	TurnScreen_Off
+End Sub
+
 Private Sub btnSetupMaster_Click
 	
 	pnlSideMenu.SetVisibleAnimated(380, False)
@@ -453,4 +467,3 @@ Private Sub IfPhotoShow_TurnOff
 End Sub
 
 #end region
-

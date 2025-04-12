@@ -87,7 +87,7 @@ Public Sub Set_focus()
 End Sub
 
 Private Sub Build_Side_Menu
-	Menus.BuildSideMenu(Array As String("Screen Off"),Array As String("soff"))
+	Menus.BuildSideMenu(Array As String("No Menus"),Array As String(""))
 End Sub
 
 Public Sub Lost_focus()
@@ -197,8 +197,8 @@ End Sub
 
 Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
 	Select Case Value
-		Case "soff"
-			mpage.TurnScreen_Off
+		'Case "soff"
+		'	mpage.TurnScreen_Off
 	End Select
 	mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu
 End Sub
