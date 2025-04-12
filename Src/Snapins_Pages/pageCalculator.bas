@@ -31,17 +31,16 @@ Sub Class_Globals
 	Private Result = 0 As Double
 	Private Txt = "" As String
 	Private New = 0 As Int
+	Private CharSizeLarge As Boolean = False
 	
 	Private btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9 As Button
 	Private btna, btnb, btnc, btnd, btne, btnp As Button
-	Private btnBack, btnClr, btnExit As Button
+	Private btnBack, btnClr, btnExit,btnCharSize As Button
 
-	Private btnCharSize As ToggleButton
 	Private pnlKeyboard As Panel
 	Private scvPaperRoll As ScrollView
-	
-	
 	Private imgPaperTape As lmB4XImageViewX
+	
 End Sub
 
 Public Sub Initialize(p As B4XView) 
@@ -64,12 +63,12 @@ Public Sub Initialize(p As B4XView)
 	scvPaperRoll.BringToFront
 	
 	guiHelpers.SkinButton(Array As Button(btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, _
-									btna, btnb, btnc, btnd, btne, btnp,btnBack, btnClr, btnExit))
+									btna, btnb, btnc, btnd, btne, btnp,btnBack, btnClr, btnExit,btnCharSize))
 	
 	guiHelpers.ResizeText("0",btn0)
 	guiHelpers.SetTextSize(Array As B4XView(btn0, btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, _
 									btna, btnb, btnc, btnd, btne, btnp, btnExit),(btn0.TextSize - 10))
-	btnClr.Text = "Clear Tape"
+	btnClr.Text = "Clear Tape" : btnCharSize.Text = "Char Size"
 	btnBack.TextSize = btna.TextSize - 16
 End Sub
 
@@ -292,7 +291,7 @@ End Sub
 
 Private Sub btnClr_Click
 	Dim o As dlgThemedMsgBox : o.Initialize
-	Wait For (o.Show("Do you really want To clear the calculation?","A T T E N T I O N","YES", "", "CANCEL")) Complete (i As Int)
+	Wait For (o.Show("Do you really want To clear the calculator?","A T T E N T I O N","YES", "", "CANCEL")) Complete (i As Int)
 	If i = XUI.DialogResponse_Positive Then
 		Val = 0
 		sVal = ""
@@ -314,12 +313,13 @@ Private Sub btnBack_Click
 	End If
 End Sub
 
-Private Sub btnCharSize_CheckedChange(Checked As Boolean)
-	If Checked = False Then
-		lblPaperRoll.TextSize = 17 * ScaleAuto
+Private Sub btnCharSize_Click
+	If CharSizeLarge = False Then
+		lblPaperRoll.TextSize = 19 * ScaleAuto
 	Else
-		lblPaperRoll.TextSize = 24 * ScaleAuto
+		lblPaperRoll.TextSize = 26 * ScaleAuto
 	End If
+	CharSizeLarge = Not (CharSizeLarge)
 End Sub
 
 
