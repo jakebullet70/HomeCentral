@@ -66,7 +66,7 @@ Sub Class_Globals
 	Private lblMnuMenu As B4XView
 	Private pnlMenuHdrSpacer2,pnlMenuHdrSpacer1 As B4XView
 	
-	Private pnlScrnOff As B4XView
+	Private pnlScrnOff,pnlSideMenuTouchOverlay As B4XView
 	Private btnScreenOff As Button
 End Sub
 
@@ -221,6 +221,8 @@ Private Sub imgMenuButton_Click
 	If pnlSideMenu.Visible Then
 		pnlSideMenu.BringToFront
 		pnlHeader.BringToFront
+		pnlSideMenuTouchOverlay.Visible = True
+		pnlSideMenuTouchOverlay.BringToFront
 	End If
 End Sub
 
@@ -468,3 +470,10 @@ Private Sub IfPhotoShow_TurnOff
 End Sub
 
 #end region
+
+Private Sub pnlSideMenuTouchOverlay_Click
+	If pnlSideMenu.Visible Then 
+		pnlSideMenu.SetVisibleAnimated(380, False)
+		pnlSideMenuTouchOverlay.Visible = False
+	End If
+End Sub
