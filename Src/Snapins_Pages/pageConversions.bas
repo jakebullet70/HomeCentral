@@ -77,9 +77,8 @@ Public Sub Initialize(p As B4XView)
 							Button8,Button9,Button10,Button11),(Button1.TextSize - 10))							
 	guiHelpers.ResizeText("Calc",Button12) : Button12.TextSize = Button12.TextSize - 6
 	oConversion.Initialize
-	BuildSideMenu
-	ActiveScrnLoad(scrnWeight)
-	txtOZ.RequestFocus
+	Build_Side_Menu
+	ActiveScrnLoad(scrnWeight) : txtOZ.RequestFocus
 	
 End Sub
 
@@ -89,6 +88,7 @@ End Sub
 Public Sub Set_focus()
 	Menus.SetHeader("Conversions","main_menu_conversions.png")
 	pnlMain.SetVisibleAnimated(500,True)
+	mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Side_Menu",250)
 End Sub
 Public Sub Lost_focus()
 	pnlMain.SetVisibleAnimated(500,False)
@@ -223,7 +223,7 @@ Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
 	mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu
 End Sub
 
-Public Sub BuildSideMenu
+Public Sub Build_Side_Menu
 	
 	Menus.BuildSideMenu(Array As String("Weight","Volume","Temp","Butter","Length"), _
 							            Array As String("we","vo","te","bu","le"))
@@ -234,15 +234,13 @@ End Sub
 
 Private Sub btnNums_Click
 	Dim txt As String = Sender.As(Button).Text
-	'Log(txt)
-	'setCurrText(txt)
 	curTxt.Text = curTxt.Text & txt
 	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 End Sub
 
 
-Sub Button12_Click
-	doCalc
+Sub Button12_Click 
+	doCalc : '--- do the conversion
 End Sub
 
 #End Region
