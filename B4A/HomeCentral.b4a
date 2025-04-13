@@ -199,7 +199,6 @@ Version=12.5
 #Region  Activity Attributes 
 	#FullScreen: True
 	#IncludeTitle: False
-	
 	#BridgeLogger: True 	
 
 	'--- ignore android target version

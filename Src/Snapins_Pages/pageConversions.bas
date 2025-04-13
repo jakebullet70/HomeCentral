@@ -75,12 +75,14 @@ Public Sub Initialize(p As B4XView)
 	guiHelpers.ResizeText("1",Button1)
 	guiHelpers.SetTextSize(Array As B4XView(Button1,Button2,Button3,Button4,Button5,Button6,Button7, _
 							Button8,Button9,Button10,Button11),(Button1.TextSize - 10))							
-	
+	guiHelpers.ResizeText("Calc",Button12) : Button12.TextSize = Button12.TextSize - 6
 	oConversion.Initialize
 	BuildSideMenu
 	ActiveScrnLoad(scrnWeight)
+	txtOZ.RequestFocus
 	
 End Sub
+
 
 '-------------------------------
 
@@ -201,6 +203,7 @@ Private Sub ActiveScrnLoad(scrn As Int)
 	End Select
 	
 	pnlInput.SetVisibleAnimated(500,True)
+	Sleep(0)
 	
 End Sub
 
