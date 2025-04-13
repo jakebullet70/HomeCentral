@@ -160,7 +160,6 @@ Private Sub BuildGUI
 	guiHelpers.SetVisible(Array As B4XView(pnlTimers,pnlSideMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
 	pnlScrnOff.SetLayoutAnimated(0,0,0,100%x,100%y) '--- covers the whole screen and eats the touch when screen blanked
 	pnlScrnOff.Color = Colors.ARGB(255,0,0,0) '--- scrn is black
-	pnlScrnOff.As(Panel).Elevation = 8dip
 	pnlScrnOff_Click
 	
 	guiHelpers.SkinButtonNoBorder(Array As Button(btnAboutMe,btnSetupMaster,btnHdrTxt1,btnScreenOff))
@@ -399,18 +398,19 @@ Private Sub SetupMainMenu_Event(t As String,o As Object)
 End Sub
 
 '--------------------  kTimers stuff
-Private Sub Alarm_Fired
-	Log("Alarm_Fired")
+Private Sub Alarm_Fired_Before_Start
+	Log("Alarm_Fired_Before_Start")
 	If PowerCtrl.IsScreenOff Then
 		pnlScrnOff_Click
 	End If
 	
+	'--- check if we are showing photos.
 	IfPhotoShow_TurnOff
 	
-	'''AlarmFiredPauseRadio
 End Sub
 
-Public Sub Alarm_Start(x As Int)
+Public Sub Alarm_Fired_Start(x As Int)
+	Log("Alarm_Fired_Start")
 	'--- alarm fired, will change to the ktimers page
 	oPageTimers.AlarmStart(x)
 End Sub
@@ -423,7 +423,19 @@ Private Sub StartPowerCrap
 	setup_on_off_scrn_event(True)
 End Sub
 Public Sub ResetScrn_SleepCounter
-	tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"TurnScreen_Off",60000 * config.getScreenOffTime)
+	If pnlScrnOff.IsInitialized And pnlScrnOff.Visible = True Then
+		'--- screen is off already, should never happen but...
+		#if debug
+		Log("================================= Already off")
+		#end if
+		tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off")
+		Return
+	End If	
+	If config.getScreenOffTime <> 0 Then
+		tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"TurnScreen_Off",60000 * config.getScreenOffTime)
+	Else
+		tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off")
+	End If
 End Sub
 Private Sub setup_on_off_scrn_event(DoIt As Boolean)
 	If DoIt Then
@@ -443,6 +455,7 @@ End Sub
 Private Sub pnlScrnOff_Click
 	pnlScrnOff.SendToBack
 	pnlScrnOff.Visible = False '--- this is the WHOLE PANEL covering the screen
+	pnlScrnOff.As(Panel).Elevation = 0dip
 	PowerCtrl.Screen_On(True)
 	If WeatherData.LastUpdatedAt = 1 Then
 		WeatherData.Try_Update
@@ -452,7 +465,7 @@ Private Sub pnlScrnOff_Click
 End Sub
 Public Sub TurnScreen_Off
 
-	pnlScrnOff.Visible = True
+	pnlScrnOff.Visible = True : pnlScrnOff.As(Panel).Elevation = 8dip
 	PowerCtrl.Screen_Off
 	pnlScrnOff.BringToFront
 	
