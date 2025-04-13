@@ -56,16 +56,16 @@ Public Sub AlarmStart(alarmNum As Int)
 	'
 	
 	mbActive = True
-	CallSub(mpage,"Alarm_Fired")
+	CallSub(mpage,"Alarm_Fired_Before_Start")
 	
 	
 	'--- send out the UDP notice
 	'Dim sParams As String = "ALARMFIRED"
 	'CallSub3(Main,"UDP_SendMsg",sParams,c.UDP_2ALL)
 	
-	If mTimers(alarmNum).alarmType.sendTxtMSG Then
-		If mpage.DebugLog Then Log("AlarmFired-sendTxtMSG")
-	End If
+'	If mTimers(alarmNum).alarmType.sendTxtMSG Then
+'		If mpage.DebugLog Then Log("AlarmFired-sendTxtMSG")
+'	End If
 	'---
 	If mTimers(alarmNum).alarmType.beepMe Then 
 		If mpage.DebugLog Then Log("AlarmFired-beepMe")
@@ -80,9 +80,9 @@ Public Sub AlarmStart(alarmNum As Int)
 		AlarmSoundPlay(Main.kvs.Get(gblConst.INI_SOUND_ALARM_FILE),alarmNum)
 	End If
 	'---
-	If mTimers(alarmNum).alarmType.sendGrowl Then
-		If mpage.DebugLog Then Log("AlarmFired-sendGrowl")
-	End If
+'	If mTimers(alarmNum).alarmType.sendGrowl Then
+'		If mpage.DebugLog Then Log("AlarmFired-sendGrowl")
+'	End If
 	'---
 	If mTimers(alarmNum).alarmType.ShowScreenBig Then
 		If mpage.DebugLog Then Log("AlarmFired-ShowScreenBig")

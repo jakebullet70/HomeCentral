@@ -71,7 +71,7 @@ Public Sub tmr_TimersCheck
 				timers(xx).active = False
 				bIsActive = IIf(bIsActive,True,False)
 				'If IsPaused(Main) Then StartActivity(Main)
-				CallSubDelayed2(B4XPages.MainPage,"Alarm_Start",xx)
+				CallSubDelayed2(B4XPages.MainPage,"Alarm_Fired_Start",xx)
 			Else
 				bIsActive = True
 			End If

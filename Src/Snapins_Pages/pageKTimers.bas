@@ -239,7 +239,7 @@ Private Sub TimerSetColor(n As Int,clr As Int)
 End Sub
 
 Private Sub TimerSelect(x As Int)
-	
+	Log("pageKTimers ------>  ------------------------------------TimerSelect")
 	TimerSetColor(clsKTimers.CurrentTimer,clrTheme.txtNormal)
 	TimerSetColor(x,clrTheme.txtAccent)
 	
@@ -272,10 +272,6 @@ Private Sub TimerSelect(x As Int)
 	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 	
 End Sub
-
-
-
-
 
 #Region NUM_DIGIT_BTNS
 Private Sub btnIncr_Click
@@ -422,12 +418,10 @@ Private Sub btnDecr_Click
 End Sub
 #end region
 
-
 Public Sub ClearLarge_TimerTxt
 	lblHrs.TextColor =  clrTheme.txtAccent
 	lblHrs.Text = "00": lblMin.Text = "00" : lblSec.Text = "00"
 End Sub
-
 
 Public Sub UpdateRunning_Tmr(S As String)
 	If S.Length = 7 Then S = "0" & S
@@ -472,7 +466,7 @@ Private Sub AdjustTime(per As Period)
 End Sub
 
 Public Sub AlarmStart(xx As Int)
-	
+	Log("-----------------------------PageKTimers ---> AlarmStart-" & xx)
 	TimerSelect(xx)
 	
 	clsKTimers.timers(xx).Firing = True
@@ -488,7 +482,8 @@ Public Sub AlarmStart(xx As Int)
 	End If
 	
 	UpdateListOfTimers(xx)
-	ClearLarge_TimerTxt
+	CallSubDelayed(Me,"ClearLarge_TimerTxt")
+	
 	
 End Sub
 
