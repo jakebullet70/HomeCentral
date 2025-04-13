@@ -27,7 +27,8 @@ Sub Class_Globals
 	Public isInterNetConnected As Boolean = True
 	Public EventGbl As EventController
 	Public tmrTimerCallSub As sadCallSubUtils
-	Public PowerCtrl As PowerControl
+	Public PowerCtrl As PowerControl : 
+	Public Const TAKE_OVER_POWER As Boolean = True
 	'-------------------------------------------
 	
 	Public WeatherData As clsWeatherData
@@ -115,22 +116,43 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 	
 End Sub
 
-Private Sub B4XPage_CloseRequest As ResumableSub
-	
-	'-----------------------------------------------------------------
+Private Sub CheckForVisibleDialogsAndClose() As Boolean
 	If PrefDlg.IsInitialized And PrefDlg.Dialog.Visible Then
-		PrefDlg.Dialog.Close(xui.DialogResponse_Cancel) : 	Return False
+		PrefDlg.Dialog.Close(xui.DialogResponse_Cancel) : 	Return True
 	End If
 	If Dialog.IsInitialized And Dialog.Visible Then
-		Dialog.Close(xui.DialogResponse_Cancel) : 			Return False
+		Dialog.Close(xui.DialogResponse_Cancel) : 			Return True
 	End If
 	If Dialog2.IsInitialized And Dialog2.Visible Then
-		Dialog2.Close(xui.DialogResponse_Cancel) : 			Return False
+		Dialog2.Close(xui.DialogResponse_Cancel) : 			Return True
 	End If
 	If DialogMSGBOX.IsInitialized And DialogMSGBOX.Visible Then
-		DialogMSGBOX.Close(xui.DialogResponse_Cancel) : 	Return False
+		DialogMSGBOX.Close(xui.DialogResponse_Cancel) : 	Return True
 	End If
-	'-----------------------------------------------------------------
+	Return False
+End Sub
+
+
+Private Sub B4XPage_CloseRequest As ResumableSub
+	
+	If CheckForVisibleDialogsAndClose = True Then
+		Return False
+	End If
+	
+'	'-----------------------------------------------------------------
+'	If PrefDlg.IsInitialized And PrefDlg.Dialog.Visible Then
+'		PrefDlg.Dialog.Close(xui.DialogResponse_Cancel) : 	Return False
+'	End If
+'	If Dialog.IsInitialized And Dialog.Visible Then
+'		Dialog.Close(xui.DialogResponse_Cancel) : 			Return False
+'	End If
+'	If Dialog2.IsInitialized And Dialog2.Visible Then
+'		Dialog2.Close(xui.DialogResponse_Cancel) : 			Return False
+'	End If
+'	If DialogMSGBOX.IsInitialized And DialogMSGBOX.Visible Then
+'		DialogMSGBOX.Close(xui.DialogResponse_Cancel) : 	Return False
+'	End If
+'	'-----------------------------------------------------------------
 	
 	If pnlSideMenu.Visible Then
 		pnlSideMenu.SetVisibleAnimated(380, False)
@@ -161,6 +183,7 @@ Private Sub BuildGUI
 	pnlScrnOff.SetLayoutAnimated(0,0,0,100%x,100%y) '--- covers the whole screen and eats the touch when screen blanked
 	pnlScrnOff.Color = Colors.ARGB(255,0,0,0) '--- scrn is black
 	pnlScrnOff_Click
+	pnlSideMenuTouchOverlay_show(False)
 	
 	guiHelpers.SkinButtonNoBorder(Array As Button(btnAboutMe,btnSetupMaster,btnHdrTxt1,btnScreenOff))
 	
@@ -207,7 +230,9 @@ End Sub
 Private Sub imgMenuButton_Click
 	'Log(pnlSideMenu.Left)
 	'Log(pnlSideMenu.Width)
-	
+	#if debug
+	Log("imgMenuButton_Click")
+	#end if
 	If pnlSideMenu.Visible = False Then
 		guiHelpers.AnimateB4xView("RIGHT",pnlSideMenu)
 	Else
@@ -222,21 +247,20 @@ Private Sub imgMenuButton_Click
 	If pnlSideMenu.Visible Then
 		pnlSideMenu.BringToFront
 		pnlHeader.BringToFront
-		pnlSideMenuTouchOverlay.Visible = True
-		pnlSideMenuTouchOverlay.BringToFront
+		pnlSideMenuTouchOverlay_show(True)
 	End If
 End Sub
 
 Private Sub Change_Pages2(value As String)
 	For x = 0 To segTabMenu.Size - 1
 		If segTabMenu.GetValue(x) = value Then
-			segTabMenu.SelectedIndex(x,500)
+			segTabMenu.SelectedIndex(x,500) : '--- fires event to change page 
 		End If
 	Next
 End Sub
 
 Private Sub segTabMenu_TabChanged(index As Int)
-	
+	'Log("*********** segTabMenu_TabChanged **************")
 	Dim value As String
 	If index = -2 Then  '--- 1st run
 		value = "hm"
@@ -359,7 +383,7 @@ End Sub
 
 Private Sub lvSideMenu_ItemClick (Index As Int, Value As Object)
 	
-	pnlSideMenuTouchOverlay.Visible = False
+	pnlSideMenuTouchOverlay_show(False)
 	ResetScrn_SleepCounter '--- reset the power / screen on-off
 	If SubExists(oPageCurrent,"SideMenu_ItemClick") Then
 		CallSubDelayed3(oPageCurrent,"SideMenu_ItemClick",Index,Value)
@@ -370,6 +394,7 @@ End Sub
 
 Private Sub btnScreenOff_Click
 	pnlSideMenu.SetVisibleAnimated(380, False)
+	pnlSideMenuTouchOverlay_show(False)
 	TurnScreen_Off
 End Sub
 
@@ -453,25 +478,28 @@ Private Sub clock_event_screenOnOff
 End Sub
 
 Private Sub pnlScrnOff_Click
-	pnlScrnOff.SendToBack
-	pnlScrnOff.Visible = False '--- this is the WHOLE PANEL covering the screen
-	pnlScrnOff.As(Panel).Elevation = 0dip
-	PowerCtrl.Screen_On(True)
+'	Log("-----------------------------------------------------> pnlScrnOff_Click - hide panel")
+'	Log("-----------------------------------------------------> pnlScrnOff_Click - hide panel")
+'	Log("-----------------------------------------------------> pnlScrnOff_Click - hide panel")
+	pnlBlankScreen_show(False)
+	PowerCtrl.Screen_On(TAKE_OVER_POWER)
 	If WeatherData.LastUpdatedAt = 1 Then
 		WeatherData.Try_Update
 	End If
+	pnlHeader.BringToFront
 	ResetScrn_SleepCounter
 	CallSubDelayed2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
 End Sub
 Public Sub TurnScreen_Off
-
-	pnlScrnOff.Visible = True : pnlScrnOff.As(Panel).Elevation = 8dip
+'	Log("-----------------------------------------------------> TurnScreen_Off button - show panel")
+'	Log("-----------------------------------------------------> TurnScreen_Off button - show panel")
+'	Log("-----------------------------------------------------> TurnScreen_Off button - show panel")
+	CheckForVisibleDialogsAndClose
+	pnlBlankScreen_show(True)
 	PowerCtrl.Screen_Off
-	pnlScrnOff.BringToFront
 	
 	IfPhotoShow_TurnOff
-	
-	
+		
 	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
 End Sub
 
@@ -488,9 +516,43 @@ End Sub
 #end region
 
 Private Sub pnlSideMenuTouchOverlay_Click
+	'Log("----------------------------- > pnlSideMenuTouchOverlay_Click")
 	If pnlSideMenu.Visible Then 
 		pnlSideMenu.SetVisibleAnimated(380, False)
-		pnlSideMenuTouchOverlay.Visible = False
 	End If
+	pnlSideMenuTouchOverlay_show(False)
 	CallSubDelayed(Me,"ResetScrn_SleepCounter")
+End Sub
+
+
+
+
+Private Sub pnlBlankScreen_show(show_me As Boolean)
+	If show_me = True Then
+		pnlScrnOff.Visible = True
+		pnlScrnOff.As(Panel).Elevation = 8dip
+		pnlScrnOff.BringToFront
+		'pnlHeader.BringToFront
+	Else
+		pnlScrnOff.Visible = False
+		pnlScrnOff.As(Panel).Elevation = -8dip
+		pnlScrnOff.SendToBack
+		pnlHeader.BringToFront
+	End If
+	Sleep(0)
+End Sub
+
+
+
+Private Sub pnlSideMenuTouchOverlay_show(show_me As Boolean)
+	If show_me = True Then
+		pnlSideMenuTouchOverlay.Visible = True
+		pnlSideMenuTouchOverlay.As(Panel).Elevation = 8dip
+		pnlSideMenuTouchOverlay.BringToFront
+	Else
+		pnlSideMenuTouchOverlay.Visible = False
+		pnlSideMenuTouchOverlay.As(Panel).Elevation = -8dip
+		pnlSideMenuTouchOverlay.SendToBack
+	End If
+	Sleep(0)
 End Sub
