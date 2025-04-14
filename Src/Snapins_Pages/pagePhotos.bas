@@ -187,9 +187,15 @@ Private Sub NextPic
 End Sub
 
 Private Sub btnPressed_Click
+	
+	
 	Dim b As Button = Sender
 	Log("btn tag --> " & b.Tag)
-	Select Case b.Tag
+	Return
+	
+	
+	
+	Select Case b.Tag 'IGNORE
 		Case "n" '--- next
 			NextPic
 			
