@@ -142,6 +142,7 @@ Sub WeatherData_RefreshScrn
 	
 	If pnlMain.Visible = False Then Return
 	If B4XPages.MainPage.DebugLog Then Log("WeatherData_RefreshScrn")
+	Dim details As String
 	
 	Sleep(0)
 	Dim lowTemp,highTemp,TempCurr,Precipitation,WindSpeed,FeelsLike As String
@@ -152,7 +153,10 @@ Sub WeatherData_RefreshScrn
 	WindSpeed   = IIf(mpage.useMetric, mpage.WeatherData.qWindSpeed_kph & "km/h" ,mpage.WeatherData.qWindSpeed_mph & "mph")
 	FeelsLike      = IIf(mpage.useCel, mpage.WeatherData.qFeelsLike_c & "°",mpage.WeatherData.qFeelsLike_f & "°")
 	
-	Dim details As String =   _
+	guiHelpers.ResizeText(mpage.WeatherData.qDescription, lblCurrDesc)
+	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
+	If guiHelpers.gScreenSizeAprox > 8.5 Then
+		details =   _
 			  "Precipitation: " & Precipitation & CRLF & _	
 			  "Humidity: " & mpage.WeatherData.qHumidity & "%" & CRLF & _
 			  "Pressure: " & mpage.WeatherData.qPressure  & CRLF & _
@@ -161,10 +165,17 @@ Sub WeatherData_RefreshScrn
 			  "Cloud Cover: " & mpage.WeatherData.qCloudCover & "%" & CRLF & _
 			  "Sunrise: " & mpage.WeatherData.ForcastDays(0).Sunrise &  " - Sunset: " & mpage.WeatherData.ForcastDays(0).Sunset & CRLF & _
 			  "Last Updated At: " &  mpage.oClock.FormatTime(mpage.WeatherData.LastUpdatedAt)
-	
-	guiHelpers.ResizeText(mpage.WeatherData.qDescription, lblCurrDesc)
-	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
-	guiHelpers.ResizeText(details.Trim, lblCurrTXT)
+		guiHelpers.ResizeText(details.Trim, lblCurrTXT)
+	Else
+		details =   _
+			  "Precipitation: " & Precipitation & CRLF & _	
+			  "Humidity: " & mpage.WeatherData.qHumidity & "%" & " Pressure: " & mpage.WeatherData.qPressure & CRLF & _
+			  "Wind Speed: " & WindSpeed  & " Direction: " & mpage.WeatherData.qWindDirection & CRLF & _
+			  "Cloud Cover: " & mpage.WeatherData.qCloudCover & "%" & CRLF & _
+			  "Sunrise: " & mpage.WeatherData.ForcastDays(0).Sunrise &  " - Sunset: " & mpage.WeatherData.ForcastDays(0).Sunset & CRLF & _
+			  "Last Updated At: " &  mpage.oClock.FormatTime(mpage.WeatherData.LastUpdatedAt)
+		guiHelpers.ResizeText(details.Trim, lblCurrTXT)
+	End If
 	guiHelpers.ResizeText("High " & highTemp   & "  /  Low " & lowTemp, lblCurrentHigh)
 	guiHelpers.ResizeText(TempCurr , btnCurrTemp)
 	guiHelpers.ResizeText("Feels like: " & FeelsLike , lblFeelsLike)
