@@ -142,10 +142,9 @@ Sub WeatherData_RefreshScrn
 	
 	If pnlMain.Visible = False Then Return
 	If B4XPages.MainPage.DebugLog Then Log("WeatherData_RefreshScrn")
-	Dim details As String
 	
 	Sleep(0)
-	Dim lowTemp,highTemp,TempCurr,Precipitation,WindSpeed,FeelsLike As String
+	Dim details,lowTemp,highTemp,TempCurr,Precipitation,WindSpeed,FeelsLike As String
 	TempCurr     = IIf(mpage.useCel, mpage.WeatherData.qTemp_c & "°c",mpage.WeatherData.qTemp_f & "°f")
 	highTemp      = IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).High_c & "°",mpage.WeatherData.ForcastDays(0).High_f & "°")
 	lowTemp       = IIf(mpage.useCel, mpage.WeatherData.ForcastDays(0).Low_c & "°",mpage.WeatherData.ForcastDays(0).Low_f & "°")
@@ -169,8 +168,8 @@ Sub WeatherData_RefreshScrn
 	Else
 		details =   _
 			  "Precipitation: " & Precipitation & CRLF & _	
-			  "Humidity: " & mpage.WeatherData.qHumidity & "%" & " Pressure: " & mpage.WeatherData.qPressure & CRLF & _
-			  "Wind Speed: " & WindSpeed  & " Direction: " & mpage.WeatherData.qWindDirection & CRLF & _
+			  "Humidity: " & mpage.WeatherData.qHumidity & "%" & " - Pressure: " & mpage.WeatherData.qPressure & CRLF & _
+			  "Wind Speed: " & WindSpeed  & " - Direction: " & mpage.WeatherData.qWindDirection & CRLF & _
 			  "Cloud Cover: " & mpage.WeatherData.qCloudCover & "%" & CRLF & _
 			  "Sunrise: " & mpage.WeatherData.ForcastDays(0).Sunrise &  " - Sunset: " & mpage.WeatherData.ForcastDays(0).Sunset & CRLF & _
 			  "Last Updated At: " &  mpage.oClock.FormatTime(mpage.WeatherData.LastUpdatedAt)
