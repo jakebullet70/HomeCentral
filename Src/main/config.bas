@@ -6,6 +6,7 @@ Version=9.5
 @EndOfDesignText@
 ' Author:  sadLogic
 #Region VERSIONS 
+' Adapted from OctoTC for use here - 2024
 ' V. 1.0 	June/13/2022
 #End Region
 'Static code module
@@ -47,12 +48,11 @@ Private Sub ConfigMe()
 		Main.kvs.Put(gblConst.INI_SOUND_ALARM_VOLUME,75)
 		Main.kvs.Put(gblConst.INI_SOUND_ALARM_FILE,"ktimers_alarm05.ogg")
 	
-		Main.kvs.Put(gblConst.INI_THEME_COLOR,"Rose")
-		
 		If File.Exists(xui.DefaultFolder,LICENSE_FILE) = False Then	'--- copy Lic file
 			File.Copy(File.DirAssets,LICENSE_FILE,xui.DefaultFolder,LICENSE_FILE)
 		End If
 	
+		'--- kill it, if it exists it will be rebuilt
 		fileHelpers.SafeKill(xui.DefaultFolder,gblConst.FILE_MAIN_SETUP) '--- Dev
 		
 	Else
@@ -91,7 +91,7 @@ Public Sub getScreenOffTime() As Int
 End Sub
 
 Public Sub ReadMainSetup
-	'--- DO NOT USE	File.ReadMap Or File.WriteMap
+	'--- DO NOT USE --->	File.ReadMap Or File.WriteMap, use functions in objHelpers
 	MainSetupData = objHelpers.MapFromDisk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP) 
 End Sub
 

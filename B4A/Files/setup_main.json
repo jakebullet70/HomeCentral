@@ -78,6 +78,28 @@
             "type": "Boolean",
             "key": "pConv",
             "required": false
+        },
+        {
+            "title": "Colors",
+            "type": "Separator",
+            "key": "pConv",
+            "required": false
+        },
+        {
+            "options": [
+                "Rose",
+                "Red",
+                "Green",
+                "Gray",
+                "Dark",
+                "Dark-Blue",
+                "Dark-Green",
+                "Orange"
+            ],
+            "title": "Theme",
+            "type": "Short Options",
+            "key": "pTheme",
+            "required": false
         }
     ]
 }

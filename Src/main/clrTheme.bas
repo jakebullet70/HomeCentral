@@ -6,6 +6,7 @@ Version=9.5
 @EndOfDesignText@
 ' Author:  sadLogic
 #Region VERSIONS 
+' Adapted from OctoTC for use here - 2024
 ' V. 1.0 	June/7/2022
 #End Region
 'Static code module
@@ -25,14 +26,22 @@ Sub Process_Globals
 	Public ItemsBackgroundColor As Int '--- used in sadPrefDialogs
 	
 End Sub
-
+'
+'Rose
+'			Red
+'			Green
+'			Gray
+'			Dark
+'			Dark-Blue
+'			Dark-Green
+'			Orange
 
 Public Sub Init(theme As String)
 	
-	If Main.kvs.ContainsKey(gblConst.INI_CUSTOM_THEME_COLORS) = False Then
-		SeedCustomClrs
-	End If
-	customcolors = Main.kvs.Get(gblConst.INI_CUSTOM_THEME_COLORS)
+'	If Main.kvs.ContainsKey(gblConst.INI_CUSTOM_THEME_COLORS) = False Then
+'		SeedCustomClrs
+'	End If
+'	customcolors = Main.kvs.Get(gblConst.INI_CUSTOM_THEME_COLORS)
 	InitTheme(theme)
 	
 End Sub
@@ -115,7 +124,7 @@ Public Sub InitTheme(theme As String)
 			btnDisableText =0xFF425845
 			DividerColor = txtAccent
 			
-		Case "prusa"
+		Case "Orenge"
 			Background = -14672868
 			BackgroundHeader = xui.Color_ARGB(255,11, 11, 11)
 			Background2 = xui.Color_ARGB(255,43, 43, 43)
@@ -123,7 +132,7 @@ Public Sub InitTheme(theme As String)
 			txtAccent = 0xFFD77762
 			btnDisableText = xui.Color_ARGB(50,192,192,192)
 			DividerColor = xui.Color_Black
-		
+			
 		Case Else ' --- "blue"
 			Log("Theme Else: " & theme)
 			Background = xui.Color_ARGB(255,53, 69, 85)
@@ -144,21 +153,21 @@ Public Sub InitTheme(theme As String)
 End Sub
 
 
-Private Sub SeedCustomClrs
-	
-	Log("Seed clrs")
-	customcolors.Initialize
-	'--- seed a basic black / white
-	customcolors.bg = xui.Color_ARGB(255,2, 2, 2)
-	customcolors.bgHeader = xui.Color_ARGB(255,30, 30, 30)
-	customcolors.bgMenu = xui.Color_ARGB(255,43, 43, 43)
-	customcolors.txtNormal = xui.Color_white
-	customcolors.txtAcc = xui.Color_LightGray
-	customcolors.Disabled = xui.Color_ARGB(50,192,192,192)
-	customcolors.Divider = xui.Color_LightGray
-	Main.kvs.Put(gblConst.INI_CUSTOM_THEME_COLORS,customcolors)
-	
-End Sub
+'Private Sub SeedCustomClrs
+'	
+'	Log("Seed clrs")
+'	customcolors.Initialize
+'	'--- seed a basic black / white
+'	customcolors.bg = xui.Color_ARGB(255,2, 2, 2)
+'	customcolors.bgHeader = xui.Color_ARGB(255,30, 30, 30)
+'	customcolors.bgMenu = xui.Color_ARGB(255,43, 43, 43)
+'	customcolors.txtNormal = xui.Color_white
+'	customcolors.txtAcc = xui.Color_LightGray
+'	customcolors.Disabled = xui.Color_ARGB(50,192,192,192)
+'	customcolors.Divider = xui.Color_LightGray
+'	Main.kvs.Put(gblConst.INI_CUSTOM_THEME_COLORS,customcolors)
+'	
+'End Sub
 
 '=====================================================================
 

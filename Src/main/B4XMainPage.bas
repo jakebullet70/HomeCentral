@@ -82,7 +82,9 @@ Public Sub Initialize
 	Log("-------------------->  Runnung  <-----------------------")
 	'Main.kvs.DeleteAll 
 	config.Init
-	clrTheme.Init(Main.kvs.Get(gblConst.INI_THEME_COLOR))
+	
+	clrTheme.Init(config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_THEME))
+	'clrTheme.Init(Main.kvs.Get(gblConst.INI_THEME_COLOR))
 	
 	WeatherData.Initialize
 	useCel 		= Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_CELSIUS,True)

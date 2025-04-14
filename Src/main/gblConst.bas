@@ -61,8 +61,8 @@ Sub Process_Globals
 	Public Const INI_SCREEN_BRIGHTNESS_VALUE As String = "scrnbrt"
 	'Public Const INI_SCREEN_TAKEOVER_POWER As String = "scrntop"
 	
-	Public Const INI_THEME_COLOR As String = "themeclr" '--- selected theme color
-	Public Const INI_CUSTOM_THEME_COLORS As String = "customClrs" '--- users custom colors
+	'Public Const INI_THEME_COLOR As String = "themeclr" '--- selected theme color
+	'Public Const INI_CUSTOM_THEME_COLORS As String = "customClrs" '--- users custom colors
 	
 	'---
 	Public Const KEYS_MAIN_SETUP_AUTO_BOOT As String = "saboot"
@@ -76,6 +76,7 @@ Sub Process_Globals
 	Public Const KEYS_MAIN_SETUP_PAGE_CALC As String = "pCalc"
 	Public Const KEYS_MAIN_SETUP_PAGE_CONV As String = "pConv"
 	Public Const KEYS_MAIN_SETUP_PAGE_TIMERS As String = "pTmrs"
+	Public Const KEYS_MAIN_SETUP_PAGE_THEME As String = "pTheme"
 	
 	
 	
