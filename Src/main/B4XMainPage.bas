@@ -189,13 +189,8 @@ Private Sub BuildGUI
 	
 	guiHelpers.SkinButtonNoBorder(Array As Button(btnAboutMe,btnSetupMaster,btnHdrTxt1,btnScreenOff))
 	
-	Try
-		guiHelpers.ResizeText("<  Screen Off  >",btnScreenOff.As(B4XView))
-	Catch
-		Log(LastException)
-	End Try
-	
-	
+	guiHelpers.ResizeText("<  Screen Off  >",btnScreenOff.As(B4XView))
+		
 	'guiHelpers.SkinButton(Array As Button(btnScreenOff))
 	pnlBG.SetColorAndBorder(clrTheme.Background,0dip,xui.Color_Transparent,0dip)
 	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0dip,xui.Color_Transparent,0dip)

@@ -124,7 +124,7 @@ Public Sub InitTheme(theme As String)
 			btnDisableText =0xFF425845
 			DividerColor = txtAccent
 			
-		Case "Orenge"
+		Case "orange"
 			Background = -14672868
 			BackgroundHeader = xui.Color_ARGB(255,11, 11, 11)
 			Background2 = xui.Color_ARGB(255,43, 43, 43)

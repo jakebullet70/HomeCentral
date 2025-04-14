@@ -42,7 +42,7 @@ Public Sub BuildHeaderMenu(tb As ASSegmentedTab,CallBack As Object,Event As Stri
 	tb.ImageHeight = 46dip
 	tb.SelectionPanel.Color = clrTheme.Background2
 	tb.ItemTextProperties.TextColor = clrTheme.txtNormal
-	'tb.ItemTextProperties.SelectedTextColor = themes.clrTxtBright
+	tb.ItemTextProperties.SelectedTextColor = clrTheme.txtAccent
 	
 	'tb.CornerRadiusBackground = tb.Base.Height/2 'make the view rounded
 	'tb.CornerRadiusBackground = 10dip 'make the view rounded
