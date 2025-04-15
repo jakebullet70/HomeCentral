@@ -297,7 +297,7 @@ Private Sub segTabMenu_TabChanged(index As Int)
 			If oPageTimers.IsInitialized = False Then oPageTimers.Initialize(pnlTimers)
 			oPageCurrent = oPageTimers
 		
-		Case "wb" '--- timers
+		Case "wb" '--- web
 			If oPageWEB.IsInitialized = False Then oPageWEB.Initialize(pnlWB)
 			oPageCurrent = oPageWEB
 		
