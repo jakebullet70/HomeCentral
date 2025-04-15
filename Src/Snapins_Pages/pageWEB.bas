@@ -14,9 +14,7 @@ Sub Class_Globals
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
-	
-	
-	
+		
 End Sub
 
 Public Sub Initialize(p As B4XView) 
@@ -30,9 +28,9 @@ End Sub
 
 '-------------------------------
 Public Sub Set_focus()
-	'Menus.SetHeader("Weather","main_menu_weather.png")
-	mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Side_Menu",250)
 	Menus.SetHeader("Web","main_menu_web.png")
+	mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Side_Menu",250)
+'	Menus.SetHeader("Web","main_menu_web.png")
 	pnlMain.SetVisibleAnimated(500,True)
 End Sub
 Public Sub Lost_focus()
