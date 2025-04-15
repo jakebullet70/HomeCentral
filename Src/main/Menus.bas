@@ -71,6 +71,10 @@ Public Sub BuildHeaderMenu(tb As ASSegmentedTab,CallBack As Object,Event As Stri
 		tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_pics.png"),"ph")
 		ttl = ttl + 1
 	End If
+	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_WEB) Then
+		tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_web.png"),"wb")
+		ttl = ttl + 1
+	End If
 	
 	tb.mBase.Width = (ttl * 70dip) + (ttl * 4dip)
 	tb.Base_Resize2

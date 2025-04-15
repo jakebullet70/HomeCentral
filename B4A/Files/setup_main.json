@@ -68,6 +68,12 @@
             "required": false
         },
         {
+            "title": "Web View",
+            "type": "Boolean",
+            "key": "pWeb",
+            "required": false
+        },
+        {
             "title": "Photo Album",
             "type": "Boolean",
             "key": "pPhoto",

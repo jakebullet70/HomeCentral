@@ -42,6 +42,7 @@ public Sub CreateDefaultFile
 					gblConst.KEYS_MAIN_SETUP_PAGE_CALC: True, _
 					gblConst.KEYS_MAIN_SETUP_PAGE_CONV: True, _
 					gblConst.KEYS_MAIN_SETUP_PAGE_TIMERS: True, _
+					gblConst.KEYS_MAIN_SETUP_PAGE_WEB: False, _
 					gblConst.KEYS_MAIN_SETUP_PAGE_THEME: "Red" _
 					))
 		
@@ -56,6 +57,7 @@ Private Sub DoesMenuNeedRebuild(newData As Map, OldData As Map) As Boolean
 		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO)) Or _
 		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CALC) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CALC)) Or _
 		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CONV) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CONV)) Or _
+		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_WEB) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_WEB)) Or _
 		(newData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_TIMERS) <> OldData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_TIMERS))
 		
 End Sub

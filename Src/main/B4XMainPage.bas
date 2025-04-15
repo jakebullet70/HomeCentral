@@ -42,8 +42,8 @@ Sub Class_Globals
 	'--- this page - master --------------------
 	Private pnlBG As B4XView
 	
-	Private pnlTimers,pnlCalculator,pnlHome,pnlWeather,pnlConversions,pnlPhotos As B4XView
-	Public oPageCurrent As Object = Null
+	Private pnlTimers,pnlCalculator,pnlHome,pnlWeather,pnlConversions,pnlPhotos,pnlWB As B4XView
+	Public oPageCurrent As Object = Null, oPageWEB As pageWEB
 	Public oPageConversion As pageConversions,oPagePhoto As pagePhotos,oPageTimers As pageKTimers
 	Public oPageCalculator As pageCalculator,  oPageHome As pageHome, oPageWeather As pageWeather
 	'-----------------------------------------
@@ -181,7 +181,7 @@ End Sub
 
 Private Sub BuildGUI
 	
-	guiHelpers.SetVisible(Array As B4XView(pnlTimers,pnlSideMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
+	guiHelpers.SetVisible(Array As B4XView(pnlWB,pnlTimers,pnlSideMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
 	pnlScrnOff.SetLayoutAnimated(0,0,0,100%x,100%y) '--- covers the whole screen and eats the touch when screen blanked
 	pnlScrnOff.Color = Colors.ARGB(255,0,0,0) '--- scrn is black
 	pnlScrnOff_Click
@@ -290,14 +290,16 @@ Private Sub segTabMenu_TabChanged(index As Int)
 			oPageCurrent = oPageCalculator
 			
 		Case "ph" '--- photo albumn
-			If oPagePhoto.IsInitialized = False Then 
-				oPagePhoto.Initialize(pnlPhotos)
-			End If
+			If oPagePhoto.IsInitialized = False Then oPagePhoto.Initialize(pnlPhotos)
 			oPageCurrent = oPagePhoto
 			
 		Case "tm" '--- timers
 			If oPageTimers.IsInitialized = False Then oPageTimers.Initialize(pnlTimers)
 			oPageCurrent = oPageTimers
+		
+		Case "wb" '--- timers
+			If oPageWEB.IsInitialized = False Then oPageWEB.Initialize(pnlWB)
+			oPageCurrent = oPageWEB
 		
 	End Select
 
