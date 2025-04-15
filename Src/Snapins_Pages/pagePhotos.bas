@@ -67,6 +67,7 @@ End Sub
 
 '-------------------------------
 Public Sub Set_focus()
+	'mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Side_Menu",250)
 	Menus.SetHeader("Photo Album","main_menu_pics.png")
 	pnlMain.SetVisibleAnimated(500,True)
 End Sub
@@ -78,6 +79,9 @@ End Sub
 '=============================================================================================
 '=============================================================================================
 '=============================================================================================
+'Private Sub Build_Side_Menu
+'	Menus.BuildSideMenu(Array As String(""),Array As String(""))
+'End Sub
 
 
 'Return the hint that will be displayed when the user fast scrolls the list. It can be a string or CSBuilder.
