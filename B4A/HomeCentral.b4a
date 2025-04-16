@@ -195,7 +195,7 @@ Version=12.5
 	#CanInstallToExternalStorage: False
 	
 	'--- is this needed for picking path? -- Android 5.1
-	#AdditionalJar: com.android.support:support-core-utils
+	'#AdditionalJar: com.android.support:support-core-utils
 	 
 #End Region
 
