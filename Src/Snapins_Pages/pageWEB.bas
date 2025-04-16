@@ -33,33 +33,29 @@ Public Sub Initialize(p As B4XView)
 	'guiHelpers.SkinButton(Array As Button(btnStart,btnFullScrn,btnNext,btnPrev))
 	
 	Dim ph As Phone
+	
+	'--- web extra's 
 	Dim JavascriptInterface1 As DefaultJavascriptInterface
 	JavascriptInterface1.Initialize
-	
 	WebViewExtras1.Initialize(wv)
 	'   WebViewExtras1 now has all the methods and properties of WebView1 plus it's additonal methods and properties
 	'   so you can use WebView1 to get/set WebView properties/methods
 	'   or use WebViewExtras1 to get/set WebView1 properties/methods with the additional properties/method of WebViewExtras
-	
 	Dim WebViewClient1 As DefaultWebViewClient
 	WebViewClient1.Initialize("WebViewClient1")
-
 	Try
 		If ph.SdkVersion >= gblConst.API_ANDROID_4_2 Then
 			WebViewExtras1.JavaScriptEnabled = True
 		End If
 	Catch
-		LogIt.LogWrite("WebViewExtras1.JavaScriptEnabled FAILED",0)
-		Log(LastException)
+		LogIt.LogWrite("WebViewExtras1.JavaScriptEnabled FAILED: " & LastException,0)
 	End Try
-	
 	WebViewExtras1.SetWebViewClient(WebViewClient1)
-
 	wvs.setUseWideViewPort(wv, True)
 	wvs.setDisplayZoomControls(wv, False)
 	wvs.setLoadsImagesAutomatically(wv, True)
 
-	mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Load_Page",1000)
+	mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Load_Page",500)
 End Sub
 
 
@@ -84,7 +80,6 @@ End Sub
 
 
 Private Sub Load_page
-	
 	wv.LoadUrl("http://sadlogic.com")
 End Sub
 
