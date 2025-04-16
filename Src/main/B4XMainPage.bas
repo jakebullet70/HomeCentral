@@ -42,7 +42,7 @@ Sub Class_Globals
 	'--- this page - master --------------------
 	Private pnlBG As B4XView
 	
-	Private pnlTimers,pnlCalculator,pnlHome,pnlWeather,pnlConversions,pnlPhotos,pnlWB As B4XView
+	Private pnlTimers,pnlCalculator,pnlHome,pnlWeather,pnlConversions,pnlPhotos,pnlWEB As B4XView
 	Public oPageCurrent As Object = Null, oPageWEB As pageWEB
 	Public oPageConversion As pageConversions,oPagePhoto As pagePhotos,oPageTimers As pageKTimers
 	Public oPageCalculator As pageCalculator,  oPageHome As pageHome, oPageWeather As pageWeather
@@ -181,7 +181,7 @@ End Sub
 
 Private Sub BuildGUI
 	
-	guiHelpers.SetVisible(Array As B4XView(pnlWB,pnlTimers,pnlSideMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
+	guiHelpers.SetVisible(Array As B4XView(pnlWEB,pnlTimers,pnlSideMenu,pnlWeather,pnlCalculator,pnlConversions,pnlPhotos),False)
 	pnlScrnOff.SetLayoutAnimated(0,0,0,100%x,100%y) '--- covers the whole screen and eats the touch when screen blanked
 	pnlScrnOff.Color = Colors.ARGB(255,0,0,0) '--- scrn is black
 	pnlScrnOff_Click
@@ -298,7 +298,7 @@ Private Sub segTabMenu_TabChanged(index As Int)
 			oPageCurrent = oPageTimers
 		
 		Case "wb" '--- web
-			If oPageWEB.IsInitialized = False Then oPageWEB.Initialize(pnlWB)
+			If oPageWEB.IsInitialized = False Then oPageWEB.Initialize(pnlWEB)
 			oPageCurrent = oPageWEB
 		
 	End Select

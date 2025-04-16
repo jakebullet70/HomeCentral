@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <doclet-version-NOT-library-version>1.04</doclet-version-NOT-library-version>
+    <class>
+        <name>uk.co.martinpearman.b4a.webviewsettings.WebViewSettings</name>
+        <shortname>WebViewSettings</shortname>
+        <owner>process</owner>
+        <method>
+            <name>setDefaultTextEncodingName</name>
+            <comment>Set the default text encoding name to use when decoding html pages.
+ The default is "Latin-1".</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>encoding</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setAppCacheMaxSize</name>
+            <comment>Set the maximum size for the Application Caches content.
+ appCacheMaxSize - The cache size in bytes.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>appCacheMaxSize</name>
+                <type>long</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setLoadWithOverviewMode</name>
+            <comment>Set whether the WebView loads a page with overview mode.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>overview</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setDatabasePath</name>
+            <comment>Sets the location where the database storage API databases are saved.
+ If path is an empty String "" then a default path will be set.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>path</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getJavaScriptCanOpenWindowsAutomatically</name>
+            <comment>Get if javascript can open windows automatically. The default is false.
+ Returns true if javascript can open windows automatically during window.open().</comment>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getDatabasePath</name>
+            <comment>Returns the location where the database storage API databases are saved.</comment>
+            <returntype>java.lang.String</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getMinimumFontSize</name>
+            <comment>Get the minimum font size. The default is 8.
+ Returns a non-negative integer between 1 and 72.</comment>
+            <returntype>int</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getUseWideViewPort</name>
+            <comment>Returns true if the WebView is using a wide viewport.</comment>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setDefaultZoom</name>
+            <comment>Set the default zoom density of the page.
+ density - Possible values are: "CLOSE", "FAR" and "MEDIUM".</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>density</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getDefaultTextEncodingName</name>
+            <comment>Get the default text encoding name. The default is "Latin-1".
+ Returns the default text encoding name as a string.</comment>
+            <returntype>java.lang.String</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setUseWideViewPort</name>
+            <comment>Tell the WebView to use the wide viewport.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>use</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setLightTouchEnabled</name>
+            <comment>Enables using light touches to make a selection and activate mouseovers.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>enabled</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setCacheMode</name>
+            <comment>Override the way the cache is used. The way the cache is used is based on the navigation option.
+ For a normal page load, the cache is checked and content is re-validated as needed.
+ When navigating back, content is not revalidated, instead the content is just pulled from the cache.
+ This function allows the client to override this behavior.
+ cacheMode - Possible values are: "LOAD_CACHE_ELSE_NETWORK", "LOAD_CACHE_ONLY", "LOAD_DEFAULT", "LOAD_NO_CACHE" and "LOAD_NORMAL"</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>cacheMode</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setCursiveFontFamily</name>
+            <comment>Set the cursive font family name.
+ font - A font family name.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>font</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setMediaPlaybackRequiresUserGesture</name>
+            <comment>Sets whether the WebView requires a user gesture to play media.
+ The default is true.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>Requires</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getSaveFormData</name>
+            <comment>Get whether the WebView is saving form data and displaying prior entries/autofill.</comment>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getDisplayZoomControls</name>
+            <comment>Returns true if the on screen zoom buttons are displayed.
+Only supported on Android API level 11 and later.</comment>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>supportZoom</name>
+            <comment>Returns whether the WebView supports zoom.</comment>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getAllowFileAccess</name>
+            <comment>Returns true if this WebView supports file access.</comment>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getPluginState</name>
+            <comment>Get the current plugin state.
+ Possible return values are: "OFF", "ON" and "ON_DEMAND"</comment>
+            <returntype>java.lang.String</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getCacheMode</name>
+            <comment>Return the current setting for overriding the cache mode.
+ Possible return values are: "LOAD_CACHE_ELSE_NETWORK", "LOAD_CACHE_ONLY", "LOAD_DEFAULT", "LOAD_NO_CACHE" and "LOAD_NORMAL"</comment>
+            <returntype>java.lang.String</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getDefaultZoom</name>
+            <comment>Get the default zoom density of the page.
+ Possible return values are: "CLOSE", "FAR" and "MEDIUM"</comment>
+            <returntype>java.lang.String</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getCursiveFontFamily</name>
+            <comment>Get the cursive font family name. The default is "cursive".
+ Returns the cursive font family name as a string.</comment>
+            <returntype>java.lang.String</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getLoadsImagesAutomatically</name>
+            <comment>Return true if the WebView will load image resources automatically. The default is true.</comment>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getSavePassword</name>
+            <comment>Get whether the WebView is saving passwords.</comment>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setAppCacheEnabled</name>
+            <comment>Tell the WebView to enable Application Caches API.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>flag</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setGeolocationEnabled</name>
+            <comment>Sets whether Geolocation is enabled.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>Enabled</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setDatabaseEnabled</name>
+            <comment>Set whether the database storage API is enabled.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>enabled</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getDefaultFontSize</name>
+            <comment>Get the default font size. The default is 16.
+ Returns a non-negative integer between 1 and 72.</comment>
+            <returntype>int</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getDefaultFixedFontSize</name>
+            <comment>Get the default fixed font size. The default is 16.
+ Returns a non-negative integer between 1 and 72.</comment>
+            <returntype>int</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setSupportZoom</name>
+            <comment>Set whether the WebView supports zoom.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>support</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setDefaultFixedFontSize</name>
+            <comment>Set the default fixed font size.
+ size - A non-negative integer between 1 and 72.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>size</name>
+                <type>int</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setLoadsImagesAutomatically</name>
+            <comment>Tell the WebView to load image resources automatically.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>flag</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setDefaultFontSize</name>
+            <comment>Set the default font size.
+ size - A non-negative integer between 1 and 72.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>size</name>
+                <type>int</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getDOMStorageEnabled</name>
+            <comment>Returns whether the DOM storage API is enabled.</comment>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setAppCachePath</name>
+            <comment>Set a custom path to the Application Caches files.
+ The client must ensure it exists before this call.
+ appCachePath - String path to the directory containing Application Caches files. The appCache path can be the empty string but should not be null.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>appCachePath</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setSaveFormData</name>
+            <comment>Store whether the WebView is saving form data.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>save</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getLightTouchEnabled</name>
+            <comment>Returns true if light touches are enabled.</comment>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setUserAgentString</name>
+            <comment>Set the WebView's user-agent string.
+ If the string "userAgent" is null or empty, it will use the system default user-agent string.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>userAgent</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setJavaScriptCanOpenWindowsAutomatically</name>
+            <comment>Tell javascript to open windows automatically.
+ This applies to the javascript function window.open().</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>flag</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getLoadWithOverviewMode</name>
+            <comment>Returns true if this WebView loads page with overview mode.</comment>
+            <returntype>boolean</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setDOMStorageEnabled</name>
+            <comment>Set whether the DOM storage API is enabled.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>Enabled</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setAllowFileAccess</name>
+            <comment>Enable or disable file access within WebView. File access is enabled by default.
+ Note that this enables or disables file system access only.
+ Assets and resources are still accessible using file:///android_asset</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>allow</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setSavePassword</name>
+            <comment>Store whether the WebView is saving password.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>save</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setDisplayZoomControls</name>
+            <comment>Sets whether the on screen zoom buttons are displayed.
+A combination of built in zoom controls enabled and on screen zoom controls disabled allows for pinch to zoom to work without the on screen controls.
+Only supported on Android API level 11 and later.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>Enabled</name>
+                <type>boolean</type>
+            </parameter>
+        </method>
+        <method>
+            <name>getUserAgentString</name>
+            <comment>Get the WebView's user-agent string.</comment>
+            <returntype>java.lang.String</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setMinimumFontSize</name>
+            <comment>Set the minimum font size.
+ size - A non-negative integer between 1 and 72.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>size</name>
+                <type>int</type>
+            </parameter>
+        </method>
+        <method>
+            <name>setPluginState</name>
+            <comment>Tell the WebView to enable, disable, or have plugins load on demand.
+ On demand mode means that if a plugin exists that can handle the embedded content, a placeholder icon will be shown instead of the plugin.
+ When the placeholder is clicked, the plugin will be enabled.</comment>
+            <returntype>void</returntype>
+            <parameter>
+                <name>webView1</name>
+                <type>android.webkit.WebView</type>
+            </parameter>
+            <parameter>
+                <name>state</name>
+                <type>java.lang.String</type>
+            </parameter>
+        </method>
+    </class>
+    <version>1.31</version>
+    <author>Martin Pearman</author>
+</root>
