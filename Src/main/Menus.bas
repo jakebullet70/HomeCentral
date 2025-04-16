@@ -48,33 +48,40 @@ Public Sub BuildHeaderMenu(tb As ASSegmentedTab,CallBack As Object,Event As Stri
 	'tb.CornerRadiusBackground = 10dip 'make the view rounded
 	Sleep(0)
 
-	Dim ttl As Int = 1	
-	tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_home.png"),"hm")
+	Try
+		Dim ttl As Int = 1
+		tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_home.png"),"hm")
 	
-	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_WEATHER) Then
-		tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_weather.png"),"wt")
-		ttl = ttl + 1
-	End If
-	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_TIMERS) Then
-		tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_timers.png"),"tm")
-		ttl = ttl + 1
-	End If
-	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CALC) Then
-		tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_calc.png"),"ca")
-		ttl = ttl + 1
-	End If
-	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CONV) Then
-		tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_conversions.png"),"cv")
-		ttl = ttl + 1
-	End If
-	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO) Then
-		tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_pics.png"),"ph")
-		ttl = ttl + 1
-	End If
-	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_WEB) Then
-		tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_web.png"),"wb")
-		ttl = ttl + 1
-	End If
+		If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_WEATHER) Then
+			tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_weather.png"),"wt")
+			ttl = ttl + 1
+		End If
+		If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_TIMERS) Then
+			tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_timers.png"),"tm")
+			ttl = ttl + 1
+		End If
+		If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CALC) Then
+			tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_calc.png"),"ca")
+			ttl = ttl + 1
+		End If
+		If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_CONV) Then
+			tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_conversions.png"),"cv")
+			ttl = ttl + 1
+		End If
+		If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO) Then
+			tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_pics.png"),"ph")
+			ttl = ttl + 1
+		End If
+		If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_WEB) Then
+			tb.AddTab2("",XUI.LoadBitmap(File.DirAssets,"main_menu_web.png"),"wb")
+			ttl = ttl + 1
+		End If
+		
+	Catch
+		Dim a As String = "Snapin file needs to be rebuilt!!!!!!!!!!!!!!!!!!!!!"
+		Log(a) : Log(a)
+		ExitApplication
+	End Try
 	
 	tb.mBase.Width = (ttl * 70dip) + (ttl * 4dip)
 	tb.Base_Resize2
