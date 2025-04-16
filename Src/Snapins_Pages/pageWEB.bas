@@ -30,11 +30,9 @@ End Sub
 Public Sub Set_focus()
 	Menus.SetHeader("Web","main_menu_web.png")
 	mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Side_Menu",250)
-'	Menus.SetHeader("Web","main_menu_web.png")
 	pnlMain.SetVisibleAnimated(500,True)
 End Sub
 Public Sub Lost_focus()
-	'tmrPicShow.Enabled = False
 	pnlMain.SetVisibleAnimated(500,False)
 End Sub
 
