@@ -37,7 +37,6 @@ Public Sub Initialize(p As B4XView)
 	guiHelpers.SkinButton(Array As Button(btnMoveB,btnMoveF,btnMoveH,btnMoveR))
 	'homePage = "" get from setup
 	
-	'btnMoveH.Text = Chr(0xE88A)
 	guiHelpers.ResizeText(Chr(0xE88A),btnMoveH)
 	btnMoveH.TextSize = btnMoveH.TextSize-16
 	guiHelpers.SetTextSize(Array As B4XView(btnMoveB,btnMoveF,btnMoveR),btnMoveH.TextSize)
