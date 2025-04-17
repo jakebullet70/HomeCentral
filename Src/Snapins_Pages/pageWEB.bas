@@ -14,15 +14,19 @@ Sub Class_Globals
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
+	Private homePage As String = "http://sadlogic.com"
+	Private CurrentPage As String
 
 	
 	Private wv As WebView
-	Dim wvs As WebViewSettings
-	Dim WebViewExtras1 As WebViewExtras
-	Dim WebChromeClient1 As DefaultWebChromeClient
-	Dim JavascriptInterface1 As DefaultJavascriptInterface
-	Dim WebViewClient1 As DefaultWebViewClient
+	Private wvs As WebViewSettings
+	Private WebViewExtras1 As WebViewExtras
+	Private WebChromeClient1 As DefaultWebChromeClient
+	Private JavascriptInterface1 As DefaultJavascriptInterface
+	Private WebViewClient1 As DefaultWebViewClient
 	'Dim JavascriptInterface1 As DefaultJavascriptInterface
+	
+	Private btnMoveH,btnMoveB,btnMoveF,btnMoveR As Button
 	
 End Sub
 
@@ -30,7 +34,13 @@ Public Sub Initialize(p As B4XView)
 	pnlMain = p
 	pnlMain.LoadLayout("pageWebBase")
 	
-	'guiHelpers.SkinButton(Array As Button(btnStart,btnFullScrn,btnNext,btnPrev))
+	guiHelpers.SkinButton(Array As Button(btnMoveB,btnMoveF,btnMoveH,btnMoveR))
+	'homePage = "" get from setup
+	
+	'btnMoveH.Text = Chr(0xE88A)
+	guiHelpers.ResizeText(Chr(0xE88A),btnMoveH)
+	btnMoveH.TextSize = btnMoveH.TextSize-16
+	guiHelpers.SetTextSize(Array As B4XView(btnMoveB,btnMoveF,btnMoveR),btnMoveH.TextSize)
 	
 	Dim ph As Phone
 	
@@ -55,7 +65,7 @@ Public Sub Initialize(p As B4XView)
 	wvs.setDisplayZoomControls(wv, False)
 	wvs.setLoadsImagesAutomatically(wv, True)
 
-	mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Load_Page",500)
+	CallSubDelayed2(Me,"Load_Page",homePage)
 End Sub
 
 
@@ -79,7 +89,24 @@ End Sub
 
 
 
-Private Sub Load_page
-	wv.LoadUrl("http://sadlogic.com")
+Private Sub Load_page(page As String)
+	wv.LoadUrl(page)
+	CurrentPage = page
 End Sub
 
+
+
+Private Sub btnMove_Click
+	Dim b As String = Sender.As(B4XView).Tag
+	Select Case b
+		Case "f" '--- forward
+			wv.Forward
+		Case "h" '--- home
+			CallSubDelayed2(Me,"Load_page",homePage)
+		Case "b" '--- back
+			wv.Back
+		Case "r" '--- refresh			
+			If CurrentPage = "" Then Return
+			CallSubDelayed2(Me,"Load_page",CurrentPage)
+	End Select
+End Sub
