@@ -118,7 +118,7 @@ Public Sub BuildSideMenu(lstMnus As List, lstRetVals As List)
 		Next
 		
 	Catch
-		Log(LastException)
+		Log("BuildSideMenu-->" & LastException)
 	End Try
 	
 	'lv.sv.As(ScrollPane).SetVScrollVisibility("NEVER")  scrollbar?
