@@ -408,6 +408,7 @@ Private Sub btnSetupMaster_Click
 	o1.Initialize("Setup Menu",Me,"SetupMainMenu_Event",Dialog)
 	o1.IsMenu = True
 	o1.Show(440dip,380dip,gui.BuildMainSetup())
+	pnlSideMenuTouchOverlay_show(False)
 	
 End Sub
 
@@ -421,6 +422,8 @@ Private Sub SetupMainMenu_Event(t As String,o As Object)
 			Dim o3 As dlgTextInput  
 			o3.Initialize("Home Page","Address",B4XPages.MainPage,"save_home_web_addr") :
 			o3.txtEdit = Main.kvs.Get(gblConst.INI_WEB_HOME) & "" : o3.Show
+		Case Else
+			
 	End Select
 End Sub
 
