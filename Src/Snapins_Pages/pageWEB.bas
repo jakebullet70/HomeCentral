@@ -38,7 +38,7 @@ Public Sub Initialize(p As B4XView)
 	'homePage = "" get from setup
 	
 	guiHelpers.ResizeText(Chr(0xE88A),btnMoveH)
-	btnMoveH.TextSize = btnMoveH.TextSize-16
+	btnMoveH.TextSize = btnMoveH.TextSize - IIf(guiHelpers.gScreenSizeAprox > 7.5,22,14)
 	guiHelpers.SetTextSize(Array As B4XView(btnMoveB,btnMoveF,btnMoveR),btnMoveH.TextSize)
 	
 	Dim ph As Phone
