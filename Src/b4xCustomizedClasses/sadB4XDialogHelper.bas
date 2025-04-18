@@ -21,6 +21,7 @@ Public Sub Initialize(oDlg As B4XDialog)
 	'dlg.VisibleAnimationDuration = 300
 	'dlg.BlurBackground = False
 	Dim ac As Accessibility
+	'--- scale is returned from Android Text size in setup
 	Scale = ac.GetUserFontScale
 End Sub
 
