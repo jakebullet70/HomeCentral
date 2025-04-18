@@ -365,20 +365,25 @@ Private Sub btnAboutMe_Click
 End Sub
 
 Private Sub imgSoundButton_Click
+	
 	Try
 		If oPageCurrent <> oPageTimers Then
+			guiHelpers.Show_toast2("System Volume",2000)
 			Dim ph As Phone
 			ph.SetVolume(ph.VOLUME_SYSTEM,ph.GetMaxVolume(ph.VOLUME_SYSTEM),True)
 			Return
 		End If
 		
+		'guiHelpers.Show_toast2("System Volume",2000)
 		Dim o1 As dlgVolume : o1.Initialize(Dialog) '--- kitchen timers
 		o1.Show("kt")
+		
 	Catch
 		guiHelpers.Show_toast2(gblConst.VOLUME_ERR,4500)
 		Log(LastException)
 	End Try
 End Sub
+
 
 Private Sub lvSideMenu_ItemClick (Index As Int, Value As Object)
 	

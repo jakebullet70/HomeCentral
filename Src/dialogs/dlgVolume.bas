@@ -18,13 +18,13 @@ Sub Class_Globals
 	Private mDialog As B4XDialog
 	Private pnlMain As B4XView
 	
-	Private Label3,Label1 As B4XView
+	Private Label3,Label1 As Label
 	Private cboSounds As B4XComboBox
 	Private sbTimerVol As B4XSeekBar
 	
 	Private btnTest As Button
 	Private lblTmrVol As B4XView
-	Private pnlTimerVol As B4XView
+	Private pnlTimerVol As Panel
 	
 	'--- for SOUND check
 	Private MP_Test As MediaPlayer
@@ -77,8 +77,7 @@ Public Sub Show(VolType As String)
 	
 	guiHelpers.ResizeText("100%",lblTmrVol)
 	
-	cboSounds.cmbBox.AddAll(Array As String( _
-				"ktimers_alarm01.ogg","ktimers_alarm02,ogg","ktimers_alarm03.ogg","ktimers_alarm04.ogg","ktimers_alarm05.ogg"))
+	vol_timers.SetTimerSoundFiles(cboSounds)
 
 	guiHelpers.ReSkinB4XSeekBar(Array As B4XSeekBar(sbTimerVol))
 	
@@ -106,8 +105,7 @@ Public Sub Show(VolType As String)
 	
 	Wait For (rs) Complete (i As Int)
 	If i = xui.DialogResponse_Positive Then '--- save
-		Main.kvs.Put(gblConst.INI_TIMERS_ALARM_VOLUME,sbTimerVol.Value)
-		Main.kvs.Put(gblConst.INI_TIMERS_ALARM_FILE,cboSounds.SelectedItem)
+		vol_timers.SaveTimerVolume(cboSounds.SelectedItem,sbTimerVol.Value)
 	End If
 	
 End Sub
@@ -122,7 +120,7 @@ Private Sub btnTest_Click
 	mpVol = ph.GetVolume(ph.VOLUME_MUSIC) '--- save old volume
 	ph.SetVolume(ph.VOLUME_MUSIC, vol, False)
 	MP_Test.Initialize()
-	MP_Test.Load(File.DirAssets,cboSounds.SelectedItem)
+	MP_Test.Load(File.DirAssets, vol_timers.BuildAlarmFile(cboSounds.SelectedItem))
 	MP_Test.Play
 End Sub
 

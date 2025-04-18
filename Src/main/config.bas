@@ -49,7 +49,7 @@ Private Sub ConfigMe()
 	
 		Main.kvs.Put(gblConst.INI_TIMERS_ALARM_VOLUME,75)
 		Main.kvs.Put(gblConst.INI_TIMERS_ALARM_FILE,"ktimers_beep01.ogg")
-		Main.kvs.Put(gblConst.INI_TIMERS_SOUNDS,"Beep01;;Beep02;;Beep03;;Rooster;;Space")
+		'Main.kvs.Put(gblConst.INI_TIMERS_SOUNDS,"Beep01;;Beep02;;Beep03;;Rooster;;Space")
 		
 		Main.kvs.Put(gblConst.INI_WEB_HOME,"http://sadlogic.com")
 			
@@ -101,6 +101,4 @@ Public Sub ReadMainSetup
 End Sub
 
 '=========================================================================
-
-
 

@@ -18,23 +18,26 @@ Sub Class_Globals
 	Private dlg As B4XDialog
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private btnRemove,btnAdd As B4XView
-	Private lstLocations As CustomListView
 	Private mMediaPlayer As MediaPlayer
 
 	'Private pnlCont,pnlBtns As B4XView
 	Private dlgHelper As sadB4XDialogHelper
 	Private lvs As sadClvSelections
 	
-	Private lblSounds As Label,  cboSounds As B4XComboBox
-	Private btnAlarmVol,btnTest As Button
+	Private cboSounds As B4XComboBox
+	Private btnTest As Button
 	
+	Private Label3,Label1 As Label
+	Private lblTmrVol As Label
+	Private sbTimerVol As B4XSeekBar
+	Private pnlTimerVol As Panel
+	Private lstPresets As CustomListView
 End Sub
 
 
 'Initializes the object. You can add parameters to this method if needed.
 Public Sub Initialize(Dialog As B4XDialog)
 	dlg = Dialog
-	'Main.kvs.Put(gblConst.INI_TIMERS_SOUNDS,"Beep01;;Beep02;;Beep03;;Rooster;;Space")
 End Sub
 
 
@@ -44,28 +47,29 @@ Public Sub Show()
 	dlgHelper.Initialize(dlg)
 	
 	Dim p As B4XView = XUI.CreatePanel("")
-	p.SetLayoutAnimated(0, 0, 0, 500dip,  450dip)
+	p.SetLayoutAnimated(0, 0, 0,  550dip,  480dip)
 	p.LoadLayout("viewSetupTimers")
+	'CallSubDelayed(p, "Script_Resize")
 	
 	'Dim j As DSE_Layout : j.Initialize
 	'j.SpreadVertically2(pnlBtns,50dip,6dip,"left")
-	guiHelpers.SkinButton(Array As Button(btnAdd,btnRemove,btnTest,btnAlarmVol))
+	guiHelpers.SkinButton(Array As Button(btnAdd,btnRemove,btnTest))
 	guiHelpers.ReSkinB4XComboBox(Array As B4XComboBox( cboSounds))
-	guiHelpers.SetTextColor(Array As B4XView(lblSounds),clrTheme.txtNormal)
+	guiHelpers.SetTextColor(Array As B4XView(Label1,Label3,lblTmrVol),clrTheme.txtNormal)
+	guiHelpers.ReSkinB4XSeekBar(Array As B4XSeekBar(sbTimerVol))
+	guiHelpers.SetPanelsBorder(Array As B4XView(pnlTimerVol),clrTheme.txtAccent)
+	guiHelpers.ResizeText("100%",lblTmrVol)
+	
+	sbTimerVol.Value 	= Main.kvs.Get(gblConst.INI_TIMERS_ALARM_VOLUME)
+	sbTimerVol_ValueChanged(sbTimerVol.Value)
 	
 	LoadData
-	'InitIconSets
 	
-	lvs.Initialize(lstLocations)
+	lvs.Initialize(lstPresets)
 	lvs.Mode = lvs.MODE_SINGLE_ITEM_PERMANENT
-	clrTheme.SetThemeCustomListView(lstLocations)
-	lvs.SelectionColor = lstLocations.PressedColor
+	clrTheme.SetThemeCustomListView(lstPresets)
+	lvs.SelectionColor = lstPresets.PressedColor
 	lvs.ItemClicked(0)
-	
-'	chkCelsius.TextColor = clrTheme.txtNormal
-'	chkMetric.TextColor = clrTheme.txtNormal
-'	guiHelpers.SetCBDrawable(chkCelsius, clrTheme.txtNormal, 1, clrTheme.txtAccent, Chr(8730), Colors.LightGray, 32dip, 2dip)
-'	guiHelpers.SetCBDrawable(chkMetric, clrTheme.txtNormal, 1,clrTheme.txtAccent, Chr(8730), Colors.LightGray, 32dip, 2dip)
 		
 	dlgHelper.ThemeDialogForm("Timers Setup")
 	Dim rs As ResumableSub = dlg.ShowCustom(p, "SAVE", "", "CLOSE")
@@ -80,22 +84,14 @@ Public Sub Show()
 	
 End Sub
 
-Private Sub lstLocations_ItemClick (Index As Int, Value As Object)
-	lvs.ItemClicked(Index)
-End Sub
-
 
 Private Sub LoadData()
 	
-	Dim ll() As String = Regex.Split(";;", Main.kvs.Get(gblConst.INI_TIMERS_SOUNDS))
-	For Each s As String In ll
-		cboSounds.cmbBox.Add(s)
-	Next
-	
-	
-	lstLocations.Clear
-	lstLocations.DefaultTextColor = clrTheme.txtNormal
-	lstLocations.AddTextItem("08:00:00-Pasta","08:00:00-Pasta")
+	vol_timers.SetTimerSoundFiles(cboSounds)
+		
+	lstPresets.Clear
+	lstPresets.DefaultTextColor = clrTheme.txtNormal
+	lstPresets.AddTextItem("08:00:00-Pasta","08:00:00-Pasta")
 	
 	'lstLocations.Items.Initialize
 '	For Each city As String In ll
@@ -110,8 +106,9 @@ End Sub
 
 Private Sub SaveData()
 	
-	'Main.kvs.Put(gblConst.INI_TIMERS_ALARM_VOLUME,75)
-	Main.kvs.Put(gblConst.INI_TIMERS_ALARM_FILE,BuildAlarmFile(cboSounds.cmbBox.SelectedItem))
+	''Main.kvs.Put(gblConst.INI_TIMERS_ALARM_VOLUME,75)
+	'Main.kvs.Put(gblConst.INI_TIMERS_ALARM_FILE,vol_timers.BuildAlarmFile(cboSounds.cmbBox.SelectedItem))
+	vol_timers.SaveTimerVolume(cboSounds.cmbBox.SelectedItem,75)
 
 
 
@@ -158,7 +155,7 @@ Private Sub btnAdd_Click
 			Return
 		End If
 		
-		lstLocations.AddTextItem(t.Text,t.Text)
+		lstPresets.AddTextItem(t.Text,t.Text)
 		
 	Catch
 		Log(LastException)
@@ -169,7 +166,7 @@ End Sub
 
 Private Sub btnRemove_Click
 	
-	If lstLocations.Size = 1 Then
+	If lstPresets.Size = 1 Then
 		guiHelpers.Show_toast("Cannot delete last entry")
 		Return
 	End If
@@ -180,7 +177,7 @@ Private Sub btnRemove_Click
 		Return
 	End If
 	
-	lstLocations.RemoveAt(lvs.SelectedItems.AsList.Get(0))
+	lstPresets.RemoveAt(lvs.SelectedItems.AsList.Get(0))
 	guiHelpers.Show_toast("City deleted")
 	
 	lvs.SelectedItems.Clear
@@ -231,19 +228,19 @@ Private Sub cboSounds_SelectedIndexChanged (Index As Int)
 	
 End Sub
 
-Private Sub btnSoundStuff_Click
-	Dim b As String = Sender.As(Button).Tag
-	Select Case b
-		Case "t" '--- test sound
-			AlarmSoundPlay(cboSounds.cmbBox.SelectedItem)
-		Case Else '--- alarm vol
-		
-	End Select
+Private Sub sbTimerVol_ValueChanged (Value As Int)
+	lblTmrVol.Text = Value & "%"
 End Sub
-
-private Sub BuildAlarmFile(s As String) As String
-	Return "ktimers_" & s & ".ogg".As(String).ToLowerCase
-End Sub
+'
+'Private Sub btnSoundStuff_Click
+'	Dim b As String = Sender.As(Button).Tag
+'	Select Case b
+'		Case "t" '--- test sound
+'			AlarmSoundPlay(cboSounds.cmbBox.SelectedItem)
+'		Case Else '--- alarm vol
+'		
+'	End Select
+'End Sub
 
 Public Sub AlarmSoundPlay(s As String)
 	Dim ph As Phone
@@ -254,7 +251,7 @@ Public Sub AlarmSoundPlay(s As String)
 		mpOldVol = ph.GetVolume(ph.VOLUME_MUSIC) '--- save old volume
 		ph.SetVolume(ph.VOLUME_MUSIC, vol, False)
 		mMediaPlayer.Initialize
-		mMediaPlayer.Load(File.DirAssets,BuildAlarmFile(s))
+		mMediaPlayer.Load(File.DirAssets,vol_timers.BuildAlarmFile(s))
 		mMediaPlayer.Looping = False
 		mMediaPlayer.Play
 	Catch
@@ -262,4 +259,9 @@ Public Sub AlarmSoundPlay(s As String)
 		Log(LastException)
 	End Try
 	
+End Sub
+
+
+Private Sub lstPresets_ItemClick (Index As Int, Value As Object)
+	lvs.ItemClicked(Index)
 End Sub

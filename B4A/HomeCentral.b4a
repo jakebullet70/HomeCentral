@@ -184,12 +184,13 @@ Module57=|relative|..\Src\customCtrls\sadRoundSlider
 Module58=Starter
 Module59=|relative|..\Src\helpers\strHelpers
 Module6=|relative|..\Src\miscClasses\events_subscription\clsEvent
+Module60=|relative|..\Src\helpers\vol_timers
 Module7=|relative|..\Src\miscClasses\kitchenTimers\clsKAlarms
 Module8=|relative|..\Src\miscClasses\weather\clsWeatherData
 Module9=|relative|..\Src\miscClasses\weather\clsWeatherDataDay
 NumberOfFiles=53
 NumberOfLibraries=21
-NumberOfModules=59
+NumberOfModules=60
 Version=12.5
 @EndOfDesignText@
 #Region  Project Attributes 
