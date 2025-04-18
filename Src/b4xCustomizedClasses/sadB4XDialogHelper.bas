@@ -25,6 +25,46 @@ Public Sub Initialize(oDlg As B4XDialog)
 End Sub
 
 
+Public Sub ThemeInputDialogBtnsResize()
+	
+	Try '--- reskin button, if it does not exist then skip the error
+		Dim btnCancel As B4XView = dlg.GetButton(xui.DialogResponse_Cancel)
+		btnCancel.Font = xui.CreateDefaultFont(NumberFormat2(btnCancel.Font.Size / Scale,1,0,0,False))
+		btnCancel.Width = btnCancel.Width + 20dip
+		btnCancel.Left = btnCancel.Left - 28dip
+		btnCancel.SetColorAndBorder(xui.Color_Transparent,2dip,clrTheme.txtNormal,8dip)
+		btnCancel.Height = btnCancel.Height - 4dip '--- resize height just a hair
+		btnCancel.Top = btnCancel.Top + 4dip
+	Catch
+		'Log(LastException)
+	End Try 'ignore
+	
+	Try '--- reskin button, if it does not exist then skip the error
+		Dim btnOk As B4XView = dlg.GetButton(xui.DialogResponse_Positive)
+		btnOk.Font = xui.CreateDefaultFont(NumberFormat2(btnOk.Font.Size / Scale,1,0,0,False))
+		btnOk.Width = btnOk.Width + 20dip
+		btnOk.Left = btnOk.Left - 48dip
+		btnOk.SetColorAndBorder(xui.Color_Transparent,2dip,clrTheme.txtNormal,8dip)
+		btnOk.Height = btnOk.Height - 4dip '--- resize height just a hair
+		btnOk.Top = btnOk.Top + 4dip
+	Catch
+		'Log(LastException)
+	End Try 'ignore
+	
+'	Try '--- reskin button, if it does not exist then skip the error
+'		Dim btnNo As B4XView = dlg.GetButton(xui.DialogResponse_Negative)
+'		btnNo.Font = xui.CreateDefaultFont(NumberFormat2(btnNo.Font.Size / gFscale,1,0,0,False))
+'		btnNo.Width = btnOk.Width + 20dip
+'		btnNo.Left = btnOk.Left - 48dip
+'		btnNo.SetColorAndBorder(xui.Color_Transparent,2dip,xui.Color_White,8dip)
+'	Catch
+'		'Log(LastException)
+'	End Try 'ignore
+	
+End Sub
+
+
+
 Public Sub   ThemeDialogBtnsResize()
 	
 	

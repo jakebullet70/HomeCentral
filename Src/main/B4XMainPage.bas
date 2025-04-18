@@ -417,8 +417,16 @@ Private Sub SetupMainMenu_Event(t As String,o As Object)
 			Dim o1 As dlgSetupWeather : o1.Initialize(Dialog) : o1.Show
 		Case "gn"
 			Dim o2 As dlgSetupMain : o2.Initialize(PrefDlg) : o2.Show
-				
+		Case "wb"
+			Dim o3 As dlgTextInput  
+			o3.Initialize("Home Page","Address",B4XPages.MainPage,"save_home_web_addr") :
+			o3.txtEdit = Main.kvs.Get(gblConst.INI_WEB_HOME) & "" : o3.Show
 	End Select
+End Sub
+
+Private Sub save_home_web_addr(txt As String)
+	If strHelpers.IsNullOrEmpty(txt) Then Return
+	Main.kvs.Put(gblConst.INI_WEB_HOME,txt)
 End Sub
 
 '--------------------  kTimers stuff

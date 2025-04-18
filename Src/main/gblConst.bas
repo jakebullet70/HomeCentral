@@ -79,7 +79,7 @@ Sub Process_Globals
 	Public Const KEYS_MAIN_SETUP_PAGE_WEB As String = "pWeb"
 	Public Const KEYS_MAIN_SETUP_PAGE_THEME As String = "pTheme"
 	
-	
+	Public Const INI_WEB_HOME As String = "whome"
 	
 	
 	
