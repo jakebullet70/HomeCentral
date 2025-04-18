@@ -77,7 +77,7 @@ Public Sub AlarmStart(alarmNum As Int)
 	If mTimers(alarmNum).alarmType.playFile Then
 		If mpage.DebugLog Then Log("AlarmFired-playFile")
 		mMediaPlayer(alarmNum).Initialize2("mp")
-		AlarmSoundPlay(Main.kvs.Get(gblConst.INI_SOUND_ALARM_FILE),alarmNum)
+		AlarmSoundPlay(Main.kvs.Get(gblConst.INI_TIMERS_ALARM_FILE),alarmNum)
 	End If
 	'---
 '	If mTimers(alarmNum).alarmType.sendGrowl Then
@@ -124,7 +124,7 @@ End Sub
 
 Public Sub AlarmSoundPlay(sfile As String,alarmNum As Int)
 	Try
-		Dim vol As Int = Main.kvs.Get(gblConst.INI_SOUND_ALARM_VOLUME) * ("0." & ph.GetMaxVolume(ph.VOLUME_MUSIC))
+		Dim vol As Int = Main.kvs.Get(gblConst.INI_TIMERS_ALARM_VOLUME) * ("0." & ph.GetMaxVolume(ph.VOLUME_MUSIC))
 		mpOldVol = ph.GetVolume(ph.VOLUME_MUSIC) '--- save old volume
 		ph.SetVolume(ph.VOLUME_MUSIC, vol, False)
 		mMediaPlayer(alarmNum).Initialize

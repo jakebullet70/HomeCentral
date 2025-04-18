@@ -101,13 +101,13 @@ Public Sub Show(VolType As String)
 		Log(LastException)
 	End Try
 	
-	sbTimerVol.Value 	= Main.kvs.Get(gblConst.INI_SOUND_ALARM_VOLUME)
+	sbTimerVol.Value 	= Main.kvs.Get(gblConst.INI_TIMERS_ALARM_VOLUME)
 	sbTimerVol_ValueChanged(sbTimerVol.Value)
 	
 	Wait For (rs) Complete (i As Int)
 	If i = xui.DialogResponse_Positive Then '--- save
-		Main.kvs.Put(gblConst.INI_SOUND_ALARM_VOLUME,sbTimerVol.Value)
-		Main.kvs.Put(gblConst.INI_SOUND_ALARM_FILE,cboSounds.SelectedItem)
+		Main.kvs.Put(gblConst.INI_TIMERS_ALARM_VOLUME,sbTimerVol.Value)
+		Main.kvs.Put(gblConst.INI_TIMERS_ALARM_FILE,cboSounds.SelectedItem)
 	End If
 	
 End Sub

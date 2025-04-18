@@ -45,11 +45,12 @@ Private Sub ConfigMe()
 		Main.kvs.Put(gblConst.INI_WEATHER_USE_METRIC,False)
 		Main.kvs.Put(gblConst.INI_WEATHER_CITY_LIST,"Kherson, Ukraine;;Seattle, Wa;;Paris, France")
 	
-		Main.kvs.Put(gblConst.INI_SOUND_ALARM_VOLUME,75)
-		Main.kvs.Put(gblConst.INI_SOUND_ALARM_FILE,"ktimers_alarm05.ogg")
+		Main.kvs.Put(gblConst.INI_TIMERS_ALARM_VOLUME,75)
+		Main.kvs.Put(gblConst.INI_TIMERS_ALARM_FILE,"ktimers_beep01.ogg")
+		Main.kvs.Put(gblConst.INI_TIMERS_SOUNDS,"Beep01;;Beep02;;Beep03;;Rooster;;Space")
 		
 		Main.kvs.Put(gblConst.INI_WEB_HOME,"http://sadlogic.com")
-	
+			
 		If File.Exists(xui.DefaultFolder,LICENSE_FILE) = False Then	'--- copy Lic file
 			File.Copy(File.DirAssets,LICENSE_FILE,xui.DefaultFolder,LICENSE_FILE)
 		End If

@@ -55,8 +55,8 @@ Sub Process_Globals
 	Public Const INI_WEATHER_ICONS_PATH As String = INI_WEATHER & "ipth"
 	
 	Public Const INI_SOUND As String = "SND-"
-	Public Const INI_SOUND_ALARM_VOLUME As String = INI_SOUND & "savol"
-	Public Const INI_SOUND_ALARM_FILE As String = INI_SOUND & "calrmfle"
+	Public Const INI_TIMERS_ALARM_VOLUME As String = INI_SOUND & "savol"
+	Public Const INI_TIMERS_ALARM_FILE As String = INI_SOUND & "calrmfle"
 	
 	Public Const INI_SCREEN_BRIGHTNESS_VALUE As String = "scrnbrt"
 	'Public Const INI_SCREEN_TAKEOVER_POWER As String = "scrntop"
@@ -80,6 +80,8 @@ Sub Process_Globals
 	Public Const KEYS_MAIN_SETUP_PAGE_THEME As String = "pTheme"
 	
 	Public Const INI_WEB_HOME As String = "whome"
+	
+	Public Const INI_TIMERS_SOUNDS As String = "tsnd"
 	
 	
 	
