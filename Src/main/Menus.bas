@@ -11,9 +11,12 @@ Version=9.5
 'Static code module
 Sub Process_Globals
 	Private XUI As XUI
+	Private ac As Accessibility
+	Private Scale As Float
 End Sub
 
 Public Sub Init()
+	
 End Sub
 
 
@@ -100,13 +103,23 @@ Public Sub BuildSideMenu(lstMnus As List, lstRetVals As List)
 	
 	clrTheme.SetThemeCustomListView(lvSM)
 	
-	For x = 0 To lstMnus.size - 1
-		If lstRetVals.IsInitialized = False Then
-			lvSM.AddTextItem(lstMnus.Get(x),"")
-		Else
-			lvSM.AddTextItem(lstMnus.Get(x),lstRetVals.get(x))
-		End If
-	Next
+	Try
+		Scale = ac.GetUserFontScale
+		Dim lbl As Label : lbl.Initialize("")
+		lbl.TextSize = 20 * Scale
+	
+		For x = 0 To lstMnus.size - 1
+			lbl.Text = lstMnus.Get(x)
+			If lstRetVals.IsInitialized = False Then
+				lvSM.AddTextItem(lbl.Text,"")
+			Else
+				lvSM.AddTextItem(lbl.Text,lstRetVals.get(x))
+			End If
+		Next
+		
+	Catch
+		Log(LastException)
+	End Try
 	
 	'lv.sv.As(ScrollPane).SetVScrollVisibility("NEVER")  scrollbar?
 	
