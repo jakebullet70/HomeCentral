@@ -92,6 +92,7 @@ Private Sub LoadData()
 	
 	lstLocations.Clear
 	lstLocations.DefaultTextColor = clrTheme.txtNormal
+	lstLocations.AddTextItem("08:00:00-Pasta","08:00:00-Pasta")
 	
 	'lstLocations.Items.Initialize
 '	For Each city As String In ll
@@ -166,12 +167,12 @@ End Sub
 Private Sub btnRemove_Click
 	
 	If lstLocations.Size = 1 Then
-		guiHelpers.Show_toast("Cannot delete last city")
+		guiHelpers.Show_toast("Cannot delete last entry")
 		Return
 	End If
 	
 	Dim o As dlgThemedMsgBox : o.Initialize
-	Wait For (o.Show("Are you sure you want to delete this city?","Question?","YES", "", "CANCEL")) Complete (i As Int)
+	Wait For (o.Show("Are you sure you want to delete this entry?","Question?","YES", "", "CANCEL")) Complete (i As Int)
 	If i = XUI.DialogResponse_Cancel Then 
 		Return
 	End If

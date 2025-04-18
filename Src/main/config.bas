@@ -35,7 +35,9 @@ End Sub
 
 Private Sub ConfigMe()
 	
-	If Main.kvs.ContainsKey(gblConst.INI_INSTALL_DATE) = False Then
+	Dim ForceNew As Boolean = False ' DEV stuff
+	
+	If Main.kvs.ContainsKey(gblConst.INI_INSTALL_DATE) = False Or ForceNew Then
 		
 		'--- 1st run!
 		Main.kvs.Put(gblConst.INI_INSTALL_DATE,DateTime.Now)
