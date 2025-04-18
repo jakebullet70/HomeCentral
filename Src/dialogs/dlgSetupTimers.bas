@@ -19,12 +19,14 @@ Sub Class_Globals
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private btnRemove,btnAdd As B4XView
 	Private lstLocations As CustomListView
+	Private mMediaPlayer As MediaPlayer
 
-	Private pnlCont,pnlBtns As B4XView
+	'Private pnlCont,pnlBtns As B4XView
 	Private dlgHelper As sadB4XDialogHelper
 	Private lvs As sadClvSelections
 	
 	Private lblSounds As Label,  cboSounds As B4XComboBox
+	Private btnAlarmVol,btnTest As Button
 	
 End Sub
 
@@ -42,13 +44,14 @@ Public Sub Show()
 	dlgHelper.Initialize(dlg)
 	
 	Dim p As B4XView = XUI.CreatePanel("")
-	p.SetLayoutAnimated(0, 0, 0,  430dip,  450dip)
+	p.SetLayoutAnimated(0, 0, 0, 500dip,  450dip)
 	p.LoadLayout("viewSetupTimers")
 	
 	'Dim j As DSE_Layout : j.Initialize
 	'j.SpreadVertically2(pnlBtns,50dip,6dip,"left")
-	guiHelpers.SkinButton(Array As Button(btnAdd,btnRemove))
+	guiHelpers.SkinButton(Array As Button(btnAdd,btnRemove,btnTest,btnAlarmVol))
 	guiHelpers.ReSkinB4XComboBox(Array As B4XComboBox( cboSounds))
+	guiHelpers.SetTextColor(Array As B4XView(lblSounds),clrTheme.txtNormal)
 	
 	LoadData
 	'InitIconSets
@@ -108,7 +111,7 @@ End Sub
 Private Sub SaveData()
 	
 	'Main.kvs.Put(gblConst.INI_TIMERS_ALARM_VOLUME,75)
-'	Main.kvs.Put(gblConst.INI_TIMERS_ALARM_FILE,"ktimers_beep01.ogg")
+	Main.kvs.Put(gblConst.INI_TIMERS_ALARM_FILE,BuildAlarmFile(cboSounds.cmbBox.SelectedItem))
 
 
 
@@ -225,5 +228,38 @@ End Sub
 'End Sub
 
 Private Sub cboSounds_SelectedIndexChanged (Index As Int)
+	
+End Sub
+
+Private Sub btnSoundStuff_Click
+	Dim b As String = Sender.As(Button).Tag
+	Select Case b
+		Case "t" '--- test sound
+			AlarmSoundPlay(cboSounds.cmbBox.SelectedItem)
+		Case Else '--- alarm vol
+		
+	End Select
+End Sub
+
+private Sub BuildAlarmFile(s As String) As String
+	Return "ktimers_" & s & ".ogg".As(String).ToLowerCase
+End Sub
+
+Public Sub AlarmSoundPlay(s As String)
+	Dim ph As Phone
+	Dim mpOldVol As Int
+	'mMediaPlayer.Initialize2("mp")
+	Try
+		Dim vol As Int = Main.kvs.Get(gblConst.INI_TIMERS_ALARM_VOLUME) * ("0." & ph.GetMaxVolume(ph.VOLUME_MUSIC))
+		mpOldVol = ph.GetVolume(ph.VOLUME_MUSIC) '--- save old volume
+		ph.SetVolume(ph.VOLUME_MUSIC, vol, False)
+		mMediaPlayer.Initialize
+		mMediaPlayer.Load(File.DirAssets,BuildAlarmFile(s))
+		mMediaPlayer.Looping = False
+		mMediaPlayer.Play
+	Catch
+		guiHelpers.Show_toast2(gblConst.VOLUME_ERR,4500)
+		Log(LastException)
+	End Try
 	
 End Sub
