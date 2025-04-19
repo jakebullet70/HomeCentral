@@ -18,8 +18,7 @@ Sub Class_Globals
 	Private dlg As B4XDialog
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private btnRemove,btnAdd As B4XView
-	Private mMediaPlayer As MediaPlayer
-
+	
 	'Private pnlCont,pnlBtns As B4XView
 	Private dlgHelper As sadB4XDialogHelper
 	Private lvs As sadClvSelections
@@ -27,11 +26,15 @@ Sub Class_Globals
 	Private cboSounds As B4XComboBox
 	Private btnTest As Button
 	
-	Private Label3,Label1 As Label
+	Private Label3,Label1,Label2,Label4 As Label
 	Private lblTmrVol As Label
 	Private sbTimerVol As B4XSeekBar
 	Private pnlTimerVol As Panel
 	Private lstPresets As CustomListView
+	Private pnlVolSnd,pnlAddNew As Panel
+	
+	Private txtDescription,txtTime As EditText
+	
 End Sub
 
 
@@ -55,10 +58,12 @@ Public Sub Show()
 	'j.SpreadVertically2(pnlBtns,50dip,6dip,"left")
 	guiHelpers.SkinButton(Array As Button(btnAdd,btnRemove,btnTest))
 	guiHelpers.ReSkinB4XComboBox(Array As B4XComboBox( cboSounds))
-	guiHelpers.SetTextColor(Array As B4XView(Label1,Label3,lblTmrVol),clrTheme.txtNormal)
+	guiHelpers.SetTextColor(Array As B4XView(Label4,Label2,Label1,Label3,lblTmrVol),clrTheme.txtNormal)
 	guiHelpers.ReSkinB4XSeekBar(Array As B4XSeekBar(sbTimerVol))
 	guiHelpers.SetPanelsBorder(Array As B4XView(pnlTimerVol),clrTheme.txtAccent)
 	guiHelpers.ResizeText("100%",lblTmrVol)
+	
+	guiHelpers.SkinTextEdit(Array As EditText(txtDescription,txtTime),0,True)
 	
 	sbTimerVol.Value 	= Main.kvs.Get(gblConst.INI_TIMERS_ALARM_VOLUME)
 	sbTimerVol_ValueChanged(sbTimerVol.Value)
@@ -133,37 +138,23 @@ Private Sub SaveData()
 	
 End Sub
 
-Private Sub btnAdd_Click
-	
-	Dim t As sadB4XInputTemplate : t.Initialize
-	mpage.Dialog2.Initialize(mpage.Root)
-	
-	Try
-		Dim dlgHelper2 As sadB4XDialogHelper
-		dlgHelper2.Initialize(mpage.Dialog2)
-	
-		dlgHelper2.ThemeDialogForm("Enter city")
-		
-		't.ConfigureForNumbers(False, False)
-		't.TextField1.As(EditText).SingleLine = True
-		
-		Dim rs As ResumableSub = mpage.Dialog2.ShowTemplate(t, "OK", "", "CANCEL")
-		dlgHelper2.ThemeDialogBtnsResize
-		clrTheme.SetThemesadB4xInputTemplate(t,"City name")
-	
-		Wait For (rs) Complete (i As Int)
-		If i = XUI.DialogResponse_Cancel Then
-			Return
-		End If
-		
-		lstPresets.AddTextItem(t.Text,t.Text)
-		
-	Catch
-		Log(LastException)
-	End Try
-	
-	
+
+Private Sub btnTest_Click
+	vol_timers.PlaySound(sbTimerVol.Value,vol_timers.BuildAlarmFile(cboSounds.SelectedItem))
 End Sub
+
+
+Private Sub cboSounds_SelectedIndexChanged (Index As Int)
+End Sub
+
+Private Sub sbTimerVol_ValueChanged (Value As Int)
+	lblTmrVol.Text = Value & "%"
+End Sub
+
+Private Sub lstPresets_ItemClick (Index As Int, Value As Object)
+	lvs.ItemClicked(Index)
+End Sub
+
 
 Private Sub btnRemove_Click
 	
@@ -179,7 +170,7 @@ Private Sub btnRemove_Click
 	End If
 	
 	lstPresets.RemoveAt(lvs.SelectedItems.AsList.Get(0))
-	guiHelpers.Show_toast("City deleted")
+	guiHelpers.Show_toast("Entry deleted")
 	
 	lvs.SelectedItems.Clear
 	lvs.ItemClicked(0)
@@ -187,18 +178,35 @@ Private Sub btnRemove_Click
 	
 End Sub
 
-
-Private Sub cboSounds_SelectedIndexChanged (Index As Int)
+Private Sub btnAdd_Click
+		'pnlAddNew.Visible = True : pnlTimerVol.Visible = False
+		ShowAddNew(True)
 End Sub
 
-Private Sub sbTimerVol_ValueChanged (Value As Int)
-	lblTmrVol.Text = Value & "%"
+Private Sub btnCancel_Click
+	'--- cancel add  new timer
+	ShowAddNew(False)
 End Sub
 
-Private Sub lstPresets_ItemClick (Index As Int, Value As Object)
-	lvs.ItemClicked(Index)
+Private Sub btnSave_Click
+	'--- add  new timer
+	ShowAddNew(False)
+	guiHelpers.Show_toast("Saved")
+	'--- refresh listbox
 End Sub
 
-Private Sub btnTest_Click
-	vol_timers.PlaySound(sbTimerVol.Value,vol_timers.BuildAlarmFile(cboSounds.SelectedItem))
+Private Sub ShowAddNew(ShowMe As Boolean)
+	pnlAddNew.Visible = ShowMe 
+	pnlVolSnd.Visible = Not (ShowMe)
+	If ShowMe Then
+		pnlVolSnd.SendToBack
+		pnlAddNew.BringToFront
+		CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_ON)
+	Else
+		pnlVolSnd.BringToFront
+		pnlAddNew.SendToBack
+		CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
+	End If
+	Sleep(0)
 End Sub
+
