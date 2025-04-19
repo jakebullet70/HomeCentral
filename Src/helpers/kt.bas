@@ -8,11 +8,14 @@ Version=9.5
 #Region VERSIONS 
 ' V. 1.0 	Jan/11/2024
 '			    kitchen timers Generic functions / methods
+'
+' Old code from 2014
+'
 #End Region
 'Static code module
 Sub Process_Globals
 	Private XUI As XUI
-	
+	Private oSQL As SQL
 	
 	Type typTimers (alarmType As typAlarmTypes, _
 					Firing As Boolean, _
@@ -104,3 +107,41 @@ Public Sub AnyTimersFiring() As Boolean
 	Next
 	Return False
 End Sub
+
+
+Public Sub InitSql
+	oSQL = B4XPages.MainPage.sql
+	Try
+		oSQL.ExecNonQuery($"DROP TABLE timers"$)
+	Catch
+		Log(LastException)
+	End Try
+	oSQL.ExecNonQuery($"CREATE TABLE IF NOT EXISTS "timers" (
+		"id"	INTEGER,
+		"description"	TEXT,"time" TEXT,
+		PRIMARY KEY("id" AUTOINCREMENT));"$)
+	Log(oSQL.ExecQuerySingleResult($"SELECT COUNT(*) FROM timers"$))
+	Dim count As Int = oSQL.ExecQuerySingleResult($"SELECT COUNT(*) FROM timers"$)
+	If count = 0 Then
+		oSQL.ExecNonQuery($"CREATE INDEX "ndx_desc" ON "timers" ("description");"$)
+		timers_insert_new("Long Pasta","00:09:00")
+		timers_insert_new("Bake Bread","00:45:00")
+		timers_insert_new("Boiled Eggs","00:09:00")
+	End If
+End Sub
+
+Public Sub timers_insert_new(desc As String, theTime As String)
+	oSQL.ExecNonQuery2($"INSERT INTO timers ("description","time") VALUES (?,?);"$,Array As String(desc,theTime))
+End Sub
+
+Public Sub timers_delete(id As String)
+	oSQL.ExecNonQuery("DELETE FROM timers WHERE id=" & id)
+End Sub
+
+Public Sub timers_get_all() As Cursor
+	Return oSQL.ExecQuery("SELECT * FROM timers ORDER BY description")
+End Sub
+
+
+
+

@@ -16,6 +16,7 @@ Sub Class_Globals
 	
 	Private XUI As XUI
 	Private dlg As B4XDialog
+	Private IME As IME
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private btnRemove,btnAdd As B4XView
 	
@@ -30,11 +31,13 @@ Sub Class_Globals
 	Private lblTmrVol As Label
 	Private sbTimerVol As B4XSeekBar
 	Private pnlTimerVol As Panel
-	Private lstPresets As CustomListView
+	Private lstPresets As ListView
 	Private pnlVolSnd,pnlAddNew As Panel
 	
 	Private txtDescription,txtTime As EditText
 	
+	Private btnNewCancel As Button
+	Private btnNewSave As Button
 End Sub
 
 
@@ -52,11 +55,10 @@ Public Sub Show()
 	Dim p As B4XView = XUI.CreatePanel("")
 	p.SetLayoutAnimated(0, 0, 0,  550dip,  480dip)
 	p.LoadLayout("viewSetupTimers")
-	'CallSubDelayed(p, "Script_Resize")
 	
 	'Dim j As DSE_Layout : j.Initialize
 	'j.SpreadVertically2(pnlBtns,50dip,6dip,"left")
-	guiHelpers.SkinButton(Array As Button(btnAdd,btnRemove,btnTest))
+	guiHelpers.SkinButton(Array As Button(btnAdd,btnRemove,btnTest,btnNewCancel,btnNewSave))
 	guiHelpers.ReSkinB4XComboBox(Array As B4XComboBox( cboSounds))
 	guiHelpers.SetTextColor(Array As B4XView(Label4,Label2,Label1,Label3,lblTmrVol),clrTheme.txtNormal)
 	guiHelpers.ReSkinB4XSeekBar(Array As B4XSeekBar(sbTimerVol))
@@ -68,13 +70,22 @@ Public Sub Show()
 	sbTimerVol.Value 	= Main.kvs.Get(gblConst.INI_TIMERS_ALARM_VOLUME)
 	sbTimerVol_ValueChanged(sbTimerVol.Value)
 	
+	IME.Initialize("")
+	Dim jo As JavaObject = txtTime
+	jo.RunMethod("setImeOptions", Array(Bit.Or(33554432, 6))) 'IME_FLAG_NO_FULLSCREEN | IME_ACTION_DONE
+	#if DEBUG
+	Dim jo As JavaObject = Me
+	jo.RunMethod("RemoveWarning", Null)
+	#End If
+	
+	
 	LoadData
 	
-	lvs.Initialize(lstPresets)
-	lvs.Mode = lvs.MODE_SINGLE_ITEM_PERMANENT
-	clrTheme.SetThemeCustomListView(lstPresets)
-	lvs.SelectionColor = lstPresets.PressedColor
-	lvs.ItemClicked(0)
+	'lvs.Initialize(lstPresets)
+	'lvs.Mode = lvs.MODE_SINGLE_ITEM_PERMANENT
+	'clrTheme.SetThemeCustomListView(lstPresets)
+	'lvs.SelectionColor = lstPresets.PressedColor
+	'lvs.ItemClicked(0)
 		
 	dlgHelper.ThemeDialogForm("Timers Setup")
 	Dim rs As ResumableSub = dlg.ShowCustom(p, "SAVE", "", "CLOSE")
@@ -96,17 +107,19 @@ Private Sub LoadData()
 	vol_timers.SetTimerSoundFiles(cboSounds,Main.kvs.Get(gblConst.INI_TIMERS_ALARM_FILE))
 		
 	lstPresets.Clear
-	lstPresets.DefaultTextColor = clrTheme.txtNormal
-	lstPresets.AddTextItem("08:00:00-Pasta","08:00:00-Pasta")
+	'lstPresets.DefaultTextColor = clrTheme.txtNormal
 	
-	'lstLocations.Items.Initialize
-'	For Each city As String In ll
-'		lstLocations.AddTextItem(city,city)
-'	Next
-'	
-'	DefCity = Main.kvs.Get(gblConst.INI_WEATHER_DEFAULT_CITY)
-'	chkCelsius.Checked = Main.kvs.Get(gblConst.INI_WEATHER_USE_CELSIUS)
-'	chkMetric.Checked = Main.kvs.Get(gblConst.INI_WEATHER_USE_METRIC)
+	Dim cursor As Cursor = kt.timers_get_all
+	For i = 0 To cursor.RowCount - 1
+		cursor.Position = i
+		lstPresets.AddSingleLine2(cursor.GetString("time") & "-" & cursor.GetString("description"),cursor.GetString("id"))
+		'lstPresets.AddTextItem("08:00:00-Pasta","08:00:00-Pasta")
+		'lst.Add(cursor.GetString("id") & cursor.GetString("id") & cursor.GetString("id"))
+		'lstPresets.sv.t
+	Next
+	Return
+	
+	'lstPresets.AddTextItem("08:00:00-Pasta","08:00:00-Pasta")
 	
 End Sub
 
@@ -152,7 +165,7 @@ Private Sub sbTimerVol_ValueChanged (Value As Int)
 End Sub
 
 Private Sub lstPresets_ItemClick (Index As Int, Value As Object)
-	lvs.ItemClicked(Index)
+	'lvs.ItemClicked(Index)
 End Sub
 
 
@@ -180,12 +193,17 @@ End Sub
 
 Private Sub btnAdd_Click
 		'pnlAddNew.Visible = True : pnlTimerVol.Visible = False
-		ShowAddNew(True)
+	ShowAddNew(True)
+	txtTime.RequestFocus
+	'Dim tf As EditText = TextField1
+	'tf.SelectAll
+	IME.ShowKeyboard(txtTime)
 End Sub
 
 Private Sub btnCancel_Click
 	'--- cancel add  new timer
 	ShowAddNew(False)
+	IME.HideKeyboard
 End Sub
 
 Private Sub btnSave_Click
@@ -193,6 +211,7 @@ Private Sub btnSave_Click
 	ShowAddNew(False)
 	guiHelpers.Show_toast("Saved")
 	'--- refresh listbox
+	IME.HideKeyboard
 End Sub
 
 Private Sub ShowAddNew(ShowMe As Boolean)
@@ -210,3 +229,18 @@ Private Sub ShowAddNew(ShowMe As Boolean)
 	Sleep(0)
 End Sub
 
+#if DEBUG
+#if JAVA
+public void RemoveWarning() throws Exception{
+	anywheresoftware.b4a.shell.Shell s = anywheresoftware.b4a.shell.Shell.INSTANCE;
+	java.lang.reflect.Field f = s.getClass().getDeclaredField("errorMessagesForSyncEvents");
+	f.setAccessible(true);
+	java.util.HashSet<String> h = (java.util.HashSet<String>)f.get(s);
+	if (h == null) {
+		h = new java.util.HashSet<String>();
+		f.set(s, h);
+	}
+	h.add("textfield1_textchanged");
+}
+#End If
+#End If
