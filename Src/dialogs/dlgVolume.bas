@@ -27,7 +27,7 @@ Sub Class_Globals
 	Private pnlTimerVol As Panel
 	
 	'--- for SOUND check
-	Private MP_Test As MediaPlayer
+	'Private MP_Test As MediaPlayer
 	Private mpVol As Int  'ignore
 	'--- END
 	
@@ -48,7 +48,9 @@ Public Sub Initialize(dlg As B4XDialog)
 	MaxVolumeNotifaction = 	ph.GetMaxVolume(ph.VOLUME_NOTIFICATION)
 	MaxVolumeSys = 			ph.GetMaxVolume(ph.VOLUME_SYSTEM)
 	
-	
+	Log("VOLUME_SYSTEM"&ph.GetVolume(ph.VOLUME_SYSTEM))
+	Log("VOLUME_MUSIC"&ph.GetVolume(ph.VOLUME_MUSIC))
+	Log("VOLUME_SYSTEM-------------------------------")
 	
 End Sub
 
@@ -76,9 +78,7 @@ Public Sub Show(VolType As String)
 	guiHelpers.SetPanelsBorder(Array As B4XView(pnlTimerVol),clrTheme.txtAccent)
 	
 	guiHelpers.ResizeText("100%",lblTmrVol)
-	
-	vol_timers.SetTimerSoundFiles(cboSounds)
-
+	vol_timers.SetTimerSoundFiles(cboSounds,Main.kvs.Get(gblConst.INI_TIMERS_ALARM_FILE))
 	guiHelpers.ReSkinB4XSeekBar(Array As B4XSeekBar(sbTimerVol))
 	
 	If VolType = "kt" Then
@@ -100,8 +100,9 @@ Public Sub Show(VolType As String)
 		Log(LastException)
 	End Try
 	
-	sbTimerVol.Value 	= Main.kvs.Get(gblConst.INI_TIMERS_ALARM_VOLUME)
+	sbTimerVol.Value = Main.kvs.Get(gblConst.INI_TIMERS_ALARM_VOLUME)
 	sbTimerVol_ValueChanged(sbTimerVol.Value)
+	
 	
 	Wait For (rs) Complete (i As Int)
 	If i = xui.DialogResponse_Positive Then '--- save
@@ -116,12 +117,7 @@ Private Sub sbTimerVol_ValueChanged (Value As Int)
 End Sub
 
 Private Sub btnTest_Click
-	Dim vol As Int = sbTimerVol.Value * ("0." & MaxVolumeMusic)
-	mpVol = ph.GetVolume(ph.VOLUME_MUSIC) '--- save old volume
-	ph.SetVolume(ph.VOLUME_MUSIC, vol, False)
-	MP_Test.Initialize()
-	MP_Test.Load(File.DirAssets, vol_timers.BuildAlarmFile(cboSounds.SelectedItem))
-	MP_Test.Play
+	vol_timers.PlaySound(sbTimerVol.Value,vol_timers.BuildAlarmFile(cboSounds.SelectedItem))
 End Sub
 
 

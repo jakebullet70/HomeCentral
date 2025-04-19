@@ -75,6 +75,7 @@ Public Sub Show()
 	Dim rs As ResumableSub = dlg.ShowCustom(p, "SAVE", "", "CLOSE")
 	dlgHelper.ThemeDialogBtnsResize
 	dlgHelper.NoCloseOn2ndDialog
+	btnTest.BringToFront
 		
 	Wait For (rs) Complete (Result As Int)
 	If Result = XUI.DialogResponse_Positive Then
@@ -87,7 +88,7 @@ End Sub
 
 Private Sub LoadData()
 	
-	vol_timers.SetTimerSoundFiles(cboSounds)
+	vol_timers.SetTimerSoundFiles(cboSounds,Main.kvs.Get(gblConst.INI_TIMERS_ALARM_FILE))
 		
 	lstPresets.Clear
 	lstPresets.DefaultTextColor = clrTheme.txtNormal
@@ -108,7 +109,7 @@ Private Sub SaveData()
 	
 	''Main.kvs.Put(gblConst.INI_TIMERS_ALARM_VOLUME,75)
 	'Main.kvs.Put(gblConst.INI_TIMERS_ALARM_FILE,vol_timers.BuildAlarmFile(cboSounds.cmbBox.SelectedItem))
-	vol_timers.SaveTimerVolume(cboSounds.cmbBox.SelectedItem,75)
+	vol_timers.SaveTimerVolume(cboSounds.SelectedItem,sbTimerVol.Value)
 
 
 
@@ -186,82 +187,18 @@ Private Sub btnRemove_Click
 	
 End Sub
 
-'Private Sub btnSetDefaultCity_Click
-'	DefCity = lstLocations.GetValue( lvs.SelectedItems.AsList.Get(0))
-'	guiHelpers.Show_toast(DefCity & " - set as default city")
-'End Sub
-
-'=====================================================
-'Private Sub InitIconSets
-'	
-'	cboIconSets.cmbBox.AddAll(Array As String("Icons - Bright and shiny 1","Icons - Bright and shiny 2", _
-'										"Icons - Material design","Icons - Material design (Color)","Icons - API (Color)"))
-'	
-'	Select Case gblConst.WEATHERicons
-'		Case "cc01"    : cboIconSets.SelectedIndex = 0
-'		Case "ww01"   : cboIconSets.SelectedIndex = 1
-'		Case "ms01"   : cboIconSets.SelectedIndex = 2
-'		Case "tv03"	   : cboIconSets.SelectedIndex = 3
-'		Case "api"	   : cboIconSets.SelectedIndex = 4
-'	End Select
-'	
-'	SetIconSet(cboIconSets.SelectedIndex)
-'	SelectedIconsSet = gblConst.WEATHERicons
-'	
-'End Sub
-
-'Private Sub cboIconSets_SelectedIndexChanged (Index As Int)
-'	SetIconSet(Index)
-'End Sub
-'
-'Private Sub SetIconSet(i As Int)
-'	Select Case i
-'		Case 0 : SelectedIconsSet = "cc01"
-'		Case 1 : SelectedIconsSet = "ww01"
-'		Case 2 : SelectedIconsSet = "ms01"
-'		Case 3 : SelectedIconsSet = "tv03"
-'		Case 4 : SelectedIconsSet = "api"
-'	End Select
-'End Sub
 
 Private Sub cboSounds_SelectedIndexChanged (Index As Int)
-	
 End Sub
 
 Private Sub sbTimerVol_ValueChanged (Value As Int)
 	lblTmrVol.Text = Value & "%"
 End Sub
-'
-'Private Sub btnSoundStuff_Click
-'	Dim b As String = Sender.As(Button).Tag
-'	Select Case b
-'		Case "t" '--- test sound
-'			AlarmSoundPlay(cboSounds.cmbBox.SelectedItem)
-'		Case Else '--- alarm vol
-'		
-'	End Select
-'End Sub
-
-Public Sub AlarmSoundPlay(s As String)
-	Dim ph As Phone
-	Dim mpOldVol As Int
-	'mMediaPlayer.Initialize2("mp")
-	Try
-		Dim vol As Int = Main.kvs.Get(gblConst.INI_TIMERS_ALARM_VOLUME) * ("0." & ph.GetMaxVolume(ph.VOLUME_MUSIC))
-		mpOldVol = ph.GetVolume(ph.VOLUME_MUSIC) '--- save old volume
-		ph.SetVolume(ph.VOLUME_MUSIC, vol, False)
-		mMediaPlayer.Initialize
-		mMediaPlayer.Load(File.DirAssets,vol_timers.BuildAlarmFile(s))
-		mMediaPlayer.Looping = False
-		mMediaPlayer.Play
-	Catch
-		guiHelpers.Show_toast2(gblConst.VOLUME_ERR,4500)
-		Log(LastException)
-	End Try
-	
-End Sub
-
 
 Private Sub lstPresets_ItemClick (Index As Int, Value As Object)
 	lvs.ItemClicked(Index)
+End Sub
+
+Private Sub btnTest_Click
+	vol_timers.PlaySound(sbTimerVol.Value,vol_timers.BuildAlarmFile(cboSounds.SelectedItem))
 End Sub
