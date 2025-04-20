@@ -22,7 +22,7 @@ Sub Class_Globals
 	
 	'Private pnlCont,pnlBtns As B4XView
 	Private dlgHelper As sadB4XDialogHelper
-	'Private lvs As sadClvSelections
+	Private CurrentRecID As Int
 	
 	Private cboSounds As B4XComboBox
 	Private btnTest As Button
@@ -97,10 +97,12 @@ End Sub
 
 
 Private Sub LoadData()
-	
 	vol_timers.SelectItemInCBO(cboSounds,Main.kvs.Get(gblConst.INI_TIMERS_ALARM_FILE))
+	LoadGrid
+End Sub
+
+Private Sub LoadGrid
 	lstPresets.Clear
-	
 	Dim cursor As Cursor = kt.timers_get_all
 	For i = 0 To cursor.RowCount - 1
 		cursor.Position = i
@@ -113,14 +115,8 @@ End Sub
 
 
 Private Sub SaveData()
-	
-	''Main.kvs.Put(gblConst.INI_TIMERS_ALARM_VOLUME,75)
-	'Main.kvs.Put(gblConst.INI_TIMERS_ALARM_FILE,vol_timers.BuildAlarmFile(cboSounds.cmbBox.SelectedItem))
 	vol_timers.SaveTimerVolume(cboSounds.SelectedItem,sbTimerVol.Value)
-
-
 	CallSubDelayed(mpage.oPageCurrent,"Build_Side_Menu")
-	
 End Sub
 
 
@@ -139,28 +135,7 @@ End Sub
 
 Sub lstPresets_ItemClick (Position As Int, Value As Object)
 	oLV_helper.ItemClick (Position , Value )
-'	' Remove highlight from previously selected item
-'	If selectedIndex <> -1 Then
-'		Dim joLV As JavaObject = lstPresets
-'		Dim firstVisible As Int = joLV.RunMethod("getFirstVisiblePosition", Null)
-'		Dim oldRelativeIndex As Int = selectedIndex - firstVisible
-'		If oldRelativeIndex >= 0 And oldRelativeIndex < joLV.RunMethod("getChildCount", Null) Then
-'			Dim oldView As JavaObject = joLV.RunMethod("getChildAt", Array(oldRelativeIndex))
-'			oldView.RunMethod("setBackgroundColor", Array(Colors.Transparent))
-'		End If
-'	End If
-'
-'	' Highlight the new selected item
-'	Dim joLV As JavaObject = lstPresets
-'	Dim firstVisible As Int = joLV.RunMethod("getFirstVisiblePosition", Null)
-'	Dim relativeIndex As Int = Position - firstVisible
-'	If relativeIndex >= 0 And relativeIndex < joLV.RunMethod("getChildCount", Null) Then
-'		Dim newView As JavaObject = joLV.RunMethod("getChildAt", Array(relativeIndex))
-'		newView.RunMethod("setBackgroundColor", Array(clrTheme.Background))
-'	End If
-'
-'	selectedIndex = Position
-'	ToastMessageShow("Clicked: rec ID:" & Value, False)
+	CurrentRecID = Value
 End Sub
 
 
@@ -177,12 +152,9 @@ Private Sub btnRemove_Click
 		Return
 	End If
 	
-'	lstPresets.RemoveAt(lvs.SelectedItems.AsList.Get(0))
-'	guiHelpers.Show_toast("Entry deleted")
-'	
-'	lvs.SelectedItems.Clear
-'	lvs.ItemClicked(0)
-	
+	kt.timers_delete(CurrentRecID)
+	guiHelpers.Show_toast("Entry deleted")
+	LoadGrid
 	
 End Sub
 
