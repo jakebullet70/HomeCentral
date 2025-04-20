@@ -212,6 +212,7 @@ End Sub
 Private Sub ShowAddNew(ShowMe As Boolean)
 	pnlAddNew.Visible = ShowMe 
 	pnlVolSnd.Visible = Not (ShowMe)
+	guiHelpers.EnableDisableViews(Array As B4XView(btnAdd,btnRemove,lstPresets),pnlVolSnd.Visible)
 	If ShowMe Then
 		pnlVolSnd.SendToBack
 		pnlAddNew.BringToFront
