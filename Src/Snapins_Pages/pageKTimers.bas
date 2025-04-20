@@ -195,8 +195,9 @@ Private Sub btnResetPause_Click
 			ClearLarge_TimerTxt
 			Update_ListOfTimersIMG(clsKTimers.CurrentTimer,gblConst.TIMERS_IMG_STOP)
 			UpdateListOfTimers(clsKTimers.CurrentTimer)
-			'If g.IsVoiceOn_KTimers Then Main.TTS1.Speak("Timer reset",True)
-		
+			
+			UpdateListOfTimersDesc(clsKTimers.CurrentTimer,"Open")
+			
 		Case "Start"
 			If clsKTimers.timers(clsKTimers.CurrentTimer).paused = False Then
 				If IsTimerBlank Then
@@ -512,8 +513,9 @@ End Sub
 
 
 Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
-	guiHelpers.Show_toast("TODO")
+	'guiHelpers.Show_toast("TODO")
 	Select Case Value
+		Case "pr" : Show_Presets
 	End Select
 	mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu
 End Sub
@@ -521,4 +523,43 @@ End Sub
 Private Sub Build_Side_Menu
 	Menus.BuildSideMenu(Array As String("Presets"),Array As String("pr"))
 End Sub
+
+
+Private Sub Show_Presets
+	
+	'mpage.pnlSideMenu.SetVisibleAnimated(380, False)
+	'CallSub(Main,"Set_ScreenTmr") '--- reset the power / screen on-off
+
+	Dim gui As guiMsgs : gui.Initialize
+	Dim o1 As dlgListbox
+	
+	o1.Initialize("Timer Presets",Me,"Presets_Event",mpage.Dialog)
+	o1.IsMenu = True
+	o1.Show(440dip,430dip,gui.BuildPresets())
+	'mpage.pnlSideMenuTouchOverlay_show(False)
+	
+End Sub
+
+
+Private Sub Presets_Event(id As String,o As Object)
+	If strHelpers.IsNullOrEmpty(id) Then Return
+	
+	Dim cur As Cursor = Main.kvs.oSql.ExecQuery("SELECT * FROM timers WHERE id =" & id)
+	cur.Position = 0
+	
+	clsKTimers.timers(clsKTimers.CurrentTimer).nHr = Regex.Split(":", cur.GetString("time"))(0)
+	clsKTimers.timers(clsKTimers.CurrentTimer).nMin = Regex.Split(":", cur.GetString("time"))(1)
+	clsKTimers.timers(clsKTimers.CurrentTimer).nSec = Regex.Split(":", cur.GetString("time"))(2)
+		
+	lblHrs.Text = kt.PadZero(clsKTimers.timers(clsKTimers.CurrentTimer).nHr)
+	lblMin.Text = kt.PadZero(clsKTimers.timers(clsKTimers.CurrentTimer).nMin)
+	lblSec.Text = kt.PadZero(clsKTimers.timers(clsKTimers.CurrentTimer).nSec)
+
+	StartTimer(cur.GetString("description"))
+'	btnResetPause_Click
+End Sub
+
+	
+
+
 

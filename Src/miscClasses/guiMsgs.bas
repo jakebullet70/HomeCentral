@@ -43,4 +43,12 @@ Public Sub BuildMainSetup() As Map
 End Sub
 
 
-
+Public Sub BuildPresets() As Map
+	Dim cursor As Cursor = kt.timers_get_all
+	Dim m As Map : m.Initialize
+	For i = 0 To cursor.RowCount - 1
+		cursor.Position = i
+		m.Put(cursor.GetString("time") & "-" & cursor.GetString("description"),cursor.GetString("id"))
+	Next
+	Return m
+End Sub
