@@ -31,6 +31,7 @@ End Sub
 
 
 Public Sub ProgrammaticallyClickAndHighlight(index As Int)
+	'--- call this on 1st load
 	lv.SetSelection(index)
 	Sleep(200) ' Wait for scroll to complete
 	ClickListViewItem(index)
