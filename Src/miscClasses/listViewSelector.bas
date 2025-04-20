@@ -5,6 +5,9 @@ Type=Class
 Version=10
 @EndOfDesignText@
 ' Author:  sadLogic/JakeBullet and AI...
+' Stupid AI, took over an hour with me telling it what was wrong like 10 times
+' and it writing new code for me to test just to tell it it was wrong again.
+'
 #Region VERSIONS 
 ' V. 1.0 	Apr/2025
 '
