@@ -22,7 +22,7 @@ Sub Class_Globals
 	
 	'Private pnlCont,pnlBtns As B4XView
 	Private dlgHelper As sadB4XDialogHelper
-	Private lvs As sadClvSelections
+	'Private lvs As sadClvSelections
 	
 	Private cboSounds As B4XComboBox
 	Private btnTest As Button
@@ -35,9 +35,9 @@ Sub Class_Globals
 	Private pnlVolSnd,pnlAddNew As Panel
 	
 	Private txtDescription,txtTime As EditText
+	Private btnNewSave,btnNewCancel As Button
+	Private oLV_helper As listViewSelector
 	
-	Private btnNewCancel As Button
-	Private btnNewSave As Button
 End Sub
 
 
@@ -78,14 +78,8 @@ Public Sub Show()
 	jo.RunMethod("RemoveWarning", Null)
 	#End If
 	
-	
+	oLV_helper.Initialize(lstPresets)
 	LoadData
-	
-	'lvs.Initialize(lstPresets)
-	'lvs.Mode = lvs.MODE_SINGLE_ITEM_PERMANENT
-	'clrTheme.SetThemeCustomListView(lstPresets)
-	'lvs.SelectionColor = lstPresets.PressedColor
-	'lvs.ItemClicked(0)
 		
 	dlgHelper.ThemeDialogForm("Timers Setup")
 	Dim rs As ResumableSub = dlg.ShowCustom(p, "SAVE", "", "CLOSE")
@@ -104,24 +98,19 @@ End Sub
 
 Private Sub LoadData()
 	
-	vol_timers.SetTimerSoundFiles(cboSounds,Main.kvs.Get(gblConst.INI_TIMERS_ALARM_FILE))
-		
+	vol_timers.SelectItemInCBO(cboSounds,Main.kvs.Get(gblConst.INI_TIMERS_ALARM_FILE))
 	lstPresets.Clear
-	'lstPresets.DefaultTextColor = clrTheme.txtNormal
 	
 	Dim cursor As Cursor = kt.timers_get_all
 	For i = 0 To cursor.RowCount - 1
 		cursor.Position = i
 		lstPresets.AddSingleLine2(cursor.GetString("time") & "-" & cursor.GetString("description"),cursor.GetString("id"))
-		'lstPresets.AddTextItem("08:00:00-Pasta","08:00:00-Pasta")
-		'lst.Add(cursor.GetString("id") & cursor.GetString("id") & cursor.GetString("id"))
-		'lstPresets.sv.t
 	Next
-	Return
 	
-	'lstPresets.AddTextItem("08:00:00-Pasta","08:00:00-Pasta")
+	oLV_helper.	ProgrammaticallyClickAndHighlight(0)
 	
 End Sub
+
 
 Private Sub SaveData()
 	
@@ -130,23 +119,6 @@ Private Sub SaveData()
 	vol_timers.SaveTimerVolume(cboSounds.SelectedItem,sbTimerVol.Value)
 
 
-
-	
-'	Dim dd As String
-'	For x = 0 To lstLocations.Size - 1
-'		dd = dd & lstLocations.GetValue(x)& ";;"
-'	Next
-	'dd = strHelpers.TrimLast(dd,";;")
-	'Main.kvs.Put(gblConst.INI_WEATHER_CITY_LIST,dd)
-	'Main.kvs.Put(gblConst.INI_WEATHER_CITY_LIST,"Seattle;;Denver;;Kherson")
-	
-	'Main.kvs.Put(gblConst.INI_WEATHER_DEFAULT_CITY,DefCity)
-'	Main.kvs.Put(gblConst.INI_WEATHER_USE_CELSIUS,chkCelsius.Checked)
-'	Main.kvs.Put(gblConst.INI_WEATHER_USE_METRIC,chkMetric.Checked)
-	
-	'gblConst.WEATHERicons = SelectedIconsSet
-	'Main.kvs.Put(gblConst.INI_WEATHER_ICONS_PATH,SelectedIconsSet)
-	
 	CallSubDelayed(mpage.oPageCurrent,"Build_Side_Menu")
 	
 End Sub
@@ -164,8 +136,31 @@ Private Sub sbTimerVol_ValueChanged (Value As Int)
 	lblTmrVol.Text = Value & "%"
 End Sub
 
-Private Sub lstPresets_ItemClick (Index As Int, Value As Object)
-	'lvs.ItemClicked(Index)
+
+Sub lstPresets_ItemClick (Position As Int, Value As Object)
+	oLV_helper.ItemClick (Position , Value )
+'	' Remove highlight from previously selected item
+'	If selectedIndex <> -1 Then
+'		Dim joLV As JavaObject = lstPresets
+'		Dim firstVisible As Int = joLV.RunMethod("getFirstVisiblePosition", Null)
+'		Dim oldRelativeIndex As Int = selectedIndex - firstVisible
+'		If oldRelativeIndex >= 0 And oldRelativeIndex < joLV.RunMethod("getChildCount", Null) Then
+'			Dim oldView As JavaObject = joLV.RunMethod("getChildAt", Array(oldRelativeIndex))
+'			oldView.RunMethod("setBackgroundColor", Array(Colors.Transparent))
+'		End If
+'	End If
+'
+'	' Highlight the new selected item
+'	Dim joLV As JavaObject = lstPresets
+'	Dim firstVisible As Int = joLV.RunMethod("getFirstVisiblePosition", Null)
+'	Dim relativeIndex As Int = Position - firstVisible
+'	If relativeIndex >= 0 And relativeIndex < joLV.RunMethod("getChildCount", Null) Then
+'		Dim newView As JavaObject = joLV.RunMethod("getChildAt", Array(relativeIndex))
+'		newView.RunMethod("setBackgroundColor", Array(clrTheme.Background))
+'	End If
+'
+'	selectedIndex = Position
+'	ToastMessageShow("Clicked: rec ID:" & Value, False)
 End Sub
 
 
@@ -182,11 +177,11 @@ Private Sub btnRemove_Click
 		Return
 	End If
 	
-	lstPresets.RemoveAt(lvs.SelectedItems.AsList.Get(0))
-	guiHelpers.Show_toast("Entry deleted")
-	
-	lvs.SelectedItems.Clear
-	lvs.ItemClicked(0)
+'	lstPresets.RemoveAt(lvs.SelectedItems.AsList.Get(0))
+'	guiHelpers.Show_toast("Entry deleted")
+'	
+'	lvs.SelectedItems.Clear
+'	lvs.ItemClicked(0)
 	
 	
 End Sub

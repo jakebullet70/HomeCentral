@@ -21,7 +21,7 @@ End Sub
 
 
 '--- called from dlgVol and dlgSetupTimers
-Public Sub SetTimerSoundFiles(b As B4XComboBox,selectFile As String)
+Public Sub SelectItemInCBO(b As B4XComboBox,selectFile As String)
 	b.cmbBox.AddAll(Array As String( _
 				"Beep01","Beep02","Beep03","Rooster","Space"))
 	selectFile = selectFile.ToLowerCase

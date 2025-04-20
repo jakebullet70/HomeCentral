@@ -111,11 +111,11 @@ End Sub
 
 Public Sub InitSql
 	oSQL = B4XPages.MainPage.sql
-	Try
-		oSQL.ExecNonQuery($"DROP TABLE timers"$)
-	Catch
-		Log(LastException)
-	End Try
+'	Try
+'		oSQL.ExecNonQuery($"DROP TABLE timers"$)
+'	Catch
+'		Log(LastException)
+'	End Try
 	oSQL.ExecNonQuery($"CREATE TABLE IF NOT EXISTS "timers" (
 		"id"	INTEGER,
 		"description"	TEXT,"time" TEXT,
@@ -126,7 +126,7 @@ Public Sub InitSql
 		oSQL.ExecNonQuery($"CREATE INDEX "ndx_desc" ON "timers" ("description");"$)
 		timers_insert_new("Long Pasta","00:09:00")
 		timers_insert_new("Bake Bread","00:45:00")
-		timers_insert_new("Boiled Eggs","00:09:00")
+		timers_insert_new("Boiled Eggs","00:08:30")
 	End If
 End Sub
 

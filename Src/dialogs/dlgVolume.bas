@@ -78,7 +78,7 @@ Public Sub Show(VolType As String)
 	guiHelpers.SetPanelsBorder(Array As B4XView(pnlTimerVol),clrTheme.txtAccent)
 	
 	guiHelpers.ResizeText("100%",lblTmrVol)
-	vol_timers.SetTimerSoundFiles(cboSounds,Main.kvs.Get(gblConst.INI_TIMERS_ALARM_FILE))
+	vol_timers.SelectItemInCBO(cboSounds,Main.kvs.Get(gblConst.INI_TIMERS_ALARM_FILE))
 	guiHelpers.ReSkinB4XSeekBar(Array As B4XSeekBar(sbTimerVol))
 	
 	If VolType = "kt" Then
