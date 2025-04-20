@@ -164,6 +164,7 @@ Private Sub btnAdd_Click
 	txtTime.RequestFocus
 	'Dim tf As EditText = TextField1
 	'tf.SelectAll
+	txtDescription.Text = "" : txtTime.Text = ""
 	IME.ShowKeyboard(txtTime)
 End Sub
 
@@ -175,10 +176,29 @@ End Sub
 
 Private Sub btnSave_Click
 	'--- add  new timer
+	IME.HideKeyboard
+	Sleep(0)
+	Dim vt As String = ValidateTime(txtTime.Text)
+	If vt.Length = 0 Then 
+		ShowErrMsg("Time is not valid",txtTime)
+		Dim tf As EditText = txtTime :	tf.SelectAll
+		Return
+	End If
+	If txtDescription.Left = 0 Then 
+		ShowErrMsg("Description is not valid",txtDescription)
+		Return
+	End If
 	ShowAddNew(False)
 	guiHelpers.Show_toast("Saved")
-	'--- refresh listbox
-	IME.HideKeyboard
+	kt.timers_insert_new(txtDescription.Text.Trim,vt)
+	LoadGrid
+	
+End Sub
+
+Private Sub ShowErrMsg(txt As String,o As EditText)
+	guiHelpers.Show_toast2(txt,1500)
+	Sleep(1500)
+	IME.ShowKeyboard(o)
 End Sub
 
 Private Sub ShowAddNew(ShowMe As Boolean)
@@ -195,6 +215,18 @@ Private Sub ShowAddNew(ShowMe As Boolean)
 		CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
 	End If
 	Sleep(0)
+End Sub
+
+Private Sub ValidateTime(txt As String) As String
+	txt = txt.Trim
+	If fnct.CountChar(txt,":") <> 2 Then Return ""
+	Dim h() As String = Regex.Split(":",txt)
+	If h.Length <> 3 Then Return ""
+	For x = 0 To 2
+		If Not (IsNumber(h(x))) Then Return ""
+		h(x) = kt.PadZero(h(x))
+	Next
+	Return h(0) & ":" & h(1) & ":" & h(2)
 End Sub
 
 #if DEBUG
