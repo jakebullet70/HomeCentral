@@ -105,6 +105,7 @@ Public Sub BuildSideMenu(lstMnus As List, lstRetVals As List)
 	Scale = ac.GetUserFontScale
 	Dim lbl As Label : lbl.Initialize("")
 	lbl.TextSize = 20 * Scale '--- scale is returned from Android Text size in setup
+	If lbl.TextSize < 20 Then lbl.TextSize = 20
 	
 	Try
 		
