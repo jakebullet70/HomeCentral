@@ -22,6 +22,7 @@ End Sub
 
 '--- called from dlgVol and dlgSetupTimers
 Public Sub SelectItemInCBO(b As B4XComboBox,selectFile As String)
+	'--- got to be a better way to do this but I am to tired
 	b.cmbBox.AddAll(Array As String( _
 				"Beep01","Beep02","Beep03","Rooster","Space"))
 	selectFile = selectFile.ToLowerCase
