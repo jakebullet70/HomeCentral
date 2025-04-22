@@ -53,10 +53,15 @@ Private Sub ConfigMe()
 		'Main.kvs.Put(gblConst.INI_TIMERS_SOUNDS,"Beep01;;Beep02;;Beep03;;Rooster;;Space")
 		
 		Main.kvs.Put(gblConst.INI_WEB_HOME,"http://sadlogic.com")
-			
-		If File.Exists(xui.DefaultFolder,LICENSE_FILE) = False Then	'--- copy Lic file
-			File.Copy(File.DirAssets,LICENSE_FILE,xui.DefaultFolder,LICENSE_FILE)
-		End If
+
+		'--- copy lic file, not like anyone will ever read it or even care.			
+		Try
+			If File.Exists(xui.DefaultFolder,LICENSE_FILE) = False Then	'--- copy Lic file
+				File.Copy(File.DirAssets,LICENSE_FILE,xui.DefaultFolder,LICENSE_FILE)
+				File.Copy(File.DirAssets,LICENSE_FILE,File.DirDefaultExternal,LICENSE_FILE)
+			End If
+		Catch
+		End Try 'ignore
 	
 		'--- kill it, if it exists it will be rebuilt
 		fileHelpers.SafeKill(xui.DefaultFolder,gblConst.FILE_MAIN_SETUP) '--- Dev
