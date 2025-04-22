@@ -28,6 +28,8 @@ Sub Class_Globals
 	Private dlgHelper As sadB4XDialogHelper
 	Private lvs As sadClvSelections
 	
+	Private CheckChangedFlag As Boolean = False
+	
 End Sub
 
 
@@ -215,8 +217,4 @@ Private Sub SetIconSet(i As Int)
 		Case 4 : SelectedIconsSet = "api"
 	End Select
 End Sub
-
-
-
-
 

@@ -205,7 +205,7 @@ Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
 		Select Case  Value
 			Case "Refresh"
 				guiHelpers.Show_toast("Refreshing Weather")
-				CallSubDelayed(mpage.WeatherData,"Try_Update")
+				CallSubDelayed(mpage.WeatherData,"Try_Weather_Update")
 			Case Else
 				CallSubDelayed2(mpage.WeatherData,"Update_Weather",Value)
 		End Select
