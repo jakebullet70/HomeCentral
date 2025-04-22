@@ -63,7 +63,7 @@ Public Sub ExistsRemove(Module As Object, SubName As String)
 End Sub
 Public Sub Exists(Module As Object, SubName As String) As Timer
 	
-	If GoingDown Then Return
+	If GoingDown Then Return Null
 	If RunDelayed.IsInitialized <> False Then 
 		For Each t As Timer In RunDelayed.Keys
 			Dim dt As RunDelayedData = RunDelayed.Get(t)
