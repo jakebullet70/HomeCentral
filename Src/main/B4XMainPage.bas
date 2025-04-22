@@ -406,18 +406,32 @@ Private Sub btnSetupMaster_Click
 	
 	pnlSideMenu.SetVisibleAnimated(380, False)
 	'CallSub(Main,"Set_ScreenTmr") '--- reset the power / screen on-off
+	
+	'--- call the setup for the page
+	If oPageCurrent = oPageTimers Then
+		SetupMainMenu_Event("tm",Null) : Return
+	Else If oPageCurrent = oPageWeather Then
+		SetupMainMenu_Event("wth",Null) : 	Return
+	Else If oPageCurrent = oPageWEB Then
+		SetupMainMenu_Event("wb",Null) : Return
+	Else If oPageCurrent <> oPageHome Then
+		guiHelpers.Show_toast("No setup for this page")
+		pnlSideMenuTouchOverlay_show(False)
+		Return
+	End If
 
+	'--- home setup
 	Dim gui As guiMsgs : gui.Initialize
 	Dim o1 As dlgListbox
 	
 	o1.Initialize("Setup Menu",Me,"SetupMainMenu_Event",Dialog)
 	o1.IsMenu = True
 	o1.Show(440dip,380dip,gui.BuildMainSetup())
-	pnlSideMenuTouchOverlay_show(False)
 	
 End Sub
 
 Private Sub SetupMainMenu_Event(t As String,o As Object)
+	pnlSideMenuTouchOverlay_show(False)
 	Select Case t
 		Case "wth"
 			Dim o1 As dlgSetupWeather : o1.Initialize(Dialog) : o1.Show

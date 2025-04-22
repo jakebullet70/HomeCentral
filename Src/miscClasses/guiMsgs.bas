@@ -26,8 +26,8 @@ Public Sub BuildMainSetup() As Map
 	m.Put(cs.Initialize.Append(" ").Typeface(Typeface.MATERIALICONS).VerticalAlign(6dip).Append(Chr(0xE30B)). _
 				 Typeface(Typeface.DEFAULT).Append("   General Settings").PopAll,"gn")				 
 	
-	m.Put(cs.Initialize.Append(" ").Typeface(Typeface.MATERIALICONS).VerticalAlign(6dip).Append(Chr(0xE88A)). _
-				 Typeface(Typeface.DEFAULT).Append("   Home Page Settings").PopAll,"hm")
+	'm.Put(cs.Initialize.Append(" ").Typeface(Typeface.MATERIALICONS).VerticalAlign(6dip).Append(Chr(0xE88A)). _
+	'			 Typeface(Typeface.DEFAULT).Append("   Home Page Settings").PopAll,"hm")
 
 	m.Put(cs.Initialize.Append(" ").Typeface(Typeface.MATERIALICONS).VerticalAlign(6dip).Append(Chr(0xEB46)). _
 				 Typeface(Typeface.DEFAULT).Append("   Weather Settings").PopAll,"wth")				 

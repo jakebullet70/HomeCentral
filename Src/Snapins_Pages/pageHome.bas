@@ -38,7 +38,6 @@ Sub Class_Globals
 End Sub
 
 
-
 Public Sub Initialize(p As B4XView) 
 	pnlMain = p
 	pnlMain.LoadLayout("pageHomeBase")
