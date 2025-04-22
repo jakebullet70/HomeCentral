@@ -184,16 +184,17 @@ Module55=|relative|..\Src\b4xCustomizedClasses\sadKeyValueStore
 Module56=|relative|..\Src\b4xCustomizedClasses\sadPreferencesDialog
 Module57=|relative|..\Src\b4xCustomizedClasses\sadPreferencesDialogHelper
 Module58=|relative|..\Src\customCtrls\sadRoundSlider
-Module59=Starter
+Module59=|relative|..\Src\miscClasses\startAtBoot
 Module6=|relative|..\Src\miscClasses\events_subscription\clsEvent
-Module60=|relative|..\Src\helpers\strHelpers
-Module61=|relative|..\Src\helpers\vol_timers
+Module60=Starter
+Module61=|relative|..\Src\helpers\strHelpers
+Module62=|relative|..\Src\helpers\vol_timers
 Module7=|relative|..\Src\miscClasses\kitchenTimers\clsKAlarms
 Module8=|relative|..\Src\miscClasses\weather\clsWeatherData
 Module9=|relative|..\Src\miscClasses\weather\clsWeatherDataDay
 NumberOfFiles=54
 NumberOfLibraries=21
-NumberOfModules=61
+NumberOfModules=62
 Version=12.5
 @EndOfDesignText@
 #Region  Project Attributes 
