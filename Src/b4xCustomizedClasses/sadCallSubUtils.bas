@@ -6,6 +6,8 @@ Version=5.5
 @EndOfDesignText@
 ' Author:  B4X / Tweaked by sadLogic
 #Region VERSIONS 
+' V. 1.4	Apr/22/2025
+'			Added GoingDown flag to the destroy method.
 ' V. 1.3	Jan/23/2024
 '			Added destroy method, really should not be needed but hey, nuke the obj it just to be sure.  :)
 ' V. 1.2	Jan/08/2024
@@ -17,7 +19,7 @@ Version=5.5
 
 'Class module
 Sub Class_Globals
-	Private RunDelayed As Map
+	Private RunDelayed As Map, GoingDown As Boolean = False
 	Type RunDelayedData (Module As Object, SubName As String, Arg() As Object, Delayed As Boolean)
 End Sub
 
@@ -27,13 +29,15 @@ End Sub
 
 Public Sub Destroy
 	'--- remove any timers if they are there
-	RunDelayed.Initialize
+	GoingDown = True
+	RunDelayed.Clear
 End Sub
 
 
 '------------------------------ Added  ----------------------------------------------------
 Public Sub ExistsRemoveAdd_DelayedPlus(Module As Object, SubName As String,Delay As Int)
 	
+	If GoingDown Then Return
 	ExistsRemove(Module, SubName)
 	CallSubDelayedPlus(Module,SubName,Delay)
 	
@@ -41,6 +45,7 @@ End Sub
 
 Public Sub ExistsRemoveAdd_DelayedPlus2(Module As Object, SubName As String,Delay As Int, Arg() As Object)
 	
+	If GoingDown Then Return
 	ExistsRemove(Module, SubName)
 	CallSubDelayedPlus2(Module,SubName,Delay,Arg)
 	
@@ -48,6 +53,7 @@ End Sub
 
 Public Sub ExistsRemove(Module As Object, SubName As String) 
 	
+	If GoingDown Then Return
 	Dim t As Timer = Exists(Module,SubName) 
 	If t <> Null Then 
 		t.Enabled = False
@@ -57,6 +63,7 @@ Public Sub ExistsRemove(Module As Object, SubName As String)
 End Sub
 Public Sub Exists(Module As Object, SubName As String) As Timer
 	
+	If GoingDown Then Return
 	If RunDelayed.IsInitialized <> False Then 
 		For Each t As Timer In RunDelayed.Keys
 			Dim dt As RunDelayedData = RunDelayed.Get(t)
@@ -75,6 +82,7 @@ End Sub
 'Similar to CallSubDelayed. This method allows you to set the delay (in milliseconds).
 'Note that the sub name must include an underscore if compiled with obfuscation enabled.
 Public Sub CallSubDelayedPlus(Module As Object, SubName As String, Delay As Int)
+	If GoingDown Then Return
 	CallSubDelayedPlus2(Module, SubName, Delay, Null)	
 End Sub
 
@@ -82,12 +90,14 @@ End Sub
 'Note that the sub name must include an underscore if compiled with obfuscation enabled.
 'The target sub should have one parameter with a type of Object().
 Public Sub CallSubDelayedPlus2(Module As Object, SubName As String, Delay As Int, Arg() As Object)
+	If GoingDown Then Return
 	PlusImpl(Module, SubName, Delay, Arg, True)
 End Sub
 
 'Similar to CallSub. This method allows you to set the delay (in milliseconds).
 'Note that the sub name must include an underscore if compiled with obfuscation enabled.
 Public Sub CallSubPlus(Module As Object, SubName As String, Delay As Int)
+	If GoingDown Then Return
 	CallSubPlus2(Module, SubName, Delay, Null)	
 End Sub
 
@@ -95,11 +105,13 @@ End Sub
 'Note that the sub name must include an underscore if compiled with obfuscation enabled.
 'The target sub should have one parameter with a type of Object().
 Public Sub CallSubPlus2(Module As Object, SubName As String, Delay As Int, Arg() As Object)
+	If GoingDown Then Return
 	PlusImpl(Module, SubName, Delay, Arg, False)
 End Sub
 
 Private Sub PlusImpl(Module As Object, SubName As String, Delay As Int, Arg() As Object, delayed As Boolean)
 	'If RunDelayed.IsInitialized = False Then RunDelayed.Initialize
+	If GoingDown Then Return
 	Dim tmr As Timer
 	tmr.Initialize("tmr", Delay)
 	Dim rdd As RunDelayedData
@@ -117,6 +129,7 @@ Private Sub PlusImpl(Module As Object, SubName As String, Delay As Int, Arg() As
 End Sub
 
 Private Sub tmr_Tick
+	If GoingDown Then Return
 	Dim t As Timer = Sender
 	t.Enabled = False
 	Dim rdd As RunDelayedData = RunDelayed.Get(t)
@@ -148,6 +161,7 @@ End Sub
 
 #if debug
 Private Sub WhatEvents(what As String)
+	If GoingDown Then Return
 	Log("------------------ " & what)
 	For Each t As Timer In RunDelayed.Keys
 		Dim dt As RunDelayedData = RunDelayed.Get(t)
