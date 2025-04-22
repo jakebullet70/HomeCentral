@@ -120,7 +120,7 @@ Public Sub InitSql
 		"id"	INTEGER,
 		"description"	TEXT,"time" TEXT,
 		PRIMARY KEY("id" AUTOINCREMENT));"$)
-	Log(oSQL.ExecQuerySingleResult($"SELECT COUNT(*) FROM timers"$))
+	'Log(oSQL.ExecQuerySingleResult($"SELECT COUNT(*) FROM timers"$))
 	Dim count As Int = oSQL.ExecQuerySingleResult($"SELECT COUNT(*) FROM timers"$)
 	If count = 0 Then
 		oSQL.ExecNonQuery($"CREATE INDEX "ndx_desc" ON "timers" ("description");"$)
