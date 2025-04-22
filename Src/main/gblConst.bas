@@ -115,7 +115,7 @@ Sub Process_Globals
 	'=================================================================================================
 	Public Const FILE_MAIN_SETUP As String = "main_settings.bin"
 	
-	
+	Public Const FILE_AUTO_START_FLAG As String = "autostart.bin"
 	'===============================================================
 
 

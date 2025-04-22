@@ -27,10 +27,11 @@ Sub Service_Start (StartingIntent As Intent)
 	Log("Service_Start - startAtBoot")
 	If AutoStartBeenChecked = False Then
 		AutoStartBeenChecked = True
-		If ( File.Exists(xui.DefaultFolder,"autostart.bin") ) Then
+		If ( File.Exists(xui.DefaultFolder,gblConst.FILE_AUTO_START_FLAG) ) Then
 			StartApp
 		End If
 	End If
+	'--- This should remove it from memory????
 	Service.StopAutomaticForeground 'Call this when the background task completes (if there is one)
 	StopService(Me) '--- above line replaces this
 End Sub

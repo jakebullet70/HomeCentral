@@ -147,13 +147,12 @@ End Sub
 
 
 Private Sub ProcessAutoBootFlag(Enabled As Boolean)
-	
-	Dim fname As String = "autostart.bin"
+		
 	If Enabled Then
-		If File.Exists(xui.DefaultFolder,fname) Then Return
-		File.WriteString(xui.DefaultFolder,fname,"boot")
+		If File.Exists(xui.DefaultFolder,gblConst.FILE_AUTO_START_FLAG) Then Return
+		File.WriteString(xui.DefaultFolder,gblConst.FILE_AUTO_START_FLAG,"boot")
 	Else
-		fileHelpers.SafeKill(xui.DefaultFolder,fname)
+		fileHelpers.SafeKill(xui.DefaultFolder,gblConst.FILE_AUTO_START_FLAG)
 	End If
 	
 End Sub

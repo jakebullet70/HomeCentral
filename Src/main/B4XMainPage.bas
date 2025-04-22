@@ -87,9 +87,12 @@ Public Sub Initialize
 	'clrTheme.Init(Main.kvs.Get(gblConst.INI_THEME_COLOR))
 	
 	WeatherData.Initialize
-	useCel 		= Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_CELSIUS,True)
-	useMetric 	= Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_METRIC,False)
+	useCel 	 	  = Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_CELSIUS,True)
+	useMetric = Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_METRIC,False)
 	StartPowerCrap
+	If ( File.Exists(xui.DefaultFolder,gblConst.FILE_AUTO_START_FLAG) ) Then
+		tmrTimerCallSub.CallSubDelayedPlus(Me,"Kill_StartAtBoot_Service",60000) '--- 1 minute
+	End If
 	
 	
 End Sub
@@ -588,4 +591,11 @@ Private Sub pnlSideMenuTouchOverlay_show(show_me As Boolean)
 		pnlSideMenuTouchOverlay.SendToBack
 	End If
 	Sleep(0)
+End Sub
+
+Private Sub Kill_StartAtBoot_Service
+	Log("StartAtBoot service killed!")
+	'--- this service should be gone but its a crappy Android OS...
+	'guiHelpers.Show_toast("killing startup service")
+	StopService("startAtBoot")
 End Sub
