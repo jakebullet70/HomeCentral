@@ -338,6 +338,7 @@ Private Sub btnHdrTxt1_Click
 	If QuietExitNow > 3 Then
 		'B4XPages.ClosePage(Me) '--- if the pic timer is firing its still running???
 		tmrTimerCallSub.Destroy '--- should not need this but oh well...  :)
+		Sleep(0)
 		B4XPages.GetNativeParent(Me).Finish
 '		Dim ph As Phone
 '		If ph.SdkVersion > 15 Then 'android 4.1 and above

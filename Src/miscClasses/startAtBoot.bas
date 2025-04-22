@@ -42,10 +42,6 @@ End Sub
 Private Sub StartApp()
 	Dim Intent1 As Intent
 	Dim pm As PackageManager
-	#if klipper
-	Intent1 = pm.GetApplicationIntent("sadLogic.KlipperTouchController")
-	#else
-	Intent1 = pm.GetApplicationIntent("sadLogic.OctoTouchController")
-	#End If
+	Intent1 = pm.GetApplicationIntent("sadLogic.HomeCentral")
 	StartActivity(Intent1)
 End Sub
