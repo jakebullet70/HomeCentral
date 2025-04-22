@@ -48,6 +48,7 @@ Public Sub Initialize(p As B4XView)
 	mpage.EventGbl.Subscribe(gblConst.EVENT_WEATHER_UPDATED,Me, "WeatherData_RefreshScrn")
 	mpage.EventGbl.Subscribe(gblConst.EVENT_WEATHER_UPDATE_FAILED,Me, "WeatherData_Fail")
 	mpage.EventGbl.Subscribe(gblConst.EVENT_CLOCK_CHANGE, Me,"clock_event")
+	mpage.setup_on_off_scrn_event
 	
 	guiHelpers.SetPanelsTranparent(Array As B4XView(pnlClock,pnlCal))
 	
@@ -93,9 +94,11 @@ Public Sub Lost_focus()
 	pnlMain.SetVisibleAnimated(500,False)
 End Sub
 
-Private Sub Page_Setup
-	guiHelpers.Show_toast2("TODO",3500)
-End Sub
+
+'Private Sub Page_Setup
+'	Log("is this being called?????? ------------------------------------ ************************")
+'	guiHelpers.Show_toast2("TODO",3500)
+'End Sub
 
 Public Sub clock_event(s As String)
 	If pnlMain.Visible = False Then Return

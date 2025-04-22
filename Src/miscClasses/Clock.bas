@@ -20,7 +20,7 @@ Public Sub Initialize()
 	#if release	
 	Dim mn As Int = 1000 * 60
 	#else
-	Dim mn As Int = 15000 * 60
+	Dim mn As Int = 2000 * 60
 	Log("Clock refresh set = 15min")
 	#End If
 	tmrClock.Initialize("tmrClock",mn)
@@ -40,7 +40,10 @@ Public Sub StartClock()
 End Sub
 
 Public Sub Update_Scrn
-	If DoNotShow Then Return
+	If DoNotShow Then 
+		Log("Clock.Update_Scrn = DoNotShow")
+		Return
+	End If
 	
 	'--- raise the clock event, any object subscribed to it will get it
 	B4XPages.MainPage.EventGbl.Raise2(gblConst.EVENT_CLOCK_CHANGE,FormatTime(DateTime.Now))

@@ -87,14 +87,13 @@ Public Sub Initialize
 	'clrTheme.Init(Main.kvs.Get(gblConst.INI_THEME_COLOR))
 	
 	WeatherData.Initialize
-	useCel 	 	  = Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_CELSIUS,True)
-	useMetric = Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_METRIC,False)
+	useCel 	 	  = Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_CELSIUS,True) '--- c OR f
+	useMetric = Main.kvs.GetDefault(gblConst.INI_WEATHER_USE_METRIC,False) '--- MPH or KPH
 	StartPowerCrap
 	If ( File.Exists(xui.DefaultFolder,gblConst.FILE_AUTO_START_FLAG) ) Then
 		tmrTimerCallSub.CallSubDelayedPlus(Me,"Kill_StartAtBoot_Service",60000) '--- 1 minute
 	End If
-	
-	
+
 End Sub
 
 'https://www.b4x.com/android/forum/threads/b4x-sd-customkeyboard.138438/
@@ -413,7 +412,8 @@ Private Sub btnSetupMaster_Click
 	
 	'--- call the setup for the page
 	If oPageCurrent = oPageTimers Then
-		SetupMainMenu_Event("tm",Null) : Return
+		SetupMainMenu_Event("tm",Null) : 
+		Return
 	Else If oPageCurrent = oPageWeather Then
 		SetupMainMenu_Event("wth",Null) : 	Return
 	Else If oPageCurrent = oPageWEB Then
@@ -481,7 +481,6 @@ End Sub
 Private Sub StartPowerCrap
 	PowerCtrl.Initialize(True)
 	ResetScrn_SleepCounter
-	setup_on_off_scrn_event(True)
 End Sub
 Public Sub ResetScrn_SleepCounter
 	If pnlScrnOff.IsInitialized And pnlScrnOff.Visible = True Then
@@ -498,16 +497,18 @@ Public Sub ResetScrn_SleepCounter
 		tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off")
 	End If
 End Sub
-Private Sub setup_on_off_scrn_event(DoIt As Boolean)
-	If DoIt Then
-		'EventGbl.Subscribe(gblConst.EVENT_CLOCK_CHANGE, Me,"event_screenOnOff_clock")
+Public Sub setup_on_off_scrn_event()
+	'Log(config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_ON))
+	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_ON) = True Then
+		EventGbl.Subscribe(gblConst.EVENT_CLOCK_CHANGE, B4XPages.MainPage,"ScreenOnOff_Clock_Event")
 	Else
-		'EventGbl.Unsubscribe(gblConst.EVENT_CLOCK_CHANGE, Me)
+		EventGbl.Unsubscribe(gblConst.EVENT_CLOCK_CHANGE,Me)
 	End If
 End Sub
 
-Private Sub clock_event_screenOnOff
+Public Sub ScreenOnOff_Clock_Event(ttime As Long)
 	'--- wedge into the clock event so this will fire ever minute
+	Log("ScreenOnOff_Clock_Event")
 	
 	'--- check for screen off in the evening time
 	
@@ -520,7 +521,7 @@ Private Sub pnlScrnOff_Click
 	pnlBlankScreen_show(False)
 	PowerCtrl.Screen_On(TAKE_OVER_POWER)
 	If WeatherData.LastUpdatedAt = 1 Then
-		WeatherData.Try_Update
+		WeatherData.Try_Weather_Update
 	End If
 	pnlHeader.BringToFront
 	ResetScrn_SleepCounter
@@ -599,3 +600,4 @@ Private Sub Kill_StartAtBoot_Service
 	'guiHelpers.Show_toast("killing startup service")
 	StopService("startAtBoot")
 End Sub
+

@@ -105,12 +105,12 @@ Public Sub Show
 		End If
 		
 		If oldTheme <> config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_THEME) Then
-			guiHelpers.Show_toast2("Restart App to apply theme change",2500)	
+			guiHelpers.Show_toast2("Restart to apply theme change",2500)	
 		End If
 		
-		
 		CallSub(mpage.oPageCurrent,"Set_focus")
-		'CallSubDelayed(B4XPages.MainPage,"Build_RightSideMenu")
+		CallSubDelayed(B4XPages.MainPage,"setup_on_off_scrn_event")
+		
 	End If
 	
 	mpage.tmrTimerCallSub.CallSubDelayedPlus(Main,"Dim_ActionBar_Off",300)
