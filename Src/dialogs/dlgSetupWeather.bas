@@ -28,8 +28,6 @@ Sub Class_Globals
 	Private dlgHelper As sadB4XDialogHelper
 	Private lvs As sadClvSelections
 	
-	Private CheckChangedFlag As Boolean = False
-	
 End Sub
 
 
