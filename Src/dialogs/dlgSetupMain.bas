@@ -15,6 +15,7 @@ Sub Class_Globals
 	Private xui As XUI
 	Private pf As sadPreferencesDialog
 	Private prefHelper As sadPreferencesDialogHelper
+	Private oldTheme As String
 	
 End Sub
 
@@ -65,6 +66,8 @@ End Sub
 
 Public Sub Show
 	
+	oldTheme = config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_THEME)
+	
 	pf.Initialize(mpage.root, "General Settings", 460, 440)
 	
 	pf.LoadFromJson(File.ReadString(File.DirAssets,"setup_main.json"))
@@ -100,6 +103,11 @@ Public Sub Show
 			Menus.BuildHeaderMenu(mpage.segTabMenu,mpage,"segTabMenu")
 			Sleep(0)
 		End If
+		
+		If oldTheme <> config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_THEME) Then
+			guiHelpers.Show_toast2("Restart App to apply theme change",2500)	
+		End If
+		
 		
 		CallSub(mpage.oPageCurrent,"Set_focus")
 		'CallSubDelayed(B4XPages.MainPage,"Build_RightSideMenu")
