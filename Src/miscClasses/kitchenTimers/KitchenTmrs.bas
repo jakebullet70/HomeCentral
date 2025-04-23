@@ -90,7 +90,8 @@ Private Sub ProcessTimerCheck4Expire(x As Int) As ResumableSub
 	Dim nNow As Long = DateTime.Now
 	Dim P1 As Period = DateUtils.PeriodBetween(nNow,timers(x).endTime)
 	
-	Dim scrnOn As Boolean = Not (gblConst.IS0SCREEN0OFF)
+	'Dim scrnOn As Boolean = Not (gblConst.IS0SCREEN0OFF)
+	Dim scrnOn As Boolean = Not (mpage.PowerCtrl.IsScreenOff)
 	
 	If P1.Hours <= 0 And P1.Minutes <= 0 And P1.Seconds <= 0 Then
 		'--- timer expired

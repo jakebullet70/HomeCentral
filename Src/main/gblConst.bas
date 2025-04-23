@@ -81,14 +81,14 @@ Sub Process_Globals
 	
 	Public Const INI_WEB_HOME As String = "whome"
 	
-	Public Const INI_TIMERS_SOUNDS As String = "tsnd"
+	'Public Const INI_TIMERS_SOUNDS As String = "tsnd"
 	
 	
 	
 	
 	'-------------------------------------------------------------------
 	
-	Public IS0SCREEN0OFF As Boolean = False
+	'Public IS0SCREEN0OFF As Boolean = False
 	
 	Public WeatherAPIKey As String = "b48d92cda3b045938a7174835233112"
 	Public WEATHERicons As String = "cc01" '--- see puSetupWeather in old eHome - api,cc01,ms01,tv01,ww01
