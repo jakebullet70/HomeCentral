@@ -84,8 +84,6 @@ Sub Process_Globals
 	'Public Const INI_TIMERS_SOUNDS As String = "tsnd"
 	
 	
-	
-	
 	'-------------------------------------------------------------------
 	
 	'Public IS0SCREEN0OFF As Boolean = False
@@ -123,8 +121,7 @@ Sub Process_Globals
 	Public Const PAGE_MAIN As String = "MainPage"
 	Public Const PAGE_MOVEMENT As String = "mve"
 	Public Const PAGE_MENU As String = "mnu"
-	
-	
+		
 	'--- android pre 4 action bar	
 	Public Const ACTIONBAR_OFF As Int = 1
 	Public Const ACTIONBAR_ON As Int = 0
@@ -133,9 +130,7 @@ Sub Process_Globals
 	Public Const TIMERS_IMG_STOP As String = "tmr_stop.png"
 	Public Const TIMERS_IMG_GO As String = "tmr_go.png"
 	Public Const TIMERS_IMG_PAUSE As String = "tmr_pause.png"
-	
-	
-		
+			
 	Public Const VOLUME_ERR As String = "Problem setting volume. Is device set to 'Do Not Disturb?'"
 	Public Const API_ANDROID_4_0 As Int = 14
 	Public Const API_ANDROID_4_4 As Int = 19
