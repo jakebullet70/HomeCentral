@@ -103,9 +103,7 @@ Sub Process_Globals
 	'=================================================================================================
 	Public Const EVENT_CLOCK_CHANGE As String = "clckch"
 	Public Const EVENT_INET_ON_CONNECT As String = "inetonc"
-	
-'	Public Const EVENT_WEATHER_GEO_FAILED As String = "geoBAD"
-'	Public Const EVENT_WEATHER_GEO_OK As String = "geoOK"
+
 	Public Const EVENT_WEATHER_UPDATE_FAILED As String = "wufailed"
 	Public Const EVENT_WEATHER_UPDATED As String = "wudt"
 	Public Const EVENT_WEATHER_BEFORE_UPDATE As String = "bwudt"

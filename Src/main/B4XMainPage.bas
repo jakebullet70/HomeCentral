@@ -509,9 +509,51 @@ End Sub
 Public Sub ScreenOnOff_Clock_Event(ttime As Long)
 	'--- wedge into the clock event so this will fire ever minute
 	Log("ScreenOnOff_Clock_Event")
+	Dim t1, t2 As Period
+	t1 = config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_MORNING_TIME)
+	t2 = config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME)
 	
-	'--- check for screen off in the evening time
+	'--- Needs a nice refactor '--- Needs a nice refactor '--- Needs a nice refactor
+	'--- Needs a nice refactor '--- Needs a nice refactor '--- Needs a nice refactor
+	'--- Needs a nice refactor '--- Needs a nice refactor '--- Needs a nice refactor
+		
+	Dim now As Long = DateTime.now, nowTime As Float
 	
+	Try
+		nowTime   = DateTime.GetHour(now) & "." & strHelpers.PadLeft(DateTime.GetMinute(now),"0",2)
+		Dim end_Time    As Float = t2.Hours & "." & strHelpers.PadLeft(t2.Minutes,"0", 2)
+		Dim start_Time As Float = t1.Hours & "."  & strHelpers.PadLeft(t1.Minutes, "0", 2)
+	
+		Dim DoIt As String = ""
+		'If (start_Time = 00.00 And end_Time = 00.00) Then DoIt = "y" '== old code from KitchenEsentials, not sure why?
+		If (nowTime >= start_Time And nowTime < end_Time) Then DoIt = "y"
+	
+		If DoIt <> "" Then
+			Log("scrn off")
+			Process_dayScreenOnOff(True)
+		Else
+			Log("scrn on")
+			Process_dayScreenOnOff(False)
+		End If
+
+	Catch
+		LogIt.LogWrite("ScreenOnOff_Clock_Event-Parsing err: " & LastException,1)
+	End Try
+	
+End Sub
+
+Private Sub Process_dayScreenOnOff(off As Boolean)
+	If off And pnlScrnOff.Visible Then 
+		Log("check - already there")
+		Return
+	End If
+	If off Then
+		'If pnlScrnOff.Visible = True Then Return
+		TurnScreen_Off
+	Else
+		pnlScrnOff_Click
+		'If pnlScrnOff.Visible = False Then Return
+	End If
 End Sub
 
 Private Sub pnlScrnOff_Click
