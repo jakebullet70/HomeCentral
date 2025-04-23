@@ -648,3 +648,12 @@ Private Sub Kill_StartAtBoot_Service
 	StopService("startAtBoot")
 End Sub
 
+
+Public Sub TurnScreen_Dim
+	PowerCtrl.DimTheScrnBySettingBrightness '--- calls the phone intent
+	pnlScrnOff.Color = Colors.ARGB(128,0,0,0)
+	pnlBlankScreen_show(True)
+End Sub
+
+
+

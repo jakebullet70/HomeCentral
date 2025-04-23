@@ -177,3 +177,13 @@ End Sub
 
 
 
+Public Sub DimTheScrnBySettingBrightness
+	'--- from KitchenEsentials code
+	Dim SCRN_DIM_PCT1 As Float = .01
+	#if debug
+	Log("Public Sub DimTheScrnBySettingBrightness")
+	#end if
+	Dim f As Float = SCRN_DIM_PCT1
+	ph.SetScreenBrightness(f)
+End Sub
+
