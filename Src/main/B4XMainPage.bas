@@ -399,12 +399,6 @@ Private Sub lvSideMenu_ItemClick (Index As Int, Value As Object)
 End Sub
 
 
-Private Sub btnScreenOff_Click
-	pnlSideMenu.SetVisibleAnimated(380, False)
-	pnlSideMenuTouchOverlay_show(False)
-	TurnScreen_Off
-End Sub
-
 Private Sub btnSetupMaster_Click
 	
 	pnlSideMenu.SetVisibleAnimated(380, False)
@@ -465,7 +459,7 @@ Private Sub Alarm_Fired_Before_Start
 		pnlScrnOff_Click
 	End If
 	
-	'--- check if we are showing photos.
+	'--- check if we are showing photos. Soon!!!
 	IfPhotoShow_TurnOff
 	
 End Sub
@@ -476,6 +470,42 @@ Public Sub Alarm_Fired_Start(x As Int)
 	oPageTimers.AlarmStart(x)
 End Sub
 '-----------------------------------------
+
+Private Sub pnlSideMenuTouchOverlay_Click
+	'Log("----------------------------- > pnlSideMenuTouchOverlay_Click")
+	If pnlSideMenu.Visible Then 
+		pnlSideMenu.SetVisibleAnimated(380, False)
+	End If
+	pnlSideMenuTouchOverlay_show(False)
+	CallSubDelayed(Me,"ResetScrn_SleepCounter")
+End Sub
+
+Private Sub pnlSideMenuTouchOverlay_show(show_me As Boolean)
+	If show_me = True Then
+		pnlSideMenuTouchOverlay.Visible = True
+		pnlSideMenuTouchOverlay.As(Panel).Elevation = 8dip
+		pnlSideMenuTouchOverlay.BringToFront
+	Else
+		pnlSideMenuTouchOverlay.Visible = False
+		pnlSideMenuTouchOverlay.As(Panel).Elevation = -8dip
+		pnlSideMenuTouchOverlay.SendToBack
+	End If
+	Sleep(0)
+End Sub
+
+Private Sub Kill_StartAtBoot_Service
+	Log("StartAtBoot service killed!")
+	'--- this service should be gone but its a crappy Android OS...
+	'guiHelpers.Show_toast("killing startup service")
+	StopService("startAtBoot")
+End Sub
+
+
+Public Sub TurnScreen_Dim
+	PowerCtrl.DimTheScrnBySettingBrightness '--- calls the phone intent
+	pnlScrnOff.Color = Colors.ARGB(128,0,0,0)
+	pnlBlankScreen_show(True)
+End Sub
 
 #Region "ANDROID POWER-BRIGHTNESS-SLEEP SUPPORT"
 Private Sub StartPowerCrap
@@ -490,7 +520,7 @@ Public Sub ResetScrn_SleepCounter
 		#end if
 		tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off")
 		Return
-	End If	
+	End If
 	If config.getScreenOffTime <> 0 Then
 		tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"TurnScreen_Off",60000 * config.getScreenOffTime)
 	Else
@@ -536,12 +566,14 @@ End Sub
 
 Public Sub ScreenOnOff_Clock_Event(ttime As Long)
 	'--- wedge into the clock event so this will fire ever minute
+	#if debug
 	Log("ScreenOnOff_Clock_Event")
+	#end if
 	Process_dayScreenOnOff(Is_NightTime)
 End Sub
 
 Private Sub Process_dayScreenOnOff(off As Boolean)
-	If off And pnlScrnOff.Visible Then 
+	If off And pnlScrnOff.Visible Then
 		Log("(sub: Process_dayScreenOnOff) check - already there")
 		Return
 	End If
@@ -553,8 +585,6 @@ Private Sub Process_dayScreenOnOff(off As Boolean)
 End Sub
 
 Private Sub pnlScrnOff_Click
-'	Log("-----------------------------------------------------> pnlScrnOff_Click - hide panel")
-'	Log("-----------------------------------------------------> pnlScrnOff_Click - hide panel")
 '	Log("-----------------------------------------------------> pnlScrnOff_Click - hide panel")
 	pnlBlankScreen_show(False)
 	PowerCtrl.Screen_On(TAKE_OVER_POWER)
@@ -576,8 +606,6 @@ Private Sub pnlScrnOff_Click
 End Sub
 Public Sub TurnScreen_Off
 '	Log("-----------------------------------------------------> TurnScreen_Off button - show panel")
-'	Log("-----------------------------------------------------> TurnScreen_Off button - show panel")
-'	Log("-----------------------------------------------------> TurnScreen_Off button - show panel")
 	CheckForVisibleDialogsAndClose
 	pnlBlankScreen_show(True)
 	PowerCtrl.Screen_Off
@@ -588,28 +616,20 @@ Public Sub TurnScreen_Off
 End Sub
 
 Private Sub IfPhotoShow_TurnOff
-	'--- if pframe then pause the pframe timer
-	If oPagePhoto.IsInitialized And oPageCurrent = oPagePhoto Then
-		'If oPagePhoto.tmrPicShow.Enabled Then
-		'--- just turn it off
-			oPagePhoto.tmrPicShow.Enabled = False
-		'End If
-	End If
+'	'--- if pframe then pause the pframe timer
+'	If oPagePhoto.IsInitialized And oPageCurrent = oPagePhoto Then
+'		'If oPagePhoto.tmrPicShow.Enabled Then
+'		'--- just turn it off
+'		oPagePhoto.tmrPicShow.Enabled = False
+'		'End If
+'	End If
 End Sub
 
-#end region
-
-Private Sub pnlSideMenuTouchOverlay_Click
-	'Log("----------------------------- > pnlSideMenuTouchOverlay_Click")
-	If pnlSideMenu.Visible Then 
-		pnlSideMenu.SetVisibleAnimated(380, False)
-	End If
+Private Sub btnScreenOff_Click
+	pnlSideMenu.SetVisibleAnimated(380, False)
 	pnlSideMenuTouchOverlay_show(False)
-	CallSubDelayed(Me,"ResetScrn_SleepCounter")
+	TurnScreen_Off
 End Sub
-
-
-
 
 Private Sub pnlBlankScreen_show(show_me As Boolean)
 	If show_me = True Then
@@ -626,34 +646,4 @@ Private Sub pnlBlankScreen_show(show_me As Boolean)
 	Sleep(0)
 End Sub
 
-
-
-Private Sub pnlSideMenuTouchOverlay_show(show_me As Boolean)
-	If show_me = True Then
-		pnlSideMenuTouchOverlay.Visible = True
-		pnlSideMenuTouchOverlay.As(Panel).Elevation = 8dip
-		pnlSideMenuTouchOverlay.BringToFront
-	Else
-		pnlSideMenuTouchOverlay.Visible = False
-		pnlSideMenuTouchOverlay.As(Panel).Elevation = -8dip
-		pnlSideMenuTouchOverlay.SendToBack
-	End If
-	Sleep(0)
-End Sub
-
-Private Sub Kill_StartAtBoot_Service
-	Log("StartAtBoot service killed!")
-	'--- this service should be gone but its a crappy Android OS...
-	'guiHelpers.Show_toast("killing startup service")
-	StopService("startAtBoot")
-End Sub
-
-
-Public Sub TurnScreen_Dim
-	PowerCtrl.DimTheScrnBySettingBrightness '--- calls the phone intent
-	pnlScrnOff.Color = Colors.ARGB(128,0,0,0)
-	pnlBlankScreen_show(True)
-End Sub
-
-
-
+#end region
