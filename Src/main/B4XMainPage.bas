@@ -500,15 +500,13 @@ End Sub
 Public Sub setup_on_off_scrn_event()
 	'Log(config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_ON))
 	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_ON) = True Then
-		EventGbl.Subscribe(gblConst.EVENT_CLOCK_CHANGE, B4XPages.MainPage,"ScreenOnOff_Clock_Event")
+		EventGbl.Subscribe(gblConst.EVENT_CLOCK_CHANGE, Me,"ScreenOnOff_Clock_Event")
 	Else
 		EventGbl.Unsubscribe(gblConst.EVENT_CLOCK_CHANGE,Me)
 	End If
 End Sub
 
-Public Sub ScreenOnOff_Clock_Event(ttime As Long)
-	'--- wedge into the clock event so this will fire ever minute
-	Log("ScreenOnOff_Clock_Event")
+Private Sub Is_NightTime() As Boolean
 	Dim t1, t2 As Period
 	t1 = config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_MORNING_TIME)
 	t2 = config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME)
@@ -523,36 +521,34 @@ Public Sub ScreenOnOff_Clock_Event(ttime As Long)
 		nowTime   = DateTime.GetHour(now) & "." & strHelpers.PadLeft(DateTime.GetMinute(now),"0",2)
 		Dim end_Time    As Float = t2.Hours & "." & strHelpers.PadLeft(t2.Minutes,"0", 2)
 		Dim start_Time As Float = t1.Hours & "."  & strHelpers.PadLeft(t1.Minutes, "0", 2)
-	
-		Dim DoIt As String = ""
+		'Log("end_Time:" & end_Time)
+				
 		'If (start_Time = 00.00 And end_Time = 00.00) Then DoIt = "y" '== old code from KitchenEsentials, not sure why?
-		If (nowTime >= start_Time And nowTime < end_Time) Then DoIt = "y"
-	
-		If DoIt <> "" Then
-			Log("scrn off")
-			Process_dayScreenOnOff(True)
-		Else
-			Log("scrn on")
-			Process_dayScreenOnOff(False)
-		End If
+		If (nowTime >= start_Time And nowTime < end_Time) Then Return True
+		Return False
 
 	Catch
 		LogIt.LogWrite("ScreenOnOff_Clock_Event-Parsing err: " & LastException,1)
 	End Try
+	Return False
 	
+End Sub
+
+Public Sub ScreenOnOff_Clock_Event(ttime As Long)
+	'--- wedge into the clock event so this will fire ever minute
+	Log("ScreenOnOff_Clock_Event")
+	Process_dayScreenOnOff(Is_NightTime)
 End Sub
 
 Private Sub Process_dayScreenOnOff(off As Boolean)
 	If off And pnlScrnOff.Visible Then 
-		Log("check - already there")
+		Log("(sub: Process_dayScreenOnOff) check - already there")
 		Return
 	End If
 	If off Then
-		'If pnlScrnOff.Visible = True Then Return
-		TurnScreen_Off
+		TurnScreen_Off : 	ResetScrn_SleepCounter
 	Else
-		pnlScrnOff_Click
-		'If pnlScrnOff.Visible = False Then Return
+		pnlScrnOff_Click : 	'ResetScrn_SleepCounter - called in the click event
 	End If
 End Sub
 
@@ -568,6 +564,15 @@ Private Sub pnlScrnOff_Click
 	pnlHeader.BringToFront
 	ResetScrn_SleepCounter
 	CallSubDelayed2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
+	
+	'--- what if we are at night and the screen is off?
+	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_ON) = True And Is_NightTime Then
+		EventGbl.Unsubscribe(gblConst.EVENT_CLOCK_CHANGE,Me)
+		'--- keep screen on for 5 minutes then... restart the night time check
+		tmrTimerCallSub.CallSubDelayedPlus(Me,"setup_on_off_scrn_event",60000*5)
+		guiHelpers.Show_toast2("Night time screen off overide - 5 minutes",3500)
+	End If
+	
 End Sub
 Public Sub TurnScreen_Off
 '	Log("-----------------------------------------------------> TurnScreen_Off button - show panel")
