@@ -49,7 +49,7 @@ Sub Process_Globals
 	
 	Public Const INI_WEATHER As String = "WEA-"
 	Public Const INI_WEATHER_DEFAULT_CITY As String = INI_WEATHER & "dtcty"
-	Public Const INI_WEATHER_USE_METRIC As String = INI_WEATHER & "mtrc"
+	Public Const INI_WEATHER_USE_METRIC As String = INI_WEATHER & "mtrc" :'--- MPH vs KPH
 	Public Const INI_WEATHER_USE_CELSIUS As String = INI_WEATHER & "cels"
 	Public Const INI_WEATHER_CITY_LIST As String = INI_WEATHER & "clist"
 	Public Const INI_WEATHER_ICONS_PATH As String = INI_WEATHER & "ipth"
@@ -66,7 +66,7 @@ Sub Process_Globals
 	
 	'---
 	Public Const KEYS_MAIN_SETUP_AUTO_BOOT As String = "saboot"
-	Public Const KEYS_MAIN_SETUP_SCRN_BLANK_TIME As String = "pwroff"
+	Public Const KEYS_MAIN_SETUP_SCRN_DIM_TIME As String = "pwroff"
 	Public Const KEYS_MAIN_SETUP_SCRN_CTRL_MORNING_TIME As String = "pwrmt"
 	Public Const KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME As String = "pwret"
 	Public Const KEYS_MAIN_SETUP_SCRN_CTRL_ON As String = "scrnday"
@@ -116,15 +116,6 @@ Sub Process_Globals
 	Public Const FILE_AUTO_START_FLAG As String = "autostart.bin"
 	'===============================================================
 
-
-	
-	
-'	'---------------------------------------------------------------------------------------------------------------------
-'	'--- saved data for pref dialogs
-'	Public Const ANDROID_POWER_OPTIONS_FILE As String = "power_options.map"
-'	Public Const FILE_MAIN_SETUP As String = "general_options.map"
-'	Public Const FILAMENT_CHANGE_FILE As String = "fil_loadunload.map"
-'	'---------------------------------------------------------------------------------------------------------------------
 	
 	'--- pages
 	Public Const PAGE_PRINTING As String = "ppr"

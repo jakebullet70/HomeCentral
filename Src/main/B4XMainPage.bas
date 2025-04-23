@@ -513,6 +513,7 @@ Private Sub StartPowerCrap
 	ResetScrn_SleepCounter
 End Sub
 Public Sub ResetScrn_SleepCounter
+	'PowerCtrl.IsScreenOff
 	If pnlScrnOff.IsInitialized And pnlScrnOff.Visible = True Then
 		'--- screen is off already, should never happen but...
 		#if debug
@@ -528,7 +529,6 @@ Public Sub ResetScrn_SleepCounter
 	End If
 End Sub
 Public Sub setup_on_off_scrn_event()
-	'Log(config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_ON))
 	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_ON) = True Then
 		EventGbl.Subscribe(gblConst.EVENT_CLOCK_CHANGE, Me,"ScreenOnOff_Clock_Event")
 	Else
@@ -573,6 +573,7 @@ Public Sub ScreenOnOff_Clock_Event(ttime As Long)
 End Sub
 
 Private Sub Process_dayScreenOnOff(off As Boolean)
+	'PowerCtrl.IsScreenOff
 	If off And pnlScrnOff.Visible Then
 		Log("(sub: Process_dayScreenOnOff) check - already there")
 		Return

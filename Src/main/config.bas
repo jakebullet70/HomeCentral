@@ -96,9 +96,9 @@ End Sub
 
 Public Sub getScreenOffTime() As Int
 	#if debug
-	Log("screen off time: " & MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_BLANK_TIME))
+	Log("screen off time: " & MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_DIM_TIME))
 	#End If
-	Return MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_BLANK_TIME)
+	Return MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_DIM_TIME)
 End Sub
 
 Public Sub ReadMainSetup
