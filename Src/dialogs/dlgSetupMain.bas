@@ -34,7 +34,7 @@ public Sub CreateDefaultFile
 		'--- DO NOT USE	File.ReadMap Or File.WriteMap
 		objHelpers.Map2Disk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, CreateMap( _
 					gblConst.KEYS_MAIN_SETUP_AUTO_BOOT: False, _
-					gblConst.KEYS_MAIN_SETUP_SCRN_DIM_TIME : 120, _
+					gblConst.KEYS_MAIN_SETUP_SCRN_OFF_TIME : 120, _
 					gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_MORNING_TIME : d1, _
 					gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME: d2, _
 					gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_ON: False, _

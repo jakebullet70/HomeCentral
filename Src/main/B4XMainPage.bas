@@ -507,7 +507,7 @@ Public Sub TurnScreen_Dim
 	pnlBlankScreen_show(True)
 End Sub
 
-#Region "ANDROID POWER-BRIGHTNESS-SLEEP SUPPORT"
+#Region "ANDROID POWER-BRIGHTNESS-SLEEP-SCREEN_OFF SUPPORT"
 Private Sub StartPowerCrap
 	PowerCtrl.Initialize(True)
 	ResetScrn_SleepCounter
@@ -520,14 +520,18 @@ Public Sub ResetScrn_SleepCounter
 		Log("================================= Already off")
 		#end if
 		tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off")
+		'tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Dim")
 		Return
 	End If
 	If config.getScreenOffTime <> 0 Then
 		tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"TurnScreen_Off",60000 * config.getScreenOffTime)
+		'tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"TurnScreen_Dim",60000 * (config.getScreenOffTime * 0.5))
 	Else
 		tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off")
+		'tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Dim")
 	End If
 End Sub
+
 Public Sub setup_on_off_scrn_event()
 	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_ON) = True Then
 		EventGbl.Subscribe(gblConst.EVENT_CLOCK_CHANGE, Me,"ScreenOnOff_Clock_Event")
@@ -564,7 +568,7 @@ Private Sub Is_NightTime() As Boolean
 	
 End Sub
 
-Public Sub ScreenOnOff_Clock_Event(ttime As Long)
+Public Sub ScreenOnOff_Clock_Event(ttime As Object)
 	'--- wedge into the clock event so this will fire ever minute
 	#if debug
 	Log("ScreenOnOff_Clock_Event")
@@ -575,7 +579,7 @@ End Sub
 Private Sub Process_dayScreenOnOff(off As Boolean)
 	'PowerCtrl.IsScreenOff
 	If off And pnlScrnOff.Visible Then
-		Log("(sub: Process_dayScreenOnOff) check - already there")
+		Log("(sub: Process_dayScreenOnOff) check - already off")
 		Return
 	End If
 	If off Then

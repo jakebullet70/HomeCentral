@@ -20,7 +20,7 @@
                 "360",
                 "5"
             ],
-            "title": "Dim Screen After  (Min)",
+            "title": "Screen Off After  (Min)",
             "type": "Numeric Range",
             "key": "pwroff",
             "required": false

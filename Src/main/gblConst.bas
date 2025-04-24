@@ -66,7 +66,7 @@ Sub Process_Globals
 	
 	'---
 	Public Const KEYS_MAIN_SETUP_AUTO_BOOT As String = "saboot"
-	Public Const KEYS_MAIN_SETUP_SCRN_DIM_TIME As String = "pwroff"
+	Public Const KEYS_MAIN_SETUP_SCRN_OFF_TIME As String = "pwroff"
 	Public Const KEYS_MAIN_SETUP_SCRN_CTRL_MORNING_TIME As String = "pwrmt"
 	Public Const KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME As String = "pwret"
 	Public Const KEYS_MAIN_SETUP_SCRN_CTRL_ON As String = "scrnday"
