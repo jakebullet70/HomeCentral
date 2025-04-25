@@ -14,6 +14,8 @@ Sub Process_Globals
 	Private DEBUG_TEST_INSTALL As Boolean = False
 	'--- Have added the '2' to the end
 	
+	Public Const LICENSE_FILE As String = "license.txt"
+	
 	Public APK_FILE_INFO, APK_NAME As String
 	Private Const WEB_ADDR As String = "http://sadlogic.com/homecentral/"
 	If DEBUG_TEST_INSTALL Then

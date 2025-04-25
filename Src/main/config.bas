@@ -15,7 +15,7 @@ Version=9.5
 Sub Process_Globals
 
 	Private xui As XUI
-	Private Const LICENSE_FILE As String = "LICENSE.txt"
+	
 	Public IsInit As Boolean = False
 	Public MainSetupData As Map
 
@@ -34,7 +34,6 @@ End Sub
 
 
 Private Sub ConfigMe()
-	
 		
 	Dim ForceNew As Boolean = False ' DEV stuff
 	
@@ -55,9 +54,9 @@ Private Sub ConfigMe()
 
 		'--- copy lic file, not like anyone will ever read it or even care.			
 		Try
-			If File.Exists(xui.DefaultFolder,LICENSE_FILE) = False Then	'--- copy Lic file
-				File.Copy(File.DirAssets,LICENSE_FILE,xui.DefaultFolder,LICENSE_FILE)
-				File.Copy(File.DirAssets,LICENSE_FILE,File.DirDefaultExternal,LICENSE_FILE)
+			If File.Exists(xui.DefaultFolder,gblConst.LICENSE_FILE) = False Then	'--- copy Lic file
+				File.Copy(File.DirAssets,gblConst.LICENSE_FILE,xui.DefaultFolder,gblConst.LICENSE_FILE)
+				File.Copy(File.DirAssets,gblConst.LICENSE_FILE,File.DirDefaultExternal,gblConst.LICENSE_FILE)
 			End If
 		Catch
 		End Try 'ignore

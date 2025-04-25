@@ -17,17 +17,23 @@ Sub Class_Globals
 	Private dlgHelper As sadB4XDialogHelper
 	Private iv As lmB4XImageViewX
 	Private MadeWithLove1 As MadeWithLove
-	Dim tmr As Timer
+	Private lblEULA As Label
+	Private tmr As Timer
+	Private cs As CSBuilder
+	Private ELUA_Mode As Boolean = False
 	
 	Private credits As CreditsRollView
 	Private creditsMax As Int = 30000, creditsPos As Int = 0
 End Sub
 
 
-'Initializes the object. You can add parameters to this method if needed.
 Public Sub Initialize(Dialog As B4XDialog)
 	dlg = Dialog
 End Sub
+Public Sub Close_Me
+	dlg.Close(XUI.DialogResponse_Cancel)
+End Sub
+
 
 Public Sub Show()
 		
@@ -48,8 +54,10 @@ Public Sub Show()
 	'--- interesting text goes here
 	lblAboutTop.TextSize = 18
 	guiHelpers.SetTextColor(Array As B4XView(lblAboutTop),clrTheme.txtNormal)
+	credits.TextColor = clrTheme.txtNormal
 	InitCredits
 	Dim lbl As Label = MadeWithLove1.mBase.GetView(0) : lbl.TextColor= clrTheme.txtNormal
+	BuildLicLabel
 	
 	Dim msg As StringBuilder : msg.Initialize
 	msg.Append("(©)sadLogic 2015-25").Append(CRLF)
@@ -60,6 +68,30 @@ Public Sub Show()
 	Wait For (rs) Complete (Result As Int)
 	CallSubDelayed(B4XPages.MainPage,"ResetScrn_SleepCounter")
 	tmr.Enabled = False
+	
+End Sub
+
+
+Private Sub license_Click
+	If lblEULA.Text.ToLowerCase.Contains("license") Then
+		lblEULA.Text = cs.Initialize.Underline.Color(clrTheme.txtNormal).Append("About").PopAll
+		ELUA_Mode = True
+		InitCredits
+	Else
+		lblEULA.Text = cs.Initialize.Underline.Color(clrTheme.txtNormal).Append("License").PopAll
+		ELUA_Mode = False
+		InitCredits
+	End If
+End Sub
+
+
+Private Sub BuildLicLabel
+
+	lblEULA.Initialize("license")
+	lblEULA.TextSize = 20
+	dlg.Base.AddView(lblEULA,14dip,dlg.Base.Height - 47dip, _
+			(dlg.Base.Width - dlg.GetButton(XUI.DialogResponse_Cancel).Width - 20dip),36dip)
+	lblEULA.Text = cs.Initialize.Underline.Color(clrTheme.txtNormal).Append("License").PopAll
 	
 End Sub
 
@@ -85,15 +117,35 @@ Sub timer_Tick
 End Sub
 
 
-Private Sub InitCredits()
+Private Sub InitCredits
 
 	Dim ver As String = "HomeCentral™ V" & Application.VersionName
-
-	credits.TextColor = clrTheme.txtNormal
-	credits.TextSize = 24
-	credits.EndScrollMult = 2.5
+	
+	If ELUA_Mode Then
 		
-	credits.Text = CRLF & CRLF & CRLF & ver & $"
+		credits.TextSize = 20
+		credits.EndScrollMult = 1
+		credits.Text = CRLF & CRLF & $"
+Released under the GNU AFFERO GENERAL PUBLIC LICENSE
+Version 3, 19 November 2007
+
+This is free software. In a nutshell...
+
+When we speak of free software, we are referring to freedom, not price.  
+Our General Public Licenses are designed to make sure that you have the freedom to distribute copies of free software (and charge for them if you wish), that you receive source code or can get it if you want it, that you can change the software or use pieces of it in new free programs, and that you know you can do these things.
+ 
+See the complete text on the license in the folder where this software is installed or search the internet for:
+'GNU AFFERO GENERAL PUBLIC LICENSE V3'
+"$
+		
+		tmr.Initialize("timer",30)
+		
+	Else
+		credits.TextSize = 24
+		credits.EndScrollMult = 1
+		
+		credits.Text = CRLF & CRLF & ver & $"
+		
 ---------------------------
 
 - Legal Crap -
@@ -135,11 +187,15 @@ b4a forum: thedesolatesoul (UK)
 And many many many others...
 
 And my poor wife who puts up with me.
+"$
 
-
-	"$
-	
-	tmr.Initialize("timer",50)
+		tmr.Initialize("timer",50)
+	End If
+			
+	creditsPos = 0
+	'tmr.Initialize("timer",50)
 	tmr.Enabled = True
+	
 
 End Sub
+
