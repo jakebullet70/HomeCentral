@@ -94,6 +94,7 @@ Public Sub Initialize
 		tmrTimerCallSub.CallSubDelayedPlus(Me,"Kill_StartAtBoot_Service",60000) '--- 1 minute
 	End If
 
+	tmrTimerCallSub.CallSubDelayedPlus(Me,"Check4_Update",8000)
 End Sub
 
 'https://www.b4x.com/android/forum/threads/b4x-sd-customkeyboard.138438/
@@ -431,6 +432,8 @@ Private Sub SetupMainMenu_Event(t As String,o As Object)
 	pnlSideMenuTouchOverlay_show(False)
 	CallSubDelayed(Me,"ResetScrn_SleepCounter")
 	Select Case t
+		Case "up"
+			Dim up As dlgAppUpdate : up.Initialize(Dialog) : up.Show
 		Case "wth"
 			Dim o1 As dlgSetupWeather : o1.Initialize(Dialog) : o1.Show
 		Case "gn"
@@ -451,6 +454,18 @@ Private Sub save_home_web_addr(txt As String)
 	If strHelpers.IsNullOrEmpty(txt) Then Return
 	Main.kvs.Put(gblConst.INI_WEB_HOME,txt)
 End Sub
+
+
+Public Sub Check4_Update
+	
+	Dim obj As dlgAppUpdate : obj.Initialize(Null)
+	Wait For (obj.CheckIfNewDownloadAvail()) Complete (yes As Boolean)
+	If yes Then
+		guiHelpers.Show_toast2("App update available", 3600)
+	End If
+	
+End Sub
+
 
 '--------------------  kTimers stuff
 Private Sub Alarm_Fired_Before_Start

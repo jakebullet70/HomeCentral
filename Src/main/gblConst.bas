@@ -15,6 +15,7 @@ Sub Process_Globals
 	'--- Have added the '2' to the end
 	
 	Public Const LICENSE_FILE As String = "license.txt"
+	Public Const CHECK_VERSION_DATE As String = "chk_v_dt"
 	
 	Public APK_FILE_INFO, APK_NAME As String
 	Private Const WEB_ADDR As String = "http://sadlogic.com/homecentral/"

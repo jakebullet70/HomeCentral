@@ -38,6 +38,9 @@ Public Sub BuildMainSetup() As Map
 	m.Put(cs.Initialize.Append(" ").Typeface(Typeface.MATERIALICONS).VerticalAlign(6dip).Append(Chr(0xE894)). _
 				 Typeface(Typeface.DEFAULT).Append("   Web Page Settings").PopAll,"wb")				 
 				 
+	m.Put(cs.Initialize.Append(" ").Typeface(Typeface.MATERIALICONS).VerticalAlign(6dip).Append(Chr(0xE05E)). _
+				 Typeface(Typeface.DEFAULT).Append("   Check For Update").PopAll,"up")				 
+				 
 	Return m
 	
 End Sub
