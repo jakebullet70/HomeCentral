@@ -9,6 +9,12 @@
             "required": false
         },
         {
+            "title": "Check For Updates",
+            "type": "Boolean",
+            "key": "chkup",
+            "required": false
+        },
+        {
             "title": "Screen Time",
             "type": "Separator",
             "key": "pwrtop",

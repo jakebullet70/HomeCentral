@@ -93,8 +93,14 @@ Public Sub Initialize
 	If ( File.Exists(xui.DefaultFolder,gblConst.FILE_AUTO_START_FLAG) ) Then
 		tmrTimerCallSub.CallSubDelayedPlus(Me,"Kill_StartAtBoot_Service",60000) '--- 1 minute
 	End If
-
-	tmrTimerCallSub.CallSubDelayedPlus(Me,"Check4_Update",8000)
+	Try
+		If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CHECK_4_UPDATES) = True Then
+			tmrTimerCallSub.CallSubDelayedPlus(Me,"Check4_Update",8000)
+		End If
+	Catch
+		Log(LastException)
+	End Try
+		
 End Sub
 
 'https://www.b4x.com/android/forum/threads/b4x-sd-customkeyboard.138438/

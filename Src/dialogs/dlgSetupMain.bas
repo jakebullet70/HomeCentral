@@ -28,8 +28,8 @@ public Sub CreateDefaultFile
 	
 	If File.Exists(xui.DefaultFolder,gblConst.FILE_MAIN_SETUP) = False Then
 		Dim d1,d2 As Period
-		d1.Hours = 6 : d1.Minutes = 30
-		d2.Hours = 18 : d2.Minutes = 30
+		d1.Hours = 6 : d1.Minutes = 45
+		d2.Hours = 19 : d2.Minutes = 30
 		
 		'--- DO NOT USE	File.ReadMap Or File.WriteMap
 		objHelpers.Map2Disk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, CreateMap( _
@@ -44,6 +44,7 @@ public Sub CreateDefaultFile
 					gblConst.KEYS_MAIN_SETUP_PAGE_CONV: True, _
 					gblConst.KEYS_MAIN_SETUP_PAGE_TIMERS: True, _
 					gblConst.KEYS_MAIN_SETUP_PAGE_WEB: False, _
+					gblConst.KEYS_MAIN_SETUP_SCRN_CHECK_4_UPDATES: False, _
 					gblConst.KEYS_MAIN_SETUP_PAGE_THEME: "Red" _
 					))
 		

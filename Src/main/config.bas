@@ -35,7 +35,7 @@ End Sub
 
 Private Sub ConfigMe()
 		
-	Dim ForceNew As Boolean = False ' DEV stuff
+	Dim ForceNew As Boolean = True ' DEV stuff
 	
 	If Main.kvs.ContainsKey(gblConst.INI_INSTALL_DATE) = False Or ForceNew Then
 		
@@ -73,7 +73,7 @@ Private Sub ConfigMe()
 		
 	End If
 	
-	kt.InitSql '--- pointer for SQL engine for kitchen timers
+	kt.InitSql '--- pointer for SQL engine for kitchen timers or any other SQL work
 	
 	'======================================================================
 	
