@@ -406,8 +406,7 @@ Private Sub btnSetupMaster_Click
 	
 	'--- call the setup for the page
 	If oPageCurrent = oPageTimers Then
-		SetupMainMenu_Event("tm",Null) : 
-		Return
+		SetupMainMenu_Event("tm",Null) : Return
 	Else If oPageCurrent = oPageWeather Then
 		SetupMainMenu_Event("wth",Null) : 	Return
 	Else If oPageCurrent = oPageWEB Then
@@ -430,6 +429,7 @@ End Sub
 
 Private Sub SetupMainMenu_Event(t As String,o As Object)
 	pnlSideMenuTouchOverlay_show(False)
+	CallSubDelayed(Me,"ResetScrn_SleepCounter")
 	Select Case t
 		Case "wth"
 			Dim o1 As dlgSetupWeather : o1.Initialize(Dialog) : o1.Show
