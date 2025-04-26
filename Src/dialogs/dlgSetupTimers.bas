@@ -38,7 +38,7 @@ Sub Class_Globals
 	Private txtDescription,txtTime As B4XFloatTextField
 	Private btnNewSave,btnNewCancel As Button
 	Private oLV_helper As listViewSelector
-	Private txtCurrent As EditText
+	'Private txtCurrent As EditText
 	
 End Sub
 
