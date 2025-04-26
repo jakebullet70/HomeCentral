@@ -27,14 +27,15 @@ Sub Class_Globals
 	Private cboSounds As B4XComboBox
 	Private btnTest As Button
 	
-	Private Label3,Label1,Label2,Label4 As Label
+	'Private Label3,Label1,Label2,Label4 As Label
+	Private Label3,Label1 As Label
 	Private lblTmrVol As Label
 	Private sbTimerVol As B4XSeekBar
 	Private pnlTimerVol As Panel
 	Private lstPresets As ListView
 	Private pnlVolSnd,pnlAddNew As Panel
 	
-	Private txtDescription,txtTime As EditText
+	Private txtDescription,txtTime As B4XFloatTextField
 	Private btnNewSave,btnNewCancel As Button
 	Private oLV_helper As listViewSelector
 	Private txtCurrent As EditText
@@ -61,26 +62,17 @@ Public Sub Show()
 	'j.SpreadVertically2(pnlBtns,50dip,6dip,"left")
 	guiHelpers.SkinButton(Array As Button(btnAdd,btnRemove,btnTest,btnNewCancel,btnNewSave))
 	guiHelpers.ReSkinB4XComboBox(Array As B4XComboBox( cboSounds))
-	guiHelpers.SetTextColor(Array As B4XView(Label4,Label2,Label1,Label3,lblTmrVol),clrTheme.txtNormal)
+	guiHelpers.SetTextColor(Array As B4XView(Label1,Label3,lblTmrVol),clrTheme.txtNormal)
 	guiHelpers.ReSkinB4XSeekBar(Array As B4XSeekBar(sbTimerVol))
 	guiHelpers.SetPanelsBorder(Array As B4XView(pnlTimerVol),clrTheme.txtAccent)
 	guiHelpers.ResizeText("100%",lblTmrVol)
+	guiHelpers.SetTextColorB4XFloatTextField(Array As B4XFloatTextField(txtDescription,txtTime))
 	
-	guiHelpers.SkinTextEdit(Array As EditText(txtDescription,txtTime),0,True)
 	
 	sbTimerVol.Value 	= Main.kvs.Get(gblConst.INI_TIMERS_ALARM_VOLUME)
 	sbTimerVol_ValueChanged(sbTimerVol.Value)
 	
-	IME.Initialize("ime")
-	Dim jo As JavaObject = txtTime
-	jo.RunMethod("setImeOptions", Array(Bit.Or(33554432, 6))) 'IME_FLAG_NO_FULLSCREEN | IME_ACTION_DONE
-	#if DEBUG
-	Dim jo As JavaObject = Me
-	jo.RunMethod("RemoveWarning", Null)
-	#End If
-	
-	txtDescription.InputType = txtDescription.INPUT_TYPE_TEXT
-	txtTime.InputType = txtTime.INPUT_TYPE_TEXT
+	IME.Initialize("")
 	
 	oLV_helper.Initialize(lstPresets)
 	LoadData
@@ -162,21 +154,13 @@ Private Sub btnRemove_Click
 End Sub
 
 Private Sub btnAdd_Click
-		'pnlAddNew.Visible = True : pnlTimerVol.Visible = False
 	ShowAddNew(True)
-	txtTime.RequestFocus
-
-	'Dim tf As EditText = TextField1
-	'tf.SelectAll
 	txtDescription.Text = "" : txtTime.Text = ""
-	IME.AddHandleActionEvent(txtDescription)
-	IME.AddHandleActionEvent(txtTime)
-	txtTime.ForceDoneButton = False
-	IME.ShowKeyboard(txtTime)
+	txtTime.RequestFocusAndShowKeyboard
 End Sub
 
 Private Sub btnCancel_Click
-	's--- cancel add  new timer
+	'--- cancel add  new timer preset
 	ShowAddNew(False)
 	IME.HideKeyboard
 End Sub
@@ -188,10 +172,10 @@ Private Sub btnSave_Click
 	Dim vt As String = ValidateTime(txtTime.Text)
 	If vt.Length = 0 Then 
 		ShowErrMsg("Time is not valid",txtTime)
-		Dim tf As EditText = txtTime :	tf.SelectAll
+		'	Dim tf As EditText = txtTime :	tf.SelectAll
 		Return
 	End If
-	If txtDescription.Left = 0 Then 
+	If txtDescription.TextField.Text.Length = 0 Then 
 		ShowErrMsg("Description is not valid",txtDescription)
 		Return
 	End If
@@ -202,10 +186,10 @@ Private Sub btnSave_Click
 	
 End Sub
 
-Private Sub ShowErrMsg(txt As String,o As EditText)
+Private Sub ShowErrMsg(txt As String,o As B4XFloatTextField)
 	guiHelpers.Show_toast2(txt,1500)
 	Sleep(1500)
-	IME.ShowKeyboard(o)
+	o.RequestFocusAndShowKeyboard
 End Sub
 
 Private Sub ShowAddNew(ShowMe As Boolean)
@@ -225,6 +209,7 @@ Private Sub ShowAddNew(ShowMe As Boolean)
 End Sub
 
 Private Sub ValidateTime(txt As String) As String
+	'--- returns a properly formated time string
 	txt = txt.Trim
 	If fnct.CountChar(txt,":") <> 2 Then Return ""
 	Dim h() As String = Regex.Split(":",txt)
@@ -233,55 +218,32 @@ Private Sub ValidateTime(txt As String) As String
 		If Not (IsNumber(h(x))) Then Return ""
 		h(x) = kt.PadZero(h(x))
 	Next
+	If h(0) > 23 Or h(1) > 59 Or h(2) > 23 Then Return "" 
 	Return h(0) & ":" & h(1) & ":" & h(2)
 End Sub
 
-
-Private Sub txtDescription_FocusChanged (HasFocus As Boolean)
-	If HasFocus Then 
-'		txtDescription.InputType = txtDescription.INPUT_TYPE_TEXT
-'		IME.ShowKeyboard(txtDescription)
-		txtCurrent = txtDescription	
-'		txtDescription.ForceDoneButton = True
+'
+'Private Sub ime_HandleAction As Boolean
+'	Dim e As EditText : e = Sender
+'	If txtCurrent = e Then
+'		Return True
 '	Else
-'		'IME.HideKeyboard
-	End If
-	Sleep(0)
-End Sub
-Private Sub txtTime_FocusChanged (HasFocus As Boolean)
-	If HasFocus Then 
-'		txtDescription.InputType = txtDescription.INPUT_TYPE_TEXT
-'		'IME.SetCustomFilter(txtTime, txtTime.INPUT_TYPE_NUMBERS, "0123456789:")
-'		IME.ShowKeyboard(txtTime)
-		txtCurrent = txtTime
-'		txtTime.ForceDoneButton = False
-	Else
-'		txtDescription.RequestFocus
-	End If
-	Sleep(0)
-End Sub
+'		Return False 'will close the keyboard
+'	End If
+'End Sub
 
-Private Sub ime_HandleAction As Boolean
-	Dim e As EditText : e = Sender
-	If txtCurrent = e Then
-		Return True
-	Else
-		Return False 'will close the keyboard
-	End If
-End Sub
-
-#if DEBUG
-#if JAVA
-public void RemoveWarning() throws Exception{
-	anywheresoftware.b4a.shell.Shell s = anywheresoftware.b4a.shell.Shell.INSTANCE;
-	java.lang.reflect.Field f = s.getClass().getDeclaredField("errorMessagesForSyncEvents");
-	f.setAccessible(true);
-	java.util.HashSet<String> h = (java.util.HashSet<String>)f.get(s);
-	if (h == null) {
-		h = new java.util.HashSet<String>();
-		f.set(s, h);
-	}
-	h.add("textfield1_textchanged");
-}
-#End If
-#End If
+'#if DEBUG
+'#if JAVA
+'public void RemoveWarning() throws Exception{
+'	anywheresoftware.b4a.shell.Shell s = anywheresoftware.b4a.shell.Shell.INSTANCE;
+'	java.lang.reflect.Field f = s.getClass().getDeclaredField("errorMessagesForSyncEvents");
+'	f.setAccessible(true);
+'	java.util.HashSet<String> h = (java.util.HashSet<String>)f.get(s);
+'	if (h == null) {
+'		h = new java.util.HashSet<String>();
+'		f.set(s, h);
+'	}
+'	h.add("textfield1_textchanged");
+'}
+'#End If
+'#End If
