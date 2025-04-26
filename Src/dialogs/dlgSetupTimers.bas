@@ -37,6 +37,7 @@ Sub Class_Globals
 	Private txtDescription,txtTime As EditText
 	Private btnNewSave,btnNewCancel As Button
 	Private oLV_helper As listViewSelector
+	Private txtCurrent As EditText
 	
 End Sub
 
@@ -70,13 +71,16 @@ Public Sub Show()
 	sbTimerVol.Value 	= Main.kvs.Get(gblConst.INI_TIMERS_ALARM_VOLUME)
 	sbTimerVol_ValueChanged(sbTimerVol.Value)
 	
-	IME.Initialize("")
+	IME.Initialize("ime")
 	Dim jo As JavaObject = txtTime
 	jo.RunMethod("setImeOptions", Array(Bit.Or(33554432, 6))) 'IME_FLAG_NO_FULLSCREEN | IME_ACTION_DONE
 	#if DEBUG
 	Dim jo As JavaObject = Me
 	jo.RunMethod("RemoveWarning", Null)
 	#End If
+	
+	txtDescription.InputType = txtDescription.INPUT_TYPE_TEXT
+	txtTime.InputType = txtTime.INPUT_TYPE_TEXT
 	
 	oLV_helper.Initialize(lstPresets)
 	LoadData
@@ -91,7 +95,6 @@ Public Sub Show()
 	If Result = XUI.DialogResponse_Positive Then
 		SaveData
 	End If
-	
 	
 End Sub
 
@@ -162,14 +165,18 @@ Private Sub btnAdd_Click
 		'pnlAddNew.Visible = True : pnlTimerVol.Visible = False
 	ShowAddNew(True)
 	txtTime.RequestFocus
+
 	'Dim tf As EditText = TextField1
 	'tf.SelectAll
 	txtDescription.Text = "" : txtTime.Text = ""
+	IME.AddHandleActionEvent(txtDescription)
+	IME.AddHandleActionEvent(txtTime)
+	txtTime.ForceDoneButton = False
 	IME.ShowKeyboard(txtTime)
 End Sub
 
 Private Sub btnCancel_Click
-	'--- cancel add  new timer
+	's--- cancel add  new timer
 	ShowAddNew(False)
 	IME.HideKeyboard
 End Sub
@@ -227,6 +234,40 @@ Private Sub ValidateTime(txt As String) As String
 		h(x) = kt.PadZero(h(x))
 	Next
 	Return h(0) & ":" & h(1) & ":" & h(2)
+End Sub
+
+
+Private Sub txtDescription_FocusChanged (HasFocus As Boolean)
+	If HasFocus Then 
+'		txtDescription.InputType = txtDescription.INPUT_TYPE_TEXT
+'		IME.ShowKeyboard(txtDescription)
+		txtCurrent = txtDescription	
+'		txtDescription.ForceDoneButton = True
+'	Else
+'		'IME.HideKeyboard
+	End If
+	Sleep(0)
+End Sub
+Private Sub txtTime_FocusChanged (HasFocus As Boolean)
+	If HasFocus Then 
+'		txtDescription.InputType = txtDescription.INPUT_TYPE_TEXT
+'		'IME.SetCustomFilter(txtTime, txtTime.INPUT_TYPE_NUMBERS, "0123456789:")
+'		IME.ShowKeyboard(txtTime)
+		txtCurrent = txtTime
+'		txtTime.ForceDoneButton = False
+	Else
+'		txtDescription.RequestFocus
+	End If
+	Sleep(0)
+End Sub
+
+Private Sub ime_HandleAction As Boolean
+	Dim e As EditText : e = Sender
+	If txtCurrent = e Then
+		Return True
+	Else
+		Return False 'will close the keyboard
+	End If
 End Sub
 
 #if DEBUG
