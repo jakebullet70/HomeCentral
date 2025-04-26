@@ -1,6 +1,8 @@
 **/Objects
+**/keystore
 **/AutoBackups
-
 *.meta
-
-keystore/release.keystore
+*.keystore
+*.apk
+OctoTouchController_java_*.7z
+*.tmp
