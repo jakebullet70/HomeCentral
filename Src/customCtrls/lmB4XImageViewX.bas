@@ -19,7 +19,7 @@ Version=8.5
 '				Trapped Android pre V5 error
 '   2.1.0		07/05/2022   - sadLogic, Kherson Ukraine
 '				Added click event animation, needs work
-'	2.0.0		04/10/2021
+'	2.0.0	04/10/2021
 '				Removed B4A Touch event; it prevented the Click event from being triggered.
 '				Added LongClick event (not in B4J).
 '	1.2.0		02/28/2021
