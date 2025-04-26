@@ -73,6 +73,7 @@ End Sub
 
 Public Sub Initialize
 	
+	Log("MainPage Init")
 	'B4XPages.GetManager.LogEvents = True
 	tmrTimerCallSub.Initialize
 	EventGbl.Initialize
@@ -144,26 +145,12 @@ Private Sub CheckForVisibleDialogsAndClose() As Boolean
 End Sub
 
 
+
 Private Sub B4XPage_CloseRequest As ResumableSub
-	
+	Log("B4XPage_CloseRequest")
 	If CheckForVisibleDialogsAndClose = True Then
 		Return False
 	End If
-	
-'	'-----------------------------------------------------------------
-'	If PrefDlg.IsInitialized And PrefDlg.Dialog.Visible Then
-'		PrefDlg.Dialog.Close(xui.DialogResponse_Cancel) : 	Return False
-'	End If
-'	If Dialog.IsInitialized And Dialog.Visible Then
-'		Dialog.Close(xui.DialogResponse_Cancel) : 			Return False
-'	End If
-'	If Dialog2.IsInitialized And Dialog2.Visible Then
-'		Dialog2.Close(xui.DialogResponse_Cancel) : 			Return False
-'	End If
-'	If DialogMSGBOX.IsInitialized And DialogMSGBOX.Visible Then
-'		DialogMSGBOX.Close(xui.DialogResponse_Cancel) : 	Return False
-'	End If
-'	'-----------------------------------------------------------------
 	
 	If pnlSideMenu.Visible Then
 		pnlSideMenu.SetVisibleAnimated(380, False)
@@ -179,14 +166,28 @@ Private Sub B4XPage_CloseRequest As ResumableSub
 	
 	'PowerCtrl.ReleaseLocks
 	
-	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_ON)
+	
 	
 	'--- Needed to turn on 'UserClosed' var in Main.Activity_Pause
 	'--- as 'back button' should turn it on but is not
+'	Main.UserCloseOverRide = True
+	
+	  StopAllServicesOnExit
 	B4XPages.GetNativeParent(Me).Finish
+	Sleep(0)
+'	ExitApplication
+	Log("B4XPage_CloseRequest  end")
 	Return True
 End Sub
 #end region
+
+Private Sub   StopAllServicesOnExit
+	Log("  StopAllServicesOnExit")
+	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_ON)
+	tmrTimerCallSub.Destroy '--- should not need this but oh well...  :)
+	StopService("httputils2service")
+	StopService("Starter")
+End Sub
 
 Private Sub BuildGUI
 	
@@ -346,9 +347,15 @@ Private Sub btnHdrTxt1_Click
 	QuietExitNow = QuietExitNow + 1
 	If QuietExitNow > 3 Then
 		'B4XPages.ClosePage(Me) '--- if the pic timer is firing its still running???
-		tmrTimerCallSub.Destroy '--- should not need this but oh well...  :)
 		Sleep(0)
-		B4XPages.GetNativeParent(Me).Finish
+		'wait for B4XPage_CloseRequest -- FAILS
+		'the B4XPage_CloseRequest is NEVER fired
+		'--- this is hacky but seems to work. --------
+		Sleep(0):   StopAllServicesOnExit : Sleep(0)
+		B4XPages.ClosePage(Me) : Sleep(100)
+		B4XPages.GetNativeParent(Me).Finish : Sleep(100)
+		ExitApplication 
+		'-----------------------------------------------------
 '		Dim ph As Phone
 '		If ph.SdkVersion > 15 Then 'android 4.1 and above
 '			Dim jo As JavaObject
