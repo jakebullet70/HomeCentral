@@ -66,7 +66,7 @@ Public Sub InitTheme(theme As String)
 			txtNormal = -15461870
 			txtAccent = -395787
 			btnDisableText = 1715811894
-			DividerColor = -3355444
+			DividerColor = 0xFF696969
 			
 		
 		Case "custom"
@@ -84,7 +84,7 @@ Public Sub InitTheme(theme As String)
 			Background2 = xui.Color_ARGB(255,162, 30, 25)
 			btnDisableText = 1006303994
 			txtAccent = -1803140
-			DividerColor = txtAccent
+			DividerColor = 0xFFDC143C
 			
 		Case "green"
 			Background = xui.Color_ARGB(255,19, 62, 11)
@@ -122,7 +122,7 @@ Public Sub InitTheme(theme As String)
 			txtNormal = -11276022
 			txtAccent = 0xFFB1E89A
 			btnDisableText =0xFF425845
-			DividerColor = txtAccent
+			'DividerColor = txtAccent
 			
 		Case "orange"
 			Background = -14672868

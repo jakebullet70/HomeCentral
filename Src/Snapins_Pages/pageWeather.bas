@@ -36,6 +36,7 @@ Sub Class_Globals
 
 	
 	Private lvForecast As CustomListView
+	Private pnlForcastDivider As Panel
 End Sub
 
 Public Sub Initialize(p As B4XView) 
@@ -159,7 +160,7 @@ Sub WeatherData_RefreshScrn
 '	End If
 
 	lvForecast.Clear
-	Dim size As Int = lvForecast.AsView.Height / 3
+	Dim size As Int = (lvForecast.AsView.Height / 3) - 10dip
 	lvForecast.Add(CreateListItemWeather(0,lvForecast.AsView.Width,size),"0")
 	lvForecast.Add(CreateListItemWeather(1,lvForecast.AsView.Width,size),"1")
 	lvForecast.Add(CreateListItemWeather(2,lvForecast.AsView.Width,size),"2")
@@ -179,7 +180,12 @@ Private Sub CreateListItemWeather(arrID As Int, Width As Int, Height As Int) As 
 		Dim p As B4XView = XUI.CreatePanel("")
 		p.SetLayoutAnimated(0, 0, 0,Width, Height)
 		p.LoadLayout("viewWeatherForcast")
-		guiHelpers.SetTextColor(Array As B4XView(lblForecastLow1,lblForecastHigh1,lblForecastDay1,lblForecastDesc1),clrTheme.txtNormal)
+	
+		
+		guiHelpers.SetPanelsDividers(Array As B4XView(pnlForcastDivider),clrTheme.DividerColor)
+		'pnlForcastDivider.Visible = True
+		guiHelpers.SetTextColor(Array As B4XView(lblForecastDay1,lblForecastDesc1),clrTheme.txtNormal)
+		guiHelpers.SetTextColor(Array As B4XView(lblForecastHigh1,lblForecastLow1),clrTheme.txtAccent)
 	
 		Dim lowTemp,highTemp As String
 		highTemp  = "High " & IIf(mpage.useCel, mpage.WeatherData.ForcastDays(arrID).High_c & "°c",mpage.WeatherData.ForcastDays(arrID).High_f & "°f")
