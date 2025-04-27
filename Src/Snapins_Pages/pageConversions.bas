@@ -113,6 +113,7 @@ Private Sub ActiveScrnLoad(scrn As Int)
 	'--- TODO change the g.GetColorTheme calls below to use the above single var
 	
 	pnlInput.Visible = False
+	pnlInput.Top = lblWhat.Height
 	Select Case scrn
 		Case scrnButter
 
@@ -151,6 +152,7 @@ Private Sub ActiveScrnLoad(scrn As Int)
 		Case scrnTemp
 			guiHelpers.ResizeText("Temperature",lblWhat)
 			pnlInput.LoadLayout("scrnConvTemp")
+			pnlInput.Top = pnlInput.Top - 60dip
 			pnlTemp.Color = Colors.Transparent
 			txtF_FocusChanged(True)
 			
