@@ -4,6 +4,8 @@ Compiled with B4A V12.5 as I use that version for OctoTC project.
 Shoud compile with the latest version as of this date.
 --------------------------------------------------
 
+HomeCentral.b4a project file is in the B4A folder
+
 
 
 --------------------------------------------------
