@@ -11,6 +11,15 @@ Version=10
 
 #Event: SelectedFolder(f as string)
 
+'-------- NOT USED AT THE MOMENT ---------------
+'-------- NOT USED AT THE MOMENT ---------------
+'-------- NOT USED AT THE MOMENT ---------------
+'-------- NOT USED AT THE MOMENT ---------------
+'-------- NOT USED AT THE MOMENT ---------------
+'-------- NOT USED AT THE MOMENT ---------------
+
+
+
 Sub Class_Globals
 	Private XUI As XUI
 	Private Ion As Object
