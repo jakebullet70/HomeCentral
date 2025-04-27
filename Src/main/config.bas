@@ -18,6 +18,7 @@ Sub Process_Globals
 	
 	Public IsInit As Boolean = False
 	Public MainSetupData As Map
+	Public Is1stRun As Boolean = False
 
 	'--- android power dlg
 '	Public AndroidTakeOverSleepFLAG As Boolean = False
@@ -35,11 +36,12 @@ End Sub
 
 Private Sub ConfigMe()
 		
-	Dim ForceNew As Boolean = True ' DEV stuff
+	Dim ForceNew As Boolean = False ' DEV stuff
 	
 	If Main.kvs.ContainsKey(gblConst.INI_INSTALL_DATE) = False Or ForceNew Then
 		
 		'--- 1st run!
+		Is1stRun = True
 		Main.kvs.Put(gblConst.INI_INSTALL_DATE,DateTime.Now)
 		Main.kvs.Put(gblConst.INI_CURRENT_VER,gblConst.APP_FILE_VERSION)
 		Main.kvs.Put(gblConst.INI_WEATHER_DEFAULT_CITY,"Kherson, Ukraine")
@@ -106,4 +108,19 @@ Public Sub ReadMainSetup
 End Sub
 
 '=========================================================================
+
+Public Sub Change_AppUpdateCheck(check As Boolean)
+	'--- called from 1st run dialog
+	MainSetupData.Put(gblConst.KEYS_MAIN_SETUP_SCRN_CHECK_4_UPDATES,check)
+	'--- DO NOT USE	File.ReadMap Or File.WriteMap
+	objHelpers.Map2Disk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP,MainSetupData) 
+	ReadMainSetup
+	If check Then 
+		B4XPages.MainPage.Check4Update
+	Else
+		#if debug
+		Log("update is off")
+		#end if
+	End If
+End Sub
 

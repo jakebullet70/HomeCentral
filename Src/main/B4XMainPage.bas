@@ -94,14 +94,7 @@ Public Sub Initialize
 	If ( File.Exists(xui.DefaultFolder,gblConst.FILE_AUTO_START_FLAG) ) Then
 		tmrTimerCallSub.CallSubDelayedPlus(Me,"Kill_StartAtBoot_Service",60000) '--- 1 minute
 	End If
-	Try
-		If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CHECK_4_UPDATES) = True Then
-			tmrTimerCallSub.CallSubDelayedPlus(Me,"Check4_Update",8000)
-		End If
-	Catch
-		Log(LastException)
-	End Try
-		
+	Check4Update
 End Sub
 
 'https://www.b4x.com/android/forum/threads/b4x-sd-customkeyboard.138438/
@@ -125,6 +118,8 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 	#if debug
 	B4XPages.MainPage.DebugLog = True
 	#End If
+	
+	If config.Is1stRun Then CallSubDelayed(Me,"Show_1stRun")
 	
 End Sub
 
@@ -181,7 +176,19 @@ Private Sub B4XPage_CloseRequest As ResumableSub
 End Sub
 #end region
 
-Private Sub   StopAllServicesOnExit
+
+Public Sub Check4Update
+	#if debug
+	Log("processing Check4Update flag")
+	#end if
+	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CHECK_4_UPDATES) = True Then
+		tmrTimerCallSub.CallSubDelayedPlus(Me,"Check4_Update",8000)
+		#if debug
+		Log("setting Check4Update call")
+		#end if
+	End If	
+End Sub
+Private Sub StopAllServicesOnExit
 	Log("  StopAllServicesOnExit")
 	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_ON)
 	tmrTimerCallSub.Destroy '--- should not need this but oh well...  :)
@@ -238,7 +245,7 @@ Private Sub imgMenuButton_Click
 	'Log(pnlSideMenu.Left)
 	'Log(pnlSideMenu.Width)
 	#if debug
-	Log("imgMenuButton_Click")
+	'Log("imgMenuButton_Click")
 	#end if
 	If pnlSideMenu.Visible = False Then
 		guiHelpers.AnimateB4xView("RIGHT",pnlSideMenu)
@@ -379,6 +386,10 @@ Private Sub btnAboutMe_Click
 	pnlSideMenu.SetVisibleAnimated(380, False)
 	Dim o As dlgAbout : o.Initialize(Dialog)
 	o.Show
+End Sub
+
+Private Sub Show_1stRun
+	Dim o As dlg1stRun : o.Initialize(Dialog) :	o.Show
 End Sub
 
 Private Sub imgSoundButton_Click

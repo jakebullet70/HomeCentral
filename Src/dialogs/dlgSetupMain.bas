@@ -88,7 +88,7 @@ Public Sub Show
 	If Result = xui.DialogResponse_Positive Then
 
 		guiHelpers.Show_toast("Data Saved")
-		prefHelper.Map2Disk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP, data) '--- DO NOT USE	File.ReadMap Or File.WriteMap
+		prefHelper.Map2Disk2(xui.DefaultFolder, gblConst.FILE_MAIN_SETUP,data) '--- DO NOT USE	File.ReadMap Or File.WriteMap
 		
 		ProcessAutoBootFlag(data.Get(gblConst.KEYS_MAIN_SETUP_AUTO_BOOT).As(Boolean))
 		
