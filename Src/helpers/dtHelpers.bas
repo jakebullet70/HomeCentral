@@ -22,6 +22,35 @@ Sub Process_Globals
 	Private XUI As XUI
 End Sub
 
+
+Public Sub StrTime2Ticks(hours As String, minutes As String) As Long
+	Return (hours * DateTime.TicksPerHour) + (minutes * DateTime.TicksPerMinute)
+End Sub
+
+public Sub IsTimeBetween(CurrentTime As Long, StartTime As Long, EndTime As Long) As Boolean
+	If StartTime <= EndTime Then
+		' Normal case (e.g., 08:00 to 17:00)
+		If CurrentTime >= StartTime And CurrentTime <= EndTime Then
+			Log("before midnight: Time is in range.")
+			Return True
+		Else
+			Log("before midnight: Time is outside range.")
+			Return False
+		End If
+	Else
+		' Over midnight (e.g., 22:00 to 02:00)
+		If CurrentTime >= StartTime Or CurrentTime <= EndTime Then
+			Log("after midnight: Time is in range.")
+			Return True
+		Else
+			Log("after midnight: Time is outside range.")
+			Return False
+		End If
+	End If
+
+End Sub
+
+
 Public Sub ReturnDayExt(n As Int) As String
 	Select Case n
 		Case 1 : Return n & "st"
@@ -175,7 +204,8 @@ End Sub
 
 
 
-
+' many of these are now built into b4x
+'
 ''************************************************************************************************************
 ''************************************************************************************************************
 ''*************************************    DATE AND TIME FUNCTION S AND CRAP !!!         *********************
