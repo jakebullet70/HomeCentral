@@ -30,6 +30,7 @@ Sub Class_Globals
 	Private Const AUTO_BRIGHTNESS As Float = -1
 	Private Const SCRN_BRIGHTNESS_NO_SAVE As Boolean = False
 	Private Const SCRN_BRIGHTNESS_SAVE As Boolean = True
+	Private mTakeOverPower As Boolean = False
 	
 	
 End Sub
@@ -37,7 +38,9 @@ End Sub
 
 Public Sub Initialize(takeOverPower As Boolean)
 	
+	mTakeOverPower = takeOverPower
 	If takeOverPower = False Then Return
+	
 	pScreenBrightness = Main.kvs.GetDefault(gblConst.INI_SCREEN_BRIGHTNESS_VALUE,.5)
 	
 	pScreenBrightness = GetScreenBrightness
@@ -78,16 +81,21 @@ Public Sub Screen_Off
 	#if debug
 	Log("Screen_Off called")
 	#End If
-	pws.ReleaseKeepAlive
-	pws.PartialLock
+	
+	If mTakeOverPower Then
+		ReleaseLocks
+		pws.KeepAlive(True)
+		pws.PartialLock
+	End If
+	
 	ph.SetScreenBrightness(.01)
 	IsScreenOff = True
 	
 End Sub
 
 Public Sub ReleaseLocks
-	'pws.ReleasePartialLock
 	pws.ReleaseKeepAlive
+	pws.ReleasePartialLock
 End Sub
 
 '=================================================================================

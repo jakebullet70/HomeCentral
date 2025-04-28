@@ -94,6 +94,7 @@ Public Sub Initialize
 	If ( File.Exists(xui.DefaultFolder,gblConst.FILE_AUTO_START_FLAG) ) Then
 		tmrTimerCallSub.CallSubDelayedPlus(Me,"Kill_StartAtBoot_Service",60000) '--- 1 minute
 	End If
+	tmrTimerCallSub.CallSubDelayedPlus(Me,"ShowVer",2300)
 	Check4Update
 End Sub
 
@@ -189,11 +190,13 @@ Public Sub Check4Update
 	End If	
 End Sub
 Private Sub StopAllServicesOnExit
-	Log("  StopAllServicesOnExit")
+	Log("  StopAllServicesOnExit-Release power locks")
+	PowerCtrl.ReleaseLocks
 	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_ON)
 	tmrTimerCallSub.Destroy '--- should not need this but oh well...  :)
 	StopService("httputils2service")
 	StopService("Starter")
+	
 End Sub
 
 Private Sub BuildGUI
@@ -392,6 +395,7 @@ Private Sub Show_1stRun
 	Dim o As dlg1stRun : o.Initialize(Dialog) :	o.Show
 End Sub
 
+
 Private Sub imgSoundButton_Click
 	
 	Try
@@ -489,7 +493,10 @@ Public Sub Check4_Update
 	End If
 	
 End Sub
-
+'==============================================================
+Public Sub ShowVer
+	guiHelpers.Show_toast2("Version: V" & Application.VersionName,2200)
+End Sub
 
 '--------------------  kTimers stuff
 Private Sub Alarm_Fired_Before_Start
@@ -538,7 +545,6 @@ Private Sub Kill_StartAtBoot_Service
 	'guiHelpers.Show_toast("killing startup service")
 	StopService("startAtBoot")
 End Sub
-
 
 Public Sub TurnScreen_Dim
 	PowerCtrl.DimTheScrnBySettingBrightness '--- calls the phone intent
@@ -594,10 +600,17 @@ Private Sub Is_NightTime() As Boolean
 		nowTime   = DateTime.GetHour(now) & "." & strHelpers.PadLeft(DateTime.GetMinute(now),"0",2)
 		Dim end_Time    As Float = t2.Hours & "." & strHelpers.PadLeft(t2.Minutes,"0", 2)
 		Dim start_Time As Float = t1.Hours & "."  & strHelpers.PadLeft(t1.Minutes, "0", 2)
+		
+		'Log("now_time:" & nowTime)
+		'Log("start_Time:" & start_Time)
 		'Log("end_Time:" & end_Time)
 				
+		Return True
 		'If (start_Time = 00.00 And end_Time = 00.00) Then DoIt = "y" '== old code from KitchenEsentials, not sure why?
-		If (nowTime >= start_Time And nowTime < end_Time) Then Return True
+		'If (nowTime >= start_Time And nowTime < endTime) Then Return True
+		If (nowTime >= end_Time And nowTime < start_Time) Then 
+			Return True
+		End If
 		Return False
 
 	Catch
@@ -631,7 +644,7 @@ End Sub
 Private Sub pnlScrnOff_Click
 '	Log("-----------------------------------------------------> pnlScrnOff_Click - hide panel")
 	pnlBlankScreen_show(False)
-	PowerCtrl.Screen_On(TAKE_OVER_POWER)
+	PowerCtrl.Screen_On(TAKE_OVER_POWER) '=== This is CONST et to True
 	If WeatherData.LastUpdatedAt = 1 Then
 		WeatherData.Try_Weather_Update
 	End If
