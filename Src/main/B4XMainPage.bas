@@ -596,13 +596,17 @@ Private Sub Is_NightTime() As Boolean
 		'Dim strH As String  = strHelpers.PadLeft(DateTime.GetHour(DateTime.now).As(String),"0",2)
 		Dim timeNow As Long = DateTime.TimeParse(strH & ":" & strM & ":00")
 			
-		Dim startTime As Long = dtHelpers.StrTime2Ticks(t1.hours,t1.minutes)
-		Dim endTime   As Long = dtHelpers.StrTime2Ticks(t2.hours,t2.minutes)
+		Dim startTime As Long = dtHelpers.StrTime2Ticks(t2.hours,t2.minutes)
+		Dim endTime   As Long = dtHelpers.StrTime2Ticks(t1.hours,t1.minutes)
 			
 		If dtHelpers.IsTimeBetween(timeNow,startTime,endTime) Then
 			Return True
 		End If
 		Return False
+		
+'		Dim p As Period =DateUtils.PeriodBetween(DateTime.DateParse( "2020-12-20 20:10:13" ), DateTime.DateParse( "2020-12-20 22:14:50" ))
+'		Log($"${p.Hours}:${p.Minutes}:${p.Seconds}"$) 'displays: 2:4:37
+'		Log($"$2.0{p.Hours}:$2.0{p.Minutes}:$2.0{p.Seconds}"$)  'displays: 02:04:37
 		
 	Catch
 		LogIt.LogWrite("ScreenOnOff_Clock_Event-Parsing err: " & LastException,1)
