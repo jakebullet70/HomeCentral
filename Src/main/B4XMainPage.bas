@@ -562,7 +562,7 @@ Public Sub ResetScrn_SleepCounter
 	If pnlScrnOff.IsInitialized And pnlScrnOff.Visible = True Then
 		'--- screen is off already, should never happen but...
 		#if debug
-		Log("================================= Already off")
+		Log("=============== Already off")
 		#end if
 		tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off")
 		'tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Dim")
@@ -589,30 +589,21 @@ Private Sub Is_NightTime() As Boolean
 	Dim t1, t2 As Period
 	t1 = config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_MORNING_TIME)
 	t2 = config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME)
-	
-	'--- Needs a nice refactor '--- Needs a nice refactor '--- Needs a nice refactor
-	'--- Needs a nice refactor '--- Needs a nice refactor '--- Needs a nice refactor
-	'--- Needs a nice refactor '--- Needs a nice refactor '--- Needs a nice refactor
-		
-	Dim now As Long = DateTime.now, nowTime As Float
-	
 	Try
-		nowTime   = DateTime.GetHour(now) & "." & strHelpers.PadLeft(DateTime.GetMinute(now),"0",2)
-		Dim end_Time    As Float = t2.Hours & "." & strHelpers.PadLeft(t2.Minutes,"0", 2)
-		Dim start_Time As Float = t1.Hours & "."  & strHelpers.PadLeft(t1.Minutes, "0", 2)
-		
-		'Log("now_time:" & nowTime)
-		'Log("start_Time:" & start_Time)
-		'Log("end_Time:" & end_Time)
-				
-		Return True
-		'If (start_Time = 00.00 And end_Time = 00.00) Then DoIt = "y" '== old code from KitchenEsentials, not sure why?
-		'If (nowTime >= start_Time And nowTime < endTime) Then Return True
-		If (nowTime >= end_Time And nowTime < start_Time) Then 
+
+		Dim strM As String  = strHelpers.PadLeft(DateTime.GetMinute(DateTime.now).As(String),"0",2)
+		Dim strH As String  = DateTime.GetHour(DateTime.now).As(String)
+		'Dim strH As String  = strHelpers.PadLeft(DateTime.GetHour(DateTime.now).As(String),"0",2)
+		Dim timeNow As Long = DateTime.TimeParse(strH & ":" & strM & ":00")
+			
+		Dim startTime As Long = dtHelpers.StrTime2Ticks(t1.hours,t1.minutes)
+		Dim endTime   As Long = dtHelpers.StrTime2Ticks(t2.hours,t2.minutes)
+			
+		If dtHelpers.IsTimeBetween(timeNow,startTime,endTime) Then
 			Return True
 		End If
 		Return False
-
+		
 	Catch
 		LogIt.LogWrite("ScreenOnOff_Clock_Event-Parsing err: " & LastException,1)
 	End Try
@@ -631,7 +622,9 @@ End Sub
 Private Sub Process_dayScreenOnOff(off As Boolean)
 	'PowerCtrl.IsScreenOff
 	If off And pnlScrnOff.Visible Then
+		#if debug
 		Log("(sub: Process_dayScreenOnOff) check - already off")
+		#end if
 		Return
 	End If
 	If off Then
@@ -644,7 +637,7 @@ End Sub
 Private Sub pnlScrnOff_Click
 '	Log("-----------------------------------------------------> pnlScrnOff_Click - hide panel")
 	pnlBlankScreen_show(False)
-	PowerCtrl.Screen_On(TAKE_OVER_POWER) '=== This is CONST et to True
+	PowerCtrl.Screen_On(TAKE_OVER_POWER) '=== This is CONST set to True
 	If WeatherData.LastUpdatedAt = 1 Then
 		WeatherData.Try_Weather_Update
 	End If

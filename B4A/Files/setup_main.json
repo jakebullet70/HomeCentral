@@ -38,15 +38,15 @@
             "required": false
         },
         {
-            "title": "Screen On - Morning",
-            "type": "Time",
-            "key": "pwrmt",
-            "required": false
-        },
-        {
             "title": "Screen Off - Evening",
             "type": "Time",
             "key": "pwret",
+            "required": false
+        },
+        {
+            "title": "Screen On - Morning",
+            "type": "Time",
+            "key": "pwrmt",
             "required": false
         },
         {
