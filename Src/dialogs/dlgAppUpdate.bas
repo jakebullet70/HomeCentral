@@ -113,7 +113,7 @@ Public Sub Show() As ResumableSub
 
 	'---TODO, make a generic function
 	guiHelpers.SkinButton(Array As Button(btnContinue))
-	btnContinue.TextSize = NumberFormat2(btnContinue.TextSize / guiHelpers.gFscale,1,0,0,False) - IIf(guiHelpers.gFscale > 1,2,0)
+	btnContinue.TextSize = 22'NumberFormat2(btnContinue.TextSize / guiHelpers.gFscale,1,0,0,False) - IIf(guiHelpers.gFscale > 1,2,0)
 		
 	'--- init dialog
 	mDialog.Initialize(mMainObj)
