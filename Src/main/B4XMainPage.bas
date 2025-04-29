@@ -22,6 +22,7 @@ Sub Class_Globals
 	Public DebugLog As Boolean = False
 	Private PromptExitTwice As Boolean = False
 	Private QuietExitNow As Short = 0
+	Private UserTurnedOffScrn As Int = 0 '--- day user pressed will be stored here
 	
 	Public sql As SQL
 	Public isInterNetConnected As Boolean = True
@@ -589,6 +590,8 @@ Private Sub Is_NightTime() As Boolean
 	Dim t1, t2 As Period
 	t1 = config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_MORNING_TIME)
 	t2 = config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME)
+	Dim Const TURN_SCRN_ON As Boolean = False
+	Dim Const TURN_SCRN_OFF As Boolean = True
 	Try
 		Log("Is_NightTime check")
 		Dim strM As String  = strHelpers.PadLeft(DateTime.GetMinute(DateTime.now).As(String),"0",2)
@@ -597,19 +600,29 @@ Private Sub Is_NightTime() As Boolean
 				
 		Dim timeNow As Long = DateTime.TimeParse(strH & ":" & strM & ":00")
 		Dim timeOff As Long = dtHelpers.StrTime2Ticks(t2.hours,t2.minutes)
-		Dim timeOn   As Long = dtHelpers.StrTime2Ticks(t1.hours,t1.minutes)
+		Dim timeOn  As Long = dtHelpers.StrTime2Ticks(t1.hours,t1.minutes)
 				
 		'--- testing		
-		'Dim timeNow As Long = DateTime.TimeParse("7:01:00")
-		'Dim timeOff As Long = dtHelpers.StrTime2Ticks(22,00)
-		'Dim timeOn  As Long = dtHelpers.StrTime2Ticks(7,0)
+'		Dim timeNow As Long = DateTime.TimeParse("7:01:00")
+'		Dim timeOff As Long = dtHelpers.StrTime2Ticks(22,00)
+'		Dim timeOn  As Long = dtHelpers.StrTime2Ticks(7,0)
 
 		'--- seems to work, just one of those things...
 		If timeOff >= timeOn And timeNow >= timeOff Then
-			If DateTime.GetHour(timeNow) <= 13 Then Return False
-			Return True
+			If DateTime.GetHour(timeNow) <= 13 Then 
+				If UserTurnedOffScrn <> 0 And UserTurnedOffScrn = DateTime.GetDayOfMonth(DateTime.Now) Then 
+					Return TURN_SCRN_OFF
+				End If
+				Return TURN_SCRN_ON
+			End If
+			Return TURN_SCRN_OFF
 		End If
-		Return False
+		'---
+		Log("Is_NightTime -> do we ever get here")
+		If UserTurnedOffScrn <> 0 And UserTurnedOffScrn <> DateTime.GetDayOfMonth(DateTime.Now) Then
+			Return TURN_SCRN_OFF
+		End If
+		Return TURN_SCRN_ON
 			
 '		Dim p As Period =DateUtils.PeriodBetween(DateTime.DateParse( "2020-12-20 20:10:13" ), DateTime.DateParse( "2020-12-20 22:14:50" ))
 '		Log($"${p.Hours}:${p.Minutes}:${p.Seconds}"$) 'displays: 2:4:37
@@ -652,6 +665,7 @@ Private Sub pnlScrnOff_Click
 	If WeatherData.LastUpdatedAt = 1 Then
 		WeatherData.Try_Weather_Update
 	End If
+	UserTurnedOffScrn = 0 ' reset it
 	pnlHeader.BringToFront
 	ResetScrn_SleepCounter
 	CallSubDelayed2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
@@ -687,8 +701,12 @@ Private Sub IfPhotoShow_TurnOff
 End Sub
 
 Private Sub btnScreenOff_Click
+	#if debug
+	Log("User -> Screen_Off called")
+	#End If
 	pnlSideMenu.SetVisibleAnimated(380, False)
 	pnlSideMenuTouchOverlay_show(False)
+	UserTurnedOffScrn = DateTime.GetDayOfMonth(DateTime.Now)
 	TurnScreen_Off
 End Sub
 
