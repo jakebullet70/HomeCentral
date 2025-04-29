@@ -159,8 +159,6 @@ A dedicated tablet application for your kitchen / home using older Android devic
 HomeCentral was created by a family for other families. It has been a work of love for over 20 years. 
 At this point though the kids are grown and gone and its time to just release this into the wild as FOSS.
 
-Over the years we've worked hard with other families to try and create a useful tool that satisfies the needs of families of all types. 
-
 We sincerely hope you enjoy using it and welcome any and all feedback you can share with us.
 
 Thanks!
@@ -173,6 +171,12 @@ Steven De George JR
 Bogdan De George
 
 
+- Art Work -
+--------------------------
+Stacey (De George) Hafner
+openclipart.org
+  
+  
 - Thanks to - 
 --------------------------
 b4a Language: Erel
