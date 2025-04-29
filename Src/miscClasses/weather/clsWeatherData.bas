@@ -56,7 +56,7 @@ Public Sub LoadWeatherIcon(iconID As Int, img As lmB4XImageViewX,isDay As Boolea
 '			img.Initialize(Null,"")
 '	End If
 	img.Bitmap =  xui.LoadBitmap(File.DirAssets, _ 
-						"weathericon/" & gblConst.WEATHERicons & IIf(isDay,"/day/","/night/") & iconID & ".png")
+						"weathericon/" & config.getWeatherIconSet & IIf(isDay,"/day/","/night/") & iconID & ".png")
 
 End Sub
 

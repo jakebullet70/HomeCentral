@@ -95,6 +95,11 @@ End Sub
 '====================  Get's for the Main Setup Map file =================
 '=========================================================================
 
+Public Sub getWeatherIconSet() As String
+	Return Main.kvs.GetDefault(gblConst.INI_WEATHER_ICONS_PATH,"cc01")
+End Sub
+
+
 Public Sub getScreenOffTime() As Int
 	#if debug
 	Log("screen off time: " & MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_OFF_TIME))
@@ -123,4 +128,7 @@ Public Sub Change_AppUpdateCheck(check As Boolean)
 		#end if
 	End If
 End Sub
+
+
+
 

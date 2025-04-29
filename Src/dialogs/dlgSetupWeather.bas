@@ -116,8 +116,6 @@ Private Sub SaveData()
 	Main.kvs.Put(gblConst.INI_WEATHER_DEFAULT_CITY,DefCity)
 	Main.kvs.Put(gblConst.INI_WEATHER_USE_CELSIUS,chkCelsius.Checked)
 	Main.kvs.Put(gblConst.INI_WEATHER_USE_METRIC,chkMetric.Checked)
-	
-	gblConst.WEATHERicons = SelectedIconsSet
 	Main.kvs.Put(gblConst.INI_WEATHER_ICONS_PATH,SelectedIconsSet)
 	
 	CallSubDelayed(mpage.oPageCurrent,"Build_Side_Menu")
@@ -189,7 +187,8 @@ Private Sub InitIconSets
 	cboIconSets.cmbBox.AddAll(Array As String("Icons - Bright and shiny 1","Icons - Bright and shiny 2", _
 										"Icons - Material design","Icons - Material design (Color)","Icons - API (Color)"))
 	
-	Select Case gblConst.WEATHERicons
+	'Select Case gblConst.WEATHERicons
+	Select Case config.getWeatherIconSet
 		Case "cc01"    : cboIconSets.SelectedIndex = 0
 		Case "ww01"   : cboIconSets.SelectedIndex = 1
 		Case "ms01"   : cboIconSets.SelectedIndex = 2
@@ -198,7 +197,7 @@ Private Sub InitIconSets
 	End Select
 	
 	SetIconSet(cboIconSets.SelectedIndex)
-	SelectedIconsSet = gblConst.WEATHERicons
+	'SelectedIconsSet = gblConst.WEATHERicons
 	
 End Sub
 

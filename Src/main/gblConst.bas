@@ -93,8 +93,7 @@ Sub Process_Globals
 	'Public IS0SCREEN0OFF As Boolean = False
 	
 	'Free key from --->  https://www.weatherapi.com
-	Public WeatherAPIKey As String = "b48d92cda3b045938a7174835233112"
-	Public WEATHERicons As String = "cc01" '--- see puSetupWeather in old eHome - api,cc01,ms01,tv01,ww01
+	Public Const WeatherAPIKey As String = "b48d92cda3b045938a7174835233112"
 	'Public AndroidTakeOverSleepFLAG As Boolean = False
 			
 	
