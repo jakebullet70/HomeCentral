@@ -45,7 +45,7 @@ public Sub CreateDefaultFile
 					gblConst.KEYS_MAIN_SETUP_PAGE_TIMERS: True, _
 					gblConst.KEYS_MAIN_SETUP_PAGE_WEB: False, _
 					gblConst.KEYS_MAIN_SETUP_SCRN_CHECK_4_UPDATES: False, _
-					gblConst.KEYS_MAIN_SETUP_PAGE_THEME: "Red" _
+					gblConst.KEYS_MAIN_SETUP_PAGE_THEME: "Dark-Blue" _
 					))
 		
 	End If

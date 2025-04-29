@@ -49,7 +49,7 @@ Private Sub ConfigMe()
 		Main.kvs.Put(gblConst.INI_WEATHER_USE_METRIC,False)
 		Main.kvs.Put(gblConst.INI_WEATHER_CITY_LIST,"Kherson, Ukraine;;Seattle, Wa;;Paris, France")
 	
-		Main.kvs.Put(gblConst.INI_TIMERS_ALARM_VOLUME,75)
+		Main.kvs.Put(gblConst.INI_TIMERS_ALARM_VOLUME,85)
 		Main.kvs.Put(gblConst.INI_TIMERS_ALARM_FILE,"ktimers_beep01.ogg")
 		
 		Main.kvs.Put(gblConst.INI_WEB_HOME,"http://sadlogic.com")
