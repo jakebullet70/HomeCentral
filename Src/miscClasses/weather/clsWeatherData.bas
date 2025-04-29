@@ -97,7 +97,7 @@ Public Sub Try_Weather_Update
 	If mpage.PowerCtrl.IsScreenOff Then
 		LastUpdatedAt = 1
 		mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Try_Weather_Update",60000 * MinutesBetweenCalls) '--- set the next call - 45min
-		If mpage.DebugLog Then Log("GetWeather - screen off!")
+		If mpage.DebugLog Then Log("GetWeather - screen off! not getting weather")
 		Return
 	End If
 		
