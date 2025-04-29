@@ -611,11 +611,6 @@ Private Sub Is_NightTime() As Boolean
 		End If
 		Return False
 			
-'		If dtHelpers.IsTimeBetween(timeNow,timeOn,timeOff) Then
-'			Return True
-'		End If
-		
-		
 '		Dim p As Period =DateUtils.PeriodBetween(DateTime.DateParse( "2020-12-20 20:10:13" ), DateTime.DateParse( "2020-12-20 22:14:50" ))
 '		Log($"${p.Hours}:${p.Minutes}:${p.Seconds}"$) 'displays: 2:4:37
 '		Log($"$2.0{p.Hours}:$2.0{p.Minutes}:$2.0{p.Seconds}"$)  'displays: 02:04:37
