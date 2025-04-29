@@ -149,7 +149,7 @@ See the complete text on the license in the folder where this software is instal
 ---------------------------
 
 - Legal Crap -
-(©)sadLogic 2015-25
+(©)sadLogic 2015 - 2025
 (©)eHomeCreations 2002 - 2015
 (©)Humankind - Forever
 
@@ -162,7 +162,6 @@ At this point though the kids are grown and gone and its time to just release th
 We sincerely hope you enjoy using it and welcome any and all feedback you can share with us.
 
 Thanks!
-
 
 - Programmers - 
 ---------------------------
@@ -188,6 +187,7 @@ b4a forum: DonManfred (Germany)
 b4a forum: Magma (Greece)
 b4a forum: CableGuy (France)
 b4a forum: thedesolatesoul (UK)
+The b4x BOSS consortium :)
 And many many many others...
 
 And my poor wife who puts up with me.
