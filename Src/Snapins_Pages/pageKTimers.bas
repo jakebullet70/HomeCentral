@@ -240,7 +240,9 @@ Private Sub TimerSetColor(n As Int,clr As Int)
 End Sub
 
 Private Sub TimerSelect(x As Int)
-	Log("pageKTimers ------>  ------------------------------------TimerSelect")
+	#if debug
+	Log("pageKTimers ------>  --------TimerSelect")
+	#end if
 	TimerSetColor(clsKTimers.CurrentTimer,clrTheme.txtNormal)
 	TimerSetColor(x,clrTheme.txtAccent)
 	
@@ -559,7 +561,32 @@ Private Sub Presets_Event(id As String,o As Object)
 '	btnResetPause_Click
 End Sub
 
+Sub tmrAlarmFire_Tick
 	
+	'--- blinks the little image from red to green
+	'--- while the alarm is firing
+	Dim sPic As String
+	If msAlarmFireRollover = gblConst.TIMERS_IMG_GO Then
+		sPic = gblConst.TIMERS_IMG_STOP
+	Else
+		sPic = gblConst.TIMERS_IMG_GO
+	End If
+	
+	Dim xx As Int
+	For xx = 1 To 5
+		If clsKTimers.timers(xx).Firing Then
+			Select Case xx
+				Case 1 : imgTimers1.Bitmap = LoadBitmap(File.DirAssets,sPic)
+				Case 2 : imgTimers2.Bitmap = LoadBitmap(File.DirAssets,sPic)
+				Case 3 : imgTimers3.Bitmap = LoadBitmap(File.DirAssets,sPic)
+				Case 4 : imgTimers4.Bitmap = LoadBitmap(File.DirAssets,sPic)
+				Case 5 : imgTimers5.Bitmap = LoadBitmap(File.DirAssets,sPic)
+			End Select
+		End If
+	Next
+	
+	msAlarmFireRollover = sPic
+End Sub	
 
 
 
