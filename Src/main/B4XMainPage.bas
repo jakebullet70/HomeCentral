@@ -590,19 +590,31 @@ Private Sub Is_NightTime() As Boolean
 	t1 = config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_MORNING_TIME)
 	t2 = config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME)
 	Try
-
+		Log("Is_NightTime check")
 		Dim strM As String  = strHelpers.PadLeft(DateTime.GetMinute(DateTime.now).As(String),"0",2)
 		Dim strH As String  = DateTime.GetHour(DateTime.now).As(String)
 		'Dim strH As String  = strHelpers.PadLeft(DateTime.GetHour(DateTime.now).As(String),"0",2)
+				
 		Dim timeNow As Long = DateTime.TimeParse(strH & ":" & strM & ":00")
-			
-		Dim startTime As Long = dtHelpers.StrTime2Ticks(t2.hours,t2.minutes)
-		Dim endTime   As Long = dtHelpers.StrTime2Ticks(t1.hours,t1.minutes)
-			
-		If dtHelpers.IsTimeBetween(timeNow,startTime,endTime) Then
+		Dim timeOff As Long = dtHelpers.StrTime2Ticks(t2.hours,t2.minutes)
+		Dim timeOn   As Long = dtHelpers.StrTime2Ticks(t1.hours,t1.minutes)
+				
+		'--- testing		
+		'Dim timeNow As Long = DateTime.TimeParse("7:01:00")
+		'Dim timeOff As Long = dtHelpers.StrTime2Ticks(22,00)
+		'Dim timeOn  As Long = dtHelpers.StrTime2Ticks(7,0)
+
+		'--- seems to work, just one of those things...
+		If timeOff >= timeOn And timeNow >= timeOff Then
+			If DateTime.GetHour(timeNow) <= 13 Then Return False
 			Return True
 		End If
 		Return False
+			
+'		If dtHelpers.IsTimeBetween(timeNow,timeOn,timeOff) Then
+'			Return True
+'		End If
+		
 		
 '		Dim p As Period =DateUtils.PeriodBetween(DateTime.DateParse( "2020-12-20 20:10:13" ), DateTime.DateParse( "2020-12-20 22:14:50" ))
 '		Log($"${p.Hours}:${p.Minutes}:${p.Seconds}"$) 'displays: 2:4:37

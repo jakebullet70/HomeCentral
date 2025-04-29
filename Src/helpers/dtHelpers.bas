@@ -27,36 +27,6 @@ Public Sub StrTime2Ticks(hours As String, minutes As String) As Long
 	Return (hours * DateTime.TicksPerHour) + (minutes * DateTime.TicksPerMinute) 
 End Sub
 
-public Sub IsTimeBetween(CurrentTime As Long, StartTime As Long, EndTime As Long) As Boolean
-	If StartTime <= EndTime Then
-		'--- Normal case (e.g., 08:00 to 17:00)
-		'Return CurrentTime >= StartTime And CurrentTime <= EndTime 
-		If CurrentTime >= StartTime And CurrentTime <= EndTime Then
-			Log("before midnight: Time is in range.")
-			Return True
-		Else
-			Log("before midnight: Time is outside range.")
-			Return False
-		End If
-	Else
-		'--- Over midnight (e.g., 22:00 to 02:00)
-		'Return CurrentTime >= StartTime Or CurrentTime <= EndTime
-		If CurrentTime >= StartTime Or CurrentTime <= EndTime Then
-			Log("after midnight: Time is in range.")
-			Return True
-		Else
-			Log("after midnight: Time is outside range.")
-			Return False
-		End If
-	End If
-	
-	'		Dim p As Period =DateUtils.PeriodBetween(DateTime.DateParse( "2020-12-20 20:10:13" ), DateTime.DateParse( "2020-12-20 22:14:50" ))
-	'		Log($"${p.Hours}:${p.Minutes}:${p.Seconds}"$) 'displays: 2:4:37
-	'		Log($"$2.0{p.Hours}:$2.0{p.Minutes}:$2.0{p.Seconds}"$)  'displays: 02:04:37
-		
-
-End Sub
-
 
 Public Sub ReturnDayExt(n As Int) As String
 	Select Case n
