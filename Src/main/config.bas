@@ -107,8 +107,14 @@ Public Sub CalcTimeScreenOnOff
 	t1 = MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_MORNING_TIME)
 	t2 = MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME)
 	
+	'--- change date/time format
+	Dim fmtD As String = DateTime.DateFormat,fmtT As String = DateTime.TimeFormat
+	DateTime.DateFormat = "yyyy/MM/dd" : DateTime.TimeFormat = "HH:mm"
+	
 	TimeEveningOff = DateTime.DateTimeParse(gblConst.SCRN_ON_OFF_DUMMY_DATE,$"$2.0{t2.Hours}:$2.0{t2.Minutes}:00"$)
 	TimeMorningON  = DateTime.DateTimeParse(gblConst.SCRN_ON_OFF_DUMMY_DATE,$"$2.0{t1.Hours}:$2.0{t1.Minutes}:00"$)
+	
+	DateTime.TimeFormat = fmtT : DateTime.DateFormat = fmtD
 	
 End Sub
 
