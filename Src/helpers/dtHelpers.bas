@@ -177,6 +177,18 @@ Public Sub ChangeTime12To24Hours(s As String) As String
 	
 	
 End Sub
+
+
+
+Public Sub IsTimeBetween(CurrentTime As Long, StartTime As Long, EndTime As Long) As Boolean
+	If StartTime <= EndTime Then
+		Return CurrentTime >= StartTime And CurrentTime <= EndTime
+	Else
+		Return CurrentTime >= StartTime Or CurrentTime <= EndTime
+	End If
+End Sub
+
+
 '=============================================================================================
 
 
