@@ -24,7 +24,7 @@ Public Sub Initialize(pfdlg As sadPreferencesDialog)
 End Sub
 
 
-public Sub CreateDefaultFile
+Public Sub CreateDefaultFile
 	
 	If File.Exists(xui.DefaultFolder,gblConst.FILE_MAIN_SETUP) = False Then
 		Dim d1,d2 As Period
