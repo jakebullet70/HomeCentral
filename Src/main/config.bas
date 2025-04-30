@@ -23,8 +23,11 @@ Sub Process_Globals
 	'--- android power dlg
 '	Public AndroidTakeOverSleepFLAG As Boolean = False
 	
+	Public TimeEveningOff, TimeMorningON As Long
+	
 	
 End Sub
+
 
 Public Sub Init
 
@@ -85,7 +88,9 @@ Private Sub ConfigMe()
 		o3.initialize(Null)
 		o3.createdefaultfile
 	End If
+	
 	ReadMainSetup
+	CalcTimeScreenOnOff
 	
 	'======================================================================
 	
@@ -94,6 +99,19 @@ End Sub
 '=========================================================================
 '====================  Get's for the Main Setup Map file =================
 '=========================================================================
+
+Public Sub CalcTimeScreenOnOff
+	
+	'--- calcs the times as Longs and stores in global vars
+	Dim t1, t2 As Period
+	t1 = MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_MORNING_TIME)
+	t2 = MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME)
+	
+	TimeEveningOff = DateTime.DateTimeParse(gblConst.SCRN_ON_OFF_DUMMY_DATE,$"$2.0{t2.Hours}:$2.0{t2.Minutes}:00"$)
+	TimeMorningON  = DateTime.DateTimeParse(gblConst.SCRN_ON_OFF_DUMMY_DATE,$"$2.0{t1.Hours}:$2.0{t1.Minutes}:00"$)
+	
+End Sub
+
 
 Public Sub getWeatherIconSet() As String
 	Return Main.kvs.GetDefault(gblConst.INI_WEATHER_ICONS_PATH,"cc01")

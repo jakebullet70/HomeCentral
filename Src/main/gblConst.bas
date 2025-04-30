@@ -110,8 +110,8 @@ Sub Process_Globals
 	Public Const EVENT_WEATHER_UPDATED As String = "wudt"
 	Public Const EVENT_WEATHER_BEFORE_UPDATE As String = "bwudt"
 
-
-
+	'--- used in calc'n morning  evening time for screen on  off
+	Public Const SCRN_ON_OFF_DUMMY_DATE As String = "2020/05/21"
 	'=================================================================================================
 	Public Const FILE_MAIN_SETUP As String = "main_settings.bin"
 	

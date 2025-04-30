@@ -22,7 +22,6 @@ Sub Class_Globals
 	Public DebugLog As Boolean = False
 	Private PromptExitTwice As Boolean = False
 	Private QuietExitNow As Short = 0
-	Private UserTurnedOffScrn As Int = 0 '--- day user pressed will be stored here
 	
 	Public sql As SQL
 	Public isInterNetConnected As Boolean = True
@@ -563,7 +562,7 @@ Public Sub ResetScrn_SleepCounter
 	If pnlScrnOff.IsInitialized And pnlScrnOff.Visible = True Then
 		'--- screen is off already, should never happen but...
 		#if debug
-		Log("=============== Already off")
+		Log("=============== Already off, removing from tmrCallSub")
 		#end if
 		tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off")
 		'tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Dim")
@@ -587,46 +586,35 @@ Public Sub setup_on_off_scrn_event()
 End Sub
 
 Private Sub Is_NightTime() As Boolean
-	Dim t1, t2 As Period
-	t1 = config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_MORNING_TIME)
-	t2 = config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_EVENING_TIME)
-	Dim Const TURN_SCRN_ON As Boolean = False
-	Dim Const TURN_SCRN_OFF As Boolean = True
+	
 	Try
+		#if debug
 		Log("Is_NightTime check")
+		#end if
 		Dim strM As String  = strHelpers.PadLeft(DateTime.GetMinute(DateTime.now).As(String),"0",2)
 		Dim strH As String  = DateTime.GetHour(DateTime.now).As(String)
-		'Dim strH As String  = strHelpers.PadLeft(DateTime.GetHour(DateTime.now).As(String),"0",2)
 				
-		Dim timeNow As Long = DateTime.TimeParse(strH & ":" & strM & ":00")
-		Dim timeOff As Long = dtHelpers.StrTime2Ticks(t2.hours,t2.minutes)
-		Dim timeOn  As Long = dtHelpers.StrTime2Ticks(t1.hours,t1.minutes)
-				
-		'--- testing		
-'		Dim timeNow As Long = DateTime.TimeParse("7:01:00")
-'		Dim timeOff As Long = dtHelpers.StrTime2Ticks(22,00)
-'		Dim timeOn  As Long = dtHelpers.StrTime2Ticks(7,0)
+		Dim timeOn,timeOff,timeNow As Long
+		
+		'--- change date/time format
+		Dim fmtD As String = DateTime.DateFormat,fmtT As String = DateTime.TimeFormat
+		DateTime.DateFormat = "yyyy/MM/dd" : DateTime.TimeFormat = "HH:mm"
+		
+		'Log($"${gblConst.SCRN_ON_OFF_DUMMY_DATE} $2.0{t2.Hours}:$2.0{t2.Minutes}:00"$)
+		timeNow = DateTime.DateTimeParse(gblConst.SCRN_ON_OFF_DUMMY_DATE,strH & ":" & strM & ":00")
+		timeOff = config.TimeEveningOff
+		timeOn  = config.TimeMorningON
+		
+		'--- Testing
+'		timeNow = DateTime.DateTimeParse(gblConst.SCRN_ON_OFF_DUMMY_DATE,"4:01:00")
+'		timeOff = DateTime.DateTimeParse(gblConst.SCRN_ON_OFF_DUMMY_DATE,"22:00:00")
+'		timeOn  = DateTime.DateTimeParse(gblConst.SCRN_ON_OFF_DUMMY_DATE,"7:00:00")
+		
+		'--- restore date/time format
+		DateTime.TimeFormat = fmtT : DateTime.DateFormat = fmtD
+		
+		Return dtHelpers.IsTimeBetween(timeNow,timeOff,timeOn)
 
-		'--- seems to work, just one of those things...
-		If timeOff >= timeOn And timeNow >= timeOff Then
-			If DateTime.GetHour(timeNow) <= 13 Then 
-				If UserTurnedOffScrn <> 0 And UserTurnedOffScrn = DateTime.GetDayOfMonth(DateTime.Now) Then 
-					Return TURN_SCRN_OFF
-				End If
-				Return TURN_SCRN_ON
-			End If
-			Return TURN_SCRN_OFF
-		End If
-		'---
-		Log("Is_NightTime -> do we ever get here")
-		If UserTurnedOffScrn <> 0 And UserTurnedOffScrn <> DateTime.GetDayOfMonth(DateTime.Now) Then
-			Return TURN_SCRN_OFF
-		End If
-		Return TURN_SCRN_ON
-			
-'		Dim p As Period =DateUtils.PeriodBetween(DateTime.DateParse( "2020-12-20 20:10:13" ), DateTime.DateParse( "2020-12-20 22:14:50" ))
-'		Log($"${p.Hours}:${p.Minutes}:${p.Seconds}"$) 'displays: 2:4:37
-'		Log($"$2.0{p.Hours}:$2.0{p.Minutes}:$2.0{p.Seconds}"$)  'displays: 02:04:37
 		
 	Catch
 		LogIt.LogWrite("ScreenOnOff_Clock_Event-Parsing err: " & LastException,1)
@@ -647,7 +635,7 @@ Private Sub Process_dayScreenOnOff(off As Boolean)
 	'PowerCtrl.IsScreenOff
 	If off And pnlScrnOff.Visible Then
 		#if debug
-		Log("(sub: Process_dayScreenOnOff) check - already off")
+		Log("(called sub: Process_dayScreenOnOff)- scrn off, doing nothing")
 		#end if
 		Return
 	End If
@@ -665,7 +653,7 @@ Private Sub pnlScrnOff_Click
 	If WeatherData.LastUpdatedAt = 1 Then
 		WeatherData.Try_Weather_Update
 	End If
-	UserTurnedOffScrn = 0 ' reset it
+	'UserTurnedOffScrn = 0 ' reset it
 	pnlHeader.BringToFront
 	ResetScrn_SleepCounter
 	CallSubDelayed2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
@@ -674,7 +662,7 @@ Private Sub pnlScrnOff_Click
 	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_ON) = True And Is_NightTime Then
 		EventGbl.Unsubscribe(gblConst.EVENT_CLOCK_CHANGE,Me)
 		'--- keep screen on for 5 minutes then... restart the night time check
-		tmrTimerCallSub.CallSubDelayedPlus(Me,"setup_on_off_scrn_event",60000*5)
+		tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"setup_on_off_scrn_event",60000*5)
 		guiHelpers.Show_toast2("Night time screen off overide - 5 minutes",3500)
 	End If
 	
@@ -706,7 +694,7 @@ Private Sub btnScreenOff_Click
 	#End If
 	pnlSideMenu.SetVisibleAnimated(380, False)
 	pnlSideMenuTouchOverlay_show(False)
-	UserTurnedOffScrn = DateTime.GetDayOfMonth(DateTime.Now)
+	'UserTurnedOffScrn = DateTime.GetDayOfMonth(DateTime.Now)
 	TurnScreen_Off
 End Sub
 

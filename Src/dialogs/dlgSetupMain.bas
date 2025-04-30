@@ -93,6 +93,7 @@ Public Sub Show
 		ProcessAutoBootFlag(data.Get(gblConst.KEYS_MAIN_SETUP_AUTO_BOOT).As(Boolean))
 		
 		config.ReadMainSetup
+		config.CalcTimeScreenOnOff
 		
 		If DoesMenuNeedRebuild(data,PrevData) Then
 			'Log("rebild menu")
