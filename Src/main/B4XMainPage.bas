@@ -56,19 +56,19 @@ Sub Class_Globals
 	Private pnlHeader As B4XView
 	Private imgSoundButton,imgMenuButton As lmB4XImageViewX
 	Public btnHdrTxt1 As B4XView
+	Public segTabMenu As ASSegmentedTab
 	
 	'--- side menu
 	Public lvSideMenu As CustomListView
 	Private pnlMenuFooter As B4XView
-	Private btnSetupMaster As Button
-	Private btnAboutMe As Button
+	Private btnAboutMe,btnScreenOff,btnSetupMaster As Button
 	Public pnlSideMenu As B4XView
-	Public segTabMenu As ASSegmentedTab
 	Private lblMnuMenu As B4XView
 	Private pnlMenuHdrSpacer2,pnlMenuHdrSpacer1 As B4XView
 	
 	Private pnlScrnOff,pnlSideMenuTouchOverlay As B4XView
-	Private btnScreenOff As Button
+	Public mSysScrnOff As Int = 0 '--- when the system turns off the screen
+	
 End Sub
 
 Public Sub Initialize
@@ -554,25 +554,30 @@ End Sub
 
 #Region "ANDROID POWER-BRIGHTNESS-SLEEP-SCREEN_OFF SUPPORT"
 Private Sub StartPowerCrap
+	'Log("StartPowerCrap")
 	PowerCtrl.Initialize(True)
 	ResetScrn_SleepCounter
 End Sub
 Public Sub ResetScrn_SleepCounter
+	Log("ResetScrn_SleepCounter")
 	'PowerCtrl.IsScreenOff
 	If pnlScrnOff.IsInitialized And pnlScrnOff.Visible = True Then
 		'--- screen is off already, should never happen but...
 		#if debug
 		Log("=============== Already off, removing from tmrCallSub")
 		#end if
-		tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off")
+		tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off_Sys")
 		'tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Dim")
 		Return
 	End If
+	'Log(config.getScreenOffTime)
 	If config.getScreenOffTime <> 0 Then
-		tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"TurnScreen_Off",60000 * config.getScreenOffTime)
+		Log($"tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"TurnScreen_Off_Sys",60000 * config.getScreenOffTime)"$)
+		tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"TurnScreen_Off_Sys",60000 * config.getScreenOffTime)
 		'tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"TurnScreen_Dim",60000 * (config.getScreenOffTime * 0.5))
 	Else
-		tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off")
+		Log($"pnlScrnOff(tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off_Sys")"$)
+		tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off_Sys")
 		'tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Dim")
 	End If
 End Sub
@@ -591,6 +596,8 @@ Private Sub Is_NightTime() As Boolean
 		#if debug
 		Log("Is_NightTime check")
 		#end if
+		
+			
 		Dim strM As String  = strHelpers.PadLeft(DateTime.GetMinute(DateTime.now).As(String),"0",2)
 		Dim strH As String  = DateTime.GetHour(DateTime.now).As(String)
 				
@@ -625,26 +632,35 @@ End Sub
 
 Public Sub ScreenOnOff_Clock_Event(ttime As Object)
 	'--- wedge into the clock event so this will fire ever minute
-	#if debug
-	Log("ScreenOnOff_Clock_Event")
-	#end if
-	Process_dayScreenOnOff(Is_NightTime)
-End Sub
-
-Private Sub Process_dayScreenOnOff(off As Boolean)
-	'PowerCtrl.IsScreenOff
-	If off And pnlScrnOff.Visible Then
-		#if debug
-		Log("(called sub: Process_dayScreenOnOff)- scrn off, doing nothing")
-		#end if
+	Dim Debug As Boolean = True
+	If Debug Then
+	Log("Sub ScreenOnOff_Clock_Event called")
+	End If
+	
+	If mSysScrnOff > 0 And mSysScrnOff = DateTime.GetDayOfMonth(DateTime.Now) Then
+		If Debug Then
+		Log("Screen was turned off by the system and is same day, nothing to do")
+		End If
+		Return 
+	End If
+	
+	Dim IsNightTime As Boolean = Is_NightTime
+	If (IsNightTime = pnlScrnOff.Visible) Then
+		If Debug Then
+		Log("sub: ScreenOnOff_Clock_Event- nothing to do")
+		End If
 		Return
 	End If
-	If off Then
+	If Debug Then
+	Log("sub: ScreenOnOff_Clock_Event- Processing")
+	End If
+	If IsNightTime Then
 		TurnScreen_Off : 	ResetScrn_SleepCounter
 	Else
 		pnlScrnOff_Click : 	'ResetScrn_SleepCounter - called in the click event
 	End If
 End Sub
+
 
 Private Sub pnlScrnOff_Click
 '	Log("-----------------------------------------------------> pnlScrnOff_Click - hide panel")
@@ -653,7 +669,7 @@ Private Sub pnlScrnOff_Click
 	If WeatherData.LastUpdatedAt = 1 Then
 		WeatherData.Try_Weather_Update
 	End If
-	'UserTurnedOffScrn = 0 ' reset it
+	mSysScrnOff = 0 ' reset it
 	pnlHeader.BringToFront
 	ResetScrn_SleepCounter
 	CallSubDelayed2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
@@ -668,14 +684,20 @@ Private Sub pnlScrnOff_Click
 	
 End Sub
 Public Sub TurnScreen_Off
-'	Log("-----------------------------------------------------> TurnScreen_Off button - show panel")
+	Log("---------------------> TurnScreen_Off event - cover screen with panel")
 	CheckForVisibleDialogsAndClose
 	pnlBlankScreen_show(True)
 	PowerCtrl.Screen_Off
 	
-	IfPhotoShow_TurnOff
+	IfPhotoShow_TurnOff '--- TODO next version
 		
 	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
+End Sub
+Public Sub TurnScreen_Off_Sys
+	'--- event 
+	Log("TurnScreen_Off_Sys")
+	mSysScrnOff = DateTime.GetDayOfMonth(DateTime.Now)
+	TurnScreen_Off
 End Sub
 
 Private Sub IfPhotoShow_TurnOff
@@ -689,9 +711,9 @@ Private Sub IfPhotoShow_TurnOff
 End Sub
 
 Private Sub btnScreenOff_Click
-	#if debug
+	'#if debug
 	Log("User -> Screen_Off called")
-	#End If
+	'#End If
 	pnlSideMenu.SetVisibleAnimated(380, False)
 	pnlSideMenuTouchOverlay_show(False)
 	'UserTurnedOffScrn = DateTime.GetDayOfMonth(DateTime.Now)
