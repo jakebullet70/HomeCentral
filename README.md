@@ -4,7 +4,7 @@ An Android reclamation project.
 What is it? Touch screen app for the your home. Reclaim old Android Tablets! (Android 4.X and above)  
 
  Still working on it! Mar 2024  
- Revising it. April 2025, lets hope i finnish it. :)  
+ Revising it. April 2025, lets hope i finish it. :)  
  *May 2025. Done, testing...*  :)
 
  Status.  
