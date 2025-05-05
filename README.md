@@ -17,5 +17,14 @@ What is it? Touch screen app for the your home. Reclaim old Android Tablets! (An
  Home browser - Done
  
  
-![2024-01-17_8-38-16](https://github.com/jakebullet70/HomeCentral/assets/14124210/c0528d71-c3db-4ca0-a554-58c474b0324f)
-![2024-01-17_8-37-49](https://github.com/jakebullet70/HomeCentral/assets/14124210/efd18c93-1a84-4a2a-8bbb-69c5a1c6ef37)
+![20250505_081851](https://github.com/user-attachments/assets/bfc5f097-ffdf-4f28-8730-b27e7cdf358e)  
+
+![2025-05-05_7-49-33](https://github.com/user-attachments/assets/f67c810e-b684-43f2-b0a2-f29216c159b7)  
+
+![2025-05-05_8-04-17](https://github.com/user-attachments/assets/6a056115-5b82-4725-93dc-1ade8d04a3ad)  
+
+![2025-05-05_7-47-03](https://github.com/user-attachments/assets/b110b994-cfbe-48d7-a4ee-7afb79bd24ce)  
+
+![2025-05-05_8-06-19](https://github.com/user-attachments/assets/061b8d98-8a63-439b-a012-e98601d30503)  
+
+![20250505_081906](https://github.com/user-attachments/assets/acccb3ae-f41b-4b79-91e7-f891ab97911a)
