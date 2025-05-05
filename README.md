@@ -23,7 +23,8 @@ Calculator - Done
 Home browser - Done
 
 TODO - Need to do some documentation. :)  
-A VERY big thanks to the guys and gals over in the [B4X](https://www.b4x.com/) forum. 
+A VERY big thanks to the guys and gals over in the [B4X](https://www.b4x.com/) forum.  
+Installing --> https://github.com/jakebullet70/HomeCentral/wiki/Installing  
  
  
 ![20250505_081851](https://github.com/user-attachments/assets/bfc5f097-ffdf-4f28-8730-b27e7cdf358e)  
