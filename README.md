@@ -1,3 +1,8 @@
+<p align="center">
+  <a href="https://github.com/jakebullet70/HomeCentral/issues?q=is%3Aissue%20state%3Aclosed%20sort%3Aupdated-desc"><img src="https://img.shields.io/github/issues-closed-raw/jakebullet70/OctoTouchController"/></a>
+  <a href="https://github.com/jakebullet70/HomeCentral/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"><img src="https://img.shields.io/github/issues/jakebullet70/OctoTouchController"/></a>
+</p>
+
 # HomeCentral
 An Android reclamation project.  
 
@@ -34,3 +39,4 @@ A VERY big thanks to the guys and gals over in the [B4X](https://www.b4x.com/) f
 ![20250505_081906](https://github.com/user-attachments/assets/acccb3ae-f41b-4b79-91e7-f891ab97911a)  
 
 Written in [B4X](https://www.b4x.com/)  
+![GitHub all releases](https://img.shields.io/github/downloads/jakebullet70/HomeCentral/total)
