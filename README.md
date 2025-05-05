@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://github.com/jakebullet70/HomeCentral/issues?q=is%3Aissue%20state%3Aclosed%20sort%3Aupdated-desc"><img src="https://img.shields.io/github/issues-closed-raw/jakebullet70/OctoTouchController"/></a>
-  <a href="https://github.com/jakebullet70/HomeCentral/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"><img src="https://img.shields.io/github/issues/jakebullet70/OctoTouchController"/></a>
+  <a href="https://github.com/jakebullet70/HomeCentral/issues?q=is%3Aissue%20state%3Aclosed%20sort%3Aupdated-desc"><img src="https://img.shields.io/github/issues-closed-raw/jakebullet70/HomeCentral"/></a>
+  <a href="https://github.com/jakebullet70/HomeCentral/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"><img src="https://img.shields.io/github/issues/jakebullet70/HomeCentral"/></a>
 </p>
 
 # HomeCentral
