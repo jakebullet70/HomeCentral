@@ -24,7 +24,7 @@ Sub Process_Globals
 	Public DividerColor As Int
 	
 	Public ItemsBackgroundColor As Int '--- used in sadPrefDialogs
-	Private Const MyBlackBG As Int = 0xFF292323  '--- Use as regular BLACK messes with the color weather icons
+	Private Const MyBlackBG As Int = 0xFF292323  '--- Use as regular BLACK as BLACK messes with the color weather icons
 End Sub
 '
 'Rose
