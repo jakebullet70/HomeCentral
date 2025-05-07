@@ -24,7 +24,7 @@ Sub Process_Globals
 	Public DividerColor As Int
 	
 	Public ItemsBackgroundColor As Int '--- used in sadPrefDialogs
-	
+	Private Const MyBlackBG As Int = 0xFF292323  '--- Use as regular BLACK messes with the color weather icons
 End Sub
 '
 'Rose
@@ -100,14 +100,14 @@ Public Sub InitTheme(theme As String)
 			DividerColor = xui.Color_LightGray
 			
 		Case "dark"
-			Background = xui.Color_ARGB(255,2, 2, 2)
+			Background =  MyBlackBG 'xui.Color_ARGB(255,2, 2, 2)
 			BackgroundHeader = xui.Color_ARGB(255,30, 30, 30)
 			Background2 = xui.Color_ARGB(255,43, 43, 43)
 			btnDisableText = 1404812219
 			DividerColor = xui.Color_LightGray
 			
 		Case "dark-blue"
-			Background = xui.Color_ARGB(255,2,2,2)
+			Background = MyBlackBG' xui.Color_ARGB(255,2,2,2)
 			BackgroundHeader = xui.Color_ARGB(255,30, 30, 30)
 			Background2 = xui.Color_ARGB(255,43, 43, 43)
 			txtNormal = -16739073
@@ -116,7 +116,7 @@ Public Sub InitTheme(theme As String)
 			DividerColor = xui.Color_Gray
 			
 		Case "dark-green"
-			Background = xui.Color_ARGB(255,2,2,2)
+			Background =  MyBlackBG 'xui.Color_ARGB(255,2,2,2)
 			BackgroundHeader = xui.Color_ARGB(255,30, 30, 30)
 			Background2 = xui.Color_ARGB(255,43, 43, 43)
 			txtNormal = -11276022
