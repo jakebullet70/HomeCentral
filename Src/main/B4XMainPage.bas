@@ -632,28 +632,28 @@ End Sub
 
 Public Sub ScreenOnOff_Clock_Event(ttime As Object)
 	'--- wedge into the clock event so this will fire ever minute
-	Dim Debug As Boolean = True
-	If Debug Then
-	Log("Sub ScreenOnOff_Clock_Event called")
-	End If
+	#if debug
+	Dim Debug As Boolean = False
+	If Debug Then Log("Sub ScreenOnOff_Clock_Event called")
+	#end If
 	
 	If mSysScrnOff > 0 And mSysScrnOff = DateTime.GetDayOfMonth(DateTime.Now) Then
-		If Debug Then
-		Log("Screen was turned off by the system and is same day, nothing to do")
-		End If
+		#if debug
+		If Debug Then Log("Screen was turned off by the system and is same day, nothing to do")
+		#end if
 		Return 
 	End If
 	
 	Dim IsNightTime As Boolean = Is_NightTime
 	If (IsNightTime = pnlScrnOff.Visible) Then
-		If Debug Then
-		Log("sub: ScreenOnOff_Clock_Event- nothing to do")
-		End If
+		#if debug
+		If Debug Then Log("sub: ScreenOnOff_Clock_Event- nothing to do")
+		#end if
 		Return
 	End If
-	If Debug Then
-	Log("sub: ScreenOnOff_Clock_Event- Processing")
-	End If
+	#if debug
+	If Debug Then Log("sub: ScreenOnOff_Clock_Event- Processing")
+	#end if
 	If IsNightTime Then
 		TurnScreen_Off : 	ResetScrn_SleepCounter
 	Else
