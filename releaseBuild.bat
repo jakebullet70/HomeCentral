@@ -19,4 +19,8 @@ del *.apk
 del HomeCentral_java_src*.7z 
 
 ECHO -------------- end --------------------
+ECHO --- Do not forget to copy to sadLogic.com support site
+ECHO --- Do not forget to copy to sadLogic.com support site
+ECHO --- Do not forget to copy to sadLogic.com support site
+ECHO --- Do not forget to copy to sadLogic.com support site
 pause
