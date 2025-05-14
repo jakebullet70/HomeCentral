@@ -3,13 +3,15 @@ Touch screen tablet app for the your home - kitchen.
 Reclaim old Android Tablets! supporting older tablets (Android 4.X)  
 
 Screens:  
- - Home screen  
- - Weather  
- - Calculator  
- - Conversion  
- - Kitchen timers  
- - Web View  
+
+- Home screen  
+- Weather  
+- Calculator  
+- Conversion  
+- Kitchen timers  
+- Web View  
 
 https://github.com/jakebullet70/HomeCentral  
+
   
   
