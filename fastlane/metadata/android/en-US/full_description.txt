@@ -11,7 +11,5 @@ Screens:
 - Kitchen timers  
 - Web View  
 
-https://github.com/jakebullet70/HomeCentral  
-
-  
+ 
   
