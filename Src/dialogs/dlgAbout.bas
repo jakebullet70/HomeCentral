@@ -108,7 +108,7 @@ Sub timer_Tick
 	End If
 	credits.ScrollPosition = (creditsPos/1000)
 	credits.DistanceFromText = 50dip
-	credits.Angle = 20
+	credits.Angle = 0
 	'credits.Height = 100%y
 	'credits.Width = 100%x
 	credits.TextSize = 40
