@@ -212,7 +212,7 @@ Version=12.5
 @EndOfDesignText@
 #Region  Project Attributes 
 	#ApplicationLabel: HomeCentral
-	#VersionCode: 10
+	#VersionCode: 12
 	#VersionName: 3.0.2
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: landscape
@@ -226,6 +226,16 @@ Version=12.5
 	 
 #End Region
 
+#region 	BUILD ACTIONS
+'1 - Before the compiler cleans the objects folder (it happens after the code Is parsed).
+'2 - Before R.java File Is generated.
+'3 - Before the package Is signed (the APK File at this point Is: bin\temp.ap_).
+'4 - Before the APK Is installed.
+'5 - After the APK Is installed.​
+
+'#CustomBuildAction:1, %WINDIR%\system32\cmd.exe,  /c copy "..\B4A\Files\home-icon.png" "..\build-icon.png" /y 
+#CustomBuildAction:1, %WINDIR%\system32\cmd.exe,  /c copy "..\B4A\Files\home-icon.png" "res\drawable\icon.png" /y 
+#end region
 
 
 #Region  Activity Attributes 
