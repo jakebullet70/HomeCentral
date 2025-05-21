@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/jakebullet70/OctoTouchController/releases"><img src="https://img.shields.io/github/v/release/jakebullet70/OctoTouchController?logo=github&logoColor=white" alt="GitHub release"/></a>
+  <a href="https://github.com/jakebullet70/HomeCentral/releases"><img src="https://img.shields.io/github/v/release/jakebullet70/HomeCentral?logo=github&logoColor=white" alt="GitHub release"/></a>
   <a href="https://apt.izzysoft.de/packages/sadLogic.HomeCentral"><img src="https://img.shields.io/endpoint?url=https://apt.izzysoft.de/fdroid/api/v1/shield/sadLogic.HomeCentral"/></a>
   <a href="https://github.com/jakebullet70/HomeCentral/issues?q=is%3Aissue%20state%3Aclosed%20sort%3Aupdated-desc"><img src="https://img.shields.io/github/issues-closed-raw/jakebullet70/HomeCentral"/></a>
   <a href="https://github.com/jakebullet70/HomeCentral/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"><img src="https://img.shields.io/github/issues/jakebullet70/HomeCentral"/></a>
