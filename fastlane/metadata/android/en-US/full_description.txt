@@ -11,5 +11,8 @@ Screens:
 - Kitchen timers  
 - Web View  
 
+Includes different color themes to match your home decor.  
+
+
  
   
