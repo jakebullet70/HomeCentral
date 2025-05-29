@@ -44,7 +44,8 @@ Public Sub Show()
 	p.SetLayoutAnimated(0, 0, 0,430dip,400dip)
 	p.LoadLayout("dlgAbout")
 	
-	iv.Bitmap = XUI.LoadBitmap(File.DirAssets,"logo02.png")
+	'iv.Bitmap = XUI.LoadBitmap(File.DirAssets,"logo3.png")
+	iv.Bitmap = guiHelpers.ChangeColorBasedOnAlphaLevel(XUI.LoadBitmap(File.DirAssets,"logo3.png"),clrTheme.txtAccent)
 	
 	
 	dlgHelper.ThemeDialogForm( "About")
