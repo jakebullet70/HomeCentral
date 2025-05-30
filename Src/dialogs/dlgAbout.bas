@@ -188,6 +188,7 @@ b4a forum: DonManfred (Germany)
 b4a forum: Magma (Greece)
 b4a forum: CableGuy (France)
 b4a forum: thedesolatesoul (UK)
+b4a forum: warwound (UK)
 The b4x BOSS consortium :)
 And many many many others...
 
