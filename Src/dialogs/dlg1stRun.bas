@@ -38,7 +38,7 @@ Public Sub Show()
 	p.SetLayoutAnimated(0, 0, 0,540dip,420dip)
 	p.LoadLayout("dlg1stRun")
 	
-	iv.Bitmap = XUI.LoadBitmap(File.DirAssets,"logo02.png")
+	iv.Bitmap = XUI.LoadBitmap(File.DirAssets,"logo3.png")
 	
 	
 	dlgHelper.ThemeDialogForm( "App Update Checking")
