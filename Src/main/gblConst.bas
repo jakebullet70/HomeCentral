@@ -135,9 +135,13 @@ Sub Process_Globals
 	Public Const TIMERS_IMG_GO As String = "tmr_go.png"
 	Public Const TIMERS_IMG_PAUSE As String = "tmr_pause.png"
 			
+	'--- android versions		
 	Public Const VOLUME_ERR As String = "Problem setting volume. Is device set to 'Do Not Disturb?'"
 	Public Const API_ANDROID_4_0 As Int = 14
 	Public Const API_ANDROID_4_4 As Int = 19
 	Public Const API_ANDROID_4_2 As Int = 17
+	
+	Public Const PHOTOS_PATH As String = "hc_pics" 
+	
 	
 End Sub

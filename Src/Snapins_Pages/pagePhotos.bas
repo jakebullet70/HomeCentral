@@ -6,6 +6,7 @@ Version=10
 @EndOfDesignText@
 ' Author:  sadLogic/JakeBullet
 #Region VERSIONS 
+' End of May 2025, still war. Lets give it another try
 ' V. 1.0 	Dec/26/2023
 #End Region
 
@@ -15,26 +16,30 @@ Sub Class_Globals
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
 	
-	Private img As lmB4XImageViewX
+	Private img As sadImageSlider
+	'Private imgs As sadImageSlider
 	
 	Private pnlBtns As Panel
 	Private btnStart,btnFullScrn,btnNext,btnPrev As Button
 	
-	Private lvPics As CustomListView
-	Private PCLV As PreoptimizedCLV
+	'Private lvPics As CustomListView
+	'Private PCLV As PreoptimizedCLV
 	Public tmrPicShow As Timer
 
 	Private lstPics As List
-	Private picPath As String = "/Removable/MicroSD/pics"
-	'Private picPath As String = "/storage/D409-BC20/pics"
+	Private picPath As String = ""
 	Private picPointer As Int = 1
 	Private lvPointerHigh,lvPointerLow As Int 'ignore
 	
-	Private img As lmB4XImageViewX
+	'Private img As lmB4XImageViewX
 	Private lmB4XImageViewX1 As lmB4XImageViewX
 	Private pnlSplitter As B4XView
 	
+	'Private ImageSlider1 As ImageSlider
+	'Private timer1 As Timer
 	
+	
+	Private AutoTextSizeLabel1 As AutoTextSizeLabel
 End Sub
 
 Public Sub Initialize(p As B4XView) 
@@ -50,17 +55,20 @@ Public Sub Initialize(p As B4XView)
 	pnlBtns.Visible = True
 		
 	ScanPics
-
-	lvPics.AsView.Color = XUI.Color_Transparent
-	img.Bitmap = LoadBitmapResize(File.DirAssets,"pframe.png",img.Width,img.Height,False)
-	PCLV.Initialize(Me, "PCLV", lvPics)
-	PCLV.ShowScrollBar = False
-	Dim size As Float = lvPics.AsView.Height
-	For x = 0 To lstPics.Size - 1
-		PCLV.AddItem(size, XUI.Color_Transparent, x & "::" & lstPics.Get(x))
-	Next
-	PCLV.Commit
-	img.mBase.Visible = False
+	'ImageSlider1.NumberOfImages = lstPics.Size
+'
+'	lvPics.AsView.Color = XUI.Color_Transparent
+'	img.Bitmap = LoadBitmapResize(File.DirAssets,"pframe.png",img.Width,img.Height,False)
+'	PCLV.Initialize(Me, "PCLV", lvPics)
+'	PCLV.ShowScrollBar = False
+'	Dim size As Float = lvPics.AsView.Height
+'	For x = 0 To lstPics.Size - 1
+'		PCLV.AddItem(size, XUI.Color_Transparent, x & "::" & lstPics.Get(x))
+'	Next
+'	PCLV.Commit
+'	img.mBase.Visible = False
+	
+	picPath = GetPhotosShowPath
 	
 End Sub
 
@@ -86,24 +94,24 @@ End Sub
 
 'Return the hint that will be displayed when the user fast scrolls the list. It can be a string or CSBuilder.
 Sub PCLV_HintRequested (Index As Int) As Object
-	Dim word As String = lvPics.GetValue(Index)
-	Return word
+	'Dim word As String = lvPics.GetValue(Index)
+	'Return word
 End Sub
 
-Sub  lvPics_VisibleRangeChanged (FirstIndex As Int, LastIndex As Int)
-	For Each i As Int In PCLV.VisibleRangeChanged(FirstIndex, LastIndex)
-		Dim item As CLVItem = lvPics.GetRawListItem(i)
-		Dim pnl As B4XView = XUI.CreatePanel("")
-		item.Panel.AddView(pnl, 0, 0, item.Panel.Width, item.Panel.Height)
-		pnl.LoadLayout("viewPhotoItem")
-		lmB4XImageViewX1.Load(picPath, lstPics.Get(i))
-		lmB4XImageViewX1.Tag = i & "::" & lstPics.Get(i)
-		'setRotationY(lmB4XImageViewX1.mBase,15)
-	Next
-	lvPointerLow  = FirstIndex
-	lvPointerHigh = LastIndex
-	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
-End Sub
+'Sub  lvPics_VisibleRangeChanged (FirstIndex As Int, LastIndex As Int)
+'	For Each i As Int In PCLV.VisibleRangeChanged(FirstIndex, LastIndex)
+'		Dim item As CLVItem = lvPics.GetRawListItem(i)
+'		Dim pnl As B4XView = XUI.CreatePanel("")
+'		item.Panel.AddView(pnl, 0, 0, item.Panel.Width, item.Panel.Height)
+'		pnl.LoadLayout("viewPhotoItem")
+'		lmB4XImageViewX1.Load(picPath, lstPics.Get(i))
+'		lmB4XImageViewX1.Tag = i & "::" & lstPics.Get(i)
+'		'setRotationY(lmB4XImageViewX1.mBase,15)
+'	Next
+'	lvPointerLow  = FirstIndex
+'	lvPointerHigh = LastIndex
+'	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
+'End Sub
 
 'https://www.b4x.com/android/forum/threads/view-utils.39347/#post-233788
 Sub setRotationY(v As B4XView, Angle As Float)'ignore
@@ -129,29 +137,36 @@ Private Sub ShowPic(index As Int,fname As String)'ignore
 		r.Target = r.RunStaticMethod("java.lang.Runtime", "getRuntime", Null, Null)
 		Log("available Memory = " & ((r.RunMethod("maxMemory") - r.RunMethod("totalMemory"))/(1024*1024)) & " MB")
 		
-		img.Load(picPath,fname)
+		'img.Load(picPath,fname)
 				
 	Catch
 		Log(LastException)
 	End Try
 End Sub
 
-Private Sub lvPics_ItemClick (Index As Int, Value As Object)
-	lvPics.AsView.Visible = False
-	img.mBase.Visible = True
-	'picPointer = Index
-	ShowPic(Index,Regex.Split("::",Value)(1))
-	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
+Sub ImageSlider1_GetImage (Index As Int) As ResumableSub
+	Dim fname As String
+	
+	Return XUI.LoadBitmapResize(File.DirAssets, $"test_${Index + 1}.jpg"$, img.WindowBase.Width, img.WindowBase.Height, True)
 End Sub
 
-Private Sub lmB4XImageViewX1_Click
-	Dim o As lmB4XImageViewX = Sender
-	lvPics.AsView.Visible = False
-	img.mBase.Visible = True
-	tmrPicShow.Enabled = False
-	ShowPic(Regex.Split("::",o.Tag)(0),Regex.Split("::",o.Tag)(1))
-	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
-End Sub
+'Private Sub lvPics_ItemClick (Index As Int, Value As Object)
+'	lvPics.AsView.Visible = False
+'	img.mBase.Visible = True
+'	
+'	'picPointer = Index
+'	ShowPic(Index,Regex.Split("::",Value)(1))
+'	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
+'End Sub
+'
+'Private Sub lmB4XImageViewX1_Click
+'	Dim o As lmB4XImageViewX = Sender
+'	lvPics.AsView.Visible = False
+'	img.mBase.Visible = True
+'	tmrPicShow.Enabled = False
+'	ShowPic(Regex.Split("::",o.Tag)(0),Regex.Split("::",o.Tag)(1))
+'	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
+'End Sub
 
 Private Sub ScanPics
 	lstPics.Initialize
@@ -174,13 +189,13 @@ Private Sub ScanPics
 End Sub
 
 
-Private Sub img_Click
-	Log("img_Click")
-	lvPics.AsView.Visible = True
-	img.mBase.Visible = False
-	lvPics.JumpToItem(picPointer) '--- keep the ListView in sync
-	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
-End Sub
+'Private Sub img_Click
+'	Log("img_Click")
+'	lvPics.AsView.Visible = True
+'	img.mBase.Visible = False
+'	lvPics.JumpToItem(picPointer) '--- keep the ListView in sync
+'	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
+'End Sub
 
 Private Sub NextPic
 	picPointer = picPointer + 1
@@ -211,8 +226,9 @@ Private Sub btnPressed_Click
 			ShowPic(picPointer,lstPics.Get(picPointer))
 			
 		Case "ss" '--- start show
-			lvPics.AsView.Visible = False
-			img.mBase.Visible = True
+			'lvPics.AsView.Visible = False
+			'img.mBase.Visible = True
+			img.WindowBase.Visible = True
 			tmrPicShow.Enabled = True
 			ShowPic(picPointer,lstPics.Get(picPointer))
 			
@@ -234,6 +250,60 @@ End Sub
 
 
 
+
+Private Sub GetPhotosShowPath() As String
+	
+	'#if debug
+	Log("File.DirRootExternal:"&File.DirRootExternal)
+	Log("Main.Provider.SharedFolder:"&Main.Provider.SharedFolder)
+	Log("File.DirInternal:"&File.DirInternal)
+	'#end if
+	
+	Dim ppath As String = ""
+	Dim retPath As String = ""
+	
+		
+	Do While True
+	
+		'--- just try the extenal folder
+		If File.ExternalReadable Then
+			ppath = File.DirRootExternal & "/" & gblConst.PHOTOS_PATH
+			If File.Exists(ppath ,"") Then
+				retPath = ppath : Exit 'Do
+			End If
+		End If
+		
+		'--- Main.Provider.SharedFolder
+		ppath = Main.Provider.SharedFolder & "/" & gblConst.PHOTOS_PATH
+		If File.Exists(ppath ,"") Then
+			retPath = ppath : Exit 'Do
+		End If
+		
+		'--- File.DirInternal
+		ppath = File.DirInternal & "/" & gblConst.PHOTOS_PATH
+		If File.Exists(ppath ,"") Then
+			retPath = ppath : Exit 'Do
+		End If
+						
+		ppath = "/Removable/MicroSD/" & gblConst.PHOTOS_PATH
+		If File.Exists(ppath ,"") Then
+			retPath = ppath : Exit 'Do
+		End If
+		
+		Exit '--- just bail
+	Loop
+	
+	If retPath="" Then
+		guiHelpers.Show_toast2("Valid path not found"& CRLF & "A valid photo path need to be setup",2900)
+		AutoTextSizeLabel1.BaseLabel.Visible = True
+		AutoTextSizeLabel1.Text = "Valid path not found - tell them what they need to do"
+		Return	""
+	End If
+	
+	guiHelpers.Show_toast2("Photo Path:" & ppath,2500)
+	Return	ppath
+	
+End Sub
 
 
 
