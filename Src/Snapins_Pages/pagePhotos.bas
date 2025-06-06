@@ -15,6 +15,7 @@ Sub Class_Globals
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
+	Private Const PIC_LIST_FILE As String = "pics.lst"
 	
 	Private img As sadImageSlider
 	'Private imgs As sadImageSlider
@@ -32,7 +33,7 @@ Sub Class_Globals
 	Private lvPointerHigh,lvPointerLow As Int 'ignore
 	
 	'Private img As lmB4XImageViewX
-	Private lmB4XImageViewX1 As lmB4XImageViewX
+	'Private lmB4XImageViewX1 As lmB4XImageViewX
 	Private pnlSplitter As B4XView
 	
 	'Private ImageSlider1 As ImageSlider
@@ -53,8 +54,8 @@ Public Sub Initialize(p As B4XView)
 	tmrPicShow.Enabled = False
 	
 	pnlBtns.Visible = True
-		
-	ScanPics
+	InitNewListOfPics
+	
 	'ImageSlider1.NumberOfImages = lstPics.Size
 '
 '	lvPics.AsView.Color = XUI.Color_Transparent
@@ -68,10 +69,19 @@ Public Sub Initialize(p As B4XView)
 '	PCLV.Commit
 '	img.mBase.Visible = False
 	
-	picPath = GetPhotosShowPath
+	
 	
 End Sub
 
+Private Sub InitNewListOfPics
+	
+	If (picPath = GetPhotosShowPath) <> "" Then
+		If ReadPicsList = False Then
+			BuildPicList
+		End If
+	End If
+
+End Sub
 
 '-------------------------------
 Public Sub Set_focus()
@@ -92,27 +102,6 @@ End Sub
 'End Sub
 
 
-'Return the hint that will be displayed when the user fast scrolls the list. It can be a string or CSBuilder.
-Sub PCLV_HintRequested (Index As Int) As Object
-	'Dim word As String = lvPics.GetValue(Index)
-	'Return word
-End Sub
-
-'Sub  lvPics_VisibleRangeChanged (FirstIndex As Int, LastIndex As Int)
-'	For Each i As Int In PCLV.VisibleRangeChanged(FirstIndex, LastIndex)
-'		Dim item As CLVItem = lvPics.GetRawListItem(i)
-'		Dim pnl As B4XView = XUI.CreatePanel("")
-'		item.Panel.AddView(pnl, 0, 0, item.Panel.Width, item.Panel.Height)
-'		pnl.LoadLayout("viewPhotoItem")
-'		lmB4XImageViewX1.Load(picPath, lstPics.Get(i))
-'		lmB4XImageViewX1.Tag = i & "::" & lstPics.Get(i)
-'		'setRotationY(lmB4XImageViewX1.mBase,15)
-'	Next
-'	lvPointerLow  = FirstIndex
-'	lvPointerHigh = LastIndex
-'	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
-'End Sub
-
 'https://www.b4x.com/android/forum/threads/view-utils.39347/#post-233788
 Sub setRotationY(v As B4XView, Angle As Float)'ignore
 	Dim jo = v As JavaObject
@@ -125,7 +114,7 @@ End Sub
 
 Private Sub tmrShow_Tick
 	tmrPicShow.Enabled = False
-	NextPic
+	img.NextImage
 	tmrPicShow.Enabled = True
 End Sub
 
@@ -144,47 +133,41 @@ Private Sub ShowPic(index As Int,fname As String)'ignore
 	End Try
 End Sub
 
-Sub ImageSlider1_GetImage (Index As Int) As ResumableSub
-	Dim fname As String
-	
-	Return XUI.LoadBitmapResize(File.DirAssets, $"test_${Index + 1}.jpg"$, img.WindowBase.Width, img.WindowBase.Height, True)
+Sub img_GetImage (Index As Int) As ResumableSub
+	Return XUI.LoadBitmapResize(picPath, lstPics.Get(Index), img.WindowBase.Width, img.WindowBase.Height, True)
 End Sub
 
-'Private Sub lvPics_ItemClick (Index As Int, Value As Object)
-'	lvPics.AsView.Visible = False
-'	img.mBase.Visible = True
-'	
-'	'picPointer = Index
-'	ShowPic(Index,Regex.Split("::",Value)(1))
-'	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
-'End Sub
-'
-'Private Sub lmB4XImageViewX1_Click
-'	Dim o As lmB4XImageViewX = Sender
-'	lvPics.AsView.Visible = False
-'	img.mBase.Visible = True
-'	tmrPicShow.Enabled = False
-'	ShowPic(Regex.Split("::",o.Tag)(0),Regex.Split("::",o.Tag)(1))
-'	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
-'End Sub
+Private Sub ReadPicsList() As Boolean
+	lstPics.Initialize
+	
+	If File.Exists(XUI.DefaultFolder,PIC_LIST_FILE) Then
+		lstPics = objHelpers.ListFromDisk(XUI.DefaultFolder,PIC_LIST_FILE)
+		img.NumberOfImages = lstPics.Size
+		Return True
+	End If
+	
+	Return False
+	
+End Sub
 
-Private Sub ScanPics
+Private Sub BuildPicList
+	
 	lstPics.Initialize
 	Try
 		For Each f As String In File.ListFiles(picPath)
-			If picPath = File.DirAssets Then
-				If f.EndsWith("jpg") Then
-					lstPics.Add(f)
-				End If
-			Else
+			If f.EndsWith("jpg") Or f.EndsWith("png") Then
 				lstPics.Add(f)
 			End If
 		Next
 	Catch
 		Log(LastException)
 	End Try
+	
+	objHelpers.List2Disk(XUI.DefaultFolder,PIC_LIST_FILE,lstPics)
 	'/mnt/sdcard/pics
 	Log("ttl pics ---> " & lstPics.Size)
+	img.NumberOfImages = lstPics.Size
+	
 	
 End Sub
 
@@ -197,51 +180,35 @@ End Sub
 '	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 'End Sub
 
-Private Sub NextPic
-	picPointer = picPointer + 1
-	If picPointer > (lstPics.Size -1) Then
-		picPointer = 0
-	End If
-	ShowPic(picPointer,lstPics.Get(picPointer))
-End Sub
-
 Private Sub btnPressed_Click
-	
-	
+		
 	Dim b As Button = Sender
 	Log("btn tag --> " & b.Tag)
 	Return
-	
-	
-	
+		
 	Select Case b.Tag 'IGNORE
 		Case "n" '--- next
-			NextPic
+			img.NextImage
 			
 		Case "p" '--- prev pic
-			picPointer = picPointer - 1
-			If picPointer < 0 Then
-				picPointer = (lstPics.Size -1)
-			End If
-			ShowPic(picPointer,lstPics.Get(picPointer))
+			img.PrevImage
 			
 		Case "ss" '--- start show
-			'lvPics.AsView.Visible = False
-			'img.mBase.Visible = True
-			img.WindowBase.Visible = True
 			tmrPicShow.Enabled = True
-			ShowPic(picPointer,lstPics.Get(picPointer))
-			
+						
 		Case "f" '--- full screen
-			
 			guiHelpers.Show_toast("TODO")
 			Return
 			
-			Dim oo As Prompt4Folder'ignore
-			oo.Initialize
-			oo.SelectExtFolder(Me)
-			Wait For Selected_Folder(f As String)
-			Log("OK --> " & oo.pSelectedFolder)
+		Case "rs" '--- rescan pics  TODO!!!!!!  add to menu
+			fileHelpers.SafeKill(XUI.DefaultFolder,PIC_LIST_FILE)
+			InitNewListOfPics
+'			
+'			Dim oo As Prompt4Folder'ignore
+'			oo.Initialize
+'			oo.SelectExtFolder(Me)
+'			Wait For Selected_Folder(f As String)
+'			Log("OK --> " & oo.pSelectedFolder)
 	
 	End Select
 	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
@@ -253,12 +220,14 @@ End Sub
 
 Private Sub GetPhotosShowPath() As String
 	
-	'#if debug
+	#if debug
 	Log("File.DirRootExternal:"&File.DirRootExternal)
+	Log("File.DirRootExternalPics:"&File.DirRootExternal & "/Pictures/")
 	Log("Main.Provider.SharedFolder:"&Main.Provider.SharedFolder)
 	Log("File.DirInternal:"&File.DirInternal)
-	'#end if
+	#end if
 	
+	AutoTextSizeLabel1.BaseLabel.Visible = False
 	Dim ppath As String = ""
 	Dim retPath As String = ""
 	
@@ -272,6 +241,15 @@ Private Sub GetPhotosShowPath() As String
 				retPath = ppath : Exit 'Do
 			End If
 		End If
+		
+		'--- just try the extenal folder with pictures folders
+		Try
+			ppath = File.DirRootExternal & "/Pictures/" & gblConst.PHOTOS_PATH
+			If File.Exists(ppath ,"") Then
+				retPath = ppath : Exit 'Do
+			End If
+		Catch
+		End Try 'ignore
 		
 		'--- Main.Provider.SharedFolder
 		ppath = Main.Provider.SharedFolder & "/" & gblConst.PHOTOS_PATH
@@ -293,14 +271,20 @@ Private Sub GetPhotosShowPath() As String
 		Exit '--- just bail
 	Loop
 	
-	If retPath="" Then
+	If retPath = "" Then
+		Dim aa As StringBuilder : aa.Initialize
 		guiHelpers.Show_toast2("Valid path not found"& CRLF & "A valid photo path need to be setup",2900)
+		aa.Append("Valid path not found, Paths checked:").Append(CRLF)
+		aa.Append(File.DirRootExternal & "/Pictures/" & gblConst.PHOTOS_PATH).Append(CRLF)
+		aa.Append(File.DirRootExternal& "/" & gblConst.PHOTOS_PATH).Append(CRLF)
+		aa.Append(Main.Provider.SharedFolder& "/" & gblConst.PHOTOS_PATH).Append(CRLF)
+		aa.Append(File.DirInternal& "/" & gblConst.PHOTOS_PATH).Append(CRLF)	
+		AutoTextSizeLabel1.Text = aa.ToString
 		AutoTextSizeLabel1.BaseLabel.Visible = True
-		AutoTextSizeLabel1.Text = "Valid path not found - tell them what they need to do"
 		Return	""
 	End If
 	
-	guiHelpers.Show_toast2("Photo Path:" & ppath,2500)
+	guiHelpers.Show_toast2("Found - Photo Path:" & ppath,2500)
 	Return	ppath
 	
 End Sub
