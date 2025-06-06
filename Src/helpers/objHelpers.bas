@@ -28,6 +28,18 @@ Public Sub MapFromDisk2(folder As String, filename As String) As Map
 End Sub
 
 
+'--- uses B4XSerializator
+Public Sub List2Disk(folder As String, filename As String,lst As List)
+	Dim ser As B4XSerializator '--- in the RandomAccessFile jar
+	File.WriteBytes(folder, filename, ser.ConvertObjectToBytes(lst))
+End Sub
+'--- uses B4XSerializator
+Public Sub ListFromDisk(folder As String, filename As String) As List
+	Dim ser As B4XSerializator '--- in the RandomAccessFile jar
+	Return ser.ConvertBytesToObject(File.ReadBytes(folder, filename))
+End Sub
+
+
 Public Sub List2StrArray(lst As List) As String()
 	
 	Dim ret(lst.Size) As String
