@@ -29,7 +29,7 @@ Sub Class_Globals
 
 	Private lstPics As List
 	Private picPath As String = ""
-	Private picPointer As Int = 1
+	'Private picPointer As Int = 1
 	Private lvPointerHigh,lvPointerLow As Int 'ignore
 	
 	'Private img As lmB4XImageViewX
@@ -74,8 +74,8 @@ Public Sub Initialize(p As B4XView)
 End Sub
 
 Private Sub InitNewListOfPics
-	
-	If (picPath = GetPhotosShowPath) <> "" Then
+	picPath = GetPhotosShowPath
+	If picPath <> "" Then
 		If ReadPicsList = False Then
 			BuildPicList
 		End If
@@ -118,22 +118,22 @@ Private Sub tmrShow_Tick
 	tmrPicShow.Enabled = True
 End Sub
 
-Private Sub ShowPic(index As Int,fname As String)'ignore
+#if debug
+Private Sub ShowMemory
 	Try
-		
-		'Log(fname) : Log(index)
 		Dim r As Reflector
 		r.Target = r.RunStaticMethod("java.lang.Runtime", "getRuntime", Null, Null)
 		Log("available Memory = " & ((r.RunMethod("maxMemory") - r.RunMethod("totalMemory"))/(1024*1024)) & " MB")
-		
-		'img.Load(picPath,fname)
-				
 	Catch
 		Log(LastException)
 	End Try
 End Sub
+#end if
 
 Sub img_GetImage (Index As Int) As ResumableSub
+	#if debug
+	ShowMemory
+	#end if
 	Return XUI.LoadBitmapResize(picPath, lstPics.Get(Index), img.WindowBase.Width, img.WindowBase.Height, True)
 End Sub
 
@@ -184,23 +184,36 @@ Private Sub btnPressed_Click
 		
 	Dim b As Button = Sender
 	Log("btn tag --> " & b.Tag)
-	Return
-		
+	
+	'--- no valid path, do they want a rescan?
+	If AutoTextSizeLabel1.BaseLabel.Visible And b.Tag <> "rs" Then Return
+			
 	Select Case b.Tag 'IGNORE
 		Case "n" '--- next
+			If btnStart.Text.StartsWith("Sto") Then tmrPicShow.Enabled = False
 			img.NextImage
+			If btnStart.Text.StartsWith("Sto") Then tmrPicShow.Enabled = True
+			
 			
 		Case "p" '--- prev pic
+			If btnStart.Text.StartsWith("Sto") Then tmrPicShow.Enabled = False
 			img.PrevImage
+			If btnStart.Text.StartsWith("Sto") Then tmrPicShow.Enabled = True
 			
 		Case "ss" '--- start show
 			tmrPicShow.Enabled = Not (tmrPicShow.Enabled )
+			If tmrPicShow.Enabled Then 
+				btnStart.Text = "Stop Show"
+			Else
+				btnStart.Text = "Start Show"
+			End If
 						
 		Case "f" '--- full screen
 			guiHelpers.Show_toast("TODO")
 			Return
 			
 		Case "rs" '--- rescan pics  TODO!!!!!!  add to menu
+			
 			fileHelpers.SafeKill(XUI.DefaultFolder,PIC_LIST_FILE)
 			InitNewListOfPics
 '			
@@ -273,19 +286,20 @@ Private Sub GetPhotosShowPath() As String
 	
 	If retPath = "" Then
 		Dim aa As StringBuilder : aa.Initialize
-		guiHelpers.Show_toast2("Valid path not found"& CRLF & "A valid photo path need to be setup",2900)
+		guiHelpers.Show_toast2("Valid path not found",2200)
 		aa.Append("Valid path not found, Paths checked:").Append(CRLF)
 		aa.Append(File.DirRootExternal & "/Pictures/" & gblConst.PHOTOS_PATH).Append(CRLF)
 		aa.Append(File.DirRootExternal& "/" & gblConst.PHOTOS_PATH).Append(CRLF)
 		aa.Append(Main.Provider.SharedFolder& "/" & gblConst.PHOTOS_PATH).Append(CRLF)
 		aa.Append(File.DirInternal& "/" & gblConst.PHOTOS_PATH).Append(CRLF)	
+		AutoTextSizeLabel1.TextColor = clrTheme.txtNormal
 		AutoTextSizeLabel1.Text = aa.ToString
 		AutoTextSizeLabel1.BaseLabel.Visible = True
-		Return	""
+		Return ""
 	End If
 	
 	guiHelpers.Show_toast2("Found - Photo Path:" & ppath,2500)
-	Return	ppath
+	Return ppath
 	
 End Sub
 
