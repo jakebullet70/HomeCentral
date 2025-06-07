@@ -689,7 +689,7 @@ Public Sub TurnScreen_Off
 	pnlBlankScreen_show(True)
 	PowerCtrl.Screen_Off
 	
-	IfPhotoShow_TurnOff '--- TODO next version
+	IfPhotoShow_TurnOff 
 		
 	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
 End Sub
@@ -701,13 +701,11 @@ Public Sub TurnScreen_Off_Sys
 End Sub
 
 Private Sub IfPhotoShow_TurnOff
-'	'--- if pframe then pause the pframe timer
-'	If oPagePhoto.IsInitialized And oPageCurrent = oPagePhoto Then
-'		'If oPagePhoto.tmrPicShow.Enabled Then
-'		'--- just turn it off
-'		oPagePhoto.tmrPicShow.Enabled = False
-'		'End If
-'	End If
+	'--- if pframe then pause the pframe timer
+	If oPagePhoto.IsInitialized And oPageCurrent = oPagePhoto Then
+		'--- just turn it off
+		oPagePhoto.tmrPicShow.Enabled = False
+	End If
 End Sub
 
 Private Sub btnScreenOff_Click
