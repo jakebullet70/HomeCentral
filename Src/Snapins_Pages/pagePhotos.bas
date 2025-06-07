@@ -194,7 +194,7 @@ Private Sub btnPressed_Click
 			img.PrevImage
 			
 		Case "ss" '--- start show
-			tmrPicShow.Enabled = True
+			tmrPicShow.Enabled = Not (tmrPicShow.Enabled )
 						
 		Case "f" '--- full screen
 			guiHelpers.Show_toast("TODO")
