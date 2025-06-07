@@ -1,0 +1,29 @@
+{
+    "Version": 1.66,
+    "Theme": "Dark Theme",
+    "Items": [
+        {
+            "options": [
+                "5",
+                "9",
+                "15",
+                "22",
+                "30"
+            ],
+            "title": "Second between",
+            "type": "Options",
+            "key": "pc_sb",
+            "required": false
+        },
+        {
+            "options": [
+                "Fade",
+                "Slide"
+            ],
+            "title": "Transistion",
+            "type": "Options",
+            "key": "pc_trn",
+            "required": false
+        }
+    ]
+}
