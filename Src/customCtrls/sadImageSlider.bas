@@ -23,7 +23,7 @@ Sub Class_Globals
 	Private AnimationDuration As Int
 	Private CacheSize As Int
 	Type ImageSliderImage (bmp As B4XBitmap, index As Int)
-	Private TaskIndex As Int
+	Private TaskIndex As Int = 0
 	Private mNumberOfImages As Int
 	Private AnimationType As String
 	Public WindowBase As B4XView
@@ -93,33 +93,38 @@ Private Sub DrawIndicators
 End Sub
 
 Private Sub ShowImage (bmp As B4XBitmap, MovingToNext As Boolean)
-	NextPanel.GetView(0).SetBitmap(bmp)
-	NextPanel.GetView(0).SetLayoutAnimated(0, WindowBase.Width / 2 - bmp.Width / 2, _
+	Try
+		NextPanel.GetView(0).SetBitmap(bmp)
+		NextPanel.GetView(0).SetLayoutAnimated(0, WindowBase.Width / 2 - bmp.Width / 2, _
 		WindowBase.Height / 2 - bmp.Height / 2, bmp.Width, bmp.Height)
-	NextPanel.Visible = True
-	Select AnimationType
-		Case "Vertical"
-			Dim top As Int
-			If MovingToNext Then top = -NextPanel.Height Else top = NextPanel.Height
-			NextPanel.SetLayoutAnimated(0, 0, top, NextPanel.Width, NextPanel.Height)
-			NextPanel.SetLayoutAnimated(AnimationDuration, 0, 0, NextPanel.Width, NextPanel.Height)
-			CurrentPanel.SetLayoutAnimated(AnimationDuration, 0, -top, CurrentPanel.Width, CurrentPanel.Height)
-		Case "Horizontal"
-			Dim left As Int
-			If MovingToNext Then left = NextPanel.Width Else left = -NextPanel.Width
-			NextPanel.SetLayoutAnimated(0, left, 0, NextPanel.Width, NextPanel.Height)
-			NextPanel.SetLayoutAnimated(AnimationDuration, 0, 0, NextPanel.Width, NextPanel.Height)
-			CurrentPanel.SetLayoutAnimated(AnimationDuration, -left, 0, CurrentPanel.Width, CurrentPanel.Height)
-		Case "Fade"
-			NextPanel.Visible = False
-			NextPanel.SetLayoutAnimated(0, left, 0, NextPanel.Width, NextPanel.Height)
-			NextPanel.SetVisibleAnimated(AnimationDuration, True)
-			CurrentPanel.SetVisibleAnimated(AnimationDuration, False)			
-	End Select
-	Dim p As B4XView = CurrentPanel
-	CurrentPanel = NextPanel
-	NextPanel = p
-	DrawIndicators
+		NextPanel.Visible = True
+		Select AnimationType
+			Case "Vertical"
+				Dim top As Int
+				If MovingToNext Then top = -NextPanel.Height Else top = NextPanel.Height
+				NextPanel.SetLayoutAnimated(0, 0, top, NextPanel.Width, NextPanel.Height)
+				NextPanel.SetLayoutAnimated(AnimationDuration, 0, 0, NextPanel.Width, NextPanel.Height)
+				CurrentPanel.SetLayoutAnimated(AnimationDuration, 0, -top, CurrentPanel.Width, CurrentPanel.Height)
+			Case "Horizontal"
+				Dim left As Int
+				If MovingToNext Then left = NextPanel.Width Else left = -NextPanel.Width
+				NextPanel.SetLayoutAnimated(0, left, 0, NextPanel.Width, NextPanel.Height)
+				NextPanel.SetLayoutAnimated(AnimationDuration, 0, 0, NextPanel.Width, NextPanel.Height)
+				CurrentPanel.SetLayoutAnimated(AnimationDuration, -left, 0, CurrentPanel.Width, CurrentPanel.Height)
+			Case "Fade"
+				NextPanel.Visible = False
+				NextPanel.SetLayoutAnimated(0, left, 0, NextPanel.Width, NextPanel.Height)
+				NextPanel.SetVisibleAnimated(AnimationDuration, True)
+				CurrentPanel.SetVisibleAnimated(AnimationDuration, False)
+		End Select
+		Dim p As B4XView = CurrentPanel
+		CurrentPanel = NextPanel
+		NextPanel = p
+		DrawIndicators
+	Catch
+		Log(LastException)
+	End Try
+	
 End Sub
 
 Public Sub NextImage
@@ -130,7 +135,7 @@ Public Sub NextImage
 	If MyTask <> TaskIndex Or Result.IsInitialized = False Then Return
 	ShowImage(Result.bmp, True)
 	Sleep(0)
-	If CurrentIndex < mNumberOfImages -1 Then GetImage(CurrentIndex + 1)
+	If CurrentIndex < (mNumberOfImages - 1) Then GetImage(CurrentIndex + 1)
 End Sub
 
 Public Sub PrevImage
