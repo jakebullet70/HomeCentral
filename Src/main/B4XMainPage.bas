@@ -435,11 +435,17 @@ Private Sub btnSetupMaster_Click
 	
 	'--- call the setup for the page
 	If oPageCurrent = oPageTimers Then
-		SetupMainMenu_Event("tm",Null) : Return
+		SetupMainMenu_Event("tm",Null)
+		Return
 	Else If oPageCurrent = oPageWeather Then
-		SetupMainMenu_Event("wth",Null) : 	Return
+		SetupMainMenu_Event("wth",Null)
+		Return
 	Else If oPageCurrent = oPageWEB Then
-		SetupMainMenu_Event("wb",Null) : Return
+		SetupMainMenu_Event("wb",Null)
+		Return
+	Else If oPageCurrent = oPagePhoto Then
+		SetupMainMenu_Event("pic",Null)
+		Return
 	Else If oPageCurrent <> oPageHome Then
 		guiHelpers.Show_toast("No setup for this page")
 		pnlSideMenuTouchOverlay_show(False)
@@ -457,6 +463,9 @@ Private Sub btnSetupMaster_Click
 End Sub
 
 Private Sub SetupMainMenu_Event(t As String,o As Object)
+	'---
+	'--- call the setup for the current showed paage
+	'---
 	pnlSideMenuTouchOverlay_show(False)
 	CallSubDelayed(Me,"ResetScrn_SleepCounter")
 	Select Case t
@@ -472,6 +481,10 @@ Private Sub SetupMainMenu_Event(t As String,o As Object)
 			o3.txtEdit = Main.kvs.Get(gblConst.INI_WEB_HOME) & "" : o3.Show
 		Case "tm"
 			Dim o4 As dlgSetupTimers : o4.Initialize(Dialog) : o4.Show
+		Case "pic"
+			Dim o5 As dlgSetupPics 
+			o5.Initialize(PrefDlg)
+			o5.Show
 		Case Else
 			
 	End Select

@@ -89,12 +89,23 @@ Private Sub ConfigMe()
 		o3.createdefaultfile
 	End If
 	
+	CreatePhotoAlbumSetup
+	
 	ReadMainSetup
 	CalcTimeScreenOnOff
 	
 	'======================================================================
 	
 End Sub	
+	
+Private Sub CreatePhotoAlbumSetup
+	'--- added in v3.1.0
+	If File.Exists(xui.DefaultFolder,gblConst.FILE_PICS_SETUP) = False Then
+		Dim o3 As dlgSetupPics
+		o3.initialize(Null)
+		o3.createdefaultfile
+	End If
+End Sub
 	
 '=========================================================================
 '====================  Get's for the Main Setup Map file =================

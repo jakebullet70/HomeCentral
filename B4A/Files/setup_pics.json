@@ -3,15 +3,38 @@
     "Theme": "Dark Theme",
     "Items": [
         {
+            "title": "Screen Saver Photo Album",
+            "type": "Boolean",
+            "key": "pc_on",
+            "required": false
+        },
+        {
+            "options": [
+                "10",
+                "360",
+                "10"
+            ],
+            "title": "Turn On After (Min)",
+            "type": "Numeric Range",
+            "key": "pc_on_tm",
+            "required": false
+        },
+        {
+            "title": "Style",
+            "type": "Separator",
+            "key": "",
+            "required": false
+        },
+        {
             "options": [
                 "5",
-                "9",
-                "15",
-                "22",
-                "30"
+                "90",
+                "5",
+                "",
+                "5"
             ],
-            "title": "Second between",
-            "type": "Options",
+            "title": "Second between Pictures",
+            "type": "Numeric Range",
             "key": "pc_sb",
             "required": false
         },
@@ -21,7 +44,7 @@
                 "Slide"
             ],
             "title": "Transistion",
-            "type": "Options",
+            "type": "Short Options",
             "key": "pc_trn",
             "required": false
         }

@@ -36,6 +36,9 @@ Public Sub BuildMainSetup() As Map
 				 Typeface(Typeface.DEFAULT).Append("   Timers Settings").PopAll,"tm")				 
 	
 	m.Put(cs.Initialize.Append(" ").Typeface(Typeface.MATERIALICONS).VerticalAlign(6dip).Append(Chr(0xE894)). _
+				 Typeface(Typeface.DEFAULT).Append("   Picture Album Settings").PopAll,"pic")				 
+
+	m.Put(cs.Initialize.Append(" ").Typeface(Typeface.MATERIALICONS).VerticalAlign(6dip).Append(Chr(0xE894)). _
 				 Typeface(Typeface.DEFAULT).Append("   Web Page Settings").PopAll,"wb")				 
 				 
 	m.Put(cs.Initialize.Append(" ").Typeface(Typeface.MATERIALICONS).VerticalAlign(6dip).Append(Chr(0xE05E)). _

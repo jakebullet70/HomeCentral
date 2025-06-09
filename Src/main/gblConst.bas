@@ -85,6 +85,14 @@ Sub Process_Globals
 	
 	Public Const INI_WEB_HOME As String = "whome"
 	
+	
+	Public Const KEYS_PICS_SETUP_ACTIVE As String = "pc_on"
+	Public Const KEYS_PICS_SETUP_TURN_ON_AFTER As String = "pc_on_tm"
+	Public Const KEYS_PICS_SETUP_SECONDS_BETWEEN As String = "pc_sb"
+	Public Const KEYS_PICS_SETUP_TRANSITION As String = "pc_trn"
+	
+	
+	
 	'Public Const INI_TIMERS_SOUNDS As String = "tsnd"
 	
 	
@@ -114,6 +122,7 @@ Sub Process_Globals
 	Public Const SCRN_ON_OFF_DUMMY_DATE As String = "2020/05/21"
 	'=================================================================================================
 	Public Const FILE_MAIN_SETUP As String = "main_settings.bin"
+	Public Const FILE_PICS_SETUP As String = "pic_album_settings.bin"
 	
 	Public Const FILE_AUTO_START_FLAG As String = "autostart.bin"
 	'===============================================================

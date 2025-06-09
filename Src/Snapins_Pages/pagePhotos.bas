@@ -18,27 +18,17 @@ Sub Class_Globals
 	Private Const PIC_LIST_FILE As String = "pics.lst"
 	
 	Private img As sadImageSlider
-	'Private imgs As sadImageSlider
 	
 	Private pnlBtns As Panel
 	Private btnStart,btnFullScrn,btnNext,btnPrev As Button
 	
-	'Private lvPics As CustomListView
-	'Private PCLV As PreoptimizedCLV
 	Public tmrPicShow As Timer
 
 	Private lstPics As List
 	Private picPath As String = ""
-	'Private picPointer As Int = 1
-	Private lvPointerHigh,lvPointerLow As Int 'ignore
-	
-	'Private img As lmB4XImageViewX
-	'Private lmB4XImageViewX1 As lmB4XImageViewX
+	Private TimeBetweenPics As Long = 8000
+
 	Private pnlSplitter As B4XView
-	
-	'Private ImageSlider1 As ImageSlider
-	'Private timer1 As Timer
-	
 	
 	Private AutoTextSizeLabel1 As AutoTextSizeLabel
 End Sub
@@ -50,25 +40,12 @@ Public Sub Initialize(p As B4XView)
 	guiHelpers.SkinButton(Array As Button(btnStart,btnFullScrn,btnNext,btnPrev))
 	guiHelpers.SetPanelsDividers(Array As B4XView(pnlSplitter),clrTheme.txtNormal)
 	
-	tmrPicShow.Initialize("tmrShow",8000)
+	tmrPicShow.Initialize("tmrShow",TimeBetweenPics)
 	tmrPicShow.Enabled = False
 	
 	pnlBtns.Visible = True
 	InitNewListOfPics
-	
-	'ImageSlider1.NumberOfImages = lstPics.Size
-'
-'	lvPics.AsView.Color = XUI.Color_Transparent
-'	img.Bitmap = LoadBitmapResize(File.DirAssets,"pframe.png",img.Width,img.Height,False)
-'	PCLV.Initialize(Me, "PCLV", lvPics)
-'	PCLV.ShowScrollBar = False
-'	Dim size As Float = lvPics.AsView.Height
-'	For x = 0 To lstPics.Size - 1
-'		PCLV.AddItem(size, XUI.Color_Transparent, x & "::" & lstPics.Get(x))
-'	Next
-'	PCLV.Commit
-'	img.mBase.Visible = False
-	
+	If img.NumberOfImages > 0 Then img.NextImage
 	
 	
 End Sub
@@ -88,6 +65,7 @@ Public Sub Set_focus()
 	'mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Side_Menu",250)
 	Menus.SetHeader("Photo Album","main_menu_pics.png")
 	pnlMain.SetVisibleAnimated(500,True)
+	btnStart.Text = "Start Show"
 End Sub
 Public Sub Lost_focus()
 	tmrPicShow.Enabled = False
@@ -130,9 +108,10 @@ Private Sub ShowMemory
 End Sub
 #end if
 
-Sub img_GetImage (Index As Int) As ResumableSub
+Sub img_GetImage(Index As Int) As ResumableSub
 	#if debug
 	ShowMemory
+	Log(Index)
 	#end if
 	Return XUI.LoadBitmapResize(picPath, lstPics.Get(Index), img.WindowBase.Width, img.WindowBase.Height, True)
 End Sub
@@ -171,14 +150,6 @@ Private Sub BuildPicList
 	
 End Sub
 
-
-'Private Sub img_Click
-'	Log("img_Click")
-'	lvPics.AsView.Visible = True
-'	img.mBase.Visible = False
-'	lvPics.JumpToItem(picPointer) '--- keep the ListView in sync
-'	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
-'End Sub
 
 Private Sub btnPressed_Click
 		
@@ -241,9 +212,9 @@ Private Sub GetPhotosShowPath() As String
 	#end if
 	
 	AutoTextSizeLabel1.BaseLabel.Visible = False
+	AutoTextSizeLabel1.BaseLabel.SendToBack
 	Dim ppath As String = ""
 	Dim retPath As String = ""
-	
 		
 	Do While True
 	
@@ -285,6 +256,7 @@ Private Sub GetPhotosShowPath() As String
 	Loop
 	
 	If retPath = "" Then
+		AutoTextSizeLabel1.BaseLabel.BringToFront
 		Dim aa As StringBuilder : aa.Initialize
 		guiHelpers.Show_toast2("Valid path not found",2200)
 		aa.Append("Valid path not found, Paths checked:").Append(CRLF)
@@ -298,7 +270,9 @@ Private Sub GetPhotosShowPath() As String
 		Return ""
 	End If
 	
-	guiHelpers.Show_toast2("Found - Photo Path:" & ppath,2500)
+	#if debug
+	guiHelpers.Show_toast2("Path:" & ppath,2500)
+	#end if
 	Return ppath
 	
 End Sub
