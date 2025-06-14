@@ -28,13 +28,17 @@ Public Sub CreateDefaultFile
 	
 	If File.Exists(xui.DefaultFolder,gblConst.FILE_PICS_SETUP) = False Then
 		
-		'--- DO NOT USE	File.ReadMap Or File.WriteMap
+		'--- DO NOT USE	File.ReadMap Or File.WriteMap, use ObjHelper methods
 		objHelpers.Map2Disk2(xui.DefaultFolder, gblConst.FILE_PICS_SETUP, CreateMap( _
 					gblConst.KEYS_PICS_SETUP_ACTIVE: False, _
+					gblConst.KEYS_PICS_SETUP_START_IN_FULLSCREEN: False, _
 					gblConst.KEYS_PICS_SETUP_TURN_ON_AFTER : 30, _
 					gblConst.KEYS_PICS_SETUP_SECONDS_BETWEEN: 35, _
 					gblConst.KEYS_PICS_SETUP_TRANSITION: "Slide" _
 					))
+	
+		'--- kill the pic list file if there
+		fileHelpers.SafeKill(xui.DefaultFolder,gblConst.PIC_LIST_FILE)
 		
 	End If
 	

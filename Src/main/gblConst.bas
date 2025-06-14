@@ -90,6 +90,7 @@ Sub Process_Globals
 	Public Const KEYS_PICS_SETUP_TURN_ON_AFTER As String = "pc_on_tm"
 	Public Const KEYS_PICS_SETUP_SECONDS_BETWEEN As String = "pc_sb"
 	Public Const KEYS_PICS_SETUP_TRANSITION As String = "pc_trn"
+	Public Const KEYS_PICS_SETUP_START_IN_FULLSCREEN As String = "pc_fc"
 	
 	
 	
@@ -123,6 +124,8 @@ Sub Process_Globals
 	'=================================================================================================
 	Public Const FILE_MAIN_SETUP As String = "main_settings.bin"
 	Public Const FILE_PICS_SETUP As String = "pic_album_settings.bin"
+	
+	Public Const PIC_LIST_FILE As String = "pics.lst"
 	
 	Public Const FILE_AUTO_START_FLAG As String = "autostart.bin"
 	'===============================================================

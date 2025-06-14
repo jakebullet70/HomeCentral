@@ -15,8 +15,7 @@ Sub Class_Globals
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
-	Private Const PIC_LIST_FILE As String = "pics.lst"
-	
+		
 	Private img As sadImageSlider
 	
 	Private pnlBtns As Panel
@@ -118,9 +117,10 @@ End Sub
 
 Private Sub ReadPicsList() As Boolean
 	lstPics.Initialize
+	img.NumberOfImages = 0
 	
-	If File.Exists(XUI.DefaultFolder,PIC_LIST_FILE) Then
-		lstPics = objHelpers.ListFromDisk(XUI.DefaultFolder,PIC_LIST_FILE)
+	If File.Exists(XUI.DefaultFolder,gblConst.PIC_LIST_FILE) Then
+		lstPics = objHelpers.ListFromDisk(XUI.DefaultFolder,gblConst.PIC_LIST_FILE)
 		img.NumberOfImages = lstPics.Size
 		Return True
 	End If
@@ -142,7 +142,7 @@ Private Sub BuildPicList
 		Log(LastException)
 	End Try
 	
-	objHelpers.List2Disk(XUI.DefaultFolder,PIC_LIST_FILE,lstPics)
+	objHelpers.List2Disk(XUI.DefaultFolder,gblConst.PIC_LIST_FILE,lstPics)
 	'/mnt/sdcard/pics
 	Log("ttl pics ---> " & lstPics.Size)
 	img.NumberOfImages = lstPics.Size
@@ -186,7 +186,7 @@ Private Sub btnPressed_Click
 			Return
 			
 		Case "rs" '--- rescan pics  TODO!!!!!!  add to menu
-			fileHelpers.SafeKill(XUI.DefaultFolder,PIC_LIST_FILE)
+			fileHelpers.SafeKill(XUI.DefaultFolder,gblConst.PIC_LIST_FILE)
 			InitNewListOfPics
 	
 	End Select
