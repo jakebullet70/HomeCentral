@@ -18,6 +18,7 @@ Sub Process_Globals
 	
 	Public IsInit As Boolean = False
 	Public MainSetupData As Map
+	Public PicAlbumSetupData As Map
 	Public Is1stRun As Boolean = False
 
 	'--- android power dlg
@@ -84,14 +85,15 @@ Private Sub ConfigMe()
 	
 	'fileHelpers.SafeKill(xui.DefaultFolder,gblConst.FILE_MAIN_SETUP) '--- Dev
 	If File.Exists(xui.DefaultFolder,gblConst.FILE_MAIN_SETUP) = False Then
+		'--- create main setup
 		Dim o3 As dlgSetupMain
 		o3.initialize(Null)
 		o3.createdefaultfile
 	End If
 	
-	CreatePhotoAlbumSetup
-	
 	ReadMainSetup
+	CreatePhotoAlbumSetup
+		
 	CalcTimeScreenOnOff
 	
 	'======================================================================
@@ -107,7 +109,7 @@ Private Sub CreatePhotoAlbumSetup
 		#end if
 		Dim o3 As dlgSetupPics
 		o3.initialize(Null)
-		o3.createdefaultfile
+		o3.CreateDefaultFile
 	End If
 End Sub
 	
@@ -138,7 +140,6 @@ Public Sub getWeatherIconSet() As String
 	Return Main.kvs.GetDefault(gblConst.INI_WEATHER_ICONS_PATH,"cc01")
 End Sub
 
-
 Public Sub getScreenOffTime() As Int
 	#if debug
 	'Log("screen off time: " & MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_OFF_TIME))
@@ -168,6 +169,11 @@ Public Sub Change_AppUpdateCheck(check As Boolean)
 	End If
 End Sub
 
+'=============================================================================
 
-
-
+Public Sub ReadPicAlbumSetup
+	'--- DO NOT USE --->	File.ReadMap Or File.WriteMap, use functions in objHelpers
+	If File.Exists(xui.DefaultFolder, gblConst.FILE_PICS_SETUP) Then
+		PicAlbumSetupData = objHelpers.MapFromDisk2(xui.DefaultFolder, gblConst.FILE_PICS_SETUP)
+	End If
+End Sub
