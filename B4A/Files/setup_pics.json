@@ -3,7 +3,7 @@
     "Theme": "Dark Theme",
     "Items": [
         {
-            "title": "Screen Saver Photo Album",
+            "title": "Turn On Screen Saver Photo Album",
             "type": "Boolean",
             "key": "pc_on",
             "required": false
@@ -17,6 +17,12 @@
             "title": "Turn On After (Min)",
             "type": "Numeric Range",
             "key": "pc_on_tm",
+            "required": false
+        },
+        {
+            "title": "Start In Full Screen",
+            "type": "Boolean",
+            "key": "pc_fs",
             "required": false
         },
         {
