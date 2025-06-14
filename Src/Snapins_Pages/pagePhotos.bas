@@ -42,6 +42,8 @@ Public Sub Initialize(p As B4XView)
 	tmrPicShow.Initialize("tmrShow",TimeBetweenPics)
 	tmrPicShow.Enabled = False
 	
+	config.ReadPicAlbumSetup
+	
 	pnlBtns.Visible = True
 	InitNewListOfPics
 	If img.NumberOfImages > 0 Then img.NextImage

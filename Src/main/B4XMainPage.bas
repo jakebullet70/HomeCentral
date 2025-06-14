@@ -580,10 +580,16 @@ Public Sub ResetScrn_SleepCounter
 		Log("=============== Already off, removing from tmrCallSub")
 		#end if
 		tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off_Sys")
-		'tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Dim")
+		If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO).As(Boolean) Then
+			tmrTimerCallSub.ExistsRemove(B4XPages.MainPage,"turn_on_pic_album")
+		End If
+		'tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Dim") ---  what about pic album????
 		Return
 	End If
+	
 	'Log(config.getScreenOffTime)
+	
+	'--- screen on/off
 	If config.getScreenOffTime <> 0 Then
 		Log($"tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"TurnScreen_Off_Sys",60000 * config.getScreenOffTime)"$)
 		tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"TurnScreen_Off_Sys",60000 * config.getScreenOffTime)
@@ -593,6 +599,27 @@ Public Sub ResetScrn_SleepCounter
 		tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Off_Sys")
 		'tmrTimerCallSub.ExistsRemove(Me,"TurnScreen_Dim")
 	End If
+	
+	'--- is the pic album on?
+	If config.PicAlbumSetupData.IsInitialized And _
+						config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO).As(Boolean) Then
+						
+		Log($"tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"turn_on_pic_album",60000 * ${config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_TURN_ON_AFTER)})"$)
+		tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"turn_on_pic_album",60000 * _
+								config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_TURN_ON_AFTER))
+	Else
+		Log($"tmrTimerCallSub.ExistsRemove(Me,"turn_on_pic_album")"$)
+		tmrTimerCallSub.ExistsRemove(Me,"turn_on_pic_album")
+	End If
+	
+	
+End Sub
+
+Public Sub turn_on_pic_album
+	If oPageCurrent = oPagePhoto Then Return
+	Log("===================================")
+	Log("turn_on_pic_album")
+	Log("====================================")
 End Sub
 
 Public Sub setup_on_off_scrn_event()
