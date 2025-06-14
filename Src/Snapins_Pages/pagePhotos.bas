@@ -158,18 +158,20 @@ Private Sub btnPressed_Click
 	
 	'--- no valid path, do they want a rescan?
 	If AutoTextSizeLabel1.BaseLabel.Visible And b.Tag <> "rs" Then Return
+	
+	Dim IsTimerOn As Boolean = tmrPicShow.Enabled
 			
 	Select Case b.Tag 'IGNORE
 		Case "n" '--- next
-			If btnStart.Text.StartsWith("Sto") Then tmrPicShow.Enabled = False
+			If IsTimerOn Then tmrPicShow.Enabled = False
 			img.NextImage
-			If btnStart.Text.StartsWith("Sto") Then tmrPicShow.Enabled = True
+			If IsTimerOn Then tmrPicShow.Enabled = True
 			
 			
 		Case "p" '--- prev pic
-			If btnStart.Text.StartsWith("Sto") Then tmrPicShow.Enabled = False
+			If IsTimerOn Then tmrPicShow.Enabled = False
 			img.PrevImage
-			If btnStart.Text.StartsWith("Sto") Then tmrPicShow.Enabled = True
+			If IsTimerOn Then tmrPicShow.Enabled = True
 			
 		Case "ss" '--- start show
 			tmrPicShow.Enabled = Not (tmrPicShow.Enabled )
@@ -184,18 +186,12 @@ Private Sub btnPressed_Click
 			Return
 			
 		Case "rs" '--- rescan pics  TODO!!!!!!  add to menu
-			
 			fileHelpers.SafeKill(XUI.DefaultFolder,PIC_LIST_FILE)
 			InitNewListOfPics
-'			
-'			Dim oo As Prompt4Folder'ignore
-'			oo.Initialize
-'			oo.SelectExtFolder(Me)
-'			Wait For Selected_Folder(f As String)
-'			Log("OK --> " & oo.pSelectedFolder)
 	
 	End Select
 	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
+	Sleep(0)
 	
 End Sub
 
