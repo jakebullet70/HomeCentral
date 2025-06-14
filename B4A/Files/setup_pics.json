@@ -3,7 +3,7 @@
     "Theme": "Dark Theme",
     "Items": [
         {
-            "title": "Turn On Screen Saver Photo Album",
+            "title": "Turn On Photo Album",
             "type": "Boolean",
             "key": "pc_on",
             "required": false
