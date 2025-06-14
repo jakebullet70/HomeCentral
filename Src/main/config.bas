@@ -100,7 +100,11 @@ End Sub
 	
 Private Sub CreatePhotoAlbumSetup
 	'--- added in v3.1.0
+	'fileHelpers.SafeKill(xui.DefaultFolder,gblConst.FILE_PICS_SETUP) '--- Dev
 	If File.Exists(xui.DefaultFolder,gblConst.FILE_PICS_SETUP) = False Then
+		#if debug
+		Log("Creating Photo Album setup")
+		#end if
 		Dim o3 As dlgSetupPics
 		o3.initialize(Null)
 		o3.createdefaultfile

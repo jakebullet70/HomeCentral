@@ -36,12 +36,12 @@ Public Sub CreateDefaultFile
 					gblConst.KEYS_PICS_SETUP_SECONDS_BETWEEN: 35, _
 					gblConst.KEYS_PICS_SETUP_TRANSITION: "Slide" _
 					))
-	
-		'--- kill the pic list file if there
-		fileHelpers.SafeKill(xui.DefaultFolder,gblConst.PIC_LIST_FILE)
 		
 	End If
 	
+	'--- kill the pic list file if there
+	fileHelpers.SafeKill(xui.DefaultFolder,gblConst.PIC_LIST_FILE)
+		
 End Sub
 
 

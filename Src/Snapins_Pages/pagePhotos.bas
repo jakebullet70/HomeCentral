@@ -134,8 +134,9 @@ Private Sub BuildPicList
 	lstPics.Initialize
 	Try
 		For Each f As String In File.ListFiles(picPath)
-			If f.EndsWith("jpg") Or f.EndsWith("png") Then
+			If f.ToLowerCase.EndsWith("jpg") Or f.ToLowerCase.EndsWith("png") Then
 				lstPics.Add(f)
+				Log(f)
 			End If
 		Next
 	Catch
