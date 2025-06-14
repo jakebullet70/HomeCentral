@@ -18,12 +18,15 @@ Sub Class_Globals
 	Private CurrentPage As String
 
 	
-	Private wv As WebView,  wvs As WebViewSettings
-	Private WebViewExtras1 As WebViewExtras
-	Private WebChromeClient1 As DefaultWebChromeClient 'ignore
-	Private JavascriptInterface1 As DefaultJavascriptInterface
-	Private WebViewClient1 As DefaultWebViewClient
+	Private wv As WebView
+#IF NON_FOSS	
+'   Private  wvs As WebViewSettings
+'	Private WebViewExtras1 As WebViewExtras
+'	Private WebChromeClient1 As DefaultWebChromeClient 'ignore
+'	Private JavascriptInterface1 As DefaultJavascriptInterface
+'	Private WebViewClient1 As DefaultWebViewClient
 	'Dim JavascriptInterface1 As DefaultJavascriptInterface
+#End if
 	
 	Private btnMoveH,btnMoveB,btnMoveF,btnMoveR As Button
 	
@@ -40,9 +43,11 @@ Public Sub Initialize(p As B4XView)
 	btnMoveH.TextSize = btnMoveH.TextSize - IIf(guiHelpers.gScreenSizeAprox > 7.5,22,14)
 	guiHelpers.SetTextSize(Array As B4XView(btnMoveB,btnMoveF,btnMoveR),btnMoveH.TextSize)
 	
-	Dim ph As Phone
 	
+	
+	#IF NON_FOSS	
 	'--- web extra's 
+	Dim ph As Phone 
 	Dim JavascriptInterface1 As DefaultJavascriptInterface
 	JavascriptInterface1.Initialize
 	WebViewExtras1.Initialize(wv)
@@ -62,6 +67,7 @@ Public Sub Initialize(p As B4XView)
 	wvs.setUseWideViewPort(wv, True)
 	wvs.setDisplayZoomControls(wv, False)
 	wvs.setLoadsImagesAutomatically(wv, True)
+	#end if
 
 	CallSubDelayed2(Me,"Load_Page",homePage)
 	
