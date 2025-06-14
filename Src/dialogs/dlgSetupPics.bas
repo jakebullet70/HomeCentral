@@ -68,13 +68,14 @@ Public Sub Show
 	If Result = xui.DialogResponse_Positive Then
 
 		guiHelpers.Show_toast("Data Saved")
-		prefHelper.Map2Disk2(xui.DefaultFolder, gblConst.FILE_PICS_SETUP,data) '--- DO NOT USE	File.ReadMap Or File.WriteMap
+		
+		'--- DO NOT USE	File.ReadMap Or File.WriteMap
+		prefHelper.Map2Disk2(xui.DefaultFolder, gblConst.FILE_PICS_SETUP,data) 
 		
 		'ProcessAutoBootFlag(data.Get(gblConst.KEYS_MAIN_SETUP_AUTO_BOOT).As(Boolean))
 		
-		'config.ReadMainSetup
-		'config.CalcTimeScreenOnOff	
-		
+		config.ReadPicAlbumSetup
+				
 		CallSub(mpage.oPageCurrent,"Set_focus")
 		CallSubDelayed(B4XPages.MainPage,"setup_on_off_scrn_event")
 		
