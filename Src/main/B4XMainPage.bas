@@ -602,12 +602,14 @@ Public Sub ResetScrn_SleepCounter
 	
 	'--- is the pic album on?
 	If config.PicAlbumSetupData.IsInitialized And _
-						config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO).As(Boolean) Then
+						config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO).As(Boolean) And _
+						oPageCurrent <> oPagePhoto Then
 						
 		Log($"tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"turn_on_pic_album",60000 * ${config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_TURN_ON_AFTER)})"$)
 		tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"turn_on_pic_album",60000 * _
 								config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_TURN_ON_AFTER))
 	Else
+		
 		Log($"tmrTimerCallSub.ExistsRemove(Me,"turn_on_pic_album")"$)
 		tmrTimerCallSub.ExistsRemove(Me,"turn_on_pic_album")
 	End If
@@ -616,11 +618,12 @@ Public Sub ResetScrn_SleepCounter
 End Sub
 
 Public Sub turn_on_pic_album
-	If oPageCurrent = oPagePhoto Then Return
+	If oPageCurrent = oPagePhoto Then Return 
 	Log("===================================")
 	Log("turn_on_pic_album")
 	Log("====================================")
 End Sub
+
 
 Public Sub setup_on_off_scrn_event()
 	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_SCRN_CTRL_ON) = True Then
