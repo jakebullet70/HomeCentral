@@ -67,10 +67,20 @@ Public Sub Set_focus()
 	Menus.SetHeader("Photo Album","main_menu_pics.png")
 	pnlMain.SetVisibleAnimated(500,True)
 	btnStart.Text = "Start Show"
+	
+	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO).As(Boolean) Then
+		'--- if the pic album viewer timer is on then remove it
+		mpage.tmrTimerCallSub.ExistsRemove(Me,"turn_on_pic_album")
+	End If
+	
 End Sub
 Public Sub Lost_focus()
 	tmrPicShow.Enabled = False
 	pnlMain.SetVisibleAnimated(500,False)
+	
+	'--- this will turn back on the pic album timer if needed.
+	CallSubDelayed(mpage,"ResetScrn_SleepCounter") 
+	
 End Sub
 
 '=============================================================================================
@@ -116,6 +126,11 @@ Sub img_GetImage(Index As Int) As ResumableSub
 	#end if
 	Return XUI.LoadBitmapResize(picPath, lstPics.Get(Index), img.WindowBase.Width, img.WindowBase.Height, True)
 End Sub
+
+Private Sub img_SwipeDown
+	Log("!!!!!!!!!!!!!!swipe down!!!!!!!!!!!!!!!!!!")	
+End Sub
+
 
 Private Sub ReadPicsList() As Boolean
 	lstPics.Initialize
