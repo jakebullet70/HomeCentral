@@ -16,7 +16,7 @@ Version=6
 #DesignerProperty: Key: AnimationType, DisplayName: Animation Type, FieldType: String, DefaultValue: Horizontal, List: Vertical|Horizontal|Fade
 #DesignerProperty: Key: ShowIndicators, DisplayName: Show Indicators, FieldType: Boolean, DefaultValue: True
 #Event: GetImage (Index As Int) As ResumableSub
-#Event: SwipeDown
+#Event: SwipeUp
 Sub Class_Globals
 	Private mEventName As String 'ignore
 	Private mCallBack As Object 'ignore
@@ -187,15 +187,15 @@ Private Sub WindowBase_Touch (Action As Int, X As Float, Y As Float)
 			PrevImage
 		Else if X < MousePressedX - 50dip Then
 			NextImage
-		Else If Y < MousePressedY - 100dip Then 'v1.2
-			Swipe_down
+		Else If Y < MousePressedY - 60dip Then 'v1.2
+			Swipe_up
 		End If
 	End If
 End Sub
 
-Private Sub Swipe_down 'v1.2
-	If SubExists(mCallBack, mEventName & "_SwipeDown") Then
-		CallSub(mCallBack, mEventName & "_SwipeDown")
+Private Sub Swipe_up 'v1.2
+	If SubExists(mCallBack, mEventName & "_SwipeUp") Then
+		CallSub(mCallBack, mEventName & "_SwipeUp")
 	End If
 End Sub
 
