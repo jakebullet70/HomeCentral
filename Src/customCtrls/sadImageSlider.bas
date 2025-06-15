@@ -4,6 +4,11 @@ ModulesStructureVersion=1
 Type=Class
 Version=6
 @EndOfDesignText@
+'----------------------------------------------------------------------------------------------------------------
+ ' ImageSlider v1.2
+ ' June-2025, added SwipeDown Event
+'
+'Original -----------------------------------------------------------------------------------------------------
 'ImageSlider v1.11
 'https://www.b4x.com/android/forum/threads/b4x-xui-imageslider.87128/#content
 #DesignerProperty: Key: AnimationDuration, DisplayName: Animation Duration (ms), FieldType: Int, DefaultValue: 500
@@ -11,6 +16,7 @@ Version=6
 #DesignerProperty: Key: AnimationType, DisplayName: Animation Type, FieldType: String, DefaultValue: Horizontal, List: Vertical|Horizontal|Fade
 #DesignerProperty: Key: ShowIndicators, DisplayName: Show Indicators, FieldType: Boolean, DefaultValue: True
 #Event: GetImage (Index As Int) As ResumableSub
+#Event: SwipeDown
 Sub Class_Globals
 	Private mEventName As String 'ignore
 	Private mCallBack As Object 'ignore
@@ -27,7 +33,8 @@ Sub Class_Globals
 	Private mNumberOfImages As Int
 	Private AnimationType As String
 	Public WindowBase As B4XView
-	Private MousePressedX As Float
+	Private MousePressedX  As Float
+	Private MousePressedY As Float 'v1.2
 	Private ShowIndicators As Boolean
 	Private IndicatorsPanel As B4XView
 	Private IndicatorsCVS As B4XCanvas
@@ -174,14 +181,24 @@ End Sub
 Private Sub WindowBase_Touch (Action As Int, X As Float, Y As Float)
 	If Action = WindowBase.TOUCH_ACTION_DOWN Then
 		MousePressedX = X
+		MousePressedY = Y 'v1.2
 	Else If Action = WindowBase.TOUCH_ACTION_UP Then
 		If X > MousePressedX + 50dip Then
 			PrevImage
 		Else if X < MousePressedX - 50dip Then
 			NextImage
+		Else If Y < MousePressedY - 100dip Then 'v1.2
+			Swipe_down
 		End If
 	End If
 End Sub
+
+Private Sub Swipe_down 'v1.2
+	If SubExists(mCallBack, mEventName & "_SwipeDown") Then
+		CallSub(mCallBack, mEventName & "_SwipeDown")
+	End If
+End Sub
+
 
 Public Sub getNumberOfImages As Int
 	Return mNumberOfImages
