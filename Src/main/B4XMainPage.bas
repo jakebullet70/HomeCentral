@@ -40,7 +40,7 @@ Sub Class_Globals
 	Public oClock As Clock
 	
 	'--- this page - master --------------------
-	Private pnlBG As B4XView
+	Public pnlBG As B4XView
 	
 	Private pnlTimers,pnlCalculator,pnlHome,pnlWeather,pnlConversions,pnlPhotos,pnlWEB As B4XView
 	Public oPageCurrent As Object = Null, oPageWEB As pageWEB
@@ -69,6 +69,8 @@ Sub Class_Globals
 	Private pnlScrnOff,pnlSideMenuTouchOverlay As B4XView
 	Public mSysScrnOff As Int = 0 '--- when the system turns off the screen
 	
+	Private pnlPicAlbumFullScrn As Panel
+	Private imgPicAlbumFullScrn As sadImageSlider
 End Sub
 
 Public Sub Initialize
@@ -309,8 +311,8 @@ Private Sub segTabMenu_TabChanged(index As Int)
 			If oPageCalculator.IsInitialized = False Then oPageCalculator.Initialize(pnlCalculator)
 			oPageCurrent = oPageCalculator
 			
-		Case "ph" '--- photo albumn
-			If oPagePhoto.IsInitialized = False Then oPagePhoto.Initialize(pnlPhotos)
+		Case "ph" '--- photo album
+			If oPagePhoto.IsInitialized = False Then oPagePhoto.Initialize(pnlPhotos,pnlPicAlbumFullScrn,imgPicAlbumFullScrn)
 			oPageCurrent = oPagePhoto
 			
 		Case "tm" '--- timers
