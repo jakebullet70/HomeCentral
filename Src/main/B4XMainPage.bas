@@ -69,8 +69,9 @@ Sub Class_Globals
 	Private pnlScrnOff,pnlSideMenuTouchOverlay As B4XView
 	Public mSysScrnOff As Int = 0 '--- when the system turns off the screen
 	
-	Private pnlPicAlbumFullScrn As Panel
-	Private imgPicAlbumFullScrn As sadImageSlider
+	Private pnlPicAlbumFullScrn As B4XView
+	'Private imgPicAlbumFullScrn As sadImageSlider
+	Private imgPicAlbumFullScrn As lmB4XImageViewX
 End Sub
 
 Public Sub Initialize
@@ -215,6 +216,7 @@ Private Sub BuildGUI
 		
 	'guiHelpers.SkinButton(Array As Button(btnScreenOff))
 	pnlBG.SetColorAndBorder(clrTheme.Background,0dip,xui.Color_Transparent,0dip)
+	pnlPicAlbumFullScrn.SetColorAndBorder(clrTheme.Background,0dip,xui.Color_Transparent,0dip)
 	pnlMenuFooter.SetColorAndBorder(xui.Color_Transparent,0dip,xui.Color_Transparent,0dip)
 	pnlSideMenu.SetColorAndBorder(clrTheme.BackgroundHeader,2dip,clrTheme.Background2,4dip)
 	
@@ -312,7 +314,9 @@ Private Sub segTabMenu_TabChanged(index As Int)
 			oPageCurrent = oPageCalculator
 			
 		Case "ph" '--- photo album
-			If oPagePhoto.IsInitialized = False Then oPagePhoto.Initialize(pnlPhotos,pnlPicAlbumFullScrn,imgPicAlbumFullScrn)
+			If oPagePhoto.IsInitialized = False Then 
+				oPagePhoto.Initialize(pnlPhotos,pnlPicAlbumFullScrn,imgPicAlbumFullScrn)
+			End If
 			oPageCurrent = oPagePhoto
 			
 		Case "tm" '--- timers
@@ -779,3 +783,23 @@ Private Sub pnlBlankScreen_show(show_me As Boolean)
 End Sub
 
 #end region
+
+
+
+'Public Sub imgPicAlbumFullScrn_GetImage(Index As Int) As ResumableSub
+'	Return CallSub2(oPagePhoto,"img_GetImage_FS",Index)
+'	'Return xui.LoadBitmapResize(picPath, lstPics.Get(Index), img.WindowBase.Width, img.WindowBase.Height, True)
+'End Sub
+'
+'Public Sub imgPicAlbumFullScrn_SwipeUp
+'	Log("imgPicAlbumFullScrn_SwipeUp")
+'	CallSub(oPagePhoto,"img_SwipeUp")
+'End Sub
+
+
+
+
+
+Private Sub imgPicAlbumFullScrn_Click
+	CallSub(oPagePhoto,"img_SwipeUp")
+End Sub

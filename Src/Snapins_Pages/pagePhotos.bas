@@ -16,10 +16,12 @@ Sub Class_Globals
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 	Private pnlMain As B4XView
 		
-	Private img As sadImageSlider
+	Public IsFullScreen As Boolean = False
 	
-	Private pnlBtns As Panel
-	Private btnStart,btnFullScrn,btnNext,btnPrev As Button
+	Private img As sadImageSlider
+	Private pnlFullScrn As Panel
+	Private imgFullScrn As lmB4XImageViewX
+	Private ndxFullScrn As Int = 0
 	
 	Public tmrPicShow As Timer
 
@@ -27,27 +29,28 @@ Sub Class_Globals
 	Private picPath As String = ""
 	Private TimeBetweenPics As Long = 8000
 
-	Private pnlSplitter As B4XView
+	'Private pnlSplitter As B4XView
 	
 	Private AutoTextSizeLabel1 As AutoTextSizeLabel
 End Sub
 
-Public Sub Initialize(p As B4XView) 
+
+Public Sub Initialize(p As B4XView,pnlImgFS As Panel,imgFS As lmB4XImageViewX)
 	pnlMain = p
-	pnlMain.LoadLayout("pagePhotosBase")
+	pnlMain.LoadLayout("pagePhotosBase2")
 	
-	guiHelpers.SkinButton(Array As Button(btnStart,btnFullScrn,btnNext,btnPrev))
-	guiHelpers.SetPanelsDividers(Array As B4XView(pnlSplitter),clrTheme.txtNormal)
+	pnlFullScrn = pnlImgFS
+	imgFullScrn = imgFS
 	
 	tmrPicShow.Initialize("tmrShow",TimeBetweenPics)
 	tmrPicShow.Enabled = False
 	
 	config.ReadPicAlbumSetup
-	
-	pnlBtns.Visible = True
+
 	InitNewListOfPics
 	If img.NumberOfImages > 0 Then img.NextImage
-	
+	'CallSubDelayed(Me,"GetDefaultsImgCtrl_placement")
+	FullScrn(False)
 	
 End Sub
 
@@ -63,10 +66,9 @@ End Sub
 
 '-------------------------------
 Public Sub Set_focus()
-	'mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Side_Menu",250)
+	mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Side_Menu",250)
 	Menus.SetHeader("Photo Album","main_menu_pics.png")
 	pnlMain.SetVisibleAnimated(500,True)
-	btnStart.Text = "Start Show"
 	
 	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO).As(Boolean) Then
 		'--- if the pic album viewer timer is on then remove it
@@ -86,9 +88,15 @@ End Sub
 '=============================================================================================
 '=============================================================================================
 '=============================================================================================
-'Private Sub Build_Side_Menu
-'	Menus.BuildSideMenu(Array As String(""),Array As String(""))
-'End Sub
+Private Sub Build_Side_Menu
+	'Log("Build_Side_Menu")
+	'Return
+	Dim sh As String = "Start Show"
+	If tmrPicShow.Enabled Then 
+		sh = "Stop Show"
+	End If
+	Menus.BuildSideMenu(Array As String("Next","Previous",sh,"Full Screen","Re-Scan"),Array As String("n","p","ss","f","rs"))
+End Sub
 
 
 'https://www.b4x.com/android/forum/threads/view-utils.39347/#post-233788
@@ -104,6 +112,9 @@ End Sub
 Private Sub tmrShow_Tick
 	tmrPicShow.Enabled = False
 	img.NextImage
+	If IsFullScreen Then
+		imgFullScrn.Load(picPath, lstPics.Get(ndxFullScrn))
+	End If
 	tmrPicShow.Enabled = True
 End Sub
 
@@ -119,22 +130,29 @@ Private Sub ShowMemory
 End Sub
 #end if
 
-Sub img_GetImage(Index As Int) As ResumableSub
+
+Public Sub img_GetImage(Index As Int) As ResumableSub
 	#if debug
 	ShowMemory
 	Log(Index)
 	#end if
+	
+	ndxFullScrn = Index
 	Return XUI.LoadBitmapResize(picPath, lstPics.Get(Index), img.WindowBase.Width, img.WindowBase.Height, True)
+	
 End Sub
 
-Private Sub img_SwipeDown
-	Log("!!!!!!!!!!!!!!swipe down!!!!!!!!!!!!!!!!!!")	
+Public Sub img_SwipeUp
+	Log("!!!!!!!!!!!!!!swipe UP!!!!!!!!!!!!!!!!!!")	
+	If IsFullScreen = False Then Return
+	FullScrn(False)
 End Sub
 
 
 Private Sub ReadPicsList() As Boolean
 	lstPics.Initialize
 	img.NumberOfImages = 0
+	ndxFullScrn	= 0
 	
 	If File.Exists(XUI.DefaultFolder,gblConst.PIC_LIST_FILE) Then
 		lstPics = objHelpers.ListFromDisk(XUI.DefaultFolder,gblConst.PIC_LIST_FILE)
@@ -163,57 +181,49 @@ Private Sub BuildPicList
 	objHelpers.List2Disk(XUI.DefaultFolder,gblConst.PIC_LIST_FILE,lstPics)
 	'/mnt/sdcard/pics
 	Log("ttl pics ---> " & lstPics.Size)
+	
 	img.NumberOfImages = lstPics.Size
 	
 	
 End Sub
 
-
-Private Sub btnPressed_Click
-		
-	Dim b As Button = Sender
-	Log("btn tag --> " & b.Tag)
+Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
 	
 	'--- no valid path, do they want a rescan?
-	If AutoTextSizeLabel1.BaseLabel.Visible And b.Tag <> "rs" Then Return
+	If AutoTextSizeLabel1.BaseLabel.Visible And Value <> "rs" Then Return
 	
-	Dim IsTimerOn As Boolean = tmrPicShow.Enabled
-			
-	Select Case b.Tag 'IGNORE
+	Dim HasShowStarted As Boolean = tmrPicShow.Enabled
+	
+	Select Case Value
 		Case "n" '--- next
-			If IsTimerOn Then tmrPicShow.Enabled = False
+			If HasShowStarted Then tmrPicShow.Enabled = False
 			img.NextImage
-			If IsTimerOn Then tmrPicShow.Enabled = True
-			
+			If HasShowStarted Then tmrPicShow.Enabled = True
 			
 		Case "p" '--- prev pic
-			If IsTimerOn Then tmrPicShow.Enabled = False
+			If HasShowStarted Then tmrPicShow.Enabled = False
 			img.PrevImage
-			If IsTimerOn Then tmrPicShow.Enabled = True
+			If HasShowStarted Then tmrPicShow.Enabled = True
 			
 		Case "ss" '--- start show
 			tmrPicShow.Enabled = Not (tmrPicShow.Enabled )
-			If tmrPicShow.Enabled Then 
-				btnStart.Text = "Stop Show"
-			Else
-				btnStart.Text = "Start Show"
-			End If
+			If tmrPicShow.Enabled Then mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu if open
 						
 		Case "f" '--- full screen
-			guiHelpers.Show_toast("TODO")
-			Return
+			FullScrn(True)
 			
 		Case "rs" '--- rescan pics  TODO!!!!!!  add to menu
 			fileHelpers.SafeKill(XUI.DefaultFolder,gblConst.PIC_LIST_FILE)
 			InitNewListOfPics
 	
 	End Select
+	'mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu
+	Build_Side_Menu
 	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 	Sleep(0)
+
 	
 End Sub
-
-
 
 
 Private Sub GetPhotosShowPath() As String
@@ -290,6 +300,30 @@ Private Sub GetPhotosShowPath() As String
 	Return ppath
 	
 End Sub
+
+
+Private Sub FullScrn(Show As Boolean)
+	
+	pnlFullScrn.Visible = Show
+	img.WindowBase.Visible = Not (Show)
+	
+	
+	If Show Then
+		guiHelpers.Show_toast("Touch to exit full screen")
+		pnlFullScrn.As(Panel).Elevation = 8dip
+		pnlFullScrn.BringToFront
+		imgFullScrn.Load(picPath, lstPics.Get(ndxFullScrn))
+	Else
+		pnlFullScrn.As(Panel).Elevation = -8dip
+		pnlFullScrn.SendToBack
+	End If
+	
+	mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu if open
+	IsFullScreen = Show
+	Sleep(0)
+	
+End Sub
+
 
 
 

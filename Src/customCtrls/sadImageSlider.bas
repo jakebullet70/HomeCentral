@@ -6,7 +6,7 @@ Version=6
 @EndOfDesignText@
 '----------------------------------------------------------------------------------------------------------------
  ' ImageSlider v1.2
- ' June-2025, added SwipeDown Event
+ ' June-2025, added SwipeUp Event
 '
 'Original -----------------------------------------------------------------------------------------------------
 'ImageSlider v1.11
@@ -24,12 +24,12 @@ Sub Class_Globals
 	Private xui As XUI
 	Private CurrentPanel, NextPanel As B4XView
 	Private panels As List
-	Private CurrentIndex As Int
+	Public CurrentIndex As Int 'v1.2
 	Private CachedImages As List
-	Private AnimationDuration As Int
+	Public AnimationDuration As Int 'v1.2
 	Private CacheSize As Int
 	Type ImageSliderImage (bmp As B4XBitmap, index As Int)
-	Private TaskIndex As Int = 0
+	Public TaskIndex As Int = 0 'v1.2
 	Private mNumberOfImages As Int
 	Private AnimationType As String
 	Public WindowBase As B4XView
@@ -38,6 +38,7 @@ Sub Class_Globals
 	Private ShowIndicators As Boolean
 	Private IndicatorsPanel As B4XView
 	Private IndicatorsCVS As B4XCanvas
+	'Private defLeft,defTop,defWidth,defHeight As Float
 End Sub
 
 Public Sub Initialize (Callback As Object, EventName As String)
@@ -47,12 +48,14 @@ Public Sub Initialize (Callback As Object, EventName As String)
 End Sub
 
 Public Sub DesignerCreateView (Base As Object, Lbl As Label, Props As Map)
+	'Base.As(B4XView).RemoveAllViews
+	If Props.IsInitialized = False Then Props.Initialize
 	mBase = Base
 	WindowBase = xui.CreatePanel("WindowBase")
 	mBase.AddView(WindowBase, 0, 0, 0, 0)
-	AnimationDuration = Props.Get("AnimationDuration")
-	CacheSize = Props.Get("CacheSize")
-	AnimationType = Props.Get("AnimationType")
+	AnimationDuration = Props.GetDefault("AnimationDuration",700)
+	CacheSize = Props.GetDefault("CacheSize",3)
+	AnimationType = Props.GetDefault("AnimationType","Fade")
   	CurrentPanel = xui.CreatePanel("pnl")
 	NextPanel = xui.CreatePanel("pnl")
 	ShowIndicators = Props.GetDefault("ShowIndicators", True)
@@ -74,7 +77,7 @@ Public Sub DesignerCreateView (Base As Object, Lbl As Label, Props As Map)
 End Sub
 
 
-Private Sub Base_Resize (Width As Double, Height As Double)
+Public Sub Base_Resize (Width As Double, Height As Double)
 	WindowBase.SetLayoutAnimated(0, 0, 0, Width, Height)
 	For Each p As B4XView In panels
 		p.SetLayoutAnimated(0, 0, 0, Width, Height)
