@@ -24,12 +24,12 @@ Sub Class_Globals
 	Private xui As XUI
 	Private CurrentPanel, NextPanel As B4XView
 	Private panels As List
-	Public CurrentIndex As Int 'v1.2
+	Private CurrentIndex As Int 
 	Private CachedImages As List
 	Public AnimationDuration As Int 'v1.2
 	Private CacheSize As Int
 	Type ImageSliderImage (bmp As B4XBitmap, index As Int)
-	Public TaskIndex As Int = 0 'v1.2
+	Private TaskIndex As Int = 0 
 	Private mNumberOfImages As Int
 	Private AnimationType As String
 	Public WindowBase As B4XView
@@ -38,7 +38,6 @@ Sub Class_Globals
 	Private ShowIndicators As Boolean
 	Private IndicatorsPanel As B4XView
 	Private IndicatorsCVS As B4XCanvas
-	'Private defLeft,defTop,defWidth,defHeight As Float
 End Sub
 
 Public Sub Initialize (Callback As Object, EventName As String)
