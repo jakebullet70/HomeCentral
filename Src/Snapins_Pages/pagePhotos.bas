@@ -299,8 +299,18 @@ End Sub
 
 
 Public Sub Start_full_scrn
-	Wait For 	ReadOptions
+	#if debug
+	Log("!!! Start_full_scrn from system !!!")
+	#End If
+	If picPath = "" Then
+		#if debug
+		Log("!!! Start_full_scrn from system -- no valid path")
+		#End If
+		Return
+	End If
+	ReadOptions
 	tmrPicShow.Enabled = True
+	Log("FS------------------>"& config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_START_IN_FULLSCREEN).As(Boolean))
 	If config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_START_IN_FULLSCREEN).As(Boolean) Then
 		FullScrn(True)
 	End If
@@ -324,7 +334,7 @@ Public Sub FullScrn(Show As Boolean)
 	
 	mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu if open
 	IsFullScreen = Show
-	Sleep(0)
+	'Sleep(0)
 	
 End Sub
 
