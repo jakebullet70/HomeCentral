@@ -22,7 +22,7 @@
         {
             "title": "Start In Full Screen",
             "type": "Boolean",
-            "key": "pc_fs",
+            "key": "pc_fc",
             "required": false
         },
         {
