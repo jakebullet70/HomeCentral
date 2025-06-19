@@ -27,10 +27,8 @@ Sub Class_Globals
 
 	Private lstPics As List
 	Private picPath As String = ""
-	Private TimeBetweenPics As Long = 8000
+	Private TimeBetweenPics As Long
 
-	'Private pnlSplitter As B4XView
-	
 	Private AutoTextSizeLabel1 As AutoTextSizeLabel
 End Sub
 
@@ -42,14 +40,12 @@ Public Sub Initialize(p As B4XView,pnlImgFS As Panel,imgFS As lmB4XImageViewX)
 	pnlFullScrn = pnlImgFS
 	imgFullScrn = imgFS
 	
-	tmrPicShow.Initialize("tmrShow",TimeBetweenPics)
-	tmrPicShow.Enabled = False
-	
 	config.ReadPicAlbumSetup
-
+	ReadOptions
+	
+	
 	InitNewListOfPics
 	If img.NumberOfImages > 0 Then img.NextImage
-	'CallSubDelayed(Me,"GetDefaultsImgCtrl_placement")
 	FullScrn(False)
 	
 End Sub
@@ -66,6 +62,7 @@ End Sub
 
 '-------------------------------
 Public Sub Set_focus()
+	Log("set_focus - pics")
 	mpage.tmrTimerCallSub.CallSubDelayedPlus(Me,"Build_Side_Menu",250)
 	Menus.SetHeader("Photo Album","main_menu_pics.png")
 	pnlMain.SetVisibleAnimated(500,True)
@@ -89,8 +86,6 @@ End Sub
 '=============================================================================================
 '=============================================================================================
 Private Sub Build_Side_Menu
-	'Log("Build_Side_Menu")
-	'Return
 	Dim sh As String = "Start Show"
 	If tmrPicShow.Enabled Then 
 		sh = "Stop Show"
@@ -137,13 +132,14 @@ Public Sub img_GetImage(Index As Int) As ResumableSub
 	Log(Index)
 	#end if
 	
-	ndxFullScrn = Index
+	ndxFullScrn = Index - 1
+	'Log("ndxFullScrn--------------> "&ndxFullScrn)
+	If ndxFullScrn < 0 Then ndxFullScrn = 0
 	Return XUI.LoadBitmapResize(picPath, lstPics.Get(Index), img.WindowBase.Width, img.WindowBase.Height, True)
 	
 End Sub
 
-Public Sub img_SwipeUp
-	Log("!!!!!!!!!!!!!!swipe UP!!!!!!!!!!!!!!!!!!")	
+Public Sub Stop_fullScrn
 	If IsFullScreen = False Then Return
 	FullScrn(False)
 End Sub
@@ -302,11 +298,19 @@ Private Sub GetPhotosShowPath() As String
 End Sub
 
 
-Private Sub FullScrn(Show As Boolean)
+Public Sub Start_full_scrn
+	Wait For 	ReadOptions
+	tmrPicShow.Enabled = True
+	If config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_START_IN_FULLSCREEN).As(Boolean) Then
+		FullScrn(True)
+	End If
+End Sub
+
+
+Public Sub FullScrn(Show As Boolean)
 	
 	pnlFullScrn.Visible = Show
 	img.WindowBase.Visible = Not (Show)
-	
 	
 	If Show Then
 		guiHelpers.Show_toast("Touch to exit full screen")
@@ -324,6 +328,22 @@ Private Sub FullScrn(Show As Boolean)
 	
 End Sub
 
-
+Private Sub ReadOptions
+	
+	TimeBetweenPics = _
+			config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_SECONDS_BETWEEN) * 1000
+	tmrPicShow.Initialize("tmrShow",TimeBetweenPics)
+	
+	If tmrPicShow.Enabled Then
+		tmrPicShow.Enabled = False
+		Sleep(0)
+		tmrPicShow.Enabled = True
+	End If
+	
+	Dim at As String = config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_TRANSITION)
+	If at = "Slide" Then at = "Horizontal"
+	img.AnimationType = at
+		
+End Sub
 
 

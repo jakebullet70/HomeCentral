@@ -31,7 +31,7 @@ Sub Class_Globals
 	Type ImageSliderImage (bmp As B4XBitmap, index As Int)
 	Private TaskIndex As Int = 0 
 	Private mNumberOfImages As Int
-	Private AnimationType As String
+	Public AnimationType As String
 	Public WindowBase As B4XView
 	Private MousePressedX  As Float
 	Private MousePressedY As Float 'v1.2
@@ -107,6 +107,9 @@ Private Sub ShowImage (bmp As B4XBitmap, MovingToNext As Boolean)
 		NextPanel.GetView(0).SetLayoutAnimated(0, WindowBase.Width / 2 - bmp.Width / 2, _
 		WindowBase.Height / 2 - bmp.Height / 2, bmp.Width, bmp.Height)
 		NextPanel.Visible = True
+		#if debug
+		Log(AnimationType)
+		#end if
 		Select AnimationType
 			Case "Vertical"
 				Dim top As Int

@@ -117,13 +117,18 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 	oClock.Initialize
 	
 	BuildGUI
+	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO).As(Boolean) Then
+		config.ReadPicAlbumSetup
+	End If
 	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
 	
 	#if debug
 	B4XPages.MainPage.DebugLog = True
 	#End If
 	
-	If config.Is1stRun Then CallSubDelayed(Me,"Show_1stRun")
+	If config.Is1stRun Then 
+		CallSubDelayed(Me,"Show_1stRun")
+	End If
 	
 End Sub
 
@@ -524,7 +529,7 @@ Private Sub Alarm_Fired_Before_Start
 		pnlScrnOff_Click
 	End If
 	
-	'--- check if we are showing photos. Soon!!!
+	'--- check if we are showing photos.
 	IfPhotoShow_TurnOff
 	
 End Sub
@@ -607,6 +612,7 @@ Public Sub ResetScrn_SleepCounter
 	End If
 	
 	'--- is the pic album on?
+	Log(config.PicAlbumSetupData.IsInitialized)
 	If config.PicAlbumSetupData.IsInitialized And _
 						config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO).As(Boolean) And _
 						oPageCurrent <> oPagePhoto Then
@@ -624,10 +630,19 @@ Public Sub ResetScrn_SleepCounter
 End Sub
 
 Public Sub turn_on_pic_album
-	If oPageCurrent = oPagePhoto Then Return 
+	If oPageCurrent = oPagePhoto Then 
+		Return 
+	End If
+	
+	#if debug
 	Log("===================================")
 	Log("turn_on_pic_album")
 	Log("====================================")
+	#end if
+	
+	Change_Pages2("ph") '--- switch pages
+	CallSubDelayed(oPagePhoto,"Start_full_scrn")
+	
 End Sub
 
 
@@ -754,6 +769,7 @@ Private Sub IfPhotoShow_TurnOff
 	If oPagePhoto.IsInitialized And oPageCurrent = oPagePhoto Then
 		'--- just turn it off
 		oPagePhoto.tmrPicShow.Enabled = False
+		oPagePhoto.FullScrn(False)
 	End If
 End Sub
 
@@ -785,21 +801,7 @@ End Sub
 #end region
 
 
-
-'Public Sub imgPicAlbumFullScrn_GetImage(Index As Int) As ResumableSub
-'	Return CallSub2(oPagePhoto,"img_GetImage_FS",Index)
-'	'Return xui.LoadBitmapResize(picPath, lstPics.Get(Index), img.WindowBase.Width, img.WindowBase.Height, True)
-'End Sub
-'
-'Public Sub imgPicAlbumFullScrn_SwipeUp
-'	Log("imgPicAlbumFullScrn_SwipeUp")
-'	CallSub(oPagePhoto,"img_SwipeUp")
-'End Sub
-
-
-
-
-
 Private Sub imgPicAlbumFullScrn_Click
-	CallSub(oPagePhoto,"img_SwipeUp")
+	CallSub(oPagePhoto,"Stop_fullScrn")
 End Sub
+

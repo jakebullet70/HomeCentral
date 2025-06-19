@@ -79,6 +79,10 @@ Public Sub Show
 		CallSub(mpage.oPageCurrent,"Set_focus")
 		CallSubDelayed(B4XPages.MainPage,"setup_on_off_scrn_event")
 		
+		If mpage.oPageCurrent = mpage.oPagePhoto Then
+			mpage.tmrTimerCallSub.CallSubDelayedPlus(mpage.oPagePhoto,"ReadOptions",500)
+		End If
+		
 	End If
 	
 	mpage.tmrTimerCallSub.CallSubDelayedPlus(Main,"Dim_ActionBar_Off",300)
