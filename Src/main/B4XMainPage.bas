@@ -117,7 +117,7 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 	oClock.Initialize
 	
 	BuildGUI
-	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO).As(Boolean) Then
+	If config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO).As(Boolean) And File.Exists(xui.DefaultFolder,gblConst.PIC_LIST_FILE) Then
 		config.ReadPicAlbumSetup
 	End If
 	CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
@@ -769,9 +769,13 @@ Private Sub IfPhotoShow_TurnOff
 	If oPagePhoto.IsInitialized And oPageCurrent = oPagePhoto Then
 		'--- just turn it off
 		oPagePhoto.tmrPicShow.Enabled = False
-		oPagePhoto.FullScrn(False)
+		CallSub(oPagePhoto,"Stop_fullScrn") '--- if its on?
 	End If
 End Sub
+Private Sub imgPicAlbumFullScrn_Click
+	CallSub(oPagePhoto,"Stop_fullScrn")
+End Sub
+
 
 Private Sub btnScreenOff_Click
 	'#if debug
@@ -800,8 +804,4 @@ End Sub
 
 #end region
 
-
-Private Sub imgPicAlbumFullScrn_Click
-	CallSub(oPagePhoto,"Stop_fullScrn")
-End Sub
 
