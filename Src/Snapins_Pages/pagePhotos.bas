@@ -137,7 +137,14 @@ Public Sub img_GetImage(Index As Int) As ResumableSub
 	ndxFullScrn = Index - 1
 	'Log("ndxFullScrn--------------> "&ndxFullScrn)
 	If ndxFullScrn < 0 Then ndxFullScrn = 0
-	Return XUI.LoadBitmapResize(picPath, lstPics.Get(Index), img.WindowBase.Width, img.WindowBase.Height, True)
+	
+	Try
+		Return XUI.LoadBitmapResize(picPath, lstPics.Get(Index), img.WindowBase.Width, img.WindowBase.Height, True)
+	Catch
+	End Try 'ignore
+	
+	'--- return a NOT FOUND image
+	Return XUI.LoadBitmapResize(File.DirAssets, "pic_not_found.png", img.WindowBase.Width, img.WindowBase.Height, True)
 	
 End Sub
 
@@ -313,7 +320,7 @@ Public Sub Start_full_scrn
 	End If
 	ReadOptions
 	tmrPicShow.Enabled = True
-	Log("FS------------------>"& config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_START_IN_FULLSCREEN).As(Boolean))
+	'Log("FS------------------>"& config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_START_IN_FULLSCREEN).As(Boolean))
 	If config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_START_IN_FULLSCREEN).As(Boolean) Then
 		FullScrn(True)
 	End If

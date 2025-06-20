@@ -35,26 +35,27 @@ File39=paper-tape.png
 File4=divider.png
 File40=PCLVSeekBar.bal
 File41=pframe.png
-File42=scrnconvbutter.bal
-File43=scrnconvlength.bal
-File44=scrnconvtemp.bal
-File45=scrnconvvolume.bal
-File46=scrnconvweight.bal
-File47=setup_main.json
-File48=setup_pics.json
-File49=tmr_go.png
+File42=pic_not_found.png
+File43=scrnconvbutter.bal
+File44=scrnconvlength.bal
+File45=scrnconvtemp.bal
+File46=scrnconvvolume.bal
+File47=scrnconvweight.bal
+File48=setup_main.json
+File49=setup_pics.json
 File5=dividerh.png
-File50=tmr_pause.png
-File51=tmr_stop.png
-File52=viewappupdate.bal
-File53=viewPhotoItem.bal
-File54=viewroundslider.bal
-File55=viewSetupTimers.bal
-File56=viewSetupWeather.bal
-File57=viewWeatherCurrent.bal
-File58=viewWeatherForcast.bal
-File59=weatherAPI_codes.json
+File50=tmr_go.png
+File51=tmr_pause.png
+File52=tmr_stop.png
+File53=viewappupdate.bal
+File54=viewPhotoItem.bal
+File55=viewroundslider.bal
+File56=viewSetupTimers.bal
+File57=viewSetupWeather.bal
+File58=viewWeatherCurrent.bal
+File59=viewWeatherForcast.bal
 File6=dlg1stRun.bal
+File60=weatherAPI_codes.json
 File7=dlgAbout.bal
 File8=dlgVolumeSettings.bal
 File9=home-icon.png
@@ -94,26 +95,27 @@ FileGroup39=Pages-Snapins-Views\Calculator
 FileGroup4=Default Group
 FileGroup40=CustomCtrlViews
 FileGroup41=Pages-Snapins-Views\PicViewer
-FileGroup42=Pages-Snapins-Views\Conversions
+FileGroup42=Pages-Snapins-Views\PicViewer
 FileGroup43=Pages-Snapins-Views\Conversions
 FileGroup44=Pages-Snapins-Views\Conversions
 FileGroup45=Pages-Snapins-Views\Conversions
 FileGroup46=Pages-Snapins-Views\Conversions
-FileGroup47=Pages-Snapins-Views\Home
-FileGroup48=Pages-Snapins-Views\PicViewer
-FileGroup49=Pages-Snapins-Views\KitchenTimers
+FileGroup47=Pages-Snapins-Views\Conversions
+FileGroup48=Pages-Snapins-Views\Home
+FileGroup49=Pages-Snapins-Views\PicViewer
 FileGroup5=Default Group
 FileGroup50=Pages-Snapins-Views\KitchenTimers
 FileGroup51=Pages-Snapins-Views\KitchenTimers
-FileGroup52=Dialogs
-FileGroup53=Pages-Snapins-Views\PicViewer
-FileGroup54=CustomCtrlViews
-FileGroup55=Dialogs
-FileGroup56=Pages-Snapins-Views\Weather
+FileGroup52=Pages-Snapins-Views\KitchenTimers
+FileGroup53=Dialogs
+FileGroup54=Pages-Snapins-Views\PicViewer
+FileGroup55=CustomCtrlViews
+FileGroup56=Dialogs
 FileGroup57=Pages-Snapins-Views\Weather
 FileGroup58=Pages-Snapins-Views\Weather
 FileGroup59=Pages-Snapins-Views\Weather
 FileGroup6=Default Group
+FileGroup60=Pages-Snapins-Views\Weather
 FileGroup7=Dialogs
 FileGroup8=Dialogs
 FileGroup9=Default Group
@@ -209,15 +211,15 @@ Module68=|relative|..\Src\helpers\vol_timers
 Module7=|relative|..\Src\miscClasses\events_subscription\clsEvent
 Module8=|relative|..\Src\miscClasses\kitchenTimers\clsKAlarms
 Module9=|relative|..\Src\miscClasses\weather\clsWeatherData
-NumberOfFiles=59
+NumberOfFiles=60
 NumberOfLibraries=22
 NumberOfModules=68
 Version=12.5
 @EndOfDesignText@
 #Region  Project Attributes 
 	#ApplicationLabel: HomeCentral
-	#VersionCode: 12
-	#VersionName: 3.0.2
+	#VersionCode: 13
+	#VersionName: 3.1.0a
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: landscape
 	#CanInstallToExternalStorage: False
