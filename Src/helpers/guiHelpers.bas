@@ -274,6 +274,29 @@ Public Sub SkinButton(obj() As Button)
 	Next
 End Sub
 
+Public Sub SkinButtonRounded(obj() As Button)
+	'--- sets the bg and frame color
+	Dim clrAccent, clrNormal ,clrPressed As Int
+	clrNormal = clrTheme.txtNormal
+	clrAccent = clrTheme.txtAccent
+	
+	clrPressed = ChangeColorVisible(clrTheme.txtNormal)
+	For Each btn As Button In obj
+		SetColorTextStateList(btn,clrPressed,clrNormal,clrTheme.btnDisableText)
+		
+		Dim DefaultDrawable, PressedDrawable,DisabledDrawable As ColorDrawable
+		DefaultDrawable.Initialize2(xui.Color_Transparent, 18dip,1dip,clrAccent)
+		PressedDrawable.Initialize2(clrPressed,18dip,1dip,clrNormal)
+		DisabledDrawable.Initialize2(xui.Color_Transparent,18dip,1dip,clrTheme.btnDisableText)
+		
+		Dim sld1 As StateListDrawable : sld1.Initialize
+		sld1.AddState(sld1.State_Pressed, PressedDrawable)
+		sld1.AddState(sld1.State_Disabled, DisabledDrawable)
+		sld1.AddCatchAllState(DefaultDrawable)
+		btn.Background = sld1
+	Next
+End Sub
+
 Private Sub SetColorTextStateList(Btn As Button,Pressed As Int,Enabled As Int,Disabled As Int)
 	'--- sets the text color
 	Dim States(3,1) As Int
