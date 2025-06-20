@@ -768,7 +768,7 @@ Private Sub IfPhotoShow_TurnOff
 	'--- if pframe then pause the pframe timer
 	If oPagePhoto.IsInitialized And oPageCurrent = oPagePhoto Then
 		'--- just turn it off
-		oPagePhoto.tmrPicShow.Enabled = False
+		'oPagePhoto.tmrPicShow.Enabled = False
 		CallSub(oPagePhoto,"Stop_fullScrn") '--- if its on?
 	End If
 End Sub

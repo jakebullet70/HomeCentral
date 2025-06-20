@@ -30,6 +30,7 @@ Sub Class_Globals
 	Private TimeBetweenPics As Long
 
 	Private AutoTextSizeLabel1 As AutoTextSizeLabel
+	Private btnFullScreen As B4XView
 End Sub
 
 
@@ -43,6 +44,7 @@ Public Sub Initialize(p As B4XView,pnlImgFS As Panel,imgFS As lmB4XImageViewX)
 	config.ReadPicAlbumSetup
 	ReadOptions
 	
+	guiHelpers.SkinButtonRounded(Array As Button(btnFullScreen))
 	
 	InitNewListOfPics
 	If img.NumberOfImages > 0 Then img.NextImage
@@ -142,6 +144,7 @@ End Sub
 Public Sub Stop_fullScrn
 	If IsFullScreen = False Then Return
 	FullScrn(False)
+	tmrPicShow.Enabled = False
 End Sub
 
 
@@ -327,9 +330,11 @@ Public Sub FullScrn(Show As Boolean)
 		pnlFullScrn.As(Panel).Elevation = 8dip
 		pnlFullScrn.BringToFront
 		imgFullScrn.Load(picPath, lstPics.Get(ndxFullScrn))
+		btnFullScreen.Visible = False
 	Else
 		pnlFullScrn.As(Panel).Elevation = -8dip
 		pnlFullScrn.SendToBack
+		btnFullScreen.Visible = True
 	End If
 	
 	mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu if open
@@ -357,3 +362,7 @@ Private Sub ReadOptions
 End Sub
 
 
+Private Sub btnFullScreen_Click
+	FullScrn(True)
+	tmrPicShow.Enabled = True
+End Sub
