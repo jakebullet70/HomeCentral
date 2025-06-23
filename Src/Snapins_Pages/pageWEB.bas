@@ -20,11 +20,11 @@ Sub Class_Globals
 	
 	Private wv As WebView
 #IF NON_FOSS	
-'   Private  wvs As WebViewSettings
-'	Private WebViewExtras1 As WebViewExtras
-'	Private WebChromeClient1 As DefaultWebChromeClient 'ignore
-'	Private JavascriptInterface1 As DefaultJavascriptInterface
-'	Private WebViewClient1 As DefaultWebViewClient
+   Private  wvs As WebViewSettings
+	Private WebViewExtras1 As WebViewExtras
+	Private WebChromeClient1 As DefaultWebChromeClient 'ignore
+	Private JavascriptInterface1 As DefaultJavascriptInterface
+	Private WebViewClient1 As DefaultWebViewClient
 	'Dim JavascriptInterface1 As DefaultJavascriptInterface
 #End if
 	
@@ -114,6 +114,7 @@ Private Sub btnMove_Click
 		Case "f" '--- forward
 			wv.Forward
 		Case "h" '--- home
+			Get_homepage
 			CallSubDelayed2(Me,"Load_page",homePage)
 		Case "b" '--- back
 			wv.Back
