@@ -370,6 +370,7 @@ End Sub
 
 
 Private Sub btnFullScreen_Click
+	If picPath = "" Then Return
 	FullScrn(True)
 	tmrPicShow.Enabled = True
 End Sub
