@@ -25,7 +25,6 @@ Sub Class_Globals
 	Private WebChromeClient1 As DefaultWebChromeClient 'ignore
 	Private JavascriptInterface1 As DefaultJavascriptInterface
 	Private WebViewClient1 As DefaultWebViewClient
-	'Dim JavascriptInterface1 As DefaultJavascriptInterface
 #End if
 	
 	Private btnMoveH,btnMoveB,btnMoveF,btnMoveR As Button
