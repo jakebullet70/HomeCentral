@@ -18,6 +18,7 @@ Version=6
 #Event: GetImage (Index As Int) As ResumableSub
 #Event: SwipeUp
 Sub Class_Globals
+	Public tmrShowTimer As Timer = Null
 	Private mEventName As String 'ignore
 	Private mCallBack As Object 'ignore
 	Private mBase As B4XView
@@ -189,9 +190,13 @@ Private Sub WindowBase_Touch (Action As Int, X As Float, Y As Float)
 		MousePressedY = Y 'v1.2
 	Else If Action = WindowBase.TOUCH_ACTION_UP Then
 		If X > MousePressedX + 50dip Then
+			If tmrShowTimer <> Null Then tmrShowTimer.Enabled = False	'v1.2
 			PrevImage
+			If tmrShowTimer <> Null Then tmrShowTimer.Enabled = True 'v1.2
 		Else if X < MousePressedX - 50dip Then
+			If tmrShowTimer <> Null Then tmrShowTimer.Enabled = False 'v1.2
 			NextImage
+			If tmrShowTimer <> Null Then tmrShowTimer.Enabled = True 'v1.2
 		Else If Y < MousePressedY - 60dip Then 'v1.2
 			Swipe_up
 		End If
