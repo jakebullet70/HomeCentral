@@ -29,8 +29,11 @@ Sub Class_Globals
 	Public tmrTimerCallSub As sadCallSubUtils
 	Public PowerCtrl As PowerControl : 
 	Public Const TAKE_OVER_POWER As Boolean = True
-	'-------------------------------------------
 	
+	'--- splash screen crap
+	Private ivSpash As ImageView, pnlSplash As Panel,lblSplash As Label
+	
+	'-------------------------------------------
 	Public WeatherData As clsWeatherData
 	Public useMetric,useCel As Boolean
 	
@@ -72,6 +75,7 @@ Sub Class_Globals
 	Private pnlPicAlbumFullScrn As B4XView
 	'Private imgPicAlbumFullScrn As sadImageSlider
 	Private imgPicAlbumFullScrn As lmB4XImageViewX
+	
 End Sub
 
 Public Sub Initialize
@@ -114,6 +118,9 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 	Root.LoadLayout("MainPage")
 	Toast.Initialize(Root) 
 	dUtils.Initialize '--- DDD desgner utils
+	
+
+	LoadSplash	
 	oClock.Initialize
 	
 	BuildGUI
@@ -186,6 +193,11 @@ End Sub
 #end region
 
 
+Public Sub HideSplash_StartUp
+	pnlSplash.Visible = False
+	pnlBG.Visible = True
+End Sub
+
 Public Sub Check4Update
 	#if debug
 	Log("processing Check4Update flag")
@@ -205,6 +217,17 @@ Private Sub StopAllServicesOnExit
 	StopService("httputils2service")
 	StopService("Starter")
 	
+End Sub
+
+Private Sub LoadSplash
+	ivSpash.Bitmap = LoadBitmapResize(File.DirAssets, "splash.png", ivSpash.Width, ivSpash.Height,True)
+	pnlBG.Visible = False
+	pnlSplash.Visible = True
+	#if debug
+	tmrTimerCallSub.CallSubDelayedPlus(Me,"HideSplash_StartUp",1000)   '--- just a splash screen
+	#else
+	tmrTimerCallSub.CallSubDelayedPlus(Me,"HideSplash_StartUp",3500)   '--- just a splash screen
+	#End If
 End Sub
 
 Private Sub BuildGUI
@@ -395,6 +418,7 @@ End Sub
 #end region
 
 '==============================================================
+
 
 Private Sub btnAboutMe_Click
 	pnlSideMenu.SetVisibleAnimated(380, False)
@@ -803,5 +827,6 @@ Private Sub pnlBlankScreen_show(show_me As Boolean)
 End Sub
 
 #end region
+
 
 

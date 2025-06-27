@@ -44,18 +44,19 @@ File47=scrnconvweight.bal
 File48=setup_main.json
 File49=setup_pics.json
 File5=dividerh.png
-File50=tmr_go.png
-File51=tmr_pause.png
-File52=tmr_stop.png
-File53=viewappupdate.bal
-File54=viewPhotoItem.bal
-File55=viewroundslider.bal
-File56=viewSetupTimers.bal
-File57=viewSetupWeather.bal
-File58=viewWeatherCurrent.bal
-File59=viewWeatherForcast.bal
+File50=splash.png
+File51=tmr_go.png
+File52=tmr_pause.png
+File53=tmr_stop.png
+File54=viewappupdate.bal
+File55=viewPhotoItem.bal
+File56=viewroundslider.bal
+File57=viewSetupTimers.bal
+File58=viewSetupWeather.bal
+File59=viewWeatherCurrent.bal
 File6=dlg1stRun.bal
-File60=weatherAPI_codes.json
+File60=viewWeatherForcast.bal
+File61=weatherAPI_codes.json
 File7=dlgAbout.bal
 File8=dlgVolumeSettings.bal
 File9=home-icon.png
@@ -104,18 +105,19 @@ FileGroup47=Pages-Snapins-Views\Conversions
 FileGroup48=Pages-Snapins-Views\Home
 FileGroup49=Pages-Snapins-Views\PicViewer
 FileGroup5=Default Group
-FileGroup50=Pages-Snapins-Views\KitchenTimers
+FileGroup50=Default Group
 FileGroup51=Pages-Snapins-Views\KitchenTimers
 FileGroup52=Pages-Snapins-Views\KitchenTimers
-FileGroup53=Dialogs
-FileGroup54=Pages-Snapins-Views\PicViewer
-FileGroup55=CustomCtrlViews
-FileGroup56=Dialogs
-FileGroup57=Pages-Snapins-Views\Weather
+FileGroup53=Pages-Snapins-Views\KitchenTimers
+FileGroup54=Dialogs
+FileGroup55=Pages-Snapins-Views\PicViewer
+FileGroup56=CustomCtrlViews
+FileGroup57=Dialogs
 FileGroup58=Pages-Snapins-Views\Weather
 FileGroup59=Pages-Snapins-Views\Weather
 FileGroup6=Default Group
 FileGroup60=Pages-Snapins-Views\Weather
+FileGroup61=Pages-Snapins-Views\Weather
 FileGroup7=Dialogs
 FileGroup8=Dialogs
 FileGroup9=Default Group
@@ -211,15 +213,15 @@ Module68=|relative|..\Src\helpers\vol_timers
 Module7=|relative|..\Src\miscClasses\events_subscription\clsEvent
 Module8=|relative|..\Src\miscClasses\kitchenTimers\clsKAlarms
 Module9=|relative|..\Src\miscClasses\weather\clsWeatherData
-NumberOfFiles=60
+NumberOfFiles=61
 NumberOfLibraries=22
 NumberOfModules=68
 Version=12.5
 @EndOfDesignText@
 #Region  Project Attributes 
 	#ApplicationLabel: HomeCentral
-	#VersionCode: 13
-	#VersionName: 3.1.0a
+	#VersionCode: 14
+	#VersionName: 3.1.0b
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: landscape
 	#CanInstallToExternalStorage: False
@@ -488,3 +490,4 @@ Public Sub Start_ApkInstall(args() As String)
 End Sub
 
 #end region
+
