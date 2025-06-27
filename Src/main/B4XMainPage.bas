@@ -101,7 +101,7 @@ Public Sub Initialize
 	If ( File.Exists(xui.DefaultFolder,gblConst.FILE_AUTO_START_FLAG) ) Then
 		tmrTimerCallSub.CallSubDelayedPlus(Me,"Kill_StartAtBoot_Service",60000) '--- 1 minute
 	End If
-	tmrTimerCallSub.CallSubDelayedPlus(Me,"ShowVer",2300)
+	tmrTimerCallSub.CallSubDelayedPlus(Me,"ShowVer",4000)
 	Check4Update
 End Sub
 
@@ -636,7 +636,9 @@ Public Sub ResetScrn_SleepCounter
 	End If
 	
 	'--- is the pic album on?
-	Log(config.PicAlbumSetupData.IsInitialized)
+	#if debug
+	Log("pic album on:" & config.PicAlbumSetupData.IsInitialized)
+	#end if
 	If config.PicAlbumSetupData.IsInitialized And _
 						config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_PHOTO).As(Boolean) And _
 						oPageCurrent <> oPagePhoto Then
