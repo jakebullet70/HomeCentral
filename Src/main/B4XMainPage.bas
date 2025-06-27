@@ -101,7 +101,7 @@ Public Sub Initialize
 	If ( File.Exists(xui.DefaultFolder,gblConst.FILE_AUTO_START_FLAG) ) Then
 		tmrTimerCallSub.CallSubDelayedPlus(Me,"Kill_StartAtBoot_Service",60000) '--- 1 minute
 	End If
-	tmrTimerCallSub.CallSubDelayedPlus(Me,"ShowVer",4000)
+	
 	Check4Update
 End Sub
 
@@ -119,7 +119,6 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 	Toast.Initialize(Root) 
 	dUtils.Initialize '--- DDD desgner utils
 	
-
 	LoadSplash	
 	oClock.Initialize
 	
@@ -135,6 +134,8 @@ Private Sub B4XPage_Created(Root1 As B4XView)
 	
 	If config.Is1stRun Then 
 		CallSubDelayed(Me,"Show_1stRun")
+	Else
+		tmrTimerCallSub.CallSubDelayedPlus(Me,"ShowVer",4000)
 	End If
 	
 End Sub
