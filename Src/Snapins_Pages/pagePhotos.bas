@@ -31,6 +31,7 @@ Sub Class_Globals
 
 	Private AutoTextSizeLabel1 As AutoTextSizeLabel
 	Private btnFullScreen As B4XView
+	Private Const USE_SWIPE As String = "Swipe left or right to change photo"
 End Sub
 
 
@@ -76,7 +77,7 @@ Public Sub Set_focus()
 	
 End Sub
 Public Sub Lost_focus()
-	tmrPicShow.Enabled = False
+	TimerOnOff(False)
 	pnlMain.SetVisibleAnimated(500,False)
 	
 	'--- this will turn back on the pic album timer if needed.
@@ -107,12 +108,12 @@ Sub setRotationX(v As B4XView, Angle As Float)'ignore
 End Sub
 
 Private Sub tmrShow_Tick
-	tmrPicShow.Enabled = False
+	TimerOnOff(False)
 	img.NextImage
 	If IsFullScreen Then
 		imgFullScrn.Load(picPath, lstPics.Get(ndxFullScrn))
 	End If
-	tmrPicShow.Enabled = True
+	TimerOnOff(True)
 End Sub
 
 #if debug
@@ -151,7 +152,7 @@ End Sub
 Public Sub Stop_fullScrn
 	If IsFullScreen = False Then Return
 	FullScrn(False)
-	tmrPicShow.Enabled = False
+	TimerOnOff(False)
 End Sub
 
 
@@ -198,32 +199,29 @@ Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
 	'--- no valid path, do they want a rescan?
 	If AutoTextSizeLabel1.BaseLabel.Visible And Value <> "rs" Then Return
 	
-	Dim HasShowStarted As Boolean = tmrPicShow.Enabled
-	
 	Select Case Value
-		Case "n" '--- next
-			If HasShowStarted Then tmrPicShow.Enabled = False
-			img.NextImage
-			If HasShowStarted Then tmrPicShow.Enabled = True
-			
-		Case "p" '--- prev pic
-			If HasShowStarted Then tmrPicShow.Enabled = False
-			img.PrevImage
-			If HasShowStarted Then tmrPicShow.Enabled = True
+		Case "n","p" '--- next, prev
+			guiHelpers.Show_toast2(USE_SWIPE,2500)
 			
 		Case "ss" '--- start show
-			tmrPicShow.Enabled = Not (tmrPicShow.Enabled )
+			TimerOnOff(Not (tmrPicShow.Enabled))
 			If tmrPicShow.Enabled Then mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu if open
 						
 		Case "f" '--- full screen
 			FullScrn(True)
 			
 		Case "rs" '--- rescan pics  TODO!!!!!!  add to menu
+			Dim o As dlgThemedMsgBox : o.Initialize
+			Wait For (o.Show("Are you sure you want to rescan the photos folder?" ,"Question?","YES", "", "CANCEL")) Complete (i As Int)
+			If i = XUI.DialogResponse_Cancel Then
+				Return
+			End If
+			guiHelpers.Show_toast2("Scanning...",3500)
 			fileHelpers.SafeKill(XUI.DefaultFolder,gblConst.PIC_LIST_FILE)
 			InitNewListOfPics
 	
 	End Select
-	'mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu
+	mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu
 	Build_Side_Menu
 	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
 	Sleep(0)
@@ -319,7 +317,7 @@ Public Sub Start_full_scrn
 		Return
 	End If
 	ReadOptions
-	tmrPicShow.Enabled = True
+	TimerOnOff(True)
 	'Log("FS------------------>"& config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_START_IN_FULLSCREEN).As(Boolean))
 	If config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_START_IN_FULLSCREEN).As(Boolean) Then
 		FullScrn(True)
@@ -357,9 +355,9 @@ Private Sub ReadOptions
 	tmrPicShow.Initialize("tmrShow",TimeBetweenPics)
 	
 	If tmrPicShow.Enabled Then
-		tmrPicShow.Enabled = False
+		TimerOnOff(False)
 		Sleep(0)
-		tmrPicShow.Enabled = True
+		TimerOnOff(True)
 	End If
 	
 	Dim at As String = config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_TRANSITION)
@@ -372,5 +370,10 @@ End Sub
 Private Sub btnFullScreen_Click
 	If picPath = "" Then Return
 	FullScrn(True)
-	tmrPicShow.Enabled = True
+	TimerOnOff(True)
+End Sub
+
+Private Sub TimerOnOff(onOff As Boolean)
+	tmrPicShow.Enabled = onOff
+	img.tmrShowTimer = IIf(onOff,tmrPicShow,Null)
 End Sub
