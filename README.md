@@ -19,7 +19,7 @@ Status.
 Home Screen - Done  
 Weather Screen - Done  
 Kitchen Timers - Done  
-Picture Albumn - In testing    
+Picture Album - In testing    
 Cooking Conversion Calculator - Done   
 Calculator - Done   
 Home browser - Done
