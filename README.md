@@ -26,6 +26,7 @@ Home browser - Done
 
 TODO - Need to do some documentation. :)  
 A VERY big thanks to the guys and gals over in the [B4X](https://www.b4x.com/) forum.  
+Thanks to [Genymotion](https://www.genymotion.com/) for a great Android emulator!  
 Installing --> https://github.com/jakebullet70/HomeCentral/wiki/Installing  
  
  
