@@ -56,7 +56,7 @@ Sub Class_Globals
 	'-----------------------------------------
 	
 	'--- header crap -  menu buttons
-	Private pnlHeader As B4XView
+	Public pnlHeader As B4XView
 	Private imgSoundButton,imgMenuButton As lmB4XImageViewX
 	Public btnHdrTxt1 As B4XView
 	Public segTabMenu As ASSegmentedTab
@@ -88,7 +88,7 @@ Public Sub Initialize
 	sql = Main.kvs.oSql '<--- pointer so we can use the SQL engine in the KVS object
 	
 	Log("-------------------->  Runnung  <-----------------------")
-	'Main.kvs.DeleteAll 
+	'Main.kvs.DeleteAll '--- Dev stuff
 	config.Init
 	
 	clrTheme.Init(config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_THEME))
@@ -278,20 +278,10 @@ End Sub
 #region MAIN_MENU
 '--- header menu btn show menu - or not?
 Private Sub imgMenuButton_Click
-	'Log(pnlSideMenu.Left)
-	'Log(pnlSideMenu.Width)
-	#if debug
-	'Log("imgMenuButton_Click")
-	#end if
 	If pnlSideMenu.Visible = False Then
 		guiHelpers.AnimateB4xView("RIGHT",pnlSideMenu)
 	Else
 		pnlSideMenu.SetVisibleAnimated(380, False)
-'		pnlSideMenu.SetLayoutAnimated(190, 1065dip, pnlSideMenu.top, 1065dip+216dip, pnlSideMenu.Height)
-'		Sleep(190)
-'		pnlSideMenu.Visible = False
-'		pnlSideMenu.Left = 1065dip
-'		pnlSideMenu.width = 215dip
 	End If
 	Sleep(0)
 	If pnlSideMenu.Visible Then
@@ -831,5 +821,11 @@ End Sub
 
 #end region
 
-
+Private Sub ee
+		
+	'pnlSideMenu.width
+	'segTabMenu
+	btnHdrTxt1.Left = segTabMenu.mBase.Width
+	btnHdrTxt1.Width = pnlHeader.Width - pnlSideMenu.width
+End Sub
 

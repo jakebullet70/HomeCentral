@@ -16,7 +16,6 @@ Sub Process_Globals
 End Sub
 
 Public Sub Init()
-	
 End Sub
 
 
@@ -82,13 +81,18 @@ Public Sub BuildHeaderMenu(tb As ASSegmentedTab,CallBack As Object,Event As Stri
 		
 	Catch
 		Dim a As String = "Snapin file needs to be rebuilt!!!!!!!!!!!!!!!!!!!!!"
-		Log(a) : Log(a)
+		Log(a) ': Log(a)
 		ExitApplication
 	End Try
 	
 	tb.mBase.Width = (ttl * 70dip) + (ttl * 4dip)
 	tb.Base_Resize2
-
+	Sleep(0)
+	
+	'--- adjust the header text
+	B4XPages.MainPage.btnHdrTxt1.Left = B4XPages.MainPage.segTabMenu.mBase.Width
+	B4XPages.MainPage.btnHdrTxt1.Width = B4XPages.MainPage.pnlHeader.Width - (B4XPages.MainPage.segTabMenu.mBase.Width + 135dip)
+	
 End Sub
 
 
