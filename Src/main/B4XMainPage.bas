@@ -821,11 +821,3 @@ End Sub
 
 #end region
 
-Private Sub ee
-		
-	'pnlSideMenu.width
-	'segTabMenu
-	btnHdrTxt1.Left = segTabMenu.mBase.Width
-	btnHdrTxt1.Width = pnlHeader.Width - pnlSideMenu.width
-End Sub
-
