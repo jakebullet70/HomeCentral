@@ -28,7 +28,7 @@ Daily reminders - Researching
 TODO - Need to do some documentation. :)  
 A VERY big thanks to the guys and gals over in the [B4X](https://www.b4x.com/) forum.  
 Thanks to [Genymotion](https://www.genymotion.com/) for a great Android emulator!  
-Installing --> https://github.com/jakebullet70/HomeCentral/wiki/Installing  
+[Installing / Side load](https://github.com/jakebullet70/HomeCentral/wiki/Installing) FYI: I refuse to do the Google play store but you can find this app 3rd party APP stores.  
  
  
 ![20250505_081851](https://github.com/user-attachments/assets/bfc5f097-ffdf-4f28-8730-b27e7cdf358e)  
