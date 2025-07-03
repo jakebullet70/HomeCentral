@@ -16,7 +16,7 @@ Released! v3.0.0f May 5th 2025
 Why 3.0.0? This project started over 20 years ago and this is the 3rd release of it.  
 
 Status.  
-Home Screen - Done  
+[Home Screen](https://github.com/jakebullet70/HomeCentral/wiki/Tab-%E2%80%90-Home) - Done  
 Weather Screen - Done  
 Kitchen Timers - Done  
 Picture Album - Done    
