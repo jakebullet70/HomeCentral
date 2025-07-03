@@ -20,7 +20,7 @@
             "required": false
         },
         {
-            "title": "Start In Full Screen",
+            "title": "Start In Full Screen (Show)",
             "type": "Boolean",
             "key": "pc_fc",
             "required": false
