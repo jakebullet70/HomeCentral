@@ -23,6 +23,7 @@ Weather Screen - Done
 Cooking Conversion Calculator - Done   
 Calculator - Done   
 Home browser - Done
+Daily reminders - Researching  
 
 TODO - Need to do some documentation. :)  
 A VERY big thanks to the guys and gals over in the [B4X](https://www.b4x.com/) forum.  
