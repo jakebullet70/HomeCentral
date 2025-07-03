@@ -12,7 +12,7 @@ What is it? Touch screen app for the your home - kitchen. Reclaim old Android Ta
 supporting older Android tablet (Android 4.X) Device specs: Android 4.x and above, About a 7inch screen with a minimum resolution of 800x600. (Single core - 512Mb) 
 It is Free Software and released under the [GNU Affero General Public License V3](https://www.gnu.org/licenses/agpl-3.0.html). 
 
-Released! v3.0.0f May 5th 2025  
+Released! v3.1.0 July 3rd 2025  
 Why 3.0.0? This project started over 20 years ago and this is the 3rd release of it.  
 
 Status.  
