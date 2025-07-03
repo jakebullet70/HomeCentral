@@ -22,7 +22,7 @@ Weather Screen - Done
 [Picture Album](https://github.com/jakebullet70/HomeCentral/wiki/Tab-%E2%80%90-Photo-Album) - Done    
 Cooking Conversion Calculator - Done   
 Calculator - Done   
-Home browser - Done
+Home browser - Done  
 Daily reminders - Researching  
 
 TODO - Need to do some documentation. :)  
