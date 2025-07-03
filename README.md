@@ -18,8 +18,8 @@ Why 3.0.0? This project started over 20 years ago and this is the 3rd release of
 Status.  
 [Home Screen](https://github.com/jakebullet70/HomeCentral/wiki/Tab-%E2%80%90-Home) - Done  
 Weather Screen - Done  
-Kitchen Timers - Done  
-Picture Album - Done    
+[Kitchen Timers](https://github.com/jakebullet70/HomeCentral/wiki/Tab-%E2%80%90-Timers) - Done  
+[Picture Album](https://github.com/jakebullet70/HomeCentral/wiki/Tab-%E2%80%90-Photo-Album) - Done    
 Cooking Conversion Calculator - Done   
 Calculator - Done   
 Home browser - Done
