@@ -120,19 +120,17 @@ FileGroup9=Default Group
 Group=Main
 Library1=accessibility
 Library10=designerutils
-Library11=json
-Library12=phone
-Library13=randomaccessfile
-Library14=reflection
-Library15=runtimepermissions
-Library16=sql
-Library17=stringutils
-Library18=webviewextras2
-Library19=webviewsettings
+Library11=fileprovider
+Library12=json
+Library13=phone
+Library14=randomaccessfile
+Library15=reflection
+Library16=runtimepermissions
+Library17=sql
+Library18=stringutils
+Library19=xui
 Library2=audio
-Library20=xui
-Library21=xui views
-Library22=fileprovider
+Library20=xui views
 Library3=b4xpages
 Library4=b4xpreferencesdialog
 Library5=bctoast
@@ -210,14 +208,14 @@ Module7=|relative|..\Src\miscClasses\events_subscription\clsEvent
 Module8=|relative|..\Src\miscClasses\kitchenTimers\clsKAlarms
 Module9=|relative|..\Src\miscClasses\weather\clsWeatherData
 NumberOfFiles=59
-NumberOfLibraries=22
+NumberOfLibraries=20
 NumberOfModules=68
 Version=12.5
 @EndOfDesignText@
 #Region  Project Attributes 
 	#ApplicationLabel: HomeCentral
-	#VersionCode: 16
-	#VersionName: 3.1.0
+	#VersionCode: 17
+	#VersionName: 3.1.0a
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: landscape
 	#CanInstallToExternalStorage: False
