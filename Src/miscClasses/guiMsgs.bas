@@ -49,7 +49,7 @@ Public Sub BuildMainSetup() As Map
 End Sub
 
 
-Public Sub BuildPresets() As Map
+Public Sub BuildKitchenTimerPresets() As Map
 	Dim cursor As Cursor = kt.timers_get_all
 	Dim m As Map : m.Initialize
 	For i = 0 To cursor.RowCount - 1
