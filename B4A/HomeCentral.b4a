@@ -208,11 +208,12 @@ Module67=Starter
 Module68=|relative|..\Src\helpers\strHelpers
 Module69=|relative|..\Src\helpers\vol_timers
 Module7=|relative|..\Src\miscClasses\events_subscription\clsEvent
+Module70=|relative|..\Src\helpers\web
 Module8=|relative|..\Src\miscClasses\kitchenTimers\clsKAlarms
 Module9=|relative|..\Src\miscClasses\weather\clsWeatherData
 NumberOfFiles=60
 NumberOfLibraries=20
-NumberOfModules=69
+NumberOfModules=70
 Version=12.5
 @EndOfDesignText@
 #Region  Project Attributes 

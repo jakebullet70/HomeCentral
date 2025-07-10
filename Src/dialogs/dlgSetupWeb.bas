@@ -6,9 +6,9 @@ Version=10
 @EndOfDesignText@
 ' Author:  sadLogic/JakeBullet
 #Region VERSIONS 
-' V.2.0	Apr-2025
+' converted, July 2025
 '
-' V. 1.0 derevied from eHome code - 	Dec/21/2015
+' V. 1.0 derevied from old eHome code - 	Dec/21/2015
 #End Region
 
 
@@ -18,27 +18,20 @@ Sub Class_Globals
 	Private dlg As B4XDialog
 	Private IME As IME
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
-	Private btnRemove,btnAdd As B4XView
-	
-	'Private pnlCont,pnlBtns As B4XView
+	Private btnRemove,btnAdd,btnEdit As B4XView
+
 	Private dlgHelper As sadB4XDialogHelper
 	Private CurrentRecID As Int
 	
-	Private cboSounds As B4XComboBox
-	Private btnTest As Button
-	
-	'Private Label3,Label1,Label2,Label4 As Label
-	Private Label3,Label1 As Label
-	Private lblTmrVol As Label
-	Private sbTimerVol As B4XSeekBar
-	Private pnlTimerVol As Panel
-	Private lstPresets As ListView
-	Private pnlVolSnd,pnlAddNew As Panel
+	Private pnlAddNew As Panel
 	
 	Private txtDescription,txtAddr As B4XFloatTextField
 	Private btnNewSave,btnNewCancel As Button
 	Private oLV_helper As listViewSelector
 	
+	Private chkHomePage As CheckBox
+	Private lstAddr As ListView
+	Private OnLstItemMove As Boolean = False
 End Sub
 
 
@@ -49,93 +42,80 @@ End Sub
 
 
 Public Sub Show()
+	
+	web.InitSql
 		
 	dlg.Initialize((B4XPages.MainPage.Root))
 	dlgHelper.Initialize(dlg)
 	
 	Dim p As B4XView = XUI.CreatePanel("")
-	p.SetLayoutAnimated(0, 0, 0,  550dip,  480dip)
+	p.SetLayoutAnimated(0, 0, 0, 550dip,300dip)
 	p.LoadLayout("viewSetupWeb")
 	
 	'Dim j As DSE_Layout : j.Initialize
 	'j.SpreadVertically2(pnlBtns,50dip,6dip,"left")
-	guiHelpers.SkinButton(Array As Button(btnAdd,btnRemove,btnTest,btnNewCancel,btnNewSave))
-	guiHelpers.ReSkinB4XComboBox(Array As B4XComboBox( cboSounds))
-	guiHelpers.SetTextColor(Array As B4XView(Label1,Label3,lblTmrVol),clrTheme.txtNormal)
-	guiHelpers.ReSkinB4XSeekBar(Array As B4XSeekBar(sbTimerVol))
-	guiHelpers.SetPanelsBorder(Array As B4XView(pnlTimerVol),clrTheme.txtAccent)
-	guiHelpers.ResizeText("100%",lblTmrVol)
+	guiHelpers.SkinButton(Array As Button(btnAdd,btnRemove,btnNewCancel,btnNewSave,btnEdit))
 	guiHelpers.SetTextColorB4XFloatTextField(Array As B4XFloatTextField(txtDescription,txtAddr))
 	
+	guiHelpers.SetCBDrawable(chkHomePage, clrTheme.txtNormal, 1,clrTheme.txtNormal, Chr(8730), Colors.LightGray, 32dip, 2dip)
+	chkHomePage.TextColor = clrTheme.txtNormal
+	guiHelpers.SetPanelsBorder(Array As B4XView(pnlAddNew),clrTheme.txtAccent)
+	pnlAddNew.Color = clrTheme.Background2
 	
-	sbTimerVol.Value 	= Main.kvs.Get(gblConst.INI_TIMERS_ALARM_VOLUME)
-	sbTimerVol_ValueChanged(sbTimerVol.Value)
+	'sbTimerVol.Value 	= Main.kvs.Get(gblConst.INI_TIMERS_ALARM_VOLUME)
+	'sbTimerVol_ValueChanged(sbTimerVol.Value)
 	
 	IME.Initialize("")
 	
-	oLV_helper.Initialize(lstPresets)
+	oLV_helper.Initialize(lstAddr)
 	LoadData
 		
 	dlgHelper.ThemeDialogForm("Timers Setup")
-	Dim rs As ResumableSub = dlg.ShowCustom(p, "SAVE", "", "CLOSE")
+	Dim rs As ResumableSub = dlg.ShowCustom(p, "", "", "CLOSE")
 	dlgHelper.ThemeDialogBtnsResize
 	dlgHelper.NoCloseOn2ndDialog
-	btnTest.BringToFront
+	'btnTest.BringToFront
 		
 	Wait For (rs) Complete (Result As Int)
-	If Result = XUI.DialogResponse_Positive Then
-		SaveData
-	End If
-	
+	CallSubDelayed(mpage.oPageCurrent,"Build_Side_Menu")
+		
 End Sub
 
 
 Private Sub LoadData()
-	vol_timers.SelectItemInCBO(cboSounds,Main.kvs.Get(gblConst.INI_TIMERS_ALARM_FILE))
 	LoadGrid
 End Sub
 
 Private Sub LoadGrid
-	lstPresets.Clear
-	Dim cursor As Cursor = kt.timers_get_all
+	lstAddr.Clear
+	Dim cursor As Cursor = web.targets_get_all
 	For i = 0 To cursor.RowCount - 1
 		cursor.Position = i
-		lstPresets.AddSingleLine2(cursor.GetString("time") & "-" & cursor.GetString("description"),cursor.GetString("id"))
+		lstAddr.AddSingleLine2(cursor.GetString("description") & "-" & cursor.GetString("addr"),cursor.GetString("id"))
 	Next
 	
-	oLV_helper.	ProgrammaticallyClickAndHighlight(0)
+	oLV_helper.ProgrammaticallyClickAndHighlight(0)
 	
 End Sub
 
 
-Private Sub SaveData()
-	vol_timers.SaveTimerVolume(cboSounds.SelectedItem,sbTimerVol.Value)
-	CallSubDelayed(mpage.oPageCurrent,"Build_Side_Menu")
-End Sub
-
-
-Private Sub btnTest_Click
-	vol_timers.PlaySound(sbTimerVol.Value,vol_timers.BuildAlarmFile(cboSounds.SelectedItem))
-End Sub
-
-
-Private Sub cboSounds_SelectedIndexChanged (Index As Int)
-End Sub
-
-Private Sub sbTimerVol_ValueChanged (Value As Int)
-	lblTmrVol.Text = Value & "%"
-End Sub
-
-
-Sub lstPresets_ItemClick (Position As Int, Value As Object)
-	oLV_helper.ItemClick (Position , Value )
+Sub lstAddr_ItemClick (Position As Int, Value As Object)
+	OnLstItemMove = True
+	oLV_helper.ItemClick(Position , Value )
 	CurrentRecID = Value
+	chkHomePage.Checked = web.targets_is_home_page(CurrentRecID)
+	Sleep(0)
+	OnLstItemMove = False
 End Sub
 
 
 Private Sub btnRemove_Click
 	
-	If lstPresets.Size = 1 Then
+	' if deleting entry is the default home page then do?
+	
+	' add note to wiki on web page - Android 4 not supporting modern SSL
+	
+	If lstAddr.Size = 1 Then
 		guiHelpers.Show_toast("Cannot delete last entry")
 		Return
 	End If
@@ -146,7 +126,7 @@ Private Sub btnRemove_Click
 		Return
 	End If
 	
-	kt.timers_delete(CurrentRecID)
+	web.targets_delete(CurrentRecID)   
 	guiHelpers.Show_toast("Entry deleted")
 	LoadGrid
 	
@@ -155,6 +135,7 @@ End Sub
 Private Sub btnAdd_Click
 	ShowAddNew(True)
 	txtDescription.Text = "" : txtAddr.Text = ""
+	chkHomePage.Checked = False
 	txtAddr.RequestFocusAndShowKeyboard
 End Sub
 
@@ -178,8 +159,10 @@ Private Sub btnSave_Click
 		Return
 	End If
 	ShowAddNew(False)
+	
+	
+	web.targets_insert_new(txtDescription.Text,txtAddr.Text,False)
 	guiHelpers.Show_toast("Saved")
-	'kt.timers_insert_new(txtDescription.Text.Trim,)   TODO
 	LoadGrid
 	
 End Sub
@@ -192,14 +175,14 @@ End Sub
 
 Private Sub ShowAddNew(ShowMe As Boolean)
 	pnlAddNew.Visible = ShowMe 
-	pnlVolSnd.Visible = Not (ShowMe)
-	guiHelpers.EnableDisableViews(Array As B4XView(btnAdd,btnRemove,lstPresets),pnlVolSnd.Visible)
+	guiHelpers.EnableDisableViews( _
+			Array As B4XView(btnAdd,btnRemove,btnEdit),Not (pnlAddNew.Visible))
+	guiHelpers.SetVisible( _
+			Array As B4XView(lstAddr,chkHomePage),Not (pnlAddNew.Visible))
 	If ShowMe Then
-		pnlVolSnd.SendToBack
 		pnlAddNew.BringToFront
 		CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_ON)
 	Else
-		pnlVolSnd.BringToFront
 		pnlAddNew.SendToBack
 		CallSub2(Main,"Dim_ActionBar",gblConst.ACTIONBAR_OFF)
 	End If
@@ -232,3 +215,21 @@ End Sub
 '}
 '#End If
 '#End If
+
+
+Private Sub chkHomePage_CheckedChange(Checked As Boolean)
+	If OnLstItemMove Then Return
+	If lstAddr.Size = 1 Then
+		guiHelpers.Show_toast("Cannot change the last entry")
+		chkHomePage.Checked = True
+		Return
+	End If
+	web.targets_clear_home_page
+	web.targets_set_home_page(CurrentRecID)
+End Sub
+
+Private Sub btnEdit_Click
+	
+End Sub
+
+

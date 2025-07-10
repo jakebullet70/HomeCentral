@@ -36,7 +36,9 @@ Public Sub Initialize(p As B4XView)
 	pnlMain.LoadLayout("pageWebBase")
 	
 	guiHelpers.SkinButton(Array As Button(btnMoveB,btnMoveF,btnMoveH,btnMoveR))
-	Get_homepage
+	
+	web.InitSql
+	Get_homepage ' TODO!!!!!!!!!!!
 		
 	guiHelpers.ResizeText(Chr(0xE88A),btnMoveH)
 	btnMoveH.TextSize = btnMoveH.TextSize - IIf(guiHelpers.gScreenSizeAprox > 7.5,22,14)
