@@ -24,10 +24,11 @@ Sub Class_Globals
 	Private QuietExitNow As Short = 0
 	
 	Public sql As SQL
+	Public ExtApps As ExternalAppCtrl
 	Public isInterNetConnected As Boolean = True
 	Public EventGbl As EventController
 	Public tmrTimerCallSub As sadCallSubUtils
-	Public PowerCtrl As PowerControl : 
+	Public PowerCtrl As PowerControl
 	Public Const TAKE_OVER_POWER As Boolean = True
 	
 	'--- splash screen crap
@@ -102,6 +103,7 @@ Public Sub Initialize
 		tmrTimerCallSub.CallSubDelayedPlus(Me,"Kill_StartAtBoot_Service",60000) '--- 1 minute
 	End If
 	
+	ExtApps.Initialize
 	Check4Update
 End Sub
 
@@ -512,6 +514,8 @@ Private Sub SetupMainMenu_Event(t As String,o As Object)
 			Dim o5 As dlgSetupPics 
 			o5.Initialize(PrefDlg)
 			o5.Show
+		Case "as"
+			ExtApps.Run_AndroidSettings
 		Case Else
 			
 	End Select
