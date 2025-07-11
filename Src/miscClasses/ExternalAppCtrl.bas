@@ -17,6 +17,33 @@ End Sub
 
 Public Sub Initialize
 	oSQL = B4XPages.MainPage.sql
+	
+	oSQL = B4XPages.MainPage.sql
+'	Try
+'		oSQL.ExecNonQuery($"DROP TABLE web_targets"$)
+'	Catch
+'		Log(LastException)
+'	End Try
+	oSQL.ExecNonQuery($"CREATE TABLE IF NOT EXISTS "user_menus" (
+		"id" INTEGER,
+		"short_desc" TEXT,
+		"package_name" TEXT, 
+		"num" TEXT, 
+		PRIMARY KEY("id" AUTOINCREMENT));"$)
+	
+'	Dim count As Int = oSQL.ExecQuerySingleResult($"SELECT COUNT(*) FROM user_menus"$)
+'	If count = 0 Then
+'		oSQL.ExecNonQuery($"CREATE INDEX "ndx_desc_web" ON "user_menus" ("description");"$)
+'		'--- this will update older installs or just seed the table
+'		'Dim s As String =
+'		Main.kvs.Remove(gblConst.INI_WEB_HOME)
+'		targets_insert_new("Home Page", _
+'				Main.kvs.GetDefault(gblConst.INI_WEB_HOME,"http://sadlogic.com"),True)
+'	End If
+	#if debug
+	Log("created web setup table")
+	#End If
+	
 End Sub
 
 
