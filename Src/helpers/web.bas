@@ -55,11 +55,11 @@ End Sub
 
 
 
-Public Sub targets_is_home_page(id As Int) As Boolean
-	Return IIf( _
-		oSQL.ExecQuerySingleResult("SELECT home_page FROM web_targets WHERE id=" & id)="1", _
-		True,False)
-End Sub
+'Public Sub targets_is_home_page(id As Int) As Boolean
+'	Return IIf( _
+'		oSQL.ExecQuerySingleResult("SELECT home_page FROM web_targets WHERE id=" & id)="1", _
+'		True,False)
+'End Sub
 
 
 Public Sub targets_clear_home_page
@@ -77,6 +77,12 @@ Public Sub targets_insert_new(desc As String, address As String,home_page As Boo
 	oSQL.ExecNonQuery2($"INSERT INTO web_targets 
 						("description","addr",home_page) VALUES (?,?,?);"$, _
 						Array As String(desc,address,IIf(home_page,"1","")))
+End Sub
+
+
+Public Sub targets_update(desc As String, address As String, recid As Int)
+	oSQL.ExecNonQuery2($"UPDATE "web_targets" SET description = ?,addr = ? WHERE id = ?;"$, _
+						Array As String(desc,address,recid))
 End Sub
 
 

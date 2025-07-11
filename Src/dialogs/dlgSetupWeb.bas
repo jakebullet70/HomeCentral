@@ -7,8 +7,11 @@ Version=10
 ' Author:  sadLogic/JakeBullet
 #Region VERSIONS 
 ' converted, July 2025
-'
+' Its ugly, thats what happens when you only get an hour or so a day to work on it
+' and then no time for a week, Forget what the heck you where doing and why...
+' So we are at the pomt of JUST MAKE IT WORK!
 ' V. 1.0 derevied from old eHome code - 	Dec/21/2015
+' 
 #End Region
 
 
@@ -22,6 +25,8 @@ Sub Class_Globals
 
 	Private dlgHelper As sadB4XDialogHelper
 	Private CurrentRecID As Int
+	'Private lstNdx As Int
+	Private CurrentTxtDesc, CurrentTxtAddr As String
 	
 	Private pnlAddNew As Panel
 	
@@ -32,6 +37,7 @@ Sub Class_Globals
 	Private chkHomePage As CheckBox
 	Private lstAddr As ListView
 	Private OnLstItemMove As Boolean = False
+	Private isEditing As Boolean = False
 End Sub
 
 
@@ -91,7 +97,7 @@ Private Sub LoadGrid
 	Dim cursor As Cursor = web.targets_get_all
 	For i = 0 To cursor.RowCount - 1
 		cursor.Position = i
-		lstAddr.AddSingleLine2(cursor.GetString("description") & "-" & cursor.GetString("addr"),cursor.GetString("id"))
+		lstAddr.AddSingleLine2(cursor.GetString("description") & " <-> " & cursor.GetString("addr"),cursor.GetString("id"))
 	Next
 	
 	oLV_helper.ProgrammaticallyClickAndHighlight(0)
@@ -101,9 +107,16 @@ End Sub
 
 Sub lstAddr_ItemClick (Position As Int, Value As Object)
 	OnLstItemMove = True
-	oLV_helper.ItemClick(Position , Value )
+	oLV_helper.ItemClick(Position ,Value)
+	
 	CurrentRecID = Value
-	chkHomePage.Checked = web.targets_is_home_page(CurrentRecID)
+	'lstNdx = Position
+	
+	Dim c As Cursor = Main.kvs.oSQL.ExecQuery("SELECT * FROM web_targets WHERE id=" & CurrentRecID)
+	c.Position = 0
+	CurrentTxtDesc = c.GetString("description")
+	CurrentTxtAddr = c.GetString("addr")
+	chkHomePage.Checked = IIf(c.GetString("home_page")="1",True,False)
 	Sleep(0)
 	OnLstItemMove = False
 End Sub
@@ -133,7 +146,7 @@ Private Sub btnRemove_Click
 End Sub
 
 Private Sub btnAdd_Click
-	ShowAddNew(True)
+	ShowAddNewEdit(True)
 	txtDescription.Text = "" : txtAddr.Text = ""
 	chkHomePage.Checked = False
 	txtAddr.RequestFocusAndShowKeyboard
@@ -141,9 +154,19 @@ End Sub
 
 Private Sub btnCancel_Click
 	'--- cancel add  new timer preset
-	ShowAddNew(False)
+	ShowAddNewEdit(False)
 	IME.HideKeyboard
 End Sub
+
+
+Private Sub btnEdit_Click
+	isEditing = True
+	ShowAddNewEdit(True)
+	txtDescription.Text = CurrentTxtDesc
+	txtAddr.Text = CurrentTxtAddr
+	txtAddr.RequestFocusAndShowKeyboard
+End Sub
+
 
 Private Sub btnSave_Click
 	'--- add  new timer
@@ -158,12 +181,17 @@ Private Sub btnSave_Click
 		ShowErrMsg("Description is not valid",txtDescription)
 		Return
 	End If
-	ShowAddNew(False)
+	ShowAddNewEdit(False)
 	
+	If isEditing Then
+		web.targets_update(txtDescription.Text,txtAddr.Text,CurrentRecID)
+	Else
+		web.targets_insert_new(txtDescription.Text,txtAddr.Text,False)
+	End If
 	
-	web.targets_insert_new(txtDescription.Text,txtAddr.Text,False)
 	guiHelpers.Show_toast("Saved")
 	LoadGrid
+	isEditing = False
 	
 End Sub
 
@@ -173,7 +201,7 @@ Private Sub ShowErrMsg(txt As String,o As B4XFloatTextField)
 	o.RequestFocusAndShowKeyboard
 End Sub
 
-Private Sub ShowAddNew(ShowMe As Boolean)
+Private Sub ShowAddNewEdit(ShowMe As Boolean)
 	pnlAddNew.Visible = ShowMe 
 	guiHelpers.EnableDisableViews( _
 			Array As B4XView(btnAdd,btnRemove,btnEdit),Not (pnlAddNew.Visible))
@@ -224,12 +252,15 @@ Private Sub chkHomePage_CheckedChange(Checked As Boolean)
 		chkHomePage.Checked = True
 		Return
 	End If
+	
+	If Not(Checked) = True Then
+		'=== need to assign another record as home page, just cannot turn it off
+		chkHomePage.Checked = True
+		Return
+	End If
+	
 	web.targets_clear_home_page
 	web.targets_set_home_page(CurrentRecID)
-End Sub
-
-Private Sub btnEdit_Click
-	
 End Sub
 
 
