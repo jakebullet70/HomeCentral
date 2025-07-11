@@ -7,7 +7,7 @@ Version=9.5
 ' Author:  sadLogic/JakeBullet
 #Region VERSIONS 
 ' July/2025
-'    Support code for web snpin
+'    Support code for web snapin
 '
 #End Region
 'Static code module
@@ -61,14 +61,17 @@ Public Sub targets_is_home_page(id As Int) As Boolean
 		True,False)
 End Sub
 
+
 Public Sub targets_clear_home_page
 	'--- its a small table, not like there will be a performance issue
 	oSQL.ExecNonQuery($"UPDATE web_targets SET home_page = "";"$)
 End Sub
 
+
 Public Sub targets_set_home_page(id As Int)
-	oSQL.ExecNonQuery2($"UPDATE web_targets SET home_page = "1" WHERE id = ?;"$,Array(id))
+	oSQL.ExecNonQuery($"UPDATE web_targets SET home_page = "1" WHERE id="$ & id)
 End Sub
+
 
 Public Sub targets_insert_new(desc As String, address As String,home_page As Boolean)
 	oSQL.ExecNonQuery2($"INSERT INTO web_targets 
@@ -76,9 +79,11 @@ Public Sub targets_insert_new(desc As String, address As String,home_page As Boo
 						Array As String(desc,address,IIf(home_page,"1","")))
 End Sub
 
+
 Public Sub targets_delete(id As String)
 	oSQL.ExecNonQuery("DELETE FROM web_targets WHERE id=" & id)
 End Sub
+
 
 Public Sub targets_get_all() As Cursor
 	Return oSQL.ExecQuery("SELECT * FROM web_targets ORDER BY description")
