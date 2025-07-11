@@ -248,13 +248,13 @@ End Sub
 Private Sub chkHomePage_CheckedChange(Checked As Boolean)
 	If OnLstItemMove Then Return
 	If lstAddr.Size = 1 Then
-		guiHelpers.Show_toast("Cannot change the last entry")
+		guiHelpers.Show_toast("Cannot change the last item")
 		chkHomePage.Checked = True
 		Return
 	End If
 	
 	If Not(Checked) = True Then
-		'=== need to assign another record as home page, just cannot turn it off
+		guiHelpers.Show_toast("Cannot change, assign a new item as home page first")
 		chkHomePage.Checked = True
 		Return
 	End If
