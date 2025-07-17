@@ -90,16 +90,37 @@ End Sub
 '=============================================================================================
 '=============================================================================================
 
-Private Sub Build_Side_Menu
-	Menus.BuildSideMenu(Array As String(""),Array As String(""))
+#Region SIDE_MENU
+
+Private Sub SideMenu_ItemClick (Index As Int, Value As Object)
+	CallSubDelayed(mpage,"ResetScrn_SleepCounter")
+	Load_page(Value)
+	mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu
 End Sub
+Public Sub Build_Side_Menu
+		
+	'Menus.BuildSideMenu(Array As String(""),Array As String(""))	
+	Dim l1 As List : l1.Initialize
+	Dim l2 As List : l2.Initialize
+	Dim c As Cursor = web.targets_get_all
+	For i = 0 To c.RowCount - 1
+		c.Position = i
+		l1.Add(c.GetString("description"))
+		l2.Add(c.GetString("addr"))
+	Next
+		
+	Menus.BuildSideMenu(l1,l2)
+	
+End Sub
+#End Region
 
 Private Sub Get_homepage
-	homePage = Main.kvs.Get(gblConst.INI_WEB_HOME)
-	If strHelpers.IsNullOrEmpty(homePage) Then
-		Main.kvs.Put(gblConst.INI_WEB_HOME,"http://sadlogic.com")
-		homePage = Main.kvs.Get(gblConst.INI_WEB_HOME)
-	End If
+	homePage = Main.kvs.oSql.ExecQuerySingleResult("SELECT addr FROM web_targets WHERE home_page='1'")
+	'homePage = Main.kvs.Get(gblConst.INI_WEB_HOME)
+	'If strHelpers.IsNullOrEmpty(homePage) Then
+	'	Main.kvs.Put(gblConst.INI_WEB_HOME,"http://sadlogic.com")
+	'	homePage = Main.kvs.Get(gblConst.INI_WEB_HOME)
+	'End If
 End Sub
 
 Private Sub Load_page(page As String)
