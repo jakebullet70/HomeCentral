@@ -56,6 +56,8 @@ Private Sub ConfigMe()
 		Main.kvs.Put(gblConst.INI_TIMERS_ALARM_VOLUME,85)
 		Main.kvs.Put(gblConst.INI_TIMERS_ALARM_FILE,"ktimers_beep01.ogg")
 		
+		'--- KEEP!!! in V3.2.0 this is  used to seed the new table and also can be used in a upgrade
+		'--- the seed-init method removes it after reading it 
 		Main.kvs.Put(gblConst.INI_WEB_HOME,"http://sadlogic.com")
 
 		'--- copy lic file, not like anyone will ever read it or even care.			

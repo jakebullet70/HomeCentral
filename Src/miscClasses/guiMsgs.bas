@@ -35,11 +35,14 @@ Public Sub BuildMainSetup() As Map
 	m.Put(cs.Initialize.Append(" ").Typeface(Typeface.MATERIALICONS).VerticalAlign(6dip).Append(Chr(0xE425)). _
 				 Typeface(Typeface.DEFAULT).Append("   Timers Settings").PopAll,"tm")				 
 	
-	m.Put(cs.Initialize.Append(" ").Typeface(Typeface.MATERIALICONS).VerticalAlign(6dip).Append(Chr(0xE894)). _
+	m.Put(cs.Initialize.Append(" ").Typeface(Typeface.FONTAWESOME).VerticalAlign(6dip).Append(Chr(0xF03E)). _
 				 Typeface(Typeface.DEFAULT).Append("   Picture Album Settings").PopAll,"pic")				 
 
 	m.Put(cs.Initialize.Append(" ").Typeface(Typeface.MATERIALICONS).VerticalAlign(6dip).Append(Chr(0xE894)). _
 				 Typeface(Typeface.DEFAULT).Append("   Web Page Settings").PopAll,"wb")				 
+	
+	m.Put(cs.Initialize.Append(" ").Typeface(Typeface.MATERIALICONS).VerticalAlign(6dip).Append(Chr(0xE859)). _
+				 Typeface(Typeface.DEFAULT).Append("   Android Settings").PopAll,"as")				 
 				 
 	m.Put(cs.Initialize.Append(" ").Typeface(Typeface.MATERIALICONS).VerticalAlign(6dip).Append(Chr(0xE05E)). _
 				 Typeface(Typeface.DEFAULT).Append("   Check For Update").PopAll,"up")				 
@@ -49,7 +52,7 @@ Public Sub BuildMainSetup() As Map
 End Sub
 
 
-Public Sub BuildPresets() As Map
+Public Sub BuildKitchenTimerPresets() As Map
 	Dim cursor As Cursor = kt.timers_get_all
 	Dim m As Map : m.Initialize
 	For i = 0 To cursor.RowCount - 1

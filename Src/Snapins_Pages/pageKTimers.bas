@@ -537,7 +537,7 @@ Private Sub Show_Presets
 	
 	o1.Initialize("Timer Presets",Me,"Presets_Event",mpage.Dialog)
 	o1.IsMenu = True
-	o1.Show(440dip,430dip,gui.BuildPresets())
+	o1.Show(440dip,430dip,gui.BuildKitchenTimerPresets())
 	'mpage.pnlSideMenuTouchOverlay_show(False)
 	
 End Sub
