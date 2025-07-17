@@ -10,6 +10,7 @@ Screens:
 - Conversion  
 - Kitchen timers  
 - Web View  
+- Photo Album  
 
 Includes different color themes to match your home decor.  
 
