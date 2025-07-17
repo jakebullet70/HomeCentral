@@ -8,9 +8,10 @@ Version=10
 #Region VERSIONS 
 ' converted, July 2025
 ' Its ugly, thats what happens when you only get an hour or so a day to work on it
-' and then no time for a week, Forget what the heck you where doing and why...
-' So we are at the pomt of JUST MAKE IT WORK!
-' V. 1.0 derevied from old eHome code - 	Dec/21/2015
+' and then no time for a week, Forget what the heck you where doing and why... Toss in
+' a few shells, drones, no water or electricity, and like 10 air raid alarms per day...
+' So we are at the point of JUST MAKE IT WORK!
+' V. 1.0 derevied from old eHome code - From Around Dec/2015
 ' 
 #End Region
 
@@ -55,7 +56,7 @@ Public Sub Show()
 	dlgHelper.Initialize(dlg)
 	
 	Dim p As B4XView = XUI.CreatePanel("")
-	p.SetLayoutAnimated(0, 0, 0, 550dip,300dip)
+	p.SetLayoutAnimated(0, 0, 0, 560dip,310dip)
 	p.LoadLayout("viewSetupWeb")
 	
 	'Dim j As DSE_Layout : j.Initialize
@@ -76,7 +77,7 @@ Public Sub Show()
 	oLV_helper.Initialize(lstAddr)
 	LoadData
 		
-	dlgHelper.ThemeDialogForm("Timers Setup")
+	dlgHelper.ThemeDialogForm("Web View Setup")
 	Dim rs As ResumableSub = dlg.ShowCustom(p, "", "", "CLOSE")
 	dlgHelper.ThemeDialogBtnsResize
 	dlgHelper.NoCloseOn2ndDialog
@@ -246,7 +247,7 @@ End Sub
 
 
 Private Sub chkHomePage_CheckedChange(Checked As Boolean)
-	If OnLstItemMove Then Return
+	If OnLstItemMove Or pnlAddNew.Visible Then Return
 	If lstAddr.Size = 1 Then
 		guiHelpers.Show_toast("Cannot change the last item")
 		chkHomePage.Checked = True
