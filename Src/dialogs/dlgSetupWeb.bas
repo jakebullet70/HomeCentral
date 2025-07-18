@@ -95,10 +95,10 @@ End Sub
 
 Private Sub LoadGrid
 	lstAddr.Clear
-	Dim cursor As Cursor = web.targets_get_all
-	For i = 0 To cursor.RowCount - 1
-		cursor.Position = i
-		lstAddr.AddSingleLine2(cursor.GetString("description") & " <-> " & cursor.GetString("addr"),cursor.GetString("id"))
+	Dim cur As Cursor = web.targets_get_all
+	For i = 0 To cur.RowCount - 1
+		cur.Position = i
+		lstAddr.AddSingleLine2(cur.GetString("description") & " <-> " & cur.GetString("addr"),cur.GetString("id"))
 	Next
 	
 	oLV_helper.ProgrammaticallyClickAndHighlight(0)
@@ -140,7 +140,8 @@ Private Sub btnRemove_Click
 		Return
 	End If
 	
-	web.targets_delete(CurrentRecID)   
+	'web.targets_delete(CurrentRecID)   
+	web.oSQL.ExecNonQuery("DELETE FROM web_targets WHERE id=" & CurrentRecID)
 	guiHelpers.Show_toast("Entry deleted")
 	LoadGrid
 	
@@ -260,8 +261,10 @@ Private Sub chkHomePage_CheckedChange(Checked As Boolean)
 		Return
 	End If
 	
-	web.targets_clear_home_page
-	web.targets_set_home_page(CurrentRecID)
+	'web.targets_clear_home_page
+	'web.targets_set_home_page(CurrentRecID)
+	web.oSQL.ExecNonQuery($"UPDATE web_targets SET home_page = "";"$)
+	web.oSQL.ExecNonQuery($"UPDATE web_targets SET home_page = "1" WHERE id="$ & CurrentRecID)
 End Sub
 
 
