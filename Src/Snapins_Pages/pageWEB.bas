@@ -116,11 +116,6 @@ End Sub
 
 Private Sub Get_homepage
 	homePage = Main.kvs.oSql.ExecQuerySingleResult("SELECT addr FROM web_targets WHERE home_page='1'")
-	'homePage = Main.kvs.Get(gblConst.INI_WEB_HOME)
-	'If strHelpers.IsNullOrEmpty(homePage) Then
-	'	Main.kvs.Put(gblConst.INI_WEB_HOME,"http://sadlogic.com")
-	'	homePage = Main.kvs.Get(gblConst.INI_WEB_HOME)
-	'End If
 End Sub
 
 Private Sub Load_page(page As String)
