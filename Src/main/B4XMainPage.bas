@@ -521,11 +521,11 @@ Private Sub SetupMainMenu_Event(t As String,o As Object)
 	End Select
 End Sub
 
-Private Sub save_home_web_addr(txt As String)
-	' --- Dim o3 As dlgTextInput <-- callback from here
-	If strHelpers.IsNullOrEmpty(txt) Then Return
-	Main.kvs.Put(gblConst.INI_WEB_HOME,txt)
-End Sub
+'Private Sub save_home_web_addr(txt As String)
+'	' --- Dim o3 As dlgTextInput <-- callback from here
+'	If strHelpers.IsNullOrEmpty(txt) Then Return
+'	Main.kvs.Put(gblConst.INI_WEB_HOME,txt)
+'End Sub
 
 
 Public Sub Check4_Update
