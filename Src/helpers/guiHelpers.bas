@@ -571,3 +571,9 @@ Public Sub SkinTextEdit(et() As EditText ,brd_r As Int,NoPopupKB As Boolean)
 	
 End Sub
 
+Public Sub SetEllipsize(lbl As Label)
+	Dim jo As JavaObject = lbl
+	jo.RunMethod("setMaxLines", Array(2)) ' Limit to 2 lines
+	jo.RunMethod("setEllipsize", Array("END")) ' Add ellipsis at the end
+End Sub
+
