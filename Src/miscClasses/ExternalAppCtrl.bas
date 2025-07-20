@@ -12,15 +12,14 @@ Version=5.5
 
 Sub Class_Globals
 	Private xui As XUI
-	Private oSQL As SQL
+	Public oSQL As SQL
 End Sub
 
 Public Sub Initialize
 	oSQL = B4XPages.MainPage.sql
 	
-	oSQL = B4XPages.MainPage.sql
 '	Try
-'		oSQL.ExecNonQuery($"DROP TABLE web_targets"$)
+'		oSQL.ExecNonQuery($"DROP TABLE user_menus"$)
 '	Catch
 '		Log(LastException)
 '	End Try
@@ -51,10 +50,10 @@ End Sub
 
 Public Sub GenericIntentCall(strIntent As String) As Boolean
 	Try
-		Dim In As Intent
+		Dim in As Intent
 		Dim pm As PackageManager
-		In = pm.GetApplicationIntent(strIntent)
-		If In.IsInitialized Then
+		in = pm.GetApplicationIntent(strIntent)
+		If in.IsInitialized Then
 			StartActivity(In)
 		End If
 		'In.Flags = 268435456 'FLAG_ACTIVITY_NEW_TASK):
