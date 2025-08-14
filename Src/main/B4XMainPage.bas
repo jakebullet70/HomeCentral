@@ -492,7 +492,7 @@ End Sub
 
 Private Sub SetupMainMenu_Event(t As String,o As Object)
 	'---
-	'--- call the setup for the current showed paage
+	'--- call the setup for the current displayed page
 	'---
 	pnlSideMenuTouchOverlay_show(False)
 	CallSubDelayed(Me,"ResetScrn_SleepCounter")
