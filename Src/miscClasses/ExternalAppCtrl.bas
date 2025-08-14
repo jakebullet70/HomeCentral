@@ -32,7 +32,7 @@ Public Sub Initialize
 	
 '	Dim count As Int = oSQL.ExecQuerySingleResult($"SELECT COUNT(*) FROM user_menus"$)
 '	If count = 0 Then
-'		oSQL.ExecNonQuery($"CREATE INDEX "ndx_desc_web" ON "user_menus" ("description");"$)
+'		oSQL.ExecNonQuery($"CREATE INDEX "ndx_desc_userapps" ON "user_menus" ("description");"$)
 '		'--- this will update older installs or just seed the table
 '		'Dim s As String =
 '		Main.kvs.Remove(gblConst.INI_WEB_HOME)
@@ -40,7 +40,7 @@ Public Sub Initialize
 '				Main.kvs.GetDefault(gblConst.INI_WEB_HOME,"http://sadlogic.com"),True)
 '	End If
 	#if debug
-	Log("created web setup table")
+	Log("created userApps setup table")
 	#End If
 	
 End Sub
@@ -54,7 +54,7 @@ Public Sub GenericIntentCall(strIntent As String) As Boolean
 		Dim pm As PackageManager
 		in = pm.GetApplicationIntent(strIntent)
 		If in.IsInitialized Then
-			StartActivity(In)
+			StartActivity(in)
 		End If
 		'In.Flags = 268435456 'FLAG_ACTIVITY_NEW_TASK):
 		'StartActivity(In)

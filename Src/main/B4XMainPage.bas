@@ -515,7 +515,10 @@ Private Sub SetupMainMenu_Event(t As String,o As Object)
 			o5.Initialize(PrefDlg)
 			o5.Show
 		Case "as"
-			ExtApps.Run_AndroidSettings
+			'ExtApps.Run_AndroidSettings
+			Dim ou As dlgSetupExtApps :	ou.Initialize(Dialog)
+			ou.Show
+			
 		Case Else
 			
 	End Select
