@@ -16,13 +16,18 @@ Version=9.85
 #end region
 
 Sub Class_Globals
-	Public Root As B4XView, xui As XUI, Toast As BCToast
+	
 	Private dUtils As DDD
-	'--- globals -------
-	Public DebugLog As Boolean = False
 	Private PromptExitTwice As Boolean = False
 	Private QuietExitNow As Short = 0
+	'--- splash screen crap
+	Private ivSpash As ImageView, pnlSplash As Panel,lblSplash As Label
 	
+	
+	'--- globals -------
+	Public DebugLog As Boolean = False
+	Public Root As B4XView, xui As XUI, Toast As BCToast
+		
 	Public sql As SQL
 	Public ExtApps As ExternalAppCtrl
 	Public isInterNetConnected As Boolean = True
@@ -31,8 +36,6 @@ Sub Class_Globals
 	Public PowerCtrl As PowerControl
 	Public Const TAKE_OVER_POWER As Boolean = True
 	
-	'--- splash screen crap
-	Private ivSpash As ImageView, pnlSplash As Panel,lblSplash As Label
 	
 	'-------------------------------------------
 	Public WeatherData As clsWeatherData
@@ -73,8 +76,8 @@ Sub Class_Globals
 	Private pnlScrnOff,pnlSideMenuTouchOverlay As B4XView
 	Public mSysScrnOff As Int = 0 '--- when the system turns off the screen
 	
+	'--- pic album in full screen mode
 	Private pnlPicAlbumFullScrn As B4XView
-	'Private imgPicAlbumFullScrn As sadImageSlider
 	Private imgPicAlbumFullScrn As lmB4XImageViewX
 	
 End Sub
