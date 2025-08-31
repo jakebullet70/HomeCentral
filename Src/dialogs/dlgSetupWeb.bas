@@ -247,7 +247,12 @@ End Sub
 
 
 Private Sub chkHomePage_CheckedChange(Checked As Boolean)
-	If OnLstItemMove Or pnlAddNew.Visible Then Return
+	If OnLstItemMove Or pnlAddNew.Visible Then
+		#if debug
+		Log("skipping chkHomePage_CheckedChange --> 'If OnLstItemMove Or pnlAddNew.Visible Then'")
+		#End If
+		 Return
+	End If
 	If lstAddr.Size = 1 Then
 		guiHelpers.Show_toast("Cannot change the last item")
 		chkHomePage.Checked = True
