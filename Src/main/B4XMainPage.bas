@@ -501,22 +501,17 @@ Private Sub SetupMainMenu_Event(t As String,o As Object)
 	CallSubDelayed(Me,"ResetScrn_SleepCounter")
 	Select Case t
 		Case "up"
-			Dim up As dlgAppUpdate : up.Initialize(Dialog) : up.Show
+			Dim up As dlgAppUpdate : up.Initialize(Dialog)       : up.Show
 		Case "wth"
 			Dim o1 As dlgSetupWeather : o1.Initialize(Dialog) : o1.Show
 		Case "gn"
-			Dim o2 As dlgSetupMain : o2.Initialize(PrefDlg) : o2.Show
+			Dim o2 As dlgSetupMain : o2.Initialize(PrefDlg)   : o2.Show
 		Case "wb"
-			'Dim o3 As dlgTextInput  
-			'o3.Initialize("Home Page","Address",B4XPages.MainPage,"save_home_web_addr") :
-			'o3.txtEdit = Main.kvs.Get(gblConst.INI_WEB_HOME) & "" : o3.Show
-			Dim ox As dlgSetupWeb : ox.Initialize(Dialog) : ox.Show
+			Dim ox As dlgSetupWeb : ox.Initialize(Dialog)      : ox.Show
 		Case "tm"
-			Dim o4 As dlgSetupTimers : o4.Initialize(Dialog) : o4.Show
+			Dim o4 As dlgSetupTimers : o4.Initialize(Dialog) :  o4.Show
 		Case "pic"
-			Dim o5 As dlgSetupPics 
-			o5.Initialize(PrefDlg)
-			o5.Show
+			Dim o5 As dlgSetupPics : o5.Initialize(PrefDlg)    :  o5.Show
 		Case "as"
 			ExtApps.Run_AndroidSettings
 		Case Else
