@@ -18,7 +18,11 @@ End Sub
 
 Public Sub LogWrite(txt As String, msgType As Int)
 	
-	Log("TODO - " & txt)
+	#if debug
+	Log("TODO - LogWrite" & txt)
+	#else
+	Log(txt)
+	#end if
 	
 '	Try
 '		If msgType = ID_LOG_ERR Then oSQL.EndTransaction '---- clear ANY transaction
