@@ -43,15 +43,24 @@ Public Sub LogWrite4(txt As String, msgType As Int)
 End Sub
 Public Sub LogException(LastEx As Exception,logAlways As Boolean)
 	
-	Log("TODO - LogException")
-	
+	#if debug
+	Log("TODO - LogException" & LastEx)
+	#else
+	Log(LastEx)
+	#end if
+		
 '	'Dim cse As CallSubExtended
 '	'cse.AsyncCallSubX(Null,"g.LogException2",Array As Object(LastEx,logAlways,""),2)
 '	LogException2(LastEx,logAlways,"")
 End Sub
 
 Public Sub LogException3(LastEx As Exception,logAlways As Boolean,extraString As String)
-	Log("TODO - LogException3")
+
+	#if debug
+	Log("TODO - LogException3" & LastEx)
+	#else
+	Log(LastEx)
+	#end if
 	
 '	Dim Ex As ExceptionEx = LastEx
 '	Log(Ex.StackTrace)
