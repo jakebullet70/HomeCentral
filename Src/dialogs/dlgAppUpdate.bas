@@ -26,7 +26,8 @@ Sub Class_Globals
 End Sub
 
 Public Sub CleanUpApkDownload
-	
+
+	'--- kill any left over updates
 	fileHelpers.SafeKill(Main.Provider.SharedFolder,gblConst.APK_NAME)
 	fileHelpers.SafeKill(Main.Provider.SharedFolder,gblConst.APK_FILE_INFO)
 	fileHelpers.SafeKill(xui.DefaultFolder,gblConst.APK_NAME)
