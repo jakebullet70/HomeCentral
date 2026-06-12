@@ -69,7 +69,8 @@ Public Sub Show
 	
 	oldTheme = config.MainSetupData.Get(gblConst.KEYS_MAIN_SETUP_PAGE_THEME)
 	
-	pf.Initialize(mpage.root, "General Settings", 460, 440)
+	
+	pf.Initialize(mpage.root, "General Settings", 460dip, 440dip)
 	
 	pf.LoadFromJson(File.ReadString(File.DirAssets,"setup_main.json"))
 	pf.SetEventsListener(Me,"dlgGeneral")
