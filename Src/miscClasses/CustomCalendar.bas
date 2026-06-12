@@ -103,14 +103,18 @@ Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
 	
 	''''If g.IsCalendarReadOn Then ReadAndroidCals(BeginDate)
 	
+	Dim sizeFloat As Float = 100 '--- make sure all lblDays have same font size
 	For i = 0 To 6 'Days name buttons
-	
 		lblDayTitle(i) = XUIViewsUtils.CreateLabel
 		lblDayTitle(i).SetTextAlignment("CENTER","CENTER")
 		lblDayTitle(i).TextSize = (RelativTextSize)
 		lblDayTitle(i).TextColor = clrTheme.txtNormal
 		pnlbackGround.AddView( lblDayTitle(i), (i * mx) + ((i + 1) * 1dip),  (1 * my) + 1dip, mx + 2dip, my)
 		guiHelpers.ResizeText(dayName(i),lblDayTitle(i))
+		sizeFloat = Min(sizeFloat,lblDayTitle(i).TextSize)  '--- make sure all lblDays have same font size
+	Next
+	For i = 0 To 6 '--- make sure all lblDays have same font size
+		lblDayTitle(i).TextSize = sizeFloat
 	Next
 	
 	For j = 0 To 5 'Days buttons		
