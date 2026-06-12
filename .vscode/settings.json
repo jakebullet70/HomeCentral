@@ -1,0 +1,366 @@
+{
+  "files.associations": {
+    "*.b4a": "b4x",
+    "*.b4j": "b4x",
+    "*.b4i": "b4x",
+    "*.b4r": "b4x",
+    "*.bas": "b4x",
+    "*.bal": "b4x",
+    "*.b4xlib": "b4x"
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/B4J/**": true,
+    "**/B4i/**": true,
+    "**/B4R/**": true
+  },
+  "files.watcherExclude": {
+    "**/.b4a_cache": true,
+    "**/Objects": true,
+    "**/B4A/Objects": true
+  },
+  "search.exclude": {
+    "**/B4J/**": true,
+    "**/B4i/**": true,
+    "**/B4R/**": true,
+    "**/Objects": true,
+    "**/.b4a_cache": true
+  },
+  "workspace.name": "homecentral",
+  "editor.fontFamily": "Comic Sans MS",
+  "editor.fontSize": 14,
+  "workbench.colorTheme": "Dark",
+  "workbench.colorCustomizations": {},
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": [
+          "comment"
+        ],
+        "settings": {
+          "foreground": "rgba(123, 116, 102, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "variable"
+        ],
+        "settings": {
+          "foreground": "rgba(200, 200, 200, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "constant.numeric"
+        ],
+        "settings": {
+          "foreground": "rgba(34, 205, 255, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "keyword.operator"
+        ],
+        "settings": {
+          "foreground": "rgba(183, 226, 232, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "string"
+        ],
+        "settings": {
+          "foreground": "rgba(0, 118, 236, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "keyword"
+        ],
+        "settings": {
+          "foreground": "rgba(99, 199, 147, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "comment"
+        ],
+        "settings": {
+          "foreground": "rgba(123, 116, 102, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "variable"
+        ],
+        "settings": {
+          "foreground": "rgba(200, 200, 200, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "constant.numeric"
+        ],
+        "settings": {
+          "foreground": "rgba(34, 205, 255, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "keyword.operator"
+        ],
+        "settings": {
+          "foreground": "rgba(183, 226, 232, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "string"
+        ],
+        "settings": {
+          "foreground": "rgba(0, 118, 236, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "keyword"
+        ],
+        "settings": {
+          "foreground": "rgba(99, 199, 147, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "comment"
+        ],
+        "settings": {
+          "foreground": "rgba(0, 128, 0, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "variable"
+        ],
+        "settings": {
+          "foreground": "rgba(0, 0, 0, 0.008)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "constant.numeric"
+        ],
+        "settings": {
+          "foreground": "rgba(0, 0, 0, 0.008)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "keyword.operator"
+        ],
+        "settings": {
+          "foreground": "rgba(0, 0, 0, 0.008)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "string"
+        ],
+        "settings": {
+          "foreground": "rgba(0, 255, 0, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "keyword"
+        ],
+        "settings": {
+          "foreground": "rgba(0, 128, 255, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "comment"
+        ],
+        "settings": {
+          "foreground": "rgba(123, 116, 102, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "variable"
+        ],
+        "settings": {
+          "foreground": "rgba(200, 200, 200, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "constant.numeric"
+        ],
+        "settings": {
+          "foreground": "rgba(34, 205, 255, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "keyword.operator"
+        ],
+        "settings": {
+          "foreground": "rgba(183, 226, 232, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "string"
+        ],
+        "settings": {
+          "foreground": "rgba(0, 118, 236, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "keyword"
+        ],
+        "settings": {
+          "foreground": "rgba(99, 199, 147, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "comment"
+        ],
+        "settings": {
+          "foreground": "rgba(123, 116, 102, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "variable"
+        ],
+        "settings": {
+          "foreground": "rgba(200, 200, 200, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "constant.numeric"
+        ],
+        "settings": {
+          "foreground": "rgba(34, 205, 255, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "keyword.operator"
+        ],
+        "settings": {
+          "foreground": "rgba(183, 226, 232, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "string"
+        ],
+        "settings": {
+          "foreground": "rgba(0, 118, 236, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "keyword"
+        ],
+        "settings": {
+          "foreground": "rgba(99, 199, 147, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "comment"
+        ],
+        "settings": {
+          "foreground": "rgba(123, 116, 102, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "variable"
+        ],
+        "settings": {
+          "foreground": "rgba(200, 200, 200, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "constant.numeric"
+        ],
+        "settings": {
+          "foreground": "rgba(34, 205, 255, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "keyword.operator"
+        ],
+        "settings": {
+          "foreground": "rgba(183, 226, 232, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "string"
+        ],
+        "settings": {
+          "foreground": "rgba(0, 118, 236, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      },
+      {
+        "scope": [
+          "keyword"
+        ],
+        "settings": {
+          "foreground": "rgba(99, 199, 147, 0)",
+          "background": "rgba(0, 0, 0, 0.008)"
+        }
+      }
+    ]
+  }
+}
