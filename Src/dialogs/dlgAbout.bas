@@ -10,7 +10,7 @@ Version=10
 #End Region
 
 
-Sub Class_Globals
+Private Sub Class_Globals()
 	Private XUI As XUI
 	Private dlg As B4XDialog
 	Private lblAboutTop As Label
@@ -150,7 +150,7 @@ See the complete text on the license in the folder where this software is instal
 ---------------------------
 
 - Legal Crap -
-(©)sadLogic 2015 - 2025
+(©)sadLogic 2015 - 2026
 (©)eHomeCreations 2002 - 2015
 (©)Humankind - Forever
 
