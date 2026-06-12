@@ -26,6 +26,23 @@ Public Sub Initialize(oDlg As B4XDialog)
 End Sub
 
 
+'https://www.b4x.com/android/forum/threads/b4x-b4xdialog-with-adjustable-button-widths.169198/
+'Private Sub ArrangeButtons(Dialog1 As B4XDialog, Canvas1 As B4XCanvas)
+'	Dim offset As Int = Dialog1.Base.Width - 2dip
+'	Dim gap As Int = 4dip
+'	For Each BtnType As Int In Array(xui.DialogResponse_Cancel, xui.DialogResponse_Negative, xui.DialogResponse_Positive)
+'		For Each btn As B4XView In Dialog1.Base.GetAllViewsRecursive
+'			If Initialized(btn.Tag) And btn.Tag = BtnType Then 'ignore
+'				Dim r As B4XRect = Canvas1.MeasureText(btn.Text, btn.Font)
+'				Dim width As Float = r.Width + 30dip 'change padding as needed
+'				btn.SetLayoutAnimated(0, offset - width - gap, btn.Top, width, btn.Height)
+'				offset = offset - width - gap
+'			End If
+'		Next
+'	Next
+'End Sub
+
+
 Public Sub ThemeInputDialogBtnsResize()
 	
 	Try '--- reskin button, if it does not exist then skip the error
