@@ -187,16 +187,22 @@ Private Sub CreateListItemWeather(arrID As Int, Width As Int, Height As Int) As 
 		guiHelpers.SetTextColor(Array As B4XView(lblForecastDay1,lblForecastDesc1),clrTheme.txtNormal)
 		guiHelpers.SetTextColor(Array As B4XView(lblForecastHigh1,lblForecastLow1),clrTheme.txtAccent)
 	
-		Dim lowTemp,highTemp As String
-		highTemp  = "High " & IIf(mpage.useCel, mpage.WeatherData.ForcastDays(arrID).High_c & "°c",mpage.WeatherData.ForcastDays(arrID).High_f & "°f")
-		lowTemp   = "Low " & IIf(mpage.useCel, mpage.WeatherData.ForcastDays(arrID).Low_c & "°c",mpage.WeatherData.ForcastDays(arrID).Low_f & "°f")
-	
 		mpage.WeatherData.LoadWeatherIcon(mpage.WeatherData.ForcastDays(arrID).IconID , imgForecastIcon1, True)
-	
+		
 		lblForecastDay1.Text   = mpage.WeatherData.ForcastDays(arrID).Day
 		lblForecastDesc1.Text = mpage.WeatherData.ForcastDays(arrID).Description
-		lblForecastHigh1.Text  = highTemp
-		lblForecastLow1.Text  = lowTemp
+	
+		'---	
+		guiHelpers.ResizeText( _ 
+			"High " & IIf(mpage.useCel, mpage.WeatherData.ForcastDays(arrID).High_c & "°c",mpage.WeatherData.ForcastDays(arrID).High_f & "°f "), _
+			lblForecastHigh1)
+	
+		lblForecastLow1.Text = _
+			"Low " & IIf(mpage.useCel, mpage.WeatherData.ForcastDays(arrID).Low_c & "°c",mpage.WeatherData.ForcastDays(arrID).Low_f & "°f ")
+		
+		lblForecastHigh1.TextSize = lblForecastHigh1.TextSize - 3
+		lblForecastLow1.TextSize = lblForecastHigh1.TextSize
+		'---
 		
 	Catch
 		Log(LastException)
