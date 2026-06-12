@@ -10,7 +10,7 @@ Version=10
 #End Region
 
 
-Sub Class_Globals
+Private Sub Class_Globals()
 	
 	Private XUI As XUI
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
