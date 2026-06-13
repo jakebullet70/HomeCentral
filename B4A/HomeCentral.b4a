@@ -146,81 +146,82 @@ Module10=|relative|..\Src\miscClasses\weather\clsWeatherDataDay
 Module11=|relative|..\Src\main\config
 Module12=|relative|..\Src\miscClasses\ConversionMod
 Module13=|relative|..\Src\miscClasses\CustomCalendar
-Module14=|relative|..\Src\dialogs\dlg1stRun
-Module15=|relative|..\Src\dialogs\dlgAbout
-Module16=|relative|..\Src\dialogs\dlgAppUpdate
-Module17=|relative|..\Src\dialogs\dlgBrightness
-Module18=|relative|..\Src\dialogs\dlgListbox
-Module19=|relative|..\Src\dialogs\dlgSetupMain
+Module14=|relative|..\Src\miscClasses\DeviceInfo
+Module15=|relative|..\Src\dialogs\dlg1stRun
+Module16=|relative|..\Src\dialogs\dlgAbout
+Module17=|relative|..\Src\dialogs\dlgAppUpdate
+Module18=|relative|..\Src\dialogs\dlgBrightness
+Module19=|relative|..\Src\dialogs\dlgListbox
 Module2=|relative|..\Src\customCtrls\AutoTextSizeLabel
-Module20=|relative|..\Src\dialogs\dlgSetupPics
-Module21=|relative|..\Src\dialogs\dlgSetupTimers
-Module22=|relative|..\Src\dialogs\dlgSetupWeather
-Module23=|relative|..\Src\dialogs\dlgSetupWeb
-Module24=|relative|..\Src\dialogs\dlgTextInput
-Module25=|relative|..\Src\dialogs\dlgThemedMsgBox
-Module26=|relative|..\Src\dialogs\dlgVolume
-Module27=|relative|..\Src\miscClasses\DSE_Layout
-Module28=|relative|..\Src\helpers\dtHelpers
-Module29=|relative|..\Src\miscClasses\events_subscription\EventController
+Module20=|relative|..\Src\dialogs\dlgSetupMain
+Module21=|relative|..\Src\dialogs\dlgSetupPics
+Module22=|relative|..\Src\dialogs\dlgSetupTimers
+Module23=|relative|..\Src\dialogs\dlgSetupWeather
+Module24=|relative|..\Src\dialogs\dlgSetupWeb
+Module25=|relative|..\Src\dialogs\dlgTextInput
+Module26=|relative|..\Src\dialogs\dlgThemedMsgBox
+Module27=|relative|..\Src\dialogs\dlgVolume
+Module28=|relative|..\Src\miscClasses\DSE_Layout
+Module29=|relative|..\Src\helpers\dtHelpers
 Module3=|relative|..\Src\main\B4XMainPage
-Module30=|relative|..\Src\miscClasses\ExternalAppCtrl
-Module31=|relative|..\Src\b4xForumCode\ExternalStorage
-Module32=|relative|..\Src\helpers\fileHelpers
-Module33=|relative|..\Src\helpers\fnct
-Module34=|relative|..\Src\main\gblConst
-Module35=|relative|..\Src\helpers\guiHelpers
-Module36=|relative|..\Src\miscClasses\guiMsgs
-Module37=|relative|..\Src\miscClasses\HttpDownloadStr
-Module38=|relative|..\Src\miscClasses\InetCheck
-Module39=|relative|..\Src\miscClasses\kitchenTimers\KitchenTmrs
+Module30=|relative|..\Src\miscClasses\events_subscription\EventController
+Module31=|relative|..\Src\miscClasses\ExternalAppCtrl
+Module32=|relative|..\Src\b4xForumCode\ExternalStorage
+Module33=|relative|..\Src\helpers\fileHelpers
+Module34=|relative|..\Src\helpers\fnct
+Module35=|relative|..\Src\main\gblConst
+Module36=|relative|..\Src\helpers\guiHelpers
+Module37=|relative|..\Src\miscClasses\guiMsgs
+Module38=|relative|..\Src\miscClasses\HttpDownloadStr
+Module39=|relative|..\Src\miscClasses\InetCheck
 Module4=|relative|..\Src\miscClasses\CheckVersions
-Module40=|relative|..\Src\helpers\kt
-Module41=|relative|..\Src\miscClasses\listViewSelector
-Module42=|relative|..\Src\customCtrls\lmB4XImageViewX
-Module43=|relative|..\Src\helpers\LogIt
-Module44=|relative|..\Src\main\Menus
-Module45=|relative|..\Src\helpers\objHelpers
-Module46=|relative|..\Src\Snapins_Pages\pageCalculator
-Module47=|relative|..\Src\Snapins_Pages\pageConversions
-Module48=|relative|..\Src\Snapins_Pages\pageHome
-Module49=|relative|..\Src\Snapins_Pages\pageKTimers
+Module40=|relative|..\Src\miscClasses\kitchenTimers\KitchenTmrs
+Module41=|relative|..\Src\helpers\kt
+Module42=|relative|..\Src\miscClasses\listViewSelector
+Module43=|relative|..\Src\customCtrls\lmB4XImageViewX
+Module44=|relative|..\Src\helpers\LogIt
+Module45=|relative|..\Src\main\Menus
+Module46=|relative|..\Src\helpers\objHelpers
+Module47=|relative|..\Src\Snapins_Pages\pageCalculator
+Module48=|relative|..\Src\Snapins_Pages\pageConversions
+Module49=|relative|..\Src\Snapins_Pages\pageHome
 Module5=|relative|..\Src\miscClasses\Clock
-Module50=|relative|..\Src\Snapins_Pages\pagePhotos
-Module51=|relative|..\Src\Snapins_Pages\pageWeather
-Module52=|relative|..\Src\Snapins_Pages\pageWEB
-Module53=|relative|..\Src\miscClasses\PowerControl
-Module54=|relative|..\Src\b4xForumCode\PreoptimizedCLV
-Module55=|relative|..\Src\miscClasses\Prompt4Folder
-Module56=|relative|..\Src\b4xCustomizedClasses\sadAS_FloatingPanel
-Module57=|relative|..\Src\b4xCustomizedClasses\sadB4XColorTemplate
-Module58=|relative|..\Src\b4xCustomizedClasses\sadB4XDialogHelper
-Module59=|relative|..\Src\b4xCustomizedClasses\sadB4XInputTemplate
+Module50=|relative|..\Src\Snapins_Pages\pageKTimers
+Module51=|relative|..\Src\Snapins_Pages\pagePhotos
+Module52=|relative|..\Src\Snapins_Pages\pageWeather
+Module53=|relative|..\Src\Snapins_Pages\pageWEB
+Module54=|relative|..\Src\miscClasses\PowerControl
+Module55=|relative|..\Src\b4xForumCode\PreoptimizedCLV
+Module56=|relative|..\Src\miscClasses\Prompt4Folder
+Module57=|relative|..\Src\b4xCustomizedClasses\sadAS_FloatingPanel
+Module58=|relative|..\Src\b4xCustomizedClasses\sadB4XColorTemplate
+Module59=|relative|..\Src\b4xCustomizedClasses\sadB4XDialogHelper
 Module6=|relative|..\Src\main\clrTheme
-Module60=|relative|..\Src\b4xCustomizedClasses\sadCallSubUtils
-Module61=|relative|..\Src\b4xCustomizedClasses\sadClvSelections
-Module62=|relative|..\Src\customCtrls\sadImageSlider
-Module63=|relative|..\Src\b4xCustomizedClasses\sadKeyValueStore
-Module64=|relative|..\Src\b4xCustomizedClasses\sadPreferencesDialog
-Module65=|relative|..\Src\b4xCustomizedClasses\sadPreferencesDialogHelper
-Module66=|relative|..\Src\customCtrls\sadRoundSlider
-Module67=|relative|..\Src\miscClasses\startAtBoot
-Module68=Starter
-Module69=|relative|..\Src\helpers\strHelpers
+Module60=|relative|..\Src\b4xCustomizedClasses\sadB4XInputTemplate
+Module61=|relative|..\Src\b4xCustomizedClasses\sadCallSubUtils
+Module62=|relative|..\Src\b4xCustomizedClasses\sadClvSelections
+Module63=|relative|..\Src\customCtrls\sadImageSlider
+Module64=|relative|..\Src\b4xCustomizedClasses\sadKeyValueStore
+Module65=|relative|..\Src\b4xCustomizedClasses\sadPreferencesDialog
+Module66=|relative|..\Src\b4xCustomizedClasses\sadPreferencesDialogHelper
+Module67=|relative|..\Src\customCtrls\sadRoundSlider
+Module68=|relative|..\Src\miscClasses\startAtBoot
+Module69=Starter
 Module7=|relative|..\Src\miscClasses\events_subscription\clsEvent
-Module70=|relative|..\Src\helpers\vol_timers
-Module71=|relative|..\Src\helpers\web
+Module70=|relative|..\Src\helpers\strHelpers
+Module71=|relative|..\Src\helpers\vol_timers
+Module72=|relative|..\Src\helpers\web
 Module8=|relative|..\Src\miscClasses\kitchenTimers\clsKAlarms
 Module9=|relative|..\Src\miscClasses\weather\clsWeatherData
 NumberOfFiles=60
 NumberOfLibraries=20
-NumberOfModules=71
+NumberOfModules=72
 Version=12.5
 @EndOfDesignText@
 #Region  Project Attributes 
 	#ApplicationLabel: HomeCentral
-	#VersionCode: 18
-	#VersionName: 3.2.0
+	#VersionCode: 19
+	#VersionName: 3.3.0
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: landscape
 	#CanInstallToExternalStorage: False
@@ -325,6 +326,7 @@ Private Sub SetupFullScrn
 	'https://www.b4x.com/android/forum/threads/immersive-mode-hide-the-navigation-bar.90882/
 	
 	Dim lv As LayoutValues
+	Dim di As DeviceInfo : di.Initialize
 	
 	If ph.SdkVersion >= 28 Then
 		'--- cutout mode...  ????
@@ -335,23 +337,26 @@ Private Sub SetupFullScrn
 
 	If ph.SdkVersion >= 19 Then
 		Activity_WindowFocusChanged(True)
-		lv = GetRealSize
+		lv = di.GetRealSize
 		Dim jo As JavaObject = Activity
 		jo.RunMethod("setBottom", Array(lv.Height))
 		jo.RunMethod("setRight", Array(lv.Width))
 		Activity.Height = lv.Height
 		Activity.Width = lv.Width
+		guiHelpers.gScreenSizeAprox = di.ExactSize '--- New Samsung returns 8in, not 10in, this works
 	Else
 		'--- size *WITH* taskbar
 		lv = GetDeviceLayoutValues
+		guiHelpers.gScreenSizeAprox = lv.ApproximateScreenSize
 	End If
 	
-	guiHelpers.gScreenSizeAprox = lv.ApproximateScreenSize
+	'guiHelpers.gScreenSizeAprox = lv.ApproximateScreenSize
 	guiHelpers.gIsLandScape = Not (lv.Height > lv.Width)
 	guiHelpers.gWidth  = lv.Width
 	guiHelpers.gHeight = lv.Height
 	Dim ac As Accessibility : guiHelpers.gFscale = ac.GetUserFontScale
 	
+	'Log("ex0size!!!!!!!!!!!!!!!!!!" & ExactSize)
 	'SetUserOrientPref
 	
 End Sub
@@ -400,22 +405,6 @@ Public Sub Dim_ActionBar_Off
 	Dim_ActionBar(gblConst.ACTIONBAR_OFF)
 End Sub
 
-Private Sub GetRealSize() As LayoutValues
-	
-	Dim lv As LayoutValues
-	Dim ctxt As JavaObject
-	ctxt.InitializeContext
-	Dim WindowManager As JavaObject = ctxt.RunMethodJO("getSystemService", Array("window"))
-	Dim display As JavaObject = WindowManager.RunMethod("getDefaultDisplay", Null)
-	Dim point As JavaObject
-	point.InitializeNewInstance("android.graphics.Point", Null)
-	display.RunMethod("getRealSize", Array(point))
-	lv.Width = point.GetField("x")
-	lv.Height = point.GetField("y")
-	lv.Scale = 100dip / 100
-	Return lv
-	
-End Sub
 #end region
 
 
