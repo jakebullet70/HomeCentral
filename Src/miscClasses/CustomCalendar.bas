@@ -96,9 +96,11 @@ Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
 	lblTitle.Font = XUI.CreateDefaultBoldFont(lblTitle.Font.Size)
 	'lblTitle.Typeface=Typeface.DEFAULT_BOLD	
 	
+	Dim const CENTER As String = "CENTER"
+	
 	lblTitle.Color = XUI.Color_Transparent
 	lblTitle.TextColor =  clrTheme.txtNormal'  g.GetColorTheme(g.ehome_clrTheme,"themeColorText")
-	lblTitle.SetTextAlignment("CENTER","CENTER")
+	lblTitle.SetTextAlignment(CENTER,CENTER)
 	
 	
 	''''If g.IsCalendarReadOn Then ReadAndroidCals(BeginDate)
@@ -106,7 +108,7 @@ Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
 	Dim sizeFloat As Float = 100 '--- make sure all lblDays have same font size
 	For i = 0 To 6 'Days name buttons
 		lblDayTitle(i) = XUIViewsUtils.CreateLabel
-		lblDayTitle(i).SetTextAlignment("CENTER","CENTER")
+		lblDayTitle(i).SetTextAlignment(CENTER,CENTER)
 		lblDayTitle(i).TextSize = (RelativTextSize)
 		lblDayTitle(i).TextColor = clrTheme.txtNormal
 		pnlbackGround.AddView( lblDayTitle(i), (i * mx) + ((i + 1) * 1dip),  (1 * my) + 1dip, mx + 2dip, my)
@@ -121,7 +123,7 @@ Public Sub Initialize( Ww As Int,Hh As Int, BeginDate As Long, txtSize As Int)
 		For i = 0 To 6	
 			z = (j*7)+i
 			btDays(z) = XUIViewsUtils.CreateLabel
-			btDays(z).SetTextAlignment("CENTER","CENTER")
+			btDays(z).SetTextAlignment(CENTER,CENTER)
 			btDays(z).Color = XUI.Color_Transparent
 			btDays(z).tag = 0	
 			'btDays(z).TextSize = RelativTextSize 
