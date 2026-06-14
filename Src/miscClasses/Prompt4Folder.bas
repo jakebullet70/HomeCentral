@@ -23,7 +23,7 @@ Version=10
 Sub Class_Globals
 	Private XUI As XUI
 	Private Ion As Object
-	Private callback As Object
+	Private callback As Object 'ignore
 	Public pSelectedFolder As String = ""
 End Sub
 
