@@ -4,13 +4,47 @@ ModulesStructureVersion=1
 Type=Class
 Version=6
 @EndOfDesignText@
+#Region DOCS
 '----------------------------------------------------------------------------------------------------------------
- ' ImageSlider v1.2
- ' June-2025, added SwipeUp Event
+' ImageSlider v1.3  (HomeCentral fork)
+'----------------------------------------------------------------------------------------------------------------
+' A swipeable / auto-advancing full-screen image slideshow control (used by the photo album page).
+' Images are supplied lazily by the host via the GetImage event, so the control never owns the
+' source list - it only requests the bitmap for a given index when it needs it.
 '
-'Original -----------------------------------------------------------------------------------------------------
-'ImageSlider v1.11
-'https://www.b4x.com/android/forum/threads/b4x-xui-imageslider.87128/#content
+' USAGE (as used here - loaded from a Designer layout):
+'   - Add the view to a layout in the Designer and LoadLayout it. B4X runs DesignerCreateView
+'     internally - you do NOT call it, and Initialize is NOT needed for the Designer path.
+'   - The view's Designer name is the event prefix (here "img"), so events route automatically
+'     to the module that loaded the layout.
+'   - Implement <name>_GetImage(Index As Int) As ResumableSub and return a B4XBitmap already
+'     sized to the display (LoadBitmapResize/Sample, NOT the full-resolution file). Required.
+'   - Optionally implement <name>_SwipeUp.
+'   - Set NumberOfImages so the control knows the index range and can draw the indicator dots.
+'   - Optionally assign tmrShowTimer to drive auto-advance; touch-swipe disables/re-enables it.
+'   - Call NextImage / PrevImage to move.
+'   - Initialize(Callback, EventName) is only for creating the control programmatically (no Designer).
+'
+' MEMORY (important - target is old Android 4.x tablets, 512MB, always-on):
+'   The control keeps an LRU cache of up to CacheSize decoded bitmaps (recently shown images move
+'   to the end of the list; evictions drop from the front). On B4A, evicted bitmaps that are no
+'   longer bound to a panel ImageView are explicitly recycled (see RecycleBitmap) to free pixel
+'   memory deterministically rather than waiting on GC - this keeps peak heap low during fast
+'   swiping. DisplayedIndex / PrevDisplayedIndex track the two bitmaps still on screen so they are
+'   never recycled (that would crash with "trying to use a recycled bitmap"). Keep CacheSize >= 3
+'   for the current-/+1 prefetch. On Android 8.0+ (API 26+) bitmap pixels live in native memory
+'   tracked by the GC, so the explicit recycle becomes optional - but it stays safe and still frees
+'   memory deterministically, so it is kept here. The DisplayedIndex / PrevDisplayedIndex guard is
+'   required on every version if recycle is kept (the recycled-bitmap crash is version-independent).
+'
+' VERSION HISTORY:
+'   v1.3  June-2026  - memory: recycle evicted bitmaps on B4A (guarded by DisplayedIndex /
+'                      PrevDisplayedIndex so on-screen bitmaps are never recycled) to cap peak
+'                      heap on low-memory always-on devices (HomeCentral fork)
+'   v1.2  June-2025  - added SwipeUp event (HomeCentral fork)
+'   v1.11 (original) - https://www.b4x.com/android/forum/threads/b4x-xui-imageslider.87128/#content
+'----------------------------------------------------------------------------------------------------------------
+#End Region
 #DesignerProperty: Key: AnimationDuration, DisplayName: Animation Duration (ms), FieldType: Int, DefaultValue: 500
 #DesignerProperty: Key: CacheSize, DisplayName: Image Cache Size, FieldType: Int, DefaultValue: 5
 #DesignerProperty: Key: AnimationType, DisplayName: Animation Type, FieldType: String, DefaultValue: Horizontal, List: Vertical|Horizontal|Fade
@@ -25,8 +59,10 @@ Sub Class_Globals
 	Private xui As XUI
 	Private CurrentPanel, NextPanel As B4XView
 	Private panels As List
-	Private CurrentIndex As Int 
+	Private CurrentIndex As Int
 	Private CachedImages As List
+	Private DisplayedIndex As Int = -1      '--- index currently bound to a panel ImageView - claude was here
+	Private PrevDisplayedIndex As Int = -1  '--- index still bound to the other panel during/after cross-fade - claude was here
 	Public AnimationDuration As Int 'v1.2
 	Private CacheSize As Int
 	Type ImageSliderImage (bmp As B4XBitmap, index As Int)
@@ -64,8 +100,7 @@ Public Sub DesignerCreateView (Base As Object, Lbl As Label, Props As Map)
 	WindowBase.AddView(NextPanel, 0, 0, 0, 0)
 	Dim iv1, iv2 As ImageView
 	'Dim iv1, iv2 As lmB4XImageViewX
-	iv1.Initialize("")
-	iv2.Initialize("")
+	iv1.Initialize(""):	iv2.Initialize("")
 	CurrentPanel.AddView(iv1, 0, 0, 0, 0)
 	NextPanel.AddView(iv2, 0, 0, 0, 0)
 	If ShowIndicators Then
@@ -146,6 +181,8 @@ Public Sub NextImage
 	CurrentIndex = (CurrentIndex + 1) Mod mNumberOfImages
 	Wait For (GetImage(CurrentIndex)) Complete (Result As ImageSliderImage)
 	If MyTask <> TaskIndex Or Result.IsInitialized = False Then Return
+	PrevDisplayedIndex = DisplayedIndex   'claude was here
+	DisplayedIndex = CurrentIndex         'claude was here
 	ShowImage(Result.bmp, True)
 	Sleep(0)
 	If CurrentIndex < (mNumberOfImages - 1) Then GetImage(CurrentIndex + 1)
@@ -157,6 +194,8 @@ Public Sub PrevImage
 	CurrentIndex = (CurrentIndex - 1 + mNumberOfImages) Mod mNumberOfImages
 	Wait For (GetImage(CurrentIndex)) Complete (Result As ImageSliderImage)
 	If MyTask <> TaskIndex Or Result.IsInitialized = False Then Return
+	PrevDisplayedIndex = DisplayedIndex   'claude was here
+	DisplayedIndex = CurrentIndex         'claude was here
 	ShowImage(Result.bmp, False)
 	Sleep(0)
 	If CurrentIndex > 0 Then GetImage(CurrentIndex - 1)
@@ -179,9 +218,29 @@ Private Sub GetImage(index As Int) As ResumableSub
 	ii.index = index
 	CachedImages.Add(ii)
 	Do While CachedImages.Size > CacheSize
-		CachedImages.RemoveAt(0)
+		Dim evicted As ImageSliderImage = CachedImages.Get(0)   'claude was here
+		CachedImages.RemoveAt(0)   'claude was here
+		'--- only force-free if no panel is still drawing it; otherwise just drop the ref (GC handles it) - claude was here
+		If evicted.index <> DisplayedIndex And evicted.index <> PrevDisplayedIndex Then   'claude was here
+			RecycleBitmap(evicted.bmp)   'claude was here
+		End If
 	Loop
 	Return ii
+End Sub
+
+Private Sub RecycleBitmap(bmp As B4XBitmap)   'claude was here
+	#if B4A
+	Try
+		If bmp.IsInitialized Then
+			Dim jo As JavaObject = bmp   '--- B4XBitmap is android.graphics.Bitmap on B4A
+			If jo.RunMethod("isRecycled", Null).As(Boolean) = False Then
+				jo.RunMethod("recycle", Null)
+			End If
+		End If
+	Catch
+		Log("RecycleBitmap: " & LastException)
+	End Try
+	#end if
 End Sub
 
 Private Sub WindowBase_Touch (Action As Int, X As Float, Y As Float)
@@ -210,11 +269,11 @@ Private Sub Swipe_up 'v1.2
 End Sub
 
 
-Public Sub getNumberOfImages As Int
+Public Sub getNumberOfImages As Int 'ignore
 	Return mNumberOfImages
-End Sub
+End Sub 'ignore
 
-Public Sub setNumberOfImages (i As Int)
+Public Sub setNumberOfImages (i As Int) 'ignore
 	mNumberOfImages = i
 	DrawIndicators
 End Sub
