@@ -152,6 +152,7 @@ Sub Process_Globals
 	Public Const API_ANDROID_4_0 As Int = 14
 	Public Const API_ANDROID_4_4 As Int = 19
 	Public Const API_ANDROID_4_2 As Int = 17
+	Public Const API_ANDROID_6_0 As Int = 23   
 	
 	Public Const PHOTOS_PATH As String = "hc_pics" 
 	
