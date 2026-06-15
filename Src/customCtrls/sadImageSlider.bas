@@ -25,7 +25,7 @@ Version=6
 '   - Call NextImage / PrevImage to move.
 '   - Initialize(Callback, EventName) is only for creating the control programmatically (no Designer).
 '
-' MEMORY (important - target is old Android 4.x tablets, 512MB, always-on):
+' MEMORY (important - min target is old Android 4.x tablets, 512MB, always-on):
 '   The control keeps an LRU cache of up to CacheSize decoded bitmaps (recently shown images move
 '   to the end of the list; evictions drop from the front). On B4A, evicted bitmaps that are no
 '   longer bound to a panel ImageView are explicitly recycled (see RecycleBitmap) to free pixel
