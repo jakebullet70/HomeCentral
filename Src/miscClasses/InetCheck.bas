@@ -6,6 +6,8 @@ Version=10
 @EndOfDesignText@
 ' Author:  sadLogic/JakeBullet
 #Region VERSIONS 
+' V. 1.1 	    June/2026  
+'				claude code - 	IsNetworkAvailable()
 ' V. 1.0 	Jan/08/2024
 #End Region
 
