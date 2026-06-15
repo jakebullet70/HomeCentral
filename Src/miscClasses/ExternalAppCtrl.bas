@@ -18,17 +18,18 @@ End Sub
 Public Sub Initialize
 	oSQL = B4XPages.MainPage.sql
 	
-	oSQL = B4XPages.MainPage.sql
 '	Try
 '		oSQL.ExecNonQuery($"DROP TABLE web_targets"$)
 '	Catch
 '		Log(LastException)
 '	End Try
+	oSQL.ExecNonQuery($"DROP TABLE user_menus"$)
 	oSQL.ExecNonQuery($"CREATE TABLE IF NOT EXISTS "user_menus" (
 		"id" INTEGER,
 		"short_desc" TEXT,
 		"package_name" TEXT, 
 		"num" TEXT, 
+		"visible" INTEGER,
 		PRIMARY KEY("id" AUTOINCREMENT));"$)
 	
 '	Dim count As Int = oSQL.ExecQuerySingleResult($"SELECT COUNT(*) FROM user_menus"$)
