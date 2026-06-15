@@ -43,8 +43,9 @@ Public Sub Initialize(p As B4XView,pnlImgFS As Panel,imgFS As lmB4XImageViewX)
 	imgFullScrn = imgFS
 	
 	config.ReadPicAlbumSetup
+	tmrPicShow.Initialize("tmrShow", 1000)   '--- init the timer ONCE here; ReadOptions only sets the interval - claude was here
 	ReadOptions
-	
+
 	guiHelpers.SkinButtonRounded(Array As Button(btnFullScreen))
 	
 	InitNewListOfPics
@@ -340,6 +341,7 @@ Public Sub FullScrn(Show As Boolean)
 		pnlFullScrn.As(Panel).Elevation = -8dip
 		pnlFullScrn.SendToBack
 		btnFullScreen.Visible = True
+		imgFullScrn.Clear   '--- drop the full-screen bitmap so it doesn't sit in memory while hidden - claude was here
 	End If
 	
 	mpage.pnlSideMenu.SetVisibleAnimated(380, False) '---  close side menu if open
@@ -352,8 +354,8 @@ Private Sub ReadOptions
 	
 	TimeBetweenPics = _
 			config.PicAlbumSetupData.Get(gblConst.KEYS_PICS_SETUP_SECONDS_BETWEEN) * 1000
-	tmrPicShow.Initialize("tmrShow",TimeBetweenPics)
-	
+	tmrPicShow.Interval = TimeBetweenPics   '--- timer is initialized once in Initialize; just update interval here - claude was here
+
 	If tmrPicShow.Enabled Then
 		TimerOnOff(False)
 		Sleep(0)
