@@ -31,6 +31,7 @@ Sub Class_Globals
 	Public sql As SQL
 	Public ExtApps As ExternalAppCtrl
 	Public isInterNetConnected As Boolean = True
+	Public InetChk As InetCheck   'claude was here
 	Public EventGbl As EventController
 	Public tmrTimerCallSub As sadCallSubUtils
 	Public PowerCtrl As PowerControl
@@ -107,7 +108,14 @@ Public Sub Initialize
 	End If
 	
 	ExtApps.Initialize
+	InetChk.Initialize   'claude was here
 	Check4Update
+End Sub
+
+'--- refresh and return the live internet status; also updates the public isInterNetConnected flag - claude was here
+Public Sub CheckInternetConnection As Boolean
+	isInterNetConnected = InetChk.IsNetworkAvailable
+	Return isInterNetConnected
 End Sub
 
 'https://www.b4x.com/android/forum/threads/b4x-sd-customkeyboard.138438/

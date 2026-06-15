@@ -27,7 +27,9 @@ End Sub
 '--- Android 4.x-5.x falls back to the (deprecated but still working) getActiveNetworkInfo.
 '--- Fails OPEN (returns True on any error) so a reflection hiccup never permanently kills weather.
 Public Sub IsNetworkAvailable As Boolean   'claude was here
+	
 	Try
+		
 		Dim ph As Phone
 		Dim ctxt As JavaObject : ctxt.InitializeContext
 		Dim cm As JavaObject = ctxt.RunMethodJO("getSystemService", Array("connectivity"))
@@ -40,15 +42,27 @@ Public Sub IsNetworkAvailable As Boolean   'claude was here
 			Dim caps As JavaObject = cm.RunMethodJO("getNetworkCapabilities", Array(net))
 			If caps.IsInitialized = False Then Return False
 			'--- 16 = NetworkCapabilities.NET_CAPABILITY_VALIDATED (use 12 = NET_CAPABILITY_INTERNET for a looser check)
+'			#if debug
+			Log("IsNetworkAvailable (API_ANDROID_6_0) :" &  caps.RunMethod("hasCapability", Array(16)))
+'			#End If
 			Return caps.RunMethod("hasCapability", Array(16))
 		Else
 			'--- legacy path (Android 4.x - 5.x)
 			Dim ni As JavaObject = cm.RunMethodJO("getActiveNetworkInfo", Null)
-			If ni.IsInitialized = False Then Return False
+			If ni.IsInitialized = False Then
+'				#if debug
+				Log("IsNetworkAvailable (API_ANDROID_4-5) : FAILED-ni.IsInitialized = False")
+'				#End If 
+				Return False
+			End If
+'			#if debug
+			Log("IsNetworkAvailable (API_ANDROID_4-5 :" &  ni.RunMethod("isConnected", Null))
+'			#End If
 			Return ni.RunMethod("isConnected", Null)
 		End If
+		
 	Catch
-		Log("IsNetworkAvailable: " & LastException)
+		Log("ERROR - IsNetworkAvailable: " & LastException)
 		Return True   '--- fail-open: still attempt and let HttpJob handle real failures
 	End Try
 End Sub

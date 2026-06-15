@@ -155,7 +155,10 @@ Sub WeatherData_RefreshScrn
 	FeelsLike      = IIf(mpage.useCel, mpage.WeatherData.qFeelsLike_c & "°",mpage.WeatherData.qFeelsLike_f & "°")
 	
 	guiHelpers.ResizeText(mpage.WeatherData.qDescription, lblCurrDesc)
-	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
+	'If Not (lblLocation.Text.StartsWith("Error,")) Then 
+	If mpage.isInterNetConnected Then '--- could be an err msg on scrn
+		guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
+	End If
 	If guiHelpers.gScreenSizeAprox > 8.5 Then
 		details =   _
 			  "Precipitation: " & Precipitation & CRLF & _	
@@ -199,7 +202,7 @@ Private Sub WeatherData_BeforeUpdated
 End Sub
 
 Sub WeatherData_Fail
-	guiHelpers.ResizeText("Error, trying again in 1 minute", lblLocation)
+	guiHelpers.ResizeText("Error, trying again in 3 minute", lblLocation)
 End Sub
 
 Private Sub btnCurrTemp_Click

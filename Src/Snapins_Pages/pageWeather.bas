@@ -102,7 +102,7 @@ Private Sub WeatherData_BeforeUpdated
 End Sub
 
 Sub WeatherData_Fail
-	guiHelpers.ResizeText("Error, trying again in 1 minute", lblLocation)
+	guiHelpers.ResizeText("Error, trying again in 3 minutes", lblLocation)
 End Sub
 
 Sub WeatherData_RefreshScrn
@@ -142,7 +142,10 @@ Sub WeatherData_RefreshScrn
 	End If
 	
 	guiHelpers.ResizeText(mpage.WeatherData.qDescription, lblCurrDesc)
-	guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
+	'If Not (lblLocation.Text.StartsWith("Error"))  And mpage.isInterNetConnected Then
+	If mpage.isInterNetConnected Then '--- could be an err msg on scrn
+		guiHelpers.ResizeText(mpage.WeatherData.qLocation, lblLocation)
+	End If
 	guiHelpers.ResizeText(details.Trim, lblCurrTXT)
 	guiHelpers.ResizeText("High " & highTemp   & "  /  Low " & lowTemp, lblCurrentHigh)
 	guiHelpers.ResizeText(TempCurr , btnCurrTemp)

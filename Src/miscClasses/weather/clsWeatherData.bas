@@ -294,18 +294,21 @@ Private Sub Update_Weather(city As String) As ResumableSub
 	
 	LastUpdatedAt = 1 '--- reset lastUpdated dateTime
 
-	If mpage.isInterNetConnected = False Then
-		Try
-			'--- log to disk?
-			Log("Internet is not connected. Cannot update weather.")
-
-		Catch
-			'--- do nothing, --- should only error out the first time- STILLTRUE???
-			If mpage.DebugLog Then Log("GetWeather - only 1st time OK")
-		End Try 'ignore
-	
-		Return False
-	End If
+	mpage.CheckInternetConnection   '--- refresh the flag via MainPage's InetCheck - claude was here
+'	If mpage.isInterNetConnected = False Then
+'			Log("Internet is not connected. Cannot update weather.")
+'			''''--- do nothing, --- should only error out the first time- STILLTRUE???
+'			'''''If mpage.DebugLog Then Log("GetWeather - only 1st time OK")	
+'			
+'		mpage.EventGbl.Raise(gblConst.EVENT_WEATHER_UPDATE_FAILED)
+'		mpage.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"Try_Weather_Update",60000 * 3) '--- set the next call - 3min
+'		
+'		Return False
+'	Else
+'		#IF debug
+'		Log("Internet is OK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+'		#end if
+'	End If
 
 	If mpage.DebugLog Then Log("Requesting weather data")
 	
@@ -327,7 +330,7 @@ Private Sub Update_Weather(city As String) As ResumableSub
 		
 	Else
 		
-		Log("weather call failed - response code = " & job.Response.StatusCode)	
+		Log("weather call failed: " & job.ErrorMessage)	'--- ErrorMessage is safe on failed jobs; job.Response can be Null (no network) and would NPE - claude was here
 		mpage.EventGbl.Raise(gblConst.EVENT_WEATHER_UPDATE_FAILED)
 		mpage.tmrTimerCallSub.ExistsRemoveAdd_DelayedPlus(Me,"Try_Weather_Update",60000 * 3) '--- set the next call - 3min
 		
