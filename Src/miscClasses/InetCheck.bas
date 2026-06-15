@@ -18,6 +18,40 @@ Public Sub Initialize()
 End Sub
 
 
+'--- Returns True if the device currently has a working network connection.
+'--- Requires the ACCESS_NETWORK_STATE permission.
+'--- Android 6.0+ (API 23) uses NetworkCapabilities (NET_CAPABILITY_VALIDATED = system
+'--- actually verified internet, so captive-portal Wi-Fi reads as offline).
+'--- Android 4.x-5.x falls back to the (deprecated but still working) getActiveNetworkInfo.
+'--- Fails OPEN (returns True on any error) so a reflection hiccup never permanently kills weather.
+Public Sub IsNetworkAvailable As Boolean   'claude was here
+	Try
+		Dim ph As Phone
+		Dim ctxt As JavaObject : ctxt.InitializeContext
+		Dim cm As JavaObject = ctxt.RunMethodJO("getSystemService", Array("connectivity"))
+		If cm.IsInitialized = False Then Return True
+
+		If ph.SdkVersion >= gblConst.API_ANDROID_6_0 Then
+			'--- modern path (Android 6.0+)
+			Dim net As JavaObject = cm.RunMethodJO("getActiveNetwork", Null)
+			If net.IsInitialized = False Then Return False
+			Dim caps As JavaObject = cm.RunMethodJO("getNetworkCapabilities", Array(net))
+			If caps.IsInitialized = False Then Return False
+			'--- 16 = NetworkCapabilities.NET_CAPABILITY_VALIDATED (use 12 = NET_CAPABILITY_INTERNET for a looser check)
+			Return caps.RunMethod("hasCapability", Array(16))
+		Else
+			'--- legacy path (Android 4.x - 5.x)
+			Dim ni As JavaObject = cm.RunMethodJO("getActiveNetworkInfo", Null)
+			If ni.IsInitialized = False Then Return False
+			Return ni.RunMethod("isConnected", Null)
+		End If
+	Catch
+		Log("IsNetworkAvailable: " & LastException)
+		Return True   '--- fail-open: still attempt and let HttpJob handle real failures
+	End Try
+End Sub
+
+
 
 
 '--- FROM EHOME - ANDROID CODE
