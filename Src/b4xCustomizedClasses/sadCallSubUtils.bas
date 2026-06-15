@@ -96,7 +96,7 @@ End Sub
 
 'Similar to CallSub. This method allows you to set the delay (in milliseconds).
 'Note that the sub name must include an underscore if compiled with obfuscation enabled.
-Public Sub CallSubPlus(Module As Object, SubName As String, Delay As Int)
+Public Sub CallSubPlus(Module As Object, SubName As String, Delay As Int) 'ignore
 	If GoingDown Then Return
 	CallSubPlus2(Module, SubName, Delay, Null)	
 End Sub
