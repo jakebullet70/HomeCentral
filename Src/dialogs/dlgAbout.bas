@@ -61,7 +61,7 @@ Public Sub Show()
 	BuildLicLabel
 	
 	Dim msg As StringBuilder : msg.Initialize
-	msg.Append("(©)sadLogic 2015-25").Append(CRLF)
+	msg.Append("(©)sadLogic 2015-26").Append(CRLF)
 	msg.Append("Kherson Ukraine!").Append(CRLF)
 	msg.Append("AGPL-3.0 license")
 	lblAboutTop.Text = msg.ToString
