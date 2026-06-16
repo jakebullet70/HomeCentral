@@ -23,7 +23,8 @@ Public Sub Initialize
 '	Catch
 '		Log(LastException)
 '	End Try
-	oSQL.ExecNonQuery($"DROP TABLE user_menus"$)
+
+	'oSQL.ExecNonQuery($"DROP TABLE user_menus"$)  ' DEV TESTING
 	oSQL.ExecNonQuery($"CREATE TABLE IF NOT EXISTS "user_menus" (
 		"id" INTEGER,
 		"short_desc" TEXT,
