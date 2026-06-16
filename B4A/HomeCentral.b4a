@@ -221,7 +221,7 @@ Version=12.5
 #Region  Project Attributes 
 	#ApplicationLabel: HomeCentral
 	#VersionCode: 19
-	#VersionName: 3.3.0c
+	#VersionName: 3.3.0d
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: landscape
 	#CanInstallToExternalStorage: False
