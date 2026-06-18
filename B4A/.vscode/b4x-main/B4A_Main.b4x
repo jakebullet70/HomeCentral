@@ -1,7 +1,7 @@
 #Region  Project Attributes 
 	#ApplicationLabel: HomeCentral
-	#VersionCode: 18
-	#VersionName: 3.2.0
+	#VersionCode: 19
+	#VersionName: 3.3.0d
 	'SupportedOrientations possible values: unspecified, landscape or portrait.
 	#SupportedOrientations: landscape
 	#CanInstallToExternalStorage: False
@@ -50,7 +50,7 @@ Sub Globals
 	Private ph As Phone
 End Sub
 
-Sub Activity_Create(FirstTime As Boolean) 'ignore
+Sub Activity_Create(FirstTime As Boolean)
 	SetupFullScrn
 	Provider.Initialize
 	Dim pm As B4XPagesManager
@@ -106,6 +106,7 @@ Private Sub SetupFullScrn
 	'https://www.b4x.com/android/forum/threads/immersive-mode-hide-the-navigation-bar.90882/
 	
 	Dim lv As LayoutValues
+	Dim di As DeviceInfo : di.Initialize
 	
 	If ph.SdkVersion >= 28 Then
 		'--- cutout mode...  ????
@@ -116,23 +117,26 @@ Private Sub SetupFullScrn
 
 	If ph.SdkVersion >= 19 Then
 		Activity_WindowFocusChanged(True)
-		lv = GetRealSize
+		lv = di.GetRealSize
 		Dim jo As JavaObject = Activity
 		jo.RunMethod("setBottom", Array(lv.Height))
 		jo.RunMethod("setRight", Array(lv.Width))
 		Activity.Height = lv.Height
 		Activity.Width = lv.Width
+		guiHelpers.gScreenSizeAprox = di.ExactSize '--- New Samsung returns 8in, not 10in, this works
 	Else
 		'--- size *WITH* taskbar
 		lv = GetDeviceLayoutValues
+		guiHelpers.gScreenSizeAprox = lv.ApproximateScreenSize
 	End If
 	
-	guiHelpers.gScreenSizeAprox = lv.ApproximateScreenSize
+	'guiHelpers.gScreenSizeAprox = lv.ApproximateScreenSize
 	guiHelpers.gIsLandScape = Not (lv.Height > lv.Width)
 	guiHelpers.gWidth  = lv.Width
 	guiHelpers.gHeight = lv.Height
 	Dim ac As Accessibility : guiHelpers.gFscale = ac.GetUserFontScale
 	
+	'Log("ex0size!!!!!!!!!!!!!!!!!!" & ExactSize)
 	'SetUserOrientPref
 	
 End Sub
@@ -181,22 +185,6 @@ Public Sub Dim_ActionBar_Off
 	Dim_ActionBar(gblConst.ACTIONBAR_OFF)
 End Sub
 
-Private Sub GetRealSize() As LayoutValues
-	
-	Dim lv As LayoutValues
-	Dim ctxt As JavaObject
-	ctxt.InitializeContext
-	Dim WindowManager As JavaObject = ctxt.RunMethodJO("getSystemService", Array("window"))
-	Dim display As JavaObject = WindowManager.RunMethod("getDefaultDisplay", Null)
-	Dim point As JavaObject
-	point.InitializeNewInstance("android.graphics.Point", Null)
-	display.RunMethod("getRealSize", Array(point))
-	lv.Width = point.GetField("x")
-	lv.Height = point.GetField("y")
-	lv.Scale = 100dip / 100
-	Return lv
-	
-End Sub
 #end region
 
 
