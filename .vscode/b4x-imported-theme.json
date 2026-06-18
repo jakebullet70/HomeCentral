@@ -1,5 +1,5 @@
 {
-  "name": "B4X Imported Theme (Soft.vssettings)",
+  "name": "B4X Imported Theme (Dark.vssettings)",
   "type": "dark",
   "colors": {},
   "tokenColors": [
@@ -8,7 +8,7 @@
         "comment"
       ],
       "settings": {
-        "foreground": "rgba(66, 122, 147, 0)",
+        "foreground": "rgba(123, 116, 102, 0)",
         "background": "rgba(0, 0, 0, 0.008)"
       }
     },
@@ -17,7 +17,7 @@
         "variable"
       ],
       "settings": {
-        "foreground": "rgba(0, 0, 0, 0.008)",
+        "foreground": "rgba(200, 200, 200, 0)",
         "background": "rgba(0, 0, 0, 0.008)"
       }
     },
@@ -26,7 +26,7 @@
         "constant.numeric"
       ],
       "settings": {
-        "foreground": "rgba(65, 146, 37, 0)",
+        "foreground": "rgba(34, 205, 255, 0)",
         "background": "rgba(0, 0, 0, 0.008)"
       }
     },
@@ -35,7 +35,7 @@
         "keyword.operator"
       ],
       "settings": {
-        "foreground": "rgba(209, 83, 46, 0)",
+        "foreground": "rgba(183, 226, 232, 0)",
         "background": "rgba(0, 0, 0, 0.008)"
       }
     },
@@ -44,7 +44,7 @@
         "string"
       ],
       "settings": {
-        "foreground": "rgba(65, 146, 37, 0)",
+        "foreground": "rgba(0, 118, 236, 0)",
         "background": "rgba(0, 0, 0, 0.008)"
       }
     },
@@ -53,7 +53,7 @@
         "keyword"
       ],
       "settings": {
-        "foreground": "rgba(128, 0, 64, 0)",
+        "foreground": "rgba(99, 199, 147, 0)",
         "background": "rgba(0, 0, 0, 0.008)"
       }
     }
