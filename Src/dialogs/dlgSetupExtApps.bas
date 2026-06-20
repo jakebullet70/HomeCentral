@@ -25,6 +25,7 @@ Sub Class_Globals
 	Private btnAppCancel,btnAppSelect As B4XView
 	Private pnlApps As Panel
 	Private pnlAppBtns As Panel
+	Type AppEntry(name As String, packName As String, icon As Bitmap, sortKey As String)   'claude was here
 End Sub
 
 
@@ -46,7 +47,7 @@ Public Sub Show()
 	p.LoadLayout("viewSetupExtApps")
 	
 	'-------------------------------------------------------
-	LoadAllExtApps
+	Wait For (LoadAllExtApps) Complete (appsLoaded As Boolean)   'claude was here
 	j.SpreadVertically2(pnlAppBtns,50dip,6dip,"left")
 	guiHelpers.SkinButton(Array As Button(btnAppCancel,btnAppSelect))
 	'pnlApps.Visible = False
@@ -113,71 +114,79 @@ End Sub
 
 
 '---------------------------- show all external apps in lst
-
-private Sub LoadAllExtApps
+'--- Tier-2 / Android 11+ rewrite options are documented in "dlgSetupExtApps_Android_V11.md"
+'--- (search the repo by that file name if it has been moved) - claude was here
+private Sub LoadAllExtApps As ResumableSub        'claude was here
 	'https://www.b4x.com/android/forum/threads/get-list-of-installed-apps-and-their-icons.71164/#content
 	Dim lv1 As ListView = lstApps
-	'Private apps_cancel As Button
-	'Private apps_Label1 As Label
 
     Dim args(1) As Object
     Dim Obj1, Obj2, Obj3 As Reflector
     Dim size, i, flags As Int
     Dim Types(1), name,packName, name_temp As String
-    Dim icon As BitmapDrawable
-    Dim bmp As Bitmap '= icon.Bitmap
-  
+
+    Dim apps As List : apps.Initialize        '--- buffer apps so we can sort before display - claude was here
+
     Obj1.Target = Obj1.GetContext
     Obj1.Target = Obj1.RunMethod("getPackageManager") ' PackageManager
     Obj2.Target = Obj1.RunMethod2("getInstalledPackages", 0, "java.lang.int") ' List<PackageInfo>
     size = Obj2.RunMethod("size")
-    
+
 	For i = 0 To size -1
-		
+
         Try
             Obj3.Target = Obj2.RunMethod2("get", i, "java.lang.int") ' PackageInfo
             packName = Obj3.GetField("packageName")
- 
+
             Obj3.Target = Obj3.GetField("applicationInfo") ' ApplicationInfo
             flags = Obj3.GetField("flags")
- 
-            flags = Obj3.GetField("flags")
-      
+
             args(0) = Obj3.Target
             Types(0) = "android.content.pm.ApplicationInfo"
             name = Obj1.RunMethod4("getApplicationLabel", args, Types)
-          
-            name_temp=name.ToLowerCase
-          
-            If Bit.And(flags, 1) = 0 Or name_temp.Contains("map") Then
+
+            name_temp = name.ToLowerCase
+
+            If (Bit.And(flags, 1) = 0 Or name_temp.Contains("map")) And packName <> Application.PackageName Then   '--- exclude HomeCentral itself - claude was here
                 'app is not in the system image
-                icon = Obj1.RunMethod4("getApplicationIcon", args, Types)
-                bmp = icon.Bitmap
-          
-                icon.Initialize(bmp.Resize(50dip, 50dip, True))
-                lv1.AddTwoLinesAndBitmap2(name,"",icon.Bitmap,packName)
+                apps.Add(NewAppEntry(name, packName, GetAppIconBmp(packName), name_temp))   '--- canvas-render handles AdaptiveIconDrawable - claude was here
             End If
-			
-        Catch '--- Error
-            '--- Error in the line "bmp = icon.Bitmap"
-          
-            bmp.InitializeMutable(50dip,50dip)
-            Dim DestRect As Rect
-            DestRect.Initialize(0,0,50dip,50dip)
-            Dim can As Canvas
-            can.Initialize2(bmp)
-            Dim pm As PackageManager
-            can.DrawDrawable(pm.GetApplicationIcon(packName),DestRect)
-          
-            icon.Initialize(bmp)
-            lv1.AddTwoLinesAndBitmap2(name,"",icon.Bitmap,packName)
+
+        Catch '--- skip any app whose label/icon can't be read - claude was here
+            Log("LoadAllExtApps skip " & packName & ": " & LastException)   'claude was here
         End Try
+
+		If i Mod 10 = 0 Then Sleep(0)   '--- yield to UI thread - claude was here
     Next
-  
-    'apps_Label1.Text="Select the app:"
-    'apps_Label1.Invalidate
+
+    apps.SortType("sortKey", True)   '--- alphabetical, case-insensitive (sortKey is lowercased) - claude was here
+    For Each a As AppEntry In apps   'claude was here
+        lv1.AddTwoLinesAndBitmap2(a.name, "", a.icon, a.packName)   'claude was here
+    Next
     Sleep(0)
-    'apps_cancel.Enabled=True
+    Return True   'claude was here
+End Sub
+
+Private Sub GetAppIconBmp(pkg As String) As Bitmap   'claude was here
+	'--- renders an app icon to a 50dip bitmap via Canvas. Works for AdaptiveIconDrawable
+	'--- (Android 8+), unlike casting the drawable to BitmapDrawable which throws ClassCastException.
+	Dim bmp As Bitmap
+	bmp.InitializeMutable(50dip, 50dip)
+	Dim dest As Rect : dest.Initialize(0, 0, 50dip, 50dip)
+	Dim can As Canvas : can.Initialize2(bmp)
+	Dim pm As PackageManager
+	can.DrawDrawable(pm.GetApplicationIcon(pkg), dest)
+	Return bmp
+End Sub
+
+Private Sub NewAppEntry(nm As String, pk As String, ic As Bitmap, sk As String) As AppEntry   'claude was here
+	'--- builds one buffered app record so the list can be sorted before display
+	Dim e As AppEntry
+	e.name = nm
+	e.packName = pk
+	e.icon = ic
+	e.sortKey = sk
+	Return e
 End Sub
 
 Private Sub btnAppCancel_Click
