@@ -184,3 +184,32 @@ Public Sub NoCloseOn2ndDialog
 	'dlg.Dialog.Base.Parent.Tag = "" 'this will prevent the dialog from closing when the second dialog appears.
 	dlg.Base.Parent.Tag = "" 'this will prevent the dialog from closing when the second dialog appears.
 End Sub
+
+
+
+Public Sub  ThemeDialogBtnsHideShow(show As Boolean)
+	
+	
+	Try '--- reskin button, if it does not exist then skip the error
+		Dim btnCancel As B4XView = dlg.GetButton(xui.DialogResponse_Cancel)
+		btnCancel.Visible = show
+	Catch
+		'Log(LastException)
+	End Try 'ignore
+	
+	Try '--- reskin button, if it does not exist then skip the error
+		Dim btnOk As B4XView = dlg.GetButton(xui.DialogResponse_Positive)
+		btnOk.Visible = show
+	Catch
+		'Log(LastException)
+	End Try 'ignore
+
+	Try '--- reskin button, if it does not exist then skip the error
+		Dim btnNo As B4XView = dlg.GetButton(xui.DialogResponse_Negative)
+		btnNo.Visible = show
+	Catch
+		'Log(LastException)
+	End Try 'ignore
+
+	
+End Sub

@@ -17,10 +17,14 @@ Sub Class_Globals
 	Private IME As IME
 	Private mpage As B4XMainPage = B4XPages.MainPage 'ignore
 
-	'Private pnlCont,pnlBtns As B4XView
 	Private dlgHelper As sadB4XDialogHelper
 	Private clsExtApps As ExternalAppCtrl
 	
+	'--- show list of avail apps
+	Private lstApps As ListView
+	Private btnAppCancel,btnAppSelect As B4XView
+	Private pnlApps As Panel
+	Private pnlAppBtns As Panel
 End Sub
 
 
@@ -36,12 +40,18 @@ Public Sub Show()
 	dlg.Initialize((B4XPages.MainPage.Root))
 	dlgHelper.Initialize(dlg)
 	
+	Dim j As DSE_Layout : j.Initialize
 	Dim p As B4XView = XUI.CreatePanel("")
-	p.SetLayoutAnimated(0, 0, 0,  550dip,  480dip)
+	p.SetLayoutAnimated(0, 0, 0,  660dip,  480dip)
 	p.LoadLayout("viewSetupExtApps")
 	
-	'Dim j As DSE_Layout : j.Initialize
-	'j.SpreadVertically2(pnlBtns,50dip,6dip,"left")
+	'-------------------------------------------------------
+	LoadAllExtApps
+	j.SpreadVertically2(pnlAppBtns,50dip,6dip,"left")
+	guiHelpers.SkinButton(Array As Button(btnAppCancel,btnAppSelect))
+	'pnlApps.Visible = False
+	'--------------------------------------------------------
+	
 '	guiHelpers.SkinButton(Array As Button(btnAdd,btnRemove,btnTest,btnNewCancel,btnNewSave))
 '	guiHelpers.ReSkinB4XComboBox(Array As B4XComboBox( cboSounds))
 '	guiHelpers.SetTextColor(Array As B4XView(Label1,Label3,lblTmrVol),clrTheme.txtNormal)
@@ -59,10 +69,11 @@ Public Sub Show()
 '	oLV_helper.Initialize(lstPresets)
 '	LoadData
 		
-	dlgHelper.ThemeDialogForm("Timers Setup")
+	dlgHelper.ThemeDialogForm("External Apps Setup")
 	Dim rs As ResumableSub = dlg.ShowCustom(p, "SAVE", "", "CLOSE")
 	dlgHelper.ThemeDialogBtnsResize
-	dlgHelper.NoCloseOn2ndDialog
+	'dlgHelper.NoCloseOn2ndDialog
+	'dlgHelper.ThemeDialogBtnsHideShow(False)
 '	btnTest.BringToFront
 		
 	Wait For (rs) Complete (Result As Int)
@@ -74,11 +85,13 @@ End Sub
 
 
 Private Sub LoadData()
+	'--- populate the 6 ext apps
 '	vol_timers.SelectItemInCBO(cboSounds,Main.kvs.Get(gblConst.INI_TIMERS_ALARM_FILE))
 '	LoadGrid
 End Sub
 
 Private Sub LoadGrid
+	
 '	lstPresets.Clear
 '	Dim cursor As Cursor = kt.timers_get_all
 '	For i = 0 To cursor.RowCount - 1
@@ -97,9 +110,85 @@ Private Sub SaveData()
 End Sub
 
 
-Private Sub btnTest_Click
-'	vol_timers.PlaySound(sbTimerVol.Value,vol_timers.BuildAlarmFile(cboSounds.SelectedItem))
+
+
+'---------------------------- show all external apps in lst
+
+private Sub LoadAllExtApps
+	'https://www.b4x.com/android/forum/threads/get-list-of-installed-apps-and-their-icons.71164/#content
+	Dim lv1 As ListView = lstApps
+	'Private apps_cancel As Button
+	'Private apps_Label1 As Label
+
+    Dim args(1) As Object
+    Dim Obj1, Obj2, Obj3 As Reflector
+    Dim size, i, flags As Int
+    Dim Types(1), name,packName, name_temp As String
+    Dim icon As BitmapDrawable
+    Dim bmp As Bitmap '= icon.Bitmap
+  
+    Obj1.Target = Obj1.GetContext
+    Obj1.Target = Obj1.RunMethod("getPackageManager") ' PackageManager
+    Obj2.Target = Obj1.RunMethod2("getInstalledPackages", 0, "java.lang.int") ' List<PackageInfo>
+    size = Obj2.RunMethod("size")
+    
+	For i = 0 To size -1
+		
+        Try
+            Obj3.Target = Obj2.RunMethod2("get", i, "java.lang.int") ' PackageInfo
+            packName = Obj3.GetField("packageName")
+ 
+            Obj3.Target = Obj3.GetField("applicationInfo") ' ApplicationInfo
+            flags = Obj3.GetField("flags")
+ 
+            flags = Obj3.GetField("flags")
+      
+            args(0) = Obj3.Target
+            Types(0) = "android.content.pm.ApplicationInfo"
+            name = Obj1.RunMethod4("getApplicationLabel", args, Types)
+          
+            name_temp=name.ToLowerCase
+          
+            If Bit.And(flags, 1) = 0 Or name_temp.Contains("map") Then
+                'app is not in the system image
+                icon = Obj1.RunMethod4("getApplicationIcon", args, Types)
+                bmp = icon.Bitmap
+          
+                icon.Initialize(bmp.Resize(50dip, 50dip, True))
+                lv1.AddTwoLinesAndBitmap2(name,"",icon.Bitmap,packName)
+            End If
+			
+        Catch '--- Error
+            '--- Error in the line "bmp = icon.Bitmap"
+          
+            bmp.InitializeMutable(50dip,50dip)
+            Dim DestRect As Rect
+            DestRect.Initialize(0,0,50dip,50dip)
+            Dim can As Canvas
+            can.Initialize2(bmp)
+            Dim pm As PackageManager
+            can.DrawDrawable(pm.GetApplicationIcon(packName),DestRect)
+          
+            icon.Initialize(bmp)
+            lv1.AddTwoLinesAndBitmap2(name,"",icon.Bitmap,packName)
+        End Try
+    Next
+  
+    'apps_Label1.Text="Select the app:"
+    'apps_Label1.Invalidate
+    Sleep(0)
+    'apps_cancel.Enabled=True
 End Sub
+
+Private Sub btnAppCancel_Click
+	pnlApps.Visible = False
+	dlgHelper.ThemeDialogBtnsHideShow(True)
+End Sub
+
+Private Sub btnAppSelect_Click
+	
+End Sub
+'-----------------------------------------------------------------
 
 
 Sub lstPresets_ItemClick (Position As Int, Value As Object)
@@ -139,3 +228,4 @@ End Sub
 '}
 '#End If
 '#End If
+

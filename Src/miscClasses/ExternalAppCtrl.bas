@@ -69,7 +69,6 @@ End Sub
 
 
 
-'======================================================================================
 Public Sub Run_AndroidSettings
 	Dim i As Intent
 	i.Initialize("", "")
@@ -78,78 +77,79 @@ Public Sub Run_AndroidSettings
 End Sub
 
 
-#Region USER_MENU_CRAP
-
-Private Sub UserMenu(num As Int, caption As String, longClick As Boolean)
-	
-	Select Case True
-		'Case caption.Length = 0 AND longClick = False
-		'--- un-assigned key and blank
-		'--- do nothing
-	
-		Case caption.Length <> 0 And longClick = False
-			'--- assigened key
-			UserMenuProcessKey(num)
-		
-		Case longClick = True
-			'--- bring up the user menu key tool thingy
-		'	Dim o9 As popUserMenuEdit
-		'	o9.Initialize(act, g.Int2Str(num),caption)
-			
-	End Select
-
-End Sub
-
-
-Private Sub UserMenuProcessKey(num As Int)
-
-	'Try
-		
-	Dim rs As Cursor = oSQL.ExecQuery2( _
-			"SELECT package_name FROM user_menus WHERE num = ?", _
-			Array As String(num))
-		
-	If rs.RowCount = 0 Then
-		'--- this should never be blank
-		Log("UserMenuProcessKey: no entry found in table!" & num)
-		Return
-	End If
-		
-	rs.Position = 0
-	LogColor("Pack name: " & rs.GetString("package_name"),Colors.Magenta)
-	Dim pm As PackageManager
-	Dim it As Intent = pm.GetApplicationIntent(rs.GetString("package_name"))
-	If it.IsInitialized Then StartActivity(it)
-	'Catch
-	'	g.LogException(LastException,False)
-	'End Try
-
-End Sub
+'#Region USER_MENU_CRAP
+'
+'Private Sub UserMenu(num As Int, caption As String, longClick As Boolean)
+'	
+'	Select Case True
+'		'Case caption.Length = 0 AND longClick = False
+'		'--- un-assigned key and blank
+'		'--- do nothing
+'	
+'		Case caption.Length <> 0 And longClick = False
+'			'--- assigened key
+'			UserMenuProcessKey(num)
+'		
+'		Case longClick = True
+'			'--- bring up the user menu key tool thingy
+'		'	Dim o9 As popUserMenuEdit
+'		'	o9.Initialize(act, g.Int2Str(num),caption)
+'			
+'	End Select
+'
+'End Sub
 
 
-Private Sub Add3rdPartyApp2Menu(num As Int) As String 'ignore
-	Try
+'
+'Private Sub UserMenuProcessKey(num As Int)
+'
+'	'Try
+'		
+'	Dim rs As Cursor = oSQL.ExecQuery2( _
+'			"SELECT package_name FROM user_menus WHERE num = ?", _
+'			Array As String(num))
+'		
+'	If rs.RowCount = 0 Then
+'		'--- this should never be blank
+'		Log("UserMenuProcessKey: no entry found in table!" & num)
+'		Return
+'	End If
+'		
+'	rs.Position = 0
+'	LogColor("Pack name: " & rs.GetString("package_name"),Colors.Magenta)
+'	Dim pm As PackageManager
+'	Dim it As Intent = pm.GetApplicationIntent(rs.GetString("package_name"))
+'	If it.IsInitialized Then StartActivity(it)
+'	'Catch
+'	'	g.LogException(LastException,False)
+'	'End Try
+'
+'End Sub
 
-		Dim cur As Cursor = oSQL.ExecQuery2( _
-				"SELECT * FROM user_menus WHERE short_desc <> ? AND num = ?", _
-				Array As String("",num))
-					
-		If cur.RowCount = 0 Then
-			Return ""
-		End If
-		cur.Position = 0
-		Return cur.GetString("short_desc")
-		
-	Catch
-		Log(LastException)
-	End Try
-	
 
-End Sub
+'Private Sub Add3rdPartyApp2Menu(num As Int) As String 'ignore
+'	Try
+'
+'		Dim cur As Cursor = oSQL.ExecQuery2( _
+'				"SELECT * FROM user_menus WHERE short_desc <> ? AND num = ?", _
+'				Array As String("",num))
+'					
+'		If cur.RowCount = 0 Then
+'			Return ""
+'		End If
+'		cur.Position = 0
+'		Return cur.GetString("short_desc")
+'		
+'	Catch
+'		Log(LastException)
+'	End Try
+'	
+'
+'End Sub
 
 
 
-#End Region
+'#End Region
 
 
 
