@@ -520,6 +520,8 @@ Private Sub SetupMainMenu_Event(t As String,o As Object)
 			Dim o4 As dlgSetupTimers : o4.Initialize(Dialog) :  o4.Show
 		Case "pic"
 			Dim o5 As dlgSetupPics : o5.Initialize(PrefDlg)    :  o5.Show
+		Case "exp"
+			Dim o6 As dlgSetupExtApps : o6.Initialize(Dialog) : o6.Show
 		Case "as"
 			ExtApps.Run_AndroidSettings
 		Case Else

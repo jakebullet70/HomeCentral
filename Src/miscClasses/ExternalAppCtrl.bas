@@ -16,16 +16,15 @@ Sub Class_Globals
 End Sub
 
 Public Sub Initialize
+	
 	oSQL = B4XPages.MainPage.sql
 	
-'	Try
-'		oSQL.ExecNonQuery($"DROP TABLE web_targets"$)
+'	Try 'testing
+'		oSQL.ExecNonQuery($"DROP TABLE ext_apps"$)
 '	Catch
-'		Log(LastException)
-'	End Try
-
-	'oSQL.ExecNonQuery($"DROP TABLE user_menus"$)  ' DEV TESTING
-	oSQL.ExecNonQuery($"CREATE TABLE IF NOT EXISTS "user_menus" (
+'		'Log(LastException)
+'	End Try 'ignore
+	oSQL.ExecNonQuery($"CREATE TABLE IF NOT EXISTS "ext_apps" (
 		"id" INTEGER,
 		"short_desc" TEXT,
 		"package_name" TEXT, 
@@ -33,18 +32,17 @@ Public Sub Initialize
 		"visible" INTEGER,
 		PRIMARY KEY("id" AUTOINCREMENT));"$)
 	
-'	Dim count As Int = oSQL.ExecQuerySingleResult($"SELECT COUNT(*) FROM user_menus"$)
-'	If count = 0 Then
-'		oSQL.ExecNonQuery($"CREATE INDEX "ndx_desc_web" ON "user_menus" ("description");"$)
-'		'--- this will update older installs or just seed the table
-'		'Dim s As String =
-'		Main.kvs.Remove(gblConst.INI_WEB_HOME)
-'		targets_insert_new("Home Page", _
-'				Main.kvs.GetDefault(gblConst.INI_WEB_HOME,"http://sadlogic.com"),True)
-'	End If
-	#if debug
-	Log("created web setup table")
-	#End If
+	Dim count As Int = oSQL.ExecQuerySingleResult($"SELECT COUNT(*) FROM ext_apps"$)
+	If count = 0 Then
+		For count = 0 To 5 '--- add 6 blank apps
+			oSQL.ExecNonQuery2($"INSERT INTO ext_apps
+						("short_desc","num",visible) VALUES (?,?,?);"$, _
+						Array As String("Open " & count,count,1))
+		Next
+		#if debug
+		LogColor("created ext app table",xui.Color_Yellow)
+	    #End If
+	End If
 	
 End Sub
 
