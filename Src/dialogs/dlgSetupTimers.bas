@@ -157,16 +157,19 @@ Private Sub btnAdd_Click
 	ShowAddNew(True)
 	txtDescription.Text = "" : txtTime.Text = ""
 	txtTime.RequestFocusAndShowKeyboard
+	dlgHelper.ThemeDialogBtnsHideShow(False)
 End Sub
 
 Private Sub btnCancel_Click
 	'--- cancel add  new timer preset
 	ShowAddNew(False)
 	IME.HideKeyboard
+	dlgHelper.ThemeDialogBtnsHideShow(True)
 End Sub
 
 Private Sub btnSave_Click
 	'--- add  new timer
+	dlgHelper.ThemeDialogBtnsHideShow(True)
 	IME.HideKeyboard
 	Sleep(0)
 	Dim vt As String = ValidateTime(txtTime.Text)
